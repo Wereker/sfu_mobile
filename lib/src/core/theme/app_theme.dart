@@ -40,6 +40,7 @@ class AppTheme {
         side: const BorderSide(style: BorderStyle.none),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         backgroundColor: secondaryBtn,
+        splashFactory: NoSplash.splashFactory,
       ),
     ),
   );
@@ -77,6 +78,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         backgroundColor: secondaryBtn,
         foregroundColor: Color(0xFFFF9900),
+        splashFactory: NoSplash.splashFactory,
       ),
     ),
   );
