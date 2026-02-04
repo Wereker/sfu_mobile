@@ -1,8 +1,13 @@
 {
   "appName": "Моё приложение",
   "loginTitle": "Вход",
-  "loginHint": "Электронная почта",
+  "nameHint": "Имя",
+  "surnameHint": "Фамилия",
+  "loginHint": "Логин",
   "passwordHint": "Пароль",
+  "passwordRepeatHint": "Повторите пароль",
+  "signUpButton": "Регистрация",
   "signInButton": "Войти",
+  "resetPasswordButton": "Восстановить",
   "forgotPassword": "Забыли пароль?"
 }

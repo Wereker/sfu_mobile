@@ -107,10 +107,22 @@ abstract class AppLocalizations {
   /// **'Login'**
   String get loginTitle;
 
+  /// No description provided for @nameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get nameHint;
+
+  /// No description provided for @surnameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Surname'**
+  String get surnameHint;
+
   /// No description provided for @loginHint.
   ///
   /// In en, this message translates to:
-  /// **'Email'**
+  /// **'Login'**
   String get loginHint;
 
   /// No description provided for @passwordHint.
@@ -119,11 +131,29 @@ abstract class AppLocalizations {
   /// **'Password'**
   String get passwordHint;
 
+  /// No description provided for @passwordRepeatHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat Password'**
+  String get passwordRepeatHint;
+
   /// No description provided for @signInButton.
   ///
   /// In en, this message translates to:
   /// **'Sign In'**
   String get signInButton;
+
+  /// No description provided for @signUpButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get signUpButton;
+
+  /// No description provided for @resetPasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetPasswordButton;
 
   /// No description provided for @forgotPassword.
   ///

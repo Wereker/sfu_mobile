@@ -15,13 +15,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginTitle => 'Login';
 
   @override
-  String get loginHint => 'Email';
+  String get nameHint => 'Name';
+
+  @override
+  String get surnameHint => 'Surname';
+
+  @override
+  String get loginHint => 'Login';
 
   @override
   String get passwordHint => 'Password';
 
   @override
+  String get passwordRepeatHint => 'Repeat Password';
+
+  @override
   String get signInButton => 'Sign In';
+
+  @override
+  String get signUpButton => 'Sign Up';
+
+  @override
+  String get resetPasswordButton => 'Reset';
 
   @override
   String get forgotPassword => 'Forgot password?';

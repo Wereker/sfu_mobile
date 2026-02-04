@@ -15,13 +15,28 @@ class AppLocalizationsRu extends AppLocalizations {
   String get loginTitle => 'Вход';
 
   @override
-  String get loginHint => 'Электронная почта';
+  String get nameHint => 'Имя';
+
+  @override
+  String get surnameHint => 'Фамилия';
+
+  @override
+  String get loginHint => 'Логин';
 
   @override
   String get passwordHint => 'Пароль';
 
   @override
+  String get passwordRepeatHint => 'Повторите пароль';
+
+  @override
   String get signInButton => 'Войти';
+
+  @override
+  String get signUpButton => 'Регистрация';
+
+  @override
+  String get resetPasswordButton => 'Восстановить';
 
   @override
   String get forgotPassword => 'Забыли пароль?';
