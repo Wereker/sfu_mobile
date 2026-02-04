@@ -1,35 +1,40 @@
-import 'package:sfu/src/core/domain/entity/user.dart';
+import 'package:sfu/src/feature/auth/domain/entity/token.dart';
 import 'package:sfu/src/feature/auth/domain/repository/auth_repository.dart';
 
 class AuthRepositoryMock implements AuthRepository {
   @override
-  Future<User> signIn(String login, String password) async {
+  Future<bool> signIn(String login, String password) async {
     await Future.delayed(Duration(seconds: 1));
 
-    return User(
-        id: 'mock_123',
-        firstName: 'Иванов',
-        lastName: 'Иван',
-        birthdate: DateTime(2000, 3, 11),
-        sex: 'M',
-        phone: '+7 (983) 137-91-20',
-        role: 'student',
+    final token = Token(
+      access: "i0L7CtovHpaCCDlsY22ObO4qACz57Khr",
+      refresh: "dyqcelydolMLJQbT68x2EB9VqvvgMQmT",
+      type: "Bearer",
+      expires: 3600,
     );
+    return true;
   }
 
   @override
-  Future<void> logout() async {
+  Future<bool> logout() async {
     await Future.delayed(Duration(seconds: 1));
+    return true;
   }
 
   @override
-  Future<void> resetPassword(String password) async {
+  Future<bool> resetPassword(String password) async {
     await Future.delayed(Duration(seconds: 1));
+    return true;
   }
 
   @override
-  Future<void> singUp() async {
+  Future<bool> singUp({
+    required String login,
+    required String password,
+    required String firstName,
+    required String lastName,
+  }) async {
     await Future.delayed(Duration(seconds: 1));
+    return true;
   }
-
 }

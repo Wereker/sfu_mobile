@@ -1,8 +1,6 @@
 import 'package:sfu/src/feature/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:sfu/src/feature/auth/data/data_sources/remote/auth_remote_data_source.dart';
-import 'package:sfu/src/core/domain/entity/user.dart';
 import 'package:sfu/src/feature/auth/domain/repository/auth_repository.dart';
-
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remote;
@@ -11,32 +9,30 @@ class AuthRepositoryImpl implements AuthRepository {
   const AuthRepositoryImpl({required this.local, required this.remote});
 
   @override
-  Future<User> signIn(String login, String password) async {
-    final dto = await remote.signIn(login, password);
-
-    return User(
-        id: dto.id,
-        firstName: dto.firstName,
-        lastName: dto.lastName,
-        phone: dto.phone,
-        role: dto.role,
-    );
-  }
-
-  @override
-  Future<void> logout() async {
+  Future<bool> logout() {
     // TODO: implement logout
     throw UnimplementedError();
   }
 
   @override
-  Future<void> resetPassword(String password) {
+  Future<bool> resetPassword(String password) {
     // TODO: implement resetPassword
     throw UnimplementedError();
   }
 
   @override
-  Future<void> singUp() {
+  Future<bool> signIn(String login, String password) {
+    // TODO: implement signIn
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> singUp({
+    required String login,
+    required String password,
+    required String firstName,
+    required String lastName,
+  }) {
     // TODO: implement singUp
     throw UnimplementedError();
   }
