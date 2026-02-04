@@ -1,0 +1,1 @@
+class PasswordMatchError implements Exception {}
