@@ -1,11 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sfu/src/core/domain/entity/user.dart';
-import 'package:sfu/src/feature/auth/domain/extention/auth_extention.dart';
-import 'package:sfu/src/feature/auth/domain/usecase/logout_usecase.dart';
-import 'package:sfu/src/feature/auth/domain/usecase/reset_password_usecase.dart';
-import 'package:sfu/src/feature/auth/domain/usecase/signin_usecase.dart';
-import 'package:sfu/src/feature/auth/domain/usecase/singup_usecase.dart';
+import 'package:sfu/src/feature/auth/domain/exception/invalid_credentials_error.dart';
+import 'package:sfu/src/feature/auth/domain/exception/network_error.dart';
+import 'package:sfu/src/feature/auth/domain/exception/password_error.dart';
+import 'package:sfu/src/feature/auth/domain/use_case/logout_use_case.dart';
+import 'package:sfu/src/feature/auth/domain/use_case/reset_password_use_case.dart';
+import 'package:sfu/src/feature/auth/domain/use_case/sign_in_use_case.dart';
+import 'package:sfu/src/feature/auth/domain/use_case/sign_up_use_case.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -32,8 +33,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthState.loading());
 
         try {
-          final user = await signInUseCase.call(SignInParams(login, password));
-          emit(AuthState.success(user: user));
+          final result = await signInUseCase.call(login, password);
+          if (result) {
+            emit(AuthState.success());
+          } else {
+            emit(AuthState.error(error: "Ошибка авторизации"));
+          }
         } on InvalidCredentialsError {
           emit(AuthState.error(error: "Неверный логин или пароль"));
         } on NetworkError {
@@ -45,8 +50,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       resetPassword: (password) async {
         emit(AuthState.loading());
         try {
-          await resetPasswordUseCase.call(password);
-          emit(AuthState.initial());
+          final result = await resetPasswordUseCase.call(password);
+          if (result) {
+            emit(AuthState.initial());
+          } else {
+            emit(AuthState.error(error: "Ошибка авторизации"));
+          }
         } on NetworkError {
           emit(AuthState.error(error: "Ошибка подключения к интернету"));
         } on PasswordMatchError {
@@ -55,27 +64,48 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.error(error: "Ошибка авторизации"));
         }
       },
-      signUp: (login, password, firstName, lastName, phone) async {
-        emit(AuthState.loading());
+      logout: () async {
         try {
-          await signUpUseCase.call(
-            SignUpParams(
-              login: login,
-              password: password,
-              firstName: firstName,
-              lastName: lastName,
-              phone: phone,
-            ),
-          );
-          emit(AuthState.initial());
-        } on InvalidCredentialsError {
-          emit(AuthState.error(error: "Неккоректно введены данные"));
+          final result = await logoutUseCase.call();
+          if (result) {
+            emit(AuthState.success());
+          } else {
+            emit(AuthState.error(error: "Ошибка авторизации"));
+          }
         } on NetworkError {
           emit(AuthState.error(error: "Ошибка подключения к интернету"));
         } catch (_) {
           emit(AuthState.error(error: "Ошибка авторизации"));
         }
       },
+      signUp:
+          (
+            String login,
+            String password,
+            String firstName,
+            String lastName,
+          ) async {
+            emit(AuthState.loading());
+            try {
+              final result = await signUpUseCase.call(
+                login: login,
+                password: password,
+                firstName: firstName,
+                lastName: lastName,
+              );
+              if (result) {
+                emit(AuthState.initial());
+              } else {
+                emit(AuthState.error(error: "Ошибка авторизации"));
+              }
+            } on InvalidCredentialsError {
+              emit(AuthState.error(error: "Неккоректно введены данные"));
+            } on NetworkError {
+              emit(AuthState.error(error: "Ошибка подключения к интернету"));
+            } catch (_) {
+              emit(AuthState.error(error: "Ошибка авторизации"));
+            }
+          },
     );
   }
 }

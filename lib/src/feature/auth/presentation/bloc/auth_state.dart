@@ -6,7 +6,7 @@ class AuthState with _$AuthState {
 
   const factory AuthState.loading() = _AuthLoading;
 
-  const factory AuthState.success({required User user}) = _AuthSuccess;
+  const factory AuthState.success() = _AuthSuccess;
 
   const factory AuthState.error({required String error}) = _AuthError;
 }
