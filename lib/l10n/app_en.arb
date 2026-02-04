@@ -1,0 +1,8 @@
+{
+  "appName": "My App",
+  "loginTitle": "Login",
+  "loginHint": "Email",
+  "passwordHint": "Password",
+  "signInButton": "Sign In",
+  "forgotPassword": "Forgot password?"
+}

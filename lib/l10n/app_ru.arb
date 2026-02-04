@@ -1,0 +1,8 @@
+{
+  "appName": "Моё приложение",
+  "loginTitle": "Вход",
+  "loginHint": "Электронная почта",
+  "passwordHint": "Пароль",
+  "signInButton": "Войти",
+  "forgotPassword": "Забыли пароль?"
+}
