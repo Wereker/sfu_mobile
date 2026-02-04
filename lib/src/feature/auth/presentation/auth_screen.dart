@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sfu/l10n/app_localizations.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
     return GestureDetector(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
@@ -26,13 +29,13 @@ class AuthScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 50),
-                TextField(decoration: InputDecoration(hintText: "Логин")),
+                TextField(decoration: InputDecoration(hintText: t?.loginHint)),
                 TextField(
                   obscureText: true,
-                  decoration: InputDecoration(hintText: "Пароль"),
+                  decoration: InputDecoration(hintText: t?.passwordHint),
                 ),
-                ElevatedButton(onPressed: () {}, child: Text("Войти")),
-                OutlinedButton(onPressed: () {}, child: Text("Забыли пароль?")),
+                ElevatedButton(onPressed: () {}, child: Text(t!.signInButton)),
+                OutlinedButton(onPressed: () {}, child: Text(t!.forgotPassword)),
               ],
             ),
           ),
