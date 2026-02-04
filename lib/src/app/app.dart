@@ -11,7 +11,7 @@ class App extends StatelessWidget {
       title: "My App",
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       home: const AuthScreen(),
     );
   }

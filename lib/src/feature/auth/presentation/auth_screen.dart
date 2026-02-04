@@ -6,27 +6,36 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 45),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 24.0,
-          children: [
-            SvgPicture.asset(
-              'assets/images/logo.svg',
-              colorFilter: const ColorFilter.mode(Colors.green, BlendMode.srcIn),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 45, vertical: 100),
+            child: Column(
+              spacing: 24.0,
+              children: [
+                SvgPicture.asset(
+                  'assets/images/logo.svg',
+                  colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.primary,
+                    BlendMode.srcIn,
+                  ),
+                ),
+                const SizedBox(height: 50),
+                TextField(decoration: InputDecoration(hintText: "Логин")),
+                TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(hintText: "Пароль"),
+                ),
+                ElevatedButton(onPressed: () {}, child: Text("Войти")),
+                OutlinedButton(onPressed: () {}, child: Text("Забыли пароль?")),
+              ],
             ),
-            const SizedBox(height: 50),
-            TextField(decoration: InputDecoration(labelText: "Логин")),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(labelText: "Пароль"),
-            ),
-            ElevatedButton(onPressed: () {}, child: Text("Войти")),
-            OutlinedButton(onPressed: () {}, child: Text("Забыли пароль?")),
-          ],
+          ),
         ),
       ),
     );
