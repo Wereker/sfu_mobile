@@ -1,4 +1,4 @@
-import 'package:sfu/src/feature/auth/data/DTO/user_dto.dart';
+import 'package:sfu/src/core/data/DTO/user_dto.dart';
 
 abstract class AuthLocalDataSource {
   Future<void> cacheUser(UserDTO user);

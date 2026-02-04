@@ -1,4 +1,4 @@
-import 'package:sfu/src/feature/auth/data/DTO/user_dto.dart';
+import 'package:sfu/src/core/data/DTO/user_dto.dart';
 
 abstract class AuthRemoteDataSource {
   Future<UserDTO> signIn(String login, String password);

@@ -1,4 +1,4 @@
-import 'package:sfu/src/feature/auth/data/DTO/user_dto.dart';
+import 'package:sfu/src/core/data/DTO/user_dto.dart';
 import 'package:sfu/src/feature/auth/data/data_sources/remote/auth_remote_data_source.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
