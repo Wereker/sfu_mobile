@@ -15,14 +15,11 @@ class AppTheme {
     ),
 
     inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
 
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: primaryLight, width: 2.0),
       ),
-
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -43,6 +40,14 @@ class AppTheme {
         splashFactory: NoSplash.splashFactory,
       ),
     ),
+
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: const Color(0xFFFF9900),
+      contentTextStyle: const TextStyle(color: Colors.white, fontSize: 16),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),
+    ),
   );
 
   static final dark = ThemeData(
@@ -53,14 +58,11 @@ class AppTheme {
     ),
 
     inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(5),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
 
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: primaryDark, width: 2.0),
       ),
-
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -80,6 +82,14 @@ class AppTheme {
         foregroundColor: Color(0xFFFF9900),
         splashFactory: NoSplash.splashFactory,
       ),
+    ),
+
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: const Color(0xFFFF9900),
+      contentTextStyle: const TextStyle(color: Colors.white, fontSize: 16),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),
     ),
   );
 }
