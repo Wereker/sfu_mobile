@@ -1,0 +1,13 @@
+{
+  "appName": "My App",
+  "loginTitle": "Login",
+  "nameHint": "Name",
+  "surnameHint": "Surname",
+  "loginHint": "Login",
+  "passwordHint": "Password",
+  "passwordRepeatHint": "Repeat Password",
+  "signInButton": "Sign In",
+  "signUpButton": "Sign Up",
+  "resetPasswordButton": "Reset",
+  "forgotPassword": "Forgot password?"
+}
