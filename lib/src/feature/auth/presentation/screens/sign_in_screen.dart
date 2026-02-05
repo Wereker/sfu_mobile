@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sfu/l10n/app_localizations.dart';
+import 'package:sfu/src/core/localization/app_localizations.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -54,13 +54,13 @@ class SignInScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, '/signUp');
                   },
-                  child: Text(t!.signUpButton),
+                  child: Text(t.signUpButton),
                 ),
                 OutlinedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/resetPassword');
                   },
-                  child: Text(t!.forgotPassword),
+                  child: Text(t.forgotPassword),
                 ),
               ],
             ),

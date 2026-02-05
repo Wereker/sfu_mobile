@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/auth/presentation/screens/reset_password_screen.dart';
 import 'package:sfu/src/feature/auth/presentation/screens/sign_in_screen.dart';
-import 'package:sfu/l10n/app_localizations.dart';
+import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/feature/auth/presentation/screens/sign_up_screen.dart';
 import 'package:sfu/src/feature/home/presentation/home_screen.dart';
 
