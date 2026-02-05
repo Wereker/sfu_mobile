@@ -471,13 +471,14 @@ extension AuthStatePatterns on AuthState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthInitial value)?  initial,TResult Function( _AuthLoading value)?  loading,TResult Function( _AuthSuccess value)?  success,TResult Function( _AuthError value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthInitial value)?  initial,TResult Function( _AuthLoading value)?  loading,TResult Function( _AuthUnauthorized value)?  unauthorized,TResult Function( _AuthAuthorized value)?  authorized,TResult Function( _AuthError value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _AuthInitial() when initial != null:
 return initial(_that);case _AuthLoading() when loading != null:
-return loading(_that);case _AuthSuccess() when success != null:
-return success(_that);case _AuthError() when error != null:
+return loading(_that);case _AuthUnauthorized() when unauthorized != null:
+return unauthorized(_that);case _AuthAuthorized() when authorized != null:
+return authorized(_that);case _AuthError() when error != null:
 return error(_that);case _:
   return orElse();
 
@@ -496,13 +497,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthInitial value)  initial,required TResult Function( _AuthLoading value)  loading,required TResult Function( _AuthSuccess value)  success,required TResult Function( _AuthError value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthInitial value)  initial,required TResult Function( _AuthLoading value)  loading,required TResult Function( _AuthUnauthorized value)  unauthorized,required TResult Function( _AuthAuthorized value)  authorized,required TResult Function( _AuthError value)  error,}){
 final _that = this;
 switch (_that) {
 case _AuthInitial():
 return initial(_that);case _AuthLoading():
-return loading(_that);case _AuthSuccess():
-return success(_that);case _AuthError():
+return loading(_that);case _AuthUnauthorized():
+return unauthorized(_that);case _AuthAuthorized():
+return authorized(_that);case _AuthError():
 return error(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -520,13 +522,14 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthInitial value)?  initial,TResult? Function( _AuthLoading value)?  loading,TResult? Function( _AuthSuccess value)?  success,TResult? Function( _AuthError value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthInitial value)?  initial,TResult? Function( _AuthLoading value)?  loading,TResult? Function( _AuthUnauthorized value)?  unauthorized,TResult? Function( _AuthAuthorized value)?  authorized,TResult? Function( _AuthError value)?  error,}){
 final _that = this;
 switch (_that) {
 case _AuthInitial() when initial != null:
 return initial(_that);case _AuthLoading() when loading != null:
-return loading(_that);case _AuthSuccess() when success != null:
-return success(_that);case _AuthError() when error != null:
+return loading(_that);case _AuthUnauthorized() when unauthorized != null:
+return unauthorized(_that);case _AuthAuthorized() when authorized != null:
+return authorized(_that);case _AuthError() when error != null:
 return error(_that);case _:
   return null;
 
@@ -544,12 +547,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  success,TResult Function( String error)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  unauthorized,TResult Function()?  authorized,TResult Function( String error)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthInitial() when initial != null:
 return initial();case _AuthLoading() when loading != null:
-return loading();case _AuthSuccess() when success != null:
-return success();case _AuthError() when error != null:
+return loading();case _AuthUnauthorized() when unauthorized != null:
+return unauthorized();case _AuthAuthorized() when authorized != null:
+return authorized();case _AuthError() when error != null:
 return error(_that.error);case _:
   return orElse();
 
@@ -568,12 +572,13 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  success,required TResult Function( String error)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  unauthorized,required TResult Function()  authorized,required TResult Function( String error)  error,}) {final _that = this;
 switch (_that) {
 case _AuthInitial():
 return initial();case _AuthLoading():
-return loading();case _AuthSuccess():
-return success();case _AuthError():
+return loading();case _AuthUnauthorized():
+return unauthorized();case _AuthAuthorized():
+return authorized();case _AuthError():
 return error(_that.error);case _:
   throw StateError('Unexpected subclass');
 
@@ -591,12 +596,13 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  success,TResult? Function( String error)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  unauthorized,TResult? Function()?  authorized,TResult? Function( String error)?  error,}) {final _that = this;
 switch (_that) {
 case _AuthInitial() when initial != null:
 return initial();case _AuthLoading() when loading != null:
-return loading();case _AuthSuccess() when success != null:
-return success();case _AuthError() when error != null:
+return loading();case _AuthUnauthorized() when unauthorized != null:
+return unauthorized();case _AuthAuthorized() when authorized != null:
+return authorized();case _AuthError() when error != null:
 return error(_that.error);case _:
   return null;
 
@@ -672,8 +678,8 @@ String toString() {
 /// @nodoc
 
 
-class _AuthSuccess implements AuthState {
-  const _AuthSuccess();
+class _AuthUnauthorized implements AuthState {
+  const _AuthUnauthorized();
   
 
 
@@ -683,7 +689,7 @@ class _AuthSuccess implements AuthState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthSuccess);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthUnauthorized);
 }
 
 
@@ -692,7 +698,39 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AuthState.success()';
+  return 'AuthState.unauthorized()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _AuthAuthorized implements AuthState {
+  const _AuthAuthorized();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthAuthorized);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState.authorized()';
 }
 
 

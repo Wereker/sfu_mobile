@@ -35,7 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           final result = await signInUseCase.call(login, password);
           if (result) {
-            emit(AuthState.success());
+            emit(AuthState.authorized());
           } else {
             emit(AuthState.error(error: "Ошибка авторизации"));
           }
@@ -68,7 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           final result = await logoutUseCase.call();
           if (result) {
-            emit(AuthState.success());
+            emit(AuthState.authorized());
           } else {
             emit(AuthState.error(error: "Ошибка авторизации"));
           }
