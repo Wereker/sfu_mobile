@@ -9,13 +9,18 @@ class SignUpUseCaseImpl implements SignUpUseCase {
   @override
   Future<bool> call({
     required String login,
-    required String password,
+    required String password1,
+    required String password2,
     required String firstName,
     required String lastName
   }) async {
+    if (password1 != password2) {
+
+    }
+
     return await authRepo.singUp(
       login: login,
-      password: password,
+      password: password1,
       firstName: firstName,
       lastName: lastName,
     );

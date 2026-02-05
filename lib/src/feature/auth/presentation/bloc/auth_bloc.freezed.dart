@@ -128,12 +128,12 @@ return logout(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String login,  String password)?  signIn,TResult Function( String newPassword)?  resetPassword,TResult Function( String login,  String password,  String firstName,  String lastName)?  signUp,TResult Function()?  logout,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String login,  String password)?  signIn,TResult Function( String newPassword)?  resetPassword,TResult Function( String login,  String password1,  String password2,  String firstName,  String lastName)?  signUp,TResult Function()?  logout,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
 return signIn(_that.login,_that.password);case _AuthResetPassword() when resetPassword != null:
 return resetPassword(_that.newPassword);case _AuthSignUp() when signUp != null:
-return signUp(_that.login,_that.password,_that.firstName,_that.lastName);case _AuthLogout() when logout != null:
+return signUp(_that.login,_that.password1,_that.password2,_that.firstName,_that.lastName);case _AuthLogout() when logout != null:
 return logout();case _:
   return orElse();
 
@@ -152,12 +152,12 @@ return logout();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String login,  String password)  signIn,required TResult Function( String newPassword)  resetPassword,required TResult Function( String login,  String password,  String firstName,  String lastName)  signUp,required TResult Function()  logout,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String login,  String password)  signIn,required TResult Function( String newPassword)  resetPassword,required TResult Function( String login,  String password1,  String password2,  String firstName,  String lastName)  signUp,required TResult Function()  logout,}) {final _that = this;
 switch (_that) {
 case _AuthSignIn():
 return signIn(_that.login,_that.password);case _AuthResetPassword():
 return resetPassword(_that.newPassword);case _AuthSignUp():
-return signUp(_that.login,_that.password,_that.firstName,_that.lastName);case _AuthLogout():
+return signUp(_that.login,_that.password1,_that.password2,_that.firstName,_that.lastName);case _AuthLogout():
 return logout();case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +175,12 @@ return logout();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String login,  String password)?  signIn,TResult? Function( String newPassword)?  resetPassword,TResult? Function( String login,  String password,  String firstName,  String lastName)?  signUp,TResult? Function()?  logout,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String login,  String password)?  signIn,TResult? Function( String newPassword)?  resetPassword,TResult? Function( String login,  String password1,  String password2,  String firstName,  String lastName)?  signUp,TResult? Function()?  logout,}) {final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
 return signIn(_that.login,_that.password);case _AuthResetPassword() when resetPassword != null:
 return resetPassword(_that.newPassword);case _AuthSignUp() when signUp != null:
-return signUp(_that.login,_that.password,_that.firstName,_that.lastName);case _AuthLogout() when logout != null:
+return signUp(_that.login,_that.password1,_that.password2,_that.firstName,_that.lastName);case _AuthLogout() when logout != null:
 return logout();case _:
   return null;
 
@@ -327,11 +327,12 @@ as String,
 
 
 class _AuthSignUp implements AuthEvent {
-  const _AuthSignUp({required this.login, required this.password, required this.firstName, required this.lastName});
+  const _AuthSignUp({required this.login, required this.password1, required this.password2, required this.firstName, required this.lastName});
   
 
  final  String login;
- final  String password;
+ final  String password1;
+ final  String password2;
  final  String firstName;
  final  String lastName;
 
@@ -345,16 +346,16 @@ _$AuthSignUpCopyWith<_AuthSignUp> get copyWith => __$AuthSignUpCopyWithImpl<_Aut
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthSignUp&&(identical(other.login, login) || other.login == login)&&(identical(other.password, password) || other.password == password)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthSignUp&&(identical(other.login, login) || other.login == login)&&(identical(other.password1, password1) || other.password1 == password1)&&(identical(other.password2, password2) || other.password2 == password2)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,login,password,firstName,lastName);
+int get hashCode => Object.hash(runtimeType,login,password1,password2,firstName,lastName);
 
 @override
 String toString() {
-  return 'AuthEvent.signUp(login: $login, password: $password, firstName: $firstName, lastName: $lastName)';
+  return 'AuthEvent.signUp(login: $login, password1: $password1, password2: $password2, firstName: $firstName, lastName: $lastName)';
 }
 
 
@@ -365,7 +366,7 @@ abstract mixin class _$AuthSignUpCopyWith<$Res> implements $AuthEventCopyWith<$R
   factory _$AuthSignUpCopyWith(_AuthSignUp value, $Res Function(_AuthSignUp) _then) = __$AuthSignUpCopyWithImpl;
 @useResult
 $Res call({
- String login, String password, String firstName, String lastName
+ String login, String password1, String password2, String firstName, String lastName
 });
 
 
@@ -382,10 +383,11 @@ class __$AuthSignUpCopyWithImpl<$Res>
 
 /// Create a copy of AuthEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? login = null,Object? password = null,Object? firstName = null,Object? lastName = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? login = null,Object? password1 = null,Object? password2 = null,Object? firstName = null,Object? lastName = null,}) {
   return _then(_AuthSignUp(
 login: null == login ? _self.login : login // ignore: cast_nullable_to_non_nullable
-as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as String,password1: null == password1 ? _self.password1 : password1 // ignore: cast_nullable_to_non_nullable
+as String,password2: null == password2 ? _self.password2 : password2 // ignore: cast_nullable_to_non_nullable
 as String,firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String,lastName: null == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String,

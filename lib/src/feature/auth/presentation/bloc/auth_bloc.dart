@@ -33,12 +33,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthState.loading());
 
         try {
-          final result = await signInUseCase.call(login, password);
-          if (result) {
-            emit(AuthState.authorized());
-          } else {
-            emit(AuthState.error(error: "Ошибка авторизации"));
-          }
+          await signInUseCase.call(login, password);
+          emit(AuthState.authorized());
         } on InvalidCredentialsError {
           emit(AuthState.error(error: "Неверный логин или пароль"));
         } on NetworkError {
@@ -50,12 +46,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       resetPassword: (password) async {
         emit(AuthState.loading());
         try {
-          final result = await resetPasswordUseCase.call(password);
-          if (result) {
-            emit(AuthState.initial());
-          } else {
-            emit(AuthState.error(error: "Ошибка авторизации"));
-          }
+          await resetPasswordUseCase.call(password);
+          emit(AuthState.unauthorized());
         } on NetworkError {
           emit(AuthState.error(error: "Ошибка подключения к интернету"));
         } on PasswordMatchError {
@@ -66,12 +58,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
       logout: () async {
         try {
-          final result = await logoutUseCase.call();
-          if (result) {
-            emit(AuthState.authorized());
-          } else {
-            emit(AuthState.error(error: "Ошибка авторизации"));
-          }
+          await logoutUseCase.call();
+          emit(AuthState.unauthorized());
         } on NetworkError {
           emit(AuthState.error(error: "Ошибка подключения к интернету"));
         } catch (_) {
@@ -81,23 +69,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       signUp:
           (
             String login,
-            String password,
+            String password1,
+            String password2,
             String firstName,
             String lastName,
           ) async {
             emit(AuthState.loading());
             try {
-              final result = await signUpUseCase.call(
+              await signUpUseCase.call(
                 login: login,
-                password: password,
+                password1: password1,
+                password2: password2,
                 firstName: firstName,
                 lastName: lastName,
               );
-              if (result) {
-                emit(AuthState.initial());
-              } else {
-                emit(AuthState.error(error: "Ошибка авторизации"));
-              }
+              emit(AuthState.unauthorized());
             } on InvalidCredentialsError {
               emit(AuthState.error(error: "Неккоректно введены данные"));
             } on NetworkError {
