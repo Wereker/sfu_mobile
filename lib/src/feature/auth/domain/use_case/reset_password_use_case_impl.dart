@@ -4,7 +4,7 @@ import 'package:sfu/src/feature/auth/domain/use_case/reset_password_use_case.dar
 class ResetPasswordUseCaseImpl implements ResetPasswordUseCase {
   final AuthRepository authRepo;
 
-  const ResetPasswordUseCaseImpl({required this.authRepo});
+  const ResetPasswordUseCaseImpl(this.authRepo);
 
   @override
   Future<bool> call(String password) async {

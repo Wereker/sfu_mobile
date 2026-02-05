@@ -4,7 +4,7 @@ import 'package:sfu/src/feature/auth/domain/use_case/sign_up_use_case.dart';
 class SignUpUseCaseImpl implements SignUpUseCase {
   final AuthRepository authRepo;
 
-  const SignUpUseCaseImpl({required this.authRepo});
+  const SignUpUseCaseImpl(this.authRepo);
 
   @override
   Future<bool> call({

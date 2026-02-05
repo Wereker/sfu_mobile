@@ -29,19 +29,27 @@ void _initRepositories() {
 }
 
 void _initUseCases() {
-  sl.registerFactory<SignInUseCase>(() => SignInUseCaseImpl(authRepo: sl()));
-  sl.registerFactory<SignUpUseCase>(() => SignUpUseCaseImpl(authRepo: sl()));
-  sl.registerFactory<LogoutUseCase>(() => LogoutUseCaseImpl(authRepo: sl()));
-  sl.registerFactory<ResetPasswordUseCase>(() => ResetPasswordUseCaseImpl(authRepo: sl()));
+  sl.registerFactory<SignInUseCase>(
+    () => SignInUseCaseImpl(sl<AuthRepository>()),
+  );
+  sl.registerFactory<SignUpUseCase>(
+    () => SignUpUseCaseImpl(sl<AuthRepository>()),
+  );
+  sl.registerFactory<LogoutUseCase>(
+    () => LogoutUseCaseImpl(sl<AuthRepository>()),
+  );
+  sl.registerFactory<ResetPasswordUseCase>(
+    () => ResetPasswordUseCaseImpl(sl<AuthRepository>()),
+  );
 }
 
 void _initBloc() {
   sl.registerFactory<AuthBloc>(
-        () => AuthBloc(
-      signUpUseCase: sl(),
-      resetPasswordUseCase: sl(),
-      logoutUseCase: sl(),
-      signInUseCase: sl(),
+    () => AuthBloc(
+      signUpUseCase: sl<SignUpUseCase>(),
+      resetPasswordUseCase: sl<ResetPasswordUseCase>(),
+      logoutUseCase: sl<LogoutUseCase>(),
+      signInUseCase: sl<SignInUseCase>(),
     ),
   );
 }

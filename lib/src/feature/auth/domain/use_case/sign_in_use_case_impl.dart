@@ -4,7 +4,7 @@ import 'package:sfu/src/feature/auth/domain/use_case/sign_in_use_case.dart';
 class SignInUseCaseImpl implements SignInUseCase {
   final AuthRepository authRepo;
 
-  const SignInUseCaseImpl({required this.authRepo});
+  const SignInUseCaseImpl(this.authRepo);
 
   @override
   Future<bool> call(String login, String password) async {
