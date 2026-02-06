@@ -4,18 +4,33 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/feature/auth/presentation/bloc/auth_bloc.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  late final nameController = TextEditingController();
+  late final surnameController = TextEditingController();
+  late final loginController = TextEditingController();
+  late final passwordController = TextEditingController();
+  late final password2Controller = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    surnameController.dispose();
+    loginController.dispose();
+    passwordController.dispose();
+    password2Controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-
-    final nameController = TextEditingController();
-    final surnameController = TextEditingController();
-    final loginController = TextEditingController();
-    final passwordController = TextEditingController();
-    final password2Controller = TextEditingController();
 
     return GestureDetector(
       onTap: () {

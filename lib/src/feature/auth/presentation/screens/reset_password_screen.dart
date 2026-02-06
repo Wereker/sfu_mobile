@@ -4,15 +4,27 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/feature/auth/presentation/bloc/auth_bloc.dart';
 
-class ResetPasswordScreen extends StatelessWidget {
+class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
+
+  @override
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+}
+
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  late final passwordController = TextEditingController();
+  late final password2Controller = TextEditingController();
+
+  @override
+  void dispose() {
+    passwordController.dispose();
+    password2Controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-
-    final passwordController = TextEditingController();
-    final password2Controller = TextEditingController();
 
     return GestureDetector(
       onTap: () {
