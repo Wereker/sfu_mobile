@@ -9,7 +9,7 @@ class SignInUseCaseImpl implements SignInUseCase {
 
   @override
   Future<bool> call(String login, String password) async {
-    if (login == "" || password == "") {
+    if (login.trim().isEmpty || password.trim().isEmpty) {
       throw InvalidCredentialsError();
     }
     return await authRepo.signIn(login, password);
