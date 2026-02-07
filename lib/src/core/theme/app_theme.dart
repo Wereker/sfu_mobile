@@ -42,11 +42,29 @@ class AppTheme {
     ),
 
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: const Color(0xFFFF9900),
+      backgroundColor: primaryLight,
       contentTextStyle: const TextStyle(color: Colors.white, fontSize: 16),
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       insetPadding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),
+    ),
+
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      indicatorColor: Colors.transparent,
+      labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const TextStyle(color: primaryLight, fontSize: 12);
+        }
+        return const TextStyle(color: Colors.black, fontSize: 12);
+      }),
+      iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const IconThemeData(color: primaryLight, size: 24);
+        }
+        return const IconThemeData(color: Colors.black, size: 24);
+      }),
     ),
   );
 
@@ -90,6 +108,24 @@ class AppTheme {
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       insetPadding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),
+    ),
+
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      indicatorColor: Colors.transparent,
+      labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const TextStyle(color: primaryLight, fontSize: 12);
+        }
+        return const TextStyle(color: Colors.white, fontSize: 12);
+      }),
+      iconTheme: WidgetStateProperty.resolveWith<IconThemeData>((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const IconThemeData(color: primaryLight, size: 24);
+        }
+        return const IconThemeData(color: Colors.white, size: 24);
+      }),
     ),
   );
 }
