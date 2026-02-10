@@ -7,6 +7,7 @@ import 'package:sfu/src/feature/auth/presentation/screens/reset_password_screen.
 import 'package:sfu/src/feature/auth/presentation/screens/sign_in_screen.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/feature/auth/presentation/screens/sign_up_screen.dart';
+import 'package:sfu/src/feature/profile/presentation/screens/profile_screen.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -19,6 +20,7 @@ class App extends StatelessWidget {
       '/signUp': (context) => const SignUpScreen(),
       '/resetPassword': (context) => const ResetPasswordScreen(),
       '/home': (context) => const HomeScreen(),
+      '/profile': (context) => const ProfileScreen(),
     };
 
     return MaterialApp(

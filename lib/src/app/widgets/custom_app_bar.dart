@@ -10,8 +10,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       margin: EdgeInsets.symmetric(horizontal: 12),
       child: AppBar(
         centerTitle: true,
-        leading: CircleAvatar(
-          radius: 34,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, '/profile');
+          },
+          child: CircleAvatar(
+            radius: 34,
+          ),
         ),
         title: SvgPicture.asset(
           'assets/images/logo_app_bar.svg',
