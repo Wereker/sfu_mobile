@@ -36,4 +36,10 @@ class AuthRepositoryImpl implements AuthRepository {
     // TODO: implement singUp
     throw UnimplementedError();
   }
+
+  @override
+  Future<bool> checkAuthStatus() {
+    // TODO: implement checkAuthStatus
+    throw UnimplementedError();
+  }
 }

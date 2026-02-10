@@ -8,4 +8,5 @@ abstract class AuthRepository {
   });
   Future<bool> resetPassword(String password);
   Future<bool> logout();
+  Future<bool> checkAuthStatus();
 }

@@ -10,7 +10,7 @@ void main() async {
 
   runApp(
     BlocProvider<AuthBloc>(
-      create: (context) => di.sl<AuthBloc>(),
+      create: (context) => di.sl<AuthBloc>()..add(AuthEvent.checkAuthStatus()),
       child: const App(),
     ),
   );

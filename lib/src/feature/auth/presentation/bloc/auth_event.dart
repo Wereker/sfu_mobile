@@ -20,4 +20,6 @@ class AuthEvent with _$AuthEvent {
   }) = _AuthSignUp;
 
   const factory AuthEvent.logout() = _AuthLogout;
+
+  const factory AuthEvent.checkAuthStatus() = _AuthCheckAuthStatus;
 }

@@ -37,4 +37,10 @@ class AuthRepositoryMock implements AuthRepository {
     await Future.delayed(Duration(seconds: 1));
     return true;
   }
+
+  @override
+  Future<bool> checkAuthStatus() async {
+    await Future.delayed(Duration(seconds: 1));
+    return true;
+  }
 }

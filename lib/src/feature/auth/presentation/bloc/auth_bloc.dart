@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sfu/src/feature/auth/domain/exception/invalid_credentials_error.dart';
 import 'package:sfu/src/feature/auth/domain/exception/network_error.dart';
 import 'package:sfu/src/feature/auth/domain/exception/password_error.dart';
+import 'package:sfu/src/feature/auth/domain/use_case/check_auth_status_use_case.dart';
 import 'package:sfu/src/feature/auth/domain/use_case/logout_use_case.dart';
 import 'package:sfu/src/feature/auth/domain/use_case/reset_password_use_case.dart';
 import 'package:sfu/src/feature/auth/domain/use_case/sign_in_use_case.dart';
@@ -17,12 +18,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignUpUseCase signUpUseCase;
   final ResetPasswordUseCase resetPasswordUseCase;
   final LogoutUseCase logoutUseCase;
+  final CheckAuthStatusUseCase checkAuthStatusUseCase;
 
   AuthBloc({
     required this.signUpUseCase,
     required this.resetPasswordUseCase,
     required this.logoutUseCase,
     required this.signInUseCase,
+    required this.checkAuthStatusUseCase,
   }) : super(AuthState.initial()) {
     on<AuthEvent>(_onEvent);
   }
@@ -92,6 +95,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(AuthState.error(error: "Ошибка авторизации"));
             }
           },
+      checkAuthStatus: () async {
+        emit(AuthState.loading());
+
+        try {
+          await checkAuthStatusUseCase.call();
+          // emit(AuthState.authorized());
+          emit(AuthState.unauthorized());
+        } catch (_) {
+          emit(AuthState.unauthorized());
+        }
+      },
     );
   }
 }

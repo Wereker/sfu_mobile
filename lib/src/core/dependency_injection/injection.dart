@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:sfu/src/feature/auth/data/repository/auth_repository_mock.dart';
 import 'package:sfu/src/feature/auth/domain/repository/auth_repository.dart';
+import 'package:sfu/src/feature/auth/domain/use_case/check_auth_status_use_case.dart';
+import 'package:sfu/src/feature/auth/domain/use_case/check_auth_status_use_case_impl.dart';
 import 'package:sfu/src/feature/auth/domain/use_case/logout_use_case.dart';
 import 'package:sfu/src/feature/auth/domain/use_case/logout_use_case_impl.dart';
 import 'package:sfu/src/feature/auth/domain/use_case/reset_password_use_case.dart';
@@ -41,6 +43,9 @@ void _initUseCases() {
   sl.registerFactory<ResetPasswordUseCase>(
     () => ResetPasswordUseCaseImpl(sl<AuthRepository>()),
   );
+  sl.registerFactory<CheckAuthStatusUseCase>(
+    () => CheckAuthStatusUseCaseImpl(sl<AuthRepository>()),
+  );
 }
 
 void _initBloc() {
@@ -50,6 +55,7 @@ void _initBloc() {
       resetPasswordUseCase: sl<ResetPasswordUseCase>(),
       logoutUseCase: sl<LogoutUseCase>(),
       signInUseCase: sl<SignInUseCase>(),
+      checkAuthStatusUseCase: sl<CheckAuthStatusUseCase>(),
     ),
   );
 }

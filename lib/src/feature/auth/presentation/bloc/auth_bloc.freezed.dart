@@ -55,14 +55,15 @@ extension AuthEventPatterns on AuthEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthSignIn value)?  signIn,TResult Function( _AuthResetPassword value)?  resetPassword,TResult Function( _AuthSignUp value)?  signUp,TResult Function( _AuthLogout value)?  logout,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthSignIn value)?  signIn,TResult Function( _AuthResetPassword value)?  resetPassword,TResult Function( _AuthSignUp value)?  signUp,TResult Function( _AuthLogout value)?  logout,TResult Function( _AuthCheckAuthStatus value)?  checkAuthStatus,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
 return signIn(_that);case _AuthResetPassword() when resetPassword != null:
 return resetPassword(_that);case _AuthSignUp() when signUp != null:
 return signUp(_that);case _AuthLogout() when logout != null:
-return logout(_that);case _:
+return logout(_that);case _AuthCheckAuthStatus() when checkAuthStatus != null:
+return checkAuthStatus(_that);case _:
   return orElse();
 
 }
@@ -80,14 +81,15 @@ return logout(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthSignIn value)  signIn,required TResult Function( _AuthResetPassword value)  resetPassword,required TResult Function( _AuthSignUp value)  signUp,required TResult Function( _AuthLogout value)  logout,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthSignIn value)  signIn,required TResult Function( _AuthResetPassword value)  resetPassword,required TResult Function( _AuthSignUp value)  signUp,required TResult Function( _AuthLogout value)  logout,required TResult Function( _AuthCheckAuthStatus value)  checkAuthStatus,}){
 final _that = this;
 switch (_that) {
 case _AuthSignIn():
 return signIn(_that);case _AuthResetPassword():
 return resetPassword(_that);case _AuthSignUp():
 return signUp(_that);case _AuthLogout():
-return logout(_that);case _:
+return logout(_that);case _AuthCheckAuthStatus():
+return checkAuthStatus(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -104,14 +106,15 @@ return logout(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthSignIn value)?  signIn,TResult? Function( _AuthResetPassword value)?  resetPassword,TResult? Function( _AuthSignUp value)?  signUp,TResult? Function( _AuthLogout value)?  logout,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthSignIn value)?  signIn,TResult? Function( _AuthResetPassword value)?  resetPassword,TResult? Function( _AuthSignUp value)?  signUp,TResult? Function( _AuthLogout value)?  logout,TResult? Function( _AuthCheckAuthStatus value)?  checkAuthStatus,}){
 final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
 return signIn(_that);case _AuthResetPassword() when resetPassword != null:
 return resetPassword(_that);case _AuthSignUp() when signUp != null:
 return signUp(_that);case _AuthLogout() when logout != null:
-return logout(_that);case _:
+return logout(_that);case _AuthCheckAuthStatus() when checkAuthStatus != null:
+return checkAuthStatus(_that);case _:
   return null;
 
 }
@@ -128,13 +131,14 @@ return logout(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String login,  String password)?  signIn,TResult Function( String newPassword)?  resetPassword,TResult Function( String login,  String password1,  String password2,  String firstName,  String lastName)?  signUp,TResult Function()?  logout,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String login,  String password)?  signIn,TResult Function( String newPassword)?  resetPassword,TResult Function( String login,  String password1,  String password2,  String firstName,  String lastName)?  signUp,TResult Function()?  logout,TResult Function()?  checkAuthStatus,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
 return signIn(_that.login,_that.password);case _AuthResetPassword() when resetPassword != null:
 return resetPassword(_that.newPassword);case _AuthSignUp() when signUp != null:
 return signUp(_that.login,_that.password1,_that.password2,_that.firstName,_that.lastName);case _AuthLogout() when logout != null:
-return logout();case _:
+return logout();case _AuthCheckAuthStatus() when checkAuthStatus != null:
+return checkAuthStatus();case _:
   return orElse();
 
 }
@@ -152,13 +156,14 @@ return logout();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String login,  String password)  signIn,required TResult Function( String newPassword)  resetPassword,required TResult Function( String login,  String password1,  String password2,  String firstName,  String lastName)  signUp,required TResult Function()  logout,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String login,  String password)  signIn,required TResult Function( String newPassword)  resetPassword,required TResult Function( String login,  String password1,  String password2,  String firstName,  String lastName)  signUp,required TResult Function()  logout,required TResult Function()  checkAuthStatus,}) {final _that = this;
 switch (_that) {
 case _AuthSignIn():
 return signIn(_that.login,_that.password);case _AuthResetPassword():
 return resetPassword(_that.newPassword);case _AuthSignUp():
 return signUp(_that.login,_that.password1,_that.password2,_that.firstName,_that.lastName);case _AuthLogout():
-return logout();case _:
+return logout();case _AuthCheckAuthStatus():
+return checkAuthStatus();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -175,13 +180,14 @@ return logout();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String login,  String password)?  signIn,TResult? Function( String newPassword)?  resetPassword,TResult? Function( String login,  String password1,  String password2,  String firstName,  String lastName)?  signUp,TResult? Function()?  logout,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String login,  String password)?  signIn,TResult? Function( String newPassword)?  resetPassword,TResult? Function( String login,  String password1,  String password2,  String firstName,  String lastName)?  signUp,TResult? Function()?  logout,TResult? Function()?  checkAuthStatus,}) {final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
 return signIn(_that.login,_that.password);case _AuthResetPassword() when resetPassword != null:
 return resetPassword(_that.newPassword);case _AuthSignUp() when signUp != null:
 return signUp(_that.login,_that.password1,_that.password2,_that.firstName,_that.lastName);case _AuthLogout() when logout != null:
-return logout();case _:
+return logout();case _AuthCheckAuthStatus() when checkAuthStatus != null:
+return checkAuthStatus();case _:
   return null;
 
 }
@@ -421,6 +427,38 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'AuthEvent.logout()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _AuthCheckAuthStatus implements AuthEvent {
+  const _AuthCheckAuthStatus();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthCheckAuthStatus);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthEvent.checkAuthStatus()';
 }
 
 

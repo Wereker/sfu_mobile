@@ -33,9 +33,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       child: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           state.maybeWhen(
-            authorized: () => Navigator.pushReplacementNamed(context, '/home'),
-            unauthorized: () =>
-                Navigator.pushReplacementNamed(context, '/signIn'),
+            unauthorized: () => Navigator.pop(context),
             error: (message) => {
               ScaffoldMessenger.of(
                 context,
