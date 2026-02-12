@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/screens/home_screen.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
-import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 import 'package:sfu/src/core/auth/presentation/screens/reset_password_screen.dart';
 import 'package:sfu/src/core/auth/presentation/screens/sign_in_screen.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
@@ -31,22 +29,7 @@ class App extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       routes: routes,
-      home: BlocListener<AuthBloc, AuthState>(
-        listener: (BuildContext context, AuthState state) {
-          state.maybeWhen(
-            authorized: () => Navigator.pushReplacementNamed(context, '/home'),
-            unauthorized: () =>
-                Navigator.pushReplacementNamed(context, '/signIn'),
-            error: (message) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(message)));
-            },
-            orElse: () => {},
-          );
-        },
-        child: const HomeScreen(),
-      ),
+      home: const HomeScreen(),
     );
   }
 }

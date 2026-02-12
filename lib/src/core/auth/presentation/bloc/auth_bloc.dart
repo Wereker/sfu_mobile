@@ -61,6 +61,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       },
       logout: () async {
         try {
+          emit(AuthState.loading());
           await logoutUseCase.call();
           emit(AuthState.unauthorized());
         } on NetworkError {
