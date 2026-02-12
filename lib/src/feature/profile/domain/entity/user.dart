@@ -15,6 +15,9 @@ abstract class User with _$User {
     String? sex,
     required String phone,
     required String role,
+    required String institute,
+    required String group,
+    required String recordBookNumber,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
