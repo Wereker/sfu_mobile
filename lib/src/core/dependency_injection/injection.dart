@@ -12,6 +12,11 @@ import 'package:sfu/src/core/auth/domain/use_case/sign_in_use_case_impl.dart';
 import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case_impl.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/feature/profile/data/repository/profile_repositroy_mock.dart';
+import 'package:sfu/src/feature/profile/domain/repository/profile_repository.dart';
+import 'package:sfu/src/feature/profile/domain/use_case/load_data_use_case.dart';
+import 'package:sfu/src/feature/profile/domain/use_case/load_data_use_case_impl.dart';
+import 'package:sfu/src/feature/profile/presentation/bloc/profile_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -28,6 +33,7 @@ Future<void> init() async {
 
 void _initRepositories() {
   sl.registerSingleton<AuthRepository>(AuthRepositoryMock());
+  sl.registerSingleton<ProfileRepository>(ProfileRepositroyMock());
 }
 
 void _initUseCases() {
@@ -46,6 +52,10 @@ void _initUseCases() {
   sl.registerFactory<CheckAuthStatusUseCase>(
     () => CheckAuthStatusUseCaseImpl(sl<AuthRepository>()),
   );
+
+  sl.registerFactory<LoadDataUseCase>(
+    () => LoadDataUseCaseImpl(sl<ProfileRepository>()),
+  );
 }
 
 void _initBloc() {
@@ -58,4 +68,5 @@ void _initBloc() {
       checkAuthStatusUseCase: sl<CheckAuthStatusUseCase>(),
     ),
   );
+  sl.registerFactory<ProfileBloc>(() => ProfileBloc(sl<LoadDataUseCase>()));
 }

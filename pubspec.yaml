@@ -43,3 +43,6 @@ flutter:
     - assets/images/logo.svg
     - assets/images/logo_app_bar.svg
     - assets/images/QR.svg
+    - assets/images/event-schedule.svg
+    - assets/images/list.svg
+    - assets/images/recordBook.svg

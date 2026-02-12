@@ -6,18 +6,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentRoute = ModalRoute.of(context)?.settings.name;
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 12),
       child: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
-        leading: InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, '/profile');
-          },
-          child: CircleAvatar(
-            radius: 34,
-          ),
-        ),
+        leading: currentRoute != '/profile'
+            ? InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, '/profile');
+                },
+                child: CircleAvatar(radius: 34),
+              )
+            : null,
         title: SvgPicture.asset(
           'assets/images/logo_app_bar.svg',
           colorFilter: ColorFilter.mode(

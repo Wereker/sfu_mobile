@@ -66,6 +66,10 @@ class AppTheme {
         return const IconThemeData(color: Colors.black, size: 24);
       }),
     ),
+
+    iconTheme: IconThemeData(
+      color: primaryLight,
+    ),
   );
 
   static final dark = ThemeData(
@@ -126,6 +130,10 @@ class AppTheme {
         }
         return const IconThemeData(color: Colors.white, size: 24);
       }),
+    ),
+
+    iconTheme: IconThemeData(
+      color: primaryDark,
     ),
   );
 }
