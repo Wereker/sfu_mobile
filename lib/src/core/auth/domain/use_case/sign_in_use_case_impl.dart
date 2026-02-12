@@ -1,6 +1,6 @@
-import 'package:sfu/src/feature/auth/domain/exception/invalid_credentials_error.dart';
-import 'package:sfu/src/feature/auth/domain/repository/auth_repository.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/sign_in_use_case.dart';
+import 'package:sfu/src/core/auth/domain/exception/invalid_credentials_error.dart';
+import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
+import 'package:sfu/src/core/auth/domain/use_case/sign_in_use_case.dart';
 
 class SignInUseCaseImpl implements SignInUseCase {
   final AuthRepository authRepo;

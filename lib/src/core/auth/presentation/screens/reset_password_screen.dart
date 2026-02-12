@@ -2,27 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
-import 'package:sfu/src/feature/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  late final nameController = TextEditingController();
-  late final surnameController = TextEditingController();
-  late final loginController = TextEditingController();
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   late final passwordController = TextEditingController();
   late final password2Controller = TextEditingController();
 
   @override
   void dispose() {
-    nameController.dispose();
-    surnameController.dispose();
-    loginController.dispose();
     passwordController.dispose();
     password2Controller.dispose();
     super.dispose();
@@ -65,21 +59,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 50),
                     TextField(
-                      controller: nameController,
-                      decoration: InputDecoration(hintText: t?.nameHint),
-                    ),
-                    const SizedBox(height: 24),
-                    TextField(
-                      controller: surnameController,
-                      decoration: InputDecoration(hintText: t?.surnameHint),
-                    ),
-                    const SizedBox(height: 24),
-                    TextField(
-                      controller: loginController,
-                      decoration: InputDecoration(hintText: t?.loginHint),
-                    ),
-                    const SizedBox(height: 24),
-                    TextField(
                       controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(hintText: t?.passwordHint),
@@ -96,18 +75,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ElevatedButton(
                       onPressed: () {
                         context.read<AuthBloc>().add(
-                          AuthEvent.signUp(
-                            login: loginController.text,
-                            password1: passwordController.text,
-                            password2: password2Controller.text,
-                            firstName: nameController.text,
-                            lastName: surnameController.text,
+                          AuthEvent.resetPassword(
+                            newPassword: passwordController.text,
                           ),
                         );
                       },
                       child: state.maybeWhen(
                         loading: () => CircularProgressIndicator(),
-                        orElse: () => Text(t!.signUpButton),
+                        orElse: () => Text(t!.resetPasswordButton),
                       ),
                     ),
                   ],

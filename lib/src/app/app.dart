@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/screens/home_screen.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
-import 'package:sfu/src/feature/auth/presentation/bloc/auth_bloc.dart';
-import 'package:sfu/src/feature/auth/presentation/screens/reset_password_screen.dart';
-import 'package:sfu/src/feature/auth/presentation/screens/sign_in_screen.dart';
+import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/auth/presentation/screens/reset_password_screen.dart';
+import 'package:sfu/src/core/auth/presentation/screens/sign_in_screen.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
-import 'package:sfu/src/feature/auth/presentation/screens/sign_up_screen.dart';
+import 'package:sfu/src/core/auth/presentation/screens/sign_up_screen.dart';
 import 'package:sfu/src/feature/profile/presentation/screens/profile_screen.dart';
 
 class App extends StatelessWidget {

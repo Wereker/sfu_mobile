@@ -1,5 +1,5 @@
-import 'package:sfu/src/feature/auth/data/DTO/token_dto.dart';
-import 'package:sfu/src/feature/auth/data/data_sources/remote/auth_remote_data_source.dart';
+import 'package:sfu/src/core/auth/data/DTO/token_dto.dart';
+import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override

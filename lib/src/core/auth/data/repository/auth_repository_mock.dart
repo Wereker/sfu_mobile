@@ -1,5 +1,5 @@
-import 'package:sfu/src/feature/auth/domain/entity/token.dart';
-import 'package:sfu/src/feature/auth/domain/repository/auth_repository.dart';
+import 'package:sfu/src/core/auth/domain/entity/token.dart';
+import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 
 class AuthRepositoryMock implements AuthRepository {
   @override

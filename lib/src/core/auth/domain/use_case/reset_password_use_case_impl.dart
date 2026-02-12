@@ -1,5 +1,5 @@
-import 'package:sfu/src/feature/auth/domain/repository/auth_repository.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/reset_password_use_case.dart';
+import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
+import 'package:sfu/src/core/auth/domain/use_case/reset_password_use_case.dart';
 
 class ResetPasswordUseCaseImpl implements ResetPasswordUseCase {
   final AuthRepository authRepo;

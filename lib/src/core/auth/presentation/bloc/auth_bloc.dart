@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sfu/src/feature/auth/domain/exception/invalid_credentials_error.dart';
-import 'package:sfu/src/feature/auth/domain/exception/network_error.dart';
-import 'package:sfu/src/feature/auth/domain/exception/password_error.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/check_auth_status_use_case.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/logout_use_case.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/reset_password_use_case.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/sign_in_use_case.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/sign_up_use_case.dart';
+import 'package:sfu/src/core/auth/domain/exception/invalid_credentials_error.dart';
+import 'package:sfu/src/core/auth/domain/exception/network_error.dart';
+import 'package:sfu/src/core/auth/domain/exception/password_error.dart';
+import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case.dart';
+import 'package:sfu/src/core/auth/domain/use_case/logout_use_case.dart';
+import 'package:sfu/src/core/auth/domain/use_case/reset_password_use_case.dart';
+import 'package:sfu/src/core/auth/domain/use_case/sign_in_use_case.dart';
+import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

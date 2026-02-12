@@ -1,5 +1,5 @@
-import 'package:sfu/src/feature/auth/domain/repository/auth_repository.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/sign_up_use_case.dart';
+import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
+import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case.dart';
 
 class SignUpUseCaseImpl implements SignUpUseCase {
   final AuthRepository authRepo;

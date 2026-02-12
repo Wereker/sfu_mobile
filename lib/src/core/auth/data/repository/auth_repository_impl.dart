@@ -1,6 +1,6 @@
-import 'package:sfu/src/feature/auth/data/data_sources/local/auth_local_data_source.dart';
-import 'package:sfu/src/feature/auth/data/data_sources/remote/auth_remote_data_source.dart';
-import 'package:sfu/src/feature/auth/domain/repository/auth_repository.dart';
+import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
+import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
+import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remote;

@@ -1,17 +1,17 @@
 import 'package:get_it/get_it.dart';
-import 'package:sfu/src/feature/auth/data/repository/auth_repository_mock.dart';
-import 'package:sfu/src/feature/auth/domain/repository/auth_repository.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/check_auth_status_use_case.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/check_auth_status_use_case_impl.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/logout_use_case.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/logout_use_case_impl.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/reset_password_use_case.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/reset_password_use_case_impl.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/sign_in_use_case.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/sign_in_use_case_impl.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/sign_up_use_case.dart';
-import 'package:sfu/src/feature/auth/domain/use_case/sign_up_use_case_impl.dart';
-import 'package:sfu/src/feature/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/auth/data/repository/auth_repository_mock.dart';
+import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
+import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case.dart';
+import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case_impl.dart';
+import 'package:sfu/src/core/auth/domain/use_case/logout_use_case.dart';
+import 'package:sfu/src/core/auth/domain/use_case/logout_use_case_impl.dart';
+import 'package:sfu/src/core/auth/domain/use_case/reset_password_use_case.dart';
+import 'package:sfu/src/core/auth/domain/use_case/reset_password_use_case_impl.dart';
+import 'package:sfu/src/core/auth/domain/use_case/sign_in_use_case.dart';
+import 'package:sfu/src/core/auth/domain/use_case/sign_in_use_case_impl.dart';
+import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case.dart';
+import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case_impl.dart';
+import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 
 final sl = GetIt.instance;
 

@@ -1,4 +1,4 @@
-import 'package:sfu/src/feature/auth/data/data_sources/local/auth_local_data_source.dart';
+import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
