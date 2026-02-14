@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sfu/src/core/utils/qr_scanner.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -30,11 +31,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         actions: currentRoute != '/settings'
             ? [
-                SvgPicture.asset(
-                  'assets/images/QR.svg',
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).colorScheme.primary,
-                    BlendMode.srcIn,
+                InkWell(
+                  onTap: () async {
+                    final result = await QRScannerUtils.scan(context: context);
+                  },
+                  child: SvgPicture.asset(
+                    'assets/images/QR.svg',
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.primary,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
               ]
