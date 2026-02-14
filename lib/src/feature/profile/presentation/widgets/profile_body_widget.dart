@@ -44,6 +44,7 @@ class ProfileBodyWidget extends StatelessWidget {
                   ),
                 ),
                 title: Text('Зачетная книжка'),
+                onTap: () { },
               ),
             ),
             const SizedBox(height: 10),
@@ -57,6 +58,7 @@ class ProfileBodyWidget extends StatelessWidget {
                   ),
                 ),
                 title: Text('Список приказов'),
+                onTap: () { },
               ),
             ),
             const SizedBox(height: 10),
@@ -70,6 +72,7 @@ class ProfileBodyWidget extends StatelessWidget {
                   ),
                 ),
                 title: Text('Учебный план'),
+                onTap: () { },
               ),
             ),
             const SizedBox(height: 10),
@@ -80,6 +83,9 @@ class ProfileBodyWidget extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 title: Text('Настройки'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/settings');
+                },
               ),
             ),
           ],

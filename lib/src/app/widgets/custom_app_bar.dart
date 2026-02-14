@@ -13,7 +13,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        leading: currentRoute != '/profile'
+        leading: currentRoute != '/profile' && currentRoute != '/settings'
             ? InkWell(
                 onTap: () {
                   Navigator.pushNamed(context, '/profile');
@@ -28,15 +28,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             BlendMode.srcIn,
           ),
         ),
-        actions: [
-          SvgPicture.asset(
-            'assets/images/QR.svg',
-            colorFilter: ColorFilter.mode(
-              Theme.of(context).colorScheme.primary,
-              BlendMode.srcIn,
-            ),
-          ),
-        ],
+        actions: currentRoute != '/settings'
+            ? [
+                SvgPicture.asset(
+                  'assets/images/QR.svg',
+                  colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.primary,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ]
+            : null,
       ),
     );
   }

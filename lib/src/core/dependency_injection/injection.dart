@@ -17,10 +17,24 @@ import 'package:sfu/src/feature/profile/domain/repository/profile_repository.dar
 import 'package:sfu/src/feature/profile/domain/use_case/load_data_use_case.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/load_data_use_case_impl.dart';
 import 'package:sfu/src/feature/profile/presentation/bloc/profile_bloc.dart';
+import 'package:sfu/src/core/settings/data/data_source/local/settings_local_data_source.dart';
+import 'package:sfu/src/core/settings/data/data_source/local/settings_local_data_source_impl.dart';
+import 'package:sfu/src/core/settings/data/repository/settings_repository_impl.dart';
+import 'package:sfu/src/core/settings/domain/repository/settings_repository.dart';
+import 'package:sfu/src/core/settings/domain/use_case/get_app_settings_use_case.dart';
+import 'package:sfu/src/core/settings/domain/use_case/get_app_settings_use_case_impl.dart';
+import 'package:sfu/src/core/settings/domain/use_case/update_app_localization_use_case.dart';
+import 'package:sfu/src/core/settings/domain/use_case/update_app_localization_use_case_impl.dart';
+import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case.dart';
+import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case_impl.dart';
+import 'package:sfu/src/core/settings/presentation/bloc/settings_bloc.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  //Data Sources
+  _initDataSources();
+
   // Repositories
   _initRepositories();
 
@@ -31,9 +45,16 @@ Future<void> init() async {
   _initBloc();
 }
 
+void _initDataSources() {
+  sl.registerSingleton<SettingsLocalDataSource>(SettingsLocalDataSourceImpl());
+}
+
 void _initRepositories() {
   sl.registerSingleton<AuthRepository>(AuthRepositoryMock());
   sl.registerSingleton<ProfileRepository>(ProfileRepositroyMock());
+  sl.registerSingleton<SettingsRepository>(
+    SettingsRepositoryImpl(sl<SettingsLocalDataSource>()),
+  );
 }
 
 void _initUseCases() {
@@ -56,6 +77,16 @@ void _initUseCases() {
   sl.registerFactory<LoadDataUseCase>(
     () => LoadDataUseCaseImpl(sl<ProfileRepository>()),
   );
+
+  sl.registerFactory<GetAppSettingsUseCase>(
+    () => GetAppSettingsUseCaseImpl(sl<SettingsRepository>()),
+  );
+  sl.registerFactory<UpdateAppLocalizationUseCase>(
+    () => UpdateAppLocalizationUseCaseImpl(sl<SettingsRepository>()),
+  );
+  sl.registerFactory<UpdateAppThemeModeUseCase>(
+    () => UpdateAppThemeModeUseCaseImpl(sl<SettingsRepository>()),
+  );
 }
 
 void _initBloc() {
@@ -69,4 +100,11 @@ void _initBloc() {
     ),
   );
   sl.registerFactory<ProfileBloc>(() => ProfileBloc(sl<LoadDataUseCase>()));
+  sl.registerFactory<SettingsBloc>(
+    () => SettingsBloc(
+      updateAppThemeModeUseCase: sl<UpdateAppThemeModeUseCase>(),
+      updateAppLocalizationUseCase: sl<UpdateAppLocalizationUseCase>(),
+      getAppSettingsUseCase: sl<GetAppSettingsUseCase>(),
+    ),
+  );
 }
