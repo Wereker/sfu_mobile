@@ -98,7 +98,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/resetPassword');
                     },
-                    child: Text(t!.forgotPassword),
+                    child: Text(t.forgotPassword),
                   ),
                 ],
               ),

@@ -101,8 +101,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         try {
           await checkAuthStatusUseCase.call();
-          // emit(AuthState.authorized());
-          emit(AuthState.unauthorized());
+          emit(AuthState.authorized());
         } catch (_) {
           emit(AuthState.unauthorized());
         }

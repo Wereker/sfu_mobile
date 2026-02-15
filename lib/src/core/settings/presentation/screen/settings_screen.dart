@@ -32,19 +32,6 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDebugInfo() {
-    return BlocSelector<SettingsBloc, SettingsState, String>(
-      selector: (state) => state.maybeWhen(
-        success: (settings) => 'Язык: ${settings.locale} • Тема: ${settings.themeMode}',
-        orElse: () => 'Загрузка настроек...',
-      ),
-      builder: (context, debugText) => Text(
-        debugText,
-        style: const TextStyle(fontSize: 12, color: Colors.grey),
-      ),
-    );
-  }
-
   Widget _buildLanguageSelector() {
     return BlocSelector<SettingsBloc, SettingsState, String?>(
       selector: (state) => state.maybeWhen(
@@ -58,7 +45,7 @@ class SettingsScreen extends StatelessWidget {
 
         return DropdownButtonFormField<String>(
           key: ValueKey<String>('language_$locale'),
-          value: locale,
+          initialValue: locale,
           items: const [
             DropdownMenuItem(value: 'en', child: Text('English')),
             DropdownMenuItem(value: 'ru', child: Text('Русский')),
@@ -115,7 +102,7 @@ class SettingsScreen extends StatelessWidget {
       key: ValueKey<String>('theme_$value'),
       label: Text(label),
       selected: isSelected,
-      selectedColor: Theme.of(context).primaryColor.withOpacity(0.2),
+      selectedColor: Theme.of(context).primaryColor.withValues(alpha: .2),
       onSelected: (selected) {
         if (selected && !isSelected) {
           context.read<SettingsBloc>().add(

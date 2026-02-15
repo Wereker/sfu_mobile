@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
-import 'package:sfu/src/feature/profile/domain/use_case/load_data_use_case.dart';
+import 'package:sfu/src/feature/profile/domain/use_case/profile_load_data_use_case.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
 part 'profile_bloc.freezed.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final LoadDataUseCase loadDataUseCase;
+  final ProfileLoadDataUseCase loadDataUseCase;
 
   ProfileBloc(this.loadDataUseCase) : super(ProfileState.initial()) {
     on<ProfileEvent>(_onEvent);

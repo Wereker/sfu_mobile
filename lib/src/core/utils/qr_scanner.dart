@@ -81,7 +81,7 @@ class _QRScannerScreen extends StatefulWidget {
 
 class _QRScannerScreenState extends State<_QRScannerScreen> {
   late final MobileScannerController controller;
-  bool _isScanning = true;
+  final bool _isScanning = true;
   String? _lastScannedValue;
 
   @override
@@ -131,7 +131,7 @@ class _QRScannerScreenState extends State<_QRScannerScreen> {
                   ),
                   margin: const EdgeInsets.symmetric(horizontal: 24),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.85),
+                    color: Colors.green.withValues(alpha: .85),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -238,12 +238,6 @@ class _QRScannerScreenState extends State<_QRScannerScreen> {
     }
   }
 
-  void _toggleScanning() {
-    setState(() {
-      _isScanning = !_isScanning;
-    });
-  }
-
   void _onCancel() {
     Navigator.of(context).pop(null);
   }
@@ -258,7 +252,7 @@ class _ScanOverlayPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.3)
+      ..color = Colors.white.withValues(alpha: .3)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
