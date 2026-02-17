@@ -28,6 +28,17 @@ import 'package:sfu/src/core/settings/domain/use_case/update_app_localization_us
 import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case.dart';
 import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case_impl.dart';
 import 'package:sfu/src/core/settings/presentation/bloc/settings_bloc.dart';
+import 'package:sfu/src/feature/timetable/data/data_source/local/timetable_local_data_source.dart';
+import 'package:sfu/src/feature/timetable/data/data_source/local/timetable_local_data_source_impl.dart';
+import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
+import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_impl.dart';
+import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_impl.dart';
+import 'package:sfu/src/feature/timetable/domain/repository/timetable_repository.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data__for_group_use_case.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_group_use_case_impl.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_teacher_use_case.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_teacher_use_case_impl.dart';
+import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -47,6 +58,13 @@ Future<void> init() async {
 
 void _initDataSources() {
   sl.registerSingleton<SettingsLocalDataSource>(SettingsLocalDataSourceImpl());
+
+  sl.registerSingleton<TimetableLocalDataSource>(
+    TimetableLocalDataSourceImpl(),
+  );
+  sl.registerSingleton<TimetableRemoteDataSource>(
+    TimetableRemoteDataSourceImpl(),
+  );
 }
 
 void _initRepositories() {
@@ -54,6 +72,12 @@ void _initRepositories() {
   sl.registerSingleton<ProfileRepository>(ProfileRepositroyMock());
   sl.registerSingleton<SettingsRepository>(
     SettingsRepositoryImpl(sl<SettingsLocalDataSource>()),
+  );
+  sl.registerSingleton<TimetableRepository>(
+    TimetableRepositoryImpl(
+      locale: sl<TimetableLocalDataSource>(),
+      remote: sl<TimetableRemoteDataSource>(),
+    ),
   );
 }
 
@@ -87,6 +111,13 @@ void _initUseCases() {
   sl.registerFactory<UpdateAppThemeModeUseCase>(
     () => UpdateAppThemeModeUseCaseImpl(sl<SettingsRepository>()),
   );
+
+  sl.registerFactory<TimetableLoadDataForTeacherUseCase>(
+    () => TimetableLoadDataForTeacherUseCaseImpl(sl<TimetableRepository>()),
+  );
+  sl.registerFactory<TimetableLoadDataForGroupUseCase>(
+    () => TimetableLoadDataForGroupUseCaseImpl(sl<TimetableRepository>()),
+  );
 }
 
 void _initBloc() {
@@ -99,12 +130,21 @@ void _initBloc() {
       checkAuthStatusUseCase: sl<CheckAuthStatusUseCase>(),
     ),
   );
-  sl.registerFactory<ProfileBloc>(() => ProfileBloc(sl<ProfileLoadDataUseCase>()));
+  sl.registerFactory<ProfileBloc>(
+    () => ProfileBloc(sl<ProfileLoadDataUseCase>()),
+  );
   sl.registerFactory<SettingsBloc>(
     () => SettingsBloc(
       updateAppThemeModeUseCase: sl<UpdateAppThemeModeUseCase>(),
       updateAppLocalizationUseCase: sl<UpdateAppLocalizationUseCase>(),
       getAppSettingsUseCase: sl<GetAppSettingsUseCase>(),
+    ),
+  );
+
+  sl.registerFactory<TimetableBloc>(
+    () => TimetableBloc(
+      sl<TimetableLoadDataForGroupUseCase>(),
+      sl<TimetableLoadDataForTeacherUseCase>(),
     ),
   );
 }

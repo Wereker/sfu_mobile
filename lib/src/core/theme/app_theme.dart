@@ -70,6 +70,13 @@ class AppTheme {
     iconTheme: IconThemeData(
       color: primaryLight,
     ),
+
+    cardTheme: CardThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: primaryLight, width: 1),
+      ),
+    ),
   );
 
   static final dark = ThemeData(
@@ -134,6 +141,13 @@ class AppTheme {
 
     iconTheme: IconThemeData(
       color: primaryDark,
+    ),
+
+    cardTheme: CardThemeData(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: primaryDark, width: 1),
+      ),
     ),
   );
 }

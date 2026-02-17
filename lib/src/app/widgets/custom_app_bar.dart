@@ -9,43 +9,62 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final currentRoute = ModalRoute.of(context)?.settings.name;
 
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 12),
-      child: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        leading: currentRoute != '/profile' && currentRoute != '/settings'
-            ? InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/profile');
-                },
-                child: CircleAvatar(radius: 34),
-              )
-            : null,
-        title: SvgPicture.asset(
-          'assets/images/logo_app_bar.svg',
-          colorFilter: ColorFilter.mode(
-            Theme.of(context).colorScheme.primary,
-            BlendMode.srcIn,
-          ),
+    return AppBar(
+      automaticallyImplyLeading: false,
+      centerTitle: true,
+      leadingWidth: 72,
+      titleSpacing: 0,
+
+      leading: currentRoute != '/profile' && currentRoute != '/settings'
+          ? Padding(
+              padding: const EdgeInsets.only(
+                left: 16.0,
+                right: 8.0,
+              ), // Отступ от левого края
+              child: InkWell(
+                borderRadius: BorderRadius.circular(34),
+                onTap: () => Navigator.pushNamed(context, '/profile'),
+                child: const CircleAvatar(
+                  radius: 24,
+                ),
+              ),
+            )
+          : null,
+
+      title: SvgPicture.asset(
+        'assets/images/logo_app_bar.svg',
+        colorFilter: ColorFilter.mode(
+          Theme.of(context).colorScheme.primary,
+          BlendMode.srcIn,
         ),
-        actions: currentRoute != '/settings'
-            ? [
-                InkWell(
+      ),
+
+      actions: currentRoute != '/settings'
+          ? [
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 16.0,
+                  left: 8.0,
+                ), // Отступ от правого края
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8),
                   onTap: () async {
                     final result = await QRScannerUtils.scan(context: context);
+                    // Обработка результата
                   },
                   child: SvgPicture.asset(
                     'assets/images/QR.svg',
+                    width: 36,
+                    height: 36,
                     colorFilter: ColorFilter.mode(
                       Theme.of(context).colorScheme.primary,
                       BlendMode.srcIn,
                     ),
                   ),
                 ),
-              ]
-            : null,
-      ),
+              ),
+            ]
+          : null,
     );
   }
 
