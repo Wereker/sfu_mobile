@@ -52,7 +52,7 @@ class _DayLessonsCard extends StatelessWidget {
 
   String _getDayWithDate(int dayNumber) {
     final today = DateTime.now();
-    final diff = (dayNumber - today.weekday + 7) % 7;
+    final diff = dayNumber - today.weekday;
     final targetDate = today.add(Duration(days: diff));
     return '${_getDayName(dayNumber)}, ${DateFormat('d.0M').format(targetDate)}';
   }
