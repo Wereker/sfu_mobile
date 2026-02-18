@@ -57,9 +57,10 @@ class DarkTheme {
     ),
     iconTheme: const IconThemeData(color: AppTheme.primaryDark),
     cardTheme: CardThemeData(
+      color: Colors.grey.withValues(alpha: 0.1),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: AppTheme.primaryDark, width: 1),
+        side: BorderSide(color: Colors.transparent, width: 1),
       ),
     ),
   );

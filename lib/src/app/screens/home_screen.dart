@@ -17,13 +17,13 @@ class _HomeScreenState extends State<HomeScreen> {
     Scaffold(body: const Center(child: Text("Список новостей"))),
     const TimetableScreen(),
     Scaffold(body: const Center(child: Text("Чат"))),
-    Scaffold(body: const Center(child: Text("Календарь"))),
-    Scaffold(body: const Center(child: Text("Домашняя"))),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,  // ← Расширяем контент под панель
+      backgroundColor: Colors.transparent, // ← Прозрачный фон
       appBar: CustomAppBar(),
       body: IndexedStack(index: currentIndex, children: screens),
       bottomNavigationBar: AppNavigationBar(

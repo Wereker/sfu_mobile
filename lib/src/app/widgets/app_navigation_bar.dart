@@ -14,9 +14,9 @@ class AppNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.fromLTRB(
-        12,
+        80,
         0,
-        12,
+        80,
         MediaQuery.of(context).padding.bottom + 8,
       ),
       decoration: BoxDecoration(
@@ -47,14 +47,6 @@ class AppNavigationBar extends StatelessWidget {
               label: "Расписание",
             ),
             NavigationDestination(icon: Icon(Icons.chat), label: "Чат"),
-            NavigationDestination(
-              icon: Icon(Icons.calendar_month),
-              label: "Календарь",
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.my_library_books),
-              label: "Домашняя",
-            ),
           ],
         ),
       ),

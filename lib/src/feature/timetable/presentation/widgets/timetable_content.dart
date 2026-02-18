@@ -15,7 +15,7 @@ class _TimetableContentState extends State<_TimetableContent> {
   @override
   Widget build(BuildContext context) {
     final week = widget.timetable.weeks.firstWhere(
-          (w) => w.week == _selectedWeek,
+      (w) => w.week == _selectedWeek,
       orElse: () => widget.timetable.weeks.first,
     );
     final lessonsByDay = _groupLessonsByDay(week.lessons);
@@ -37,6 +37,7 @@ class _TimetableContentState extends State<_TimetableContent> {
           )
         else
           ..._buildDayCards(lessonsByDay),
+          SizedBox(height: MediaQuery.of(context).padding.bottom,)
       ],
     );
   }
