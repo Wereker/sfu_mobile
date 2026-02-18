@@ -35,6 +35,7 @@ class ProfileBodyWidget extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Card(
+              clipBehavior: Clip.antiAlias,
               child: ListTile(
                 leading: SvgPicture.asset(
                   'assets/images/recordBook.svg',
@@ -49,6 +50,7 @@ class ProfileBodyWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Card(
+              clipBehavior: Clip.antiAlias,
               child: ListTile(
                 leading: SvgPicture.asset(
                   'assets/images/list.svg',
@@ -63,6 +65,7 @@ class ProfileBodyWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Card(
+              clipBehavior: Clip.antiAlias,
               child: ListTile(
                 leading: SvgPicture.asset(
                   'assets/images/event-schedule.svg',
@@ -77,6 +80,7 @@ class ProfileBodyWidget extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Card(
+              clipBehavior: Clip.antiAlias,
               child: ListTile(
                 leading: Icon(
                   Icons.settings,

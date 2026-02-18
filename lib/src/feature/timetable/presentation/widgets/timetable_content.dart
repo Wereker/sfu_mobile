@@ -67,19 +67,33 @@ class _TimetableContentState extends State<_TimetableContent> {
   }
 
   Widget _buildWeekToggleButtons() {
-    return Row(
-      children: [
-        _buildWeekButton(
-          label: 'нечетная',
-          week: '1',
-          isSelected: _selectedWeek == '1',
-        ),
-        _buildWeekButton(
-          label: 'четная',
-          week: '2',
-          isSelected: _selectedWeek == '2',
-        ),
-      ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          _buildWeekButton(
+            label: 'нечетная',
+            week: '1',
+            isSelected: _selectedWeek == '1',
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(12),
+              bottomLeft: Radius.circular(12),
+            ),
+          ),
+          _buildWeekButton(
+            label: 'четная',
+            week: '2',
+            isSelected: _selectedWeek == '2',
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(12),
+              bottomRight: Radius.circular(12),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -87,6 +101,7 @@ class _TimetableContentState extends State<_TimetableContent> {
     required String label,
     required String week,
     required bool isSelected,
+    required BorderRadius borderRadius,
   }) {
     return Expanded(
       child: TextButton(
@@ -94,9 +109,12 @@ class _TimetableContentState extends State<_TimetableContent> {
           padding: const EdgeInsets.symmetric(vertical: 16),
           backgroundColor: isSelected
               ? Colors.orange.withValues(alpha: 0.1)
-              : Colors.grey.withValues(alpha: 0.1),
+              : Colors.transparent,
           foregroundColor: isSelected ? Colors.orange : Colors.grey[800],
-          shape: const RoundedRectangleBorder(),
+          shape: RoundedRectangleBorder(
+            borderRadius: borderRadius,
+            side: BorderSide.none,
+          ),
         ),
         onPressed: () => setState(() => _selectedWeek = week),
         child: Text(
