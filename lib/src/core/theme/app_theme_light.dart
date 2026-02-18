@@ -62,5 +62,10 @@ class LightTheme {
         side: BorderSide(color: AppTheme.primaryLight, width: 1),
       ),
     ),
+    appBarTheme: AppBarThemeData(
+      iconTheme: IconThemeData(
+        color: AppTheme.primaryLight
+      )
+    ),
   );
 }

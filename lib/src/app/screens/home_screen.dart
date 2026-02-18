@@ -22,8 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,  // ← Расширяем контент под панель
-      backgroundColor: Colors.transparent, // ← Прозрачный фон
+      extendBody: true,
+      backgroundColor: Colors.transparent,
       appBar: CustomAppBar(),
       body: IndexedStack(index: currentIndex, children: screens),
       bottomNavigationBar: AppNavigationBar(

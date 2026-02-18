@@ -10,7 +10,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final currentRoute = ModalRoute.of(context)?.settings.name;
 
     return AppBar(
-      automaticallyImplyLeading: false,
       centerTitle: true,
       leadingWidth: 72,
       titleSpacing: 0,
@@ -20,7 +19,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.only(
                 left: 16.0,
                 right: 8.0,
-              ), // Отступ от левого края
+                top: 10.0,
+                bottom: 5.0
+              ),
               child: InkWell(
                 borderRadius: BorderRadius.circular(34),
                 onTap: () => Navigator.pushNamed(context, '/profile'),
@@ -45,7 +46,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 padding: const EdgeInsets.only(
                   right: 16.0,
                   left: 8.0,
-                ), // Отступ от правого края
+                  top: 10.0,
+                  bottom: 5.0,
+                ),
                 child: InkWell(
                   borderRadius: BorderRadius.circular(8),
                   onTap: () async {
