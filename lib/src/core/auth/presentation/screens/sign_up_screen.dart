@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -106,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         );
                       },
                       child: state.maybeWhen(
-                        loading: () => CircularProgressIndicator(),
+                        loading: () => LoadingIndicatorWidget(),
                         orElse: () => Text(t!.signUpButton),
                       ),
                     ),

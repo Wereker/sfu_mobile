@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/widgets/custom_app_bar.dart';
 import 'package:sfu/src/core/settings/presentation/bloc/settings_bloc.dart';
+import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -40,7 +41,7 @@ class SettingsScreen extends StatelessWidget {
       ),
       builder: (context, locale) {
         if (locale == null) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: LoadingIndicatorWidget());
         }
 
         return DropdownButtonFormField<String>(
@@ -74,7 +75,7 @@ class SettingsScreen extends StatelessWidget {
       ),
       builder: (context, themeMode) {
         if (themeMode == null) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: LoadingIndicatorWidget());
         }
 
         return Wrap(

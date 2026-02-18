@@ -12,6 +12,8 @@ import 'package:sfu/src/core/auth/domain/use_case/sign_in_use_case_impl.dart';
 import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case_impl.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/utils/loading_indicator/loading_indicator.dart';
+import 'package:sfu/src/core/utils/loading_indicator/standard_loading_indicator.dart';
 import 'package:sfu/src/feature/profile/data/repository/profile_repositroy_mock.dart';
 import 'package:sfu/src/feature/profile/domain/repository/profile_repository.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/profile_load_data_use_case.dart';
@@ -54,6 +56,9 @@ Future<void> init() async {
 
   // Bloc
   _initBloc();
+
+  // Widgets
+  _initWidgets();
 }
 
 void _initDataSources() {
@@ -147,4 +152,8 @@ void _initBloc() {
       sl<TimetableLoadDataForTeacherUseCase>(),
     ),
   );
+}
+
+void _initWidgets() {
+  sl.registerFactory<LoadingIndicator>(() => StandardLoadingIndicator());
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -81,7 +82,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         );
                       },
                       child: state.maybeWhen(
-                        loading: () => CircularProgressIndicator(),
+                        loading: () => LoadingIndicatorWidget(),
                         orElse: () => Text(t!.resetPasswordButton),
                       ),
                     ),
