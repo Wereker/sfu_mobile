@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/localization/app_localizations.dart';
 
 class AppNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -12,6 +13,8 @@ class AppNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
     return Container(
       margin: EdgeInsets.fromLTRB(
         80,
@@ -37,16 +40,16 @@ class AppNavigationBar extends StatelessWidget {
         child: NavigationBar(
           selectedIndex: currentIndex,
           onDestinationSelected: onDestinationSelected,
-          destinations: const [
+          destinations: [
             NavigationDestination(
               icon: Icon(Icons.newspaper),
-              label: "Новости",
+              label: t!.homeAppBarNews,
             ),
             NavigationDestination(
               icon: Icon(Icons.event_note),
-              label: "Расписание",
+              label: t.homeAppBarTimetable,
             ),
-            NavigationDestination(icon: Icon(Icons.chat), label: "Чат"),
+            NavigationDestination(icon: Icon(Icons.chat), label: t.homeAppBarChat),
           ],
         ),
       ),

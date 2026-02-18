@@ -8,6 +8,8 @@ class _DayLessonsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
     return Card(
       margin: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -17,7 +19,7 @@ class _DayLessonsCard extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Center(
               child: Text(
-                _getDayWithDate(dayNumber),
+                _getDayWithDate(context, dayNumber),
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
@@ -28,7 +30,7 @@ class _DayLessonsCard extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Center(
                 child: Text(
-                  'Сегодня пар нет',
+                  t!.timetableNoLessonsThisDay,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                   ),
@@ -50,31 +52,33 @@ class _DayLessonsCard extends StatelessWidget {
     );
   }
 
-  String _getDayWithDate(int dayNumber) {
+  String _getDayWithDate(BuildContext context, int dayNumber) {
     final today = DateTime.now();
     final diff = dayNumber - today.weekday;
     final targetDate = today.add(Duration(days: diff));
-    return '${_getDayName(dayNumber)}, ${DateFormat('d.0M').format(targetDate)}';
+    return '${_getDayName(context, dayNumber)}, ${DateFormat('d.0M').format(targetDate)}';
   }
 
-  String _getDayName(int day) {
+  String _getDayName(BuildContext context, int day) {
+    final t = AppLocalizations.of(context);
+
     switch (day) {
       case 1:
-        return 'Понедельник';
+        return t!.timetableMonday;
       case 2:
-        return 'Вторник';
+        return t!.timetableTuesday;
       case 3:
-        return 'Среда';
+        return t!.timetableWednesday;
       case 4:
-        return 'Четверг';
+        return t!.timetableThursday;
       case 5:
-        return 'Пятница';
+        return t!.timetableFriday;
       case 6:
-        return 'Суббота';
+        return t!.timetableSaturday;
       case 7:
-        return 'Воскресенье';
+        return t!.timetableSunday;
       default:
-        return 'День $day';
+        return '${t!.timetableDay} $day';
     }
   }
 }

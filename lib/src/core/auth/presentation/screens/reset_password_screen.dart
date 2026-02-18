@@ -62,14 +62,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     TextField(
                       controller: passwordController,
                       obscureText: true,
-                      decoration: InputDecoration(hintText: t?.passwordHint),
+                      decoration: InputDecoration(hintText: t?.authPasswordHint),
                     ),
                     const SizedBox(height: 24),
                     TextField(
                       controller: password2Controller,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: t?.passwordRepeatHint,
+                        hintText: t?.authPasswordRepeatHint,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -83,7 +83,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       },
                       child: state.maybeWhen(
                         loading: () => LoadingIndicatorWidget(),
-                        orElse: () => Text(t!.resetPasswordButton),
+                        orElse: () => Text(t!.authResetPasswordButton),
                       ),
                     ),
                   ],

@@ -104,65 +104,245 @@ abstract class AppLocalizations {
   /// **'My App'**
   String get appName;
 
-  /// No description provided for @loginTitle.
+  /// No description provided for @appError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get appError;
+
+  /// No description provided for @appRepeatTry.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get appRepeatTry;
+
+  /// No description provided for @authLoginTitle.
   ///
   /// In en, this message translates to:
   /// **'Login'**
-  String get loginTitle;
+  String get authLoginTitle;
 
-  /// No description provided for @nameHint.
+  /// No description provided for @authNameHint.
   ///
   /// In en, this message translates to:
   /// **'Name'**
-  String get nameHint;
+  String get authNameHint;
 
-  /// No description provided for @surnameHint.
+  /// No description provided for @authSurnameHint.
   ///
   /// In en, this message translates to:
   /// **'Surname'**
-  String get surnameHint;
+  String get authSurnameHint;
 
-  /// No description provided for @loginHint.
+  /// No description provided for @authLoginHint.
   ///
   /// In en, this message translates to:
   /// **'Login'**
-  String get loginHint;
+  String get authLoginHint;
 
-  /// No description provided for @passwordHint.
+  /// No description provided for @authPasswordHint.
   ///
   /// In en, this message translates to:
   /// **'Password'**
-  String get passwordHint;
+  String get authPasswordHint;
 
-  /// No description provided for @passwordRepeatHint.
+  /// No description provided for @authPasswordRepeatHint.
   ///
   /// In en, this message translates to:
   /// **'Repeat Password'**
-  String get passwordRepeatHint;
+  String get authPasswordRepeatHint;
 
-  /// No description provided for @signInButton.
+  /// No description provided for @authSignInButton.
   ///
   /// In en, this message translates to:
   /// **'Sign In'**
-  String get signInButton;
+  String get authSignInButton;
 
-  /// No description provided for @signUpButton.
+  /// No description provided for @authSignUpButton.
   ///
   /// In en, this message translates to:
   /// **'Sign Up'**
-  String get signUpButton;
+  String get authSignUpButton;
 
-  /// No description provided for @resetPasswordButton.
+  /// No description provided for @authResetPasswordButton.
   ///
   /// In en, this message translates to:
   /// **'Reset'**
-  String get resetPasswordButton;
+  String get authResetPasswordButton;
 
-  /// No description provided for @forgotPassword.
+  /// No description provided for @authForgotPassword.
   ///
   /// In en, this message translates to:
   /// **'Forgot password?'**
-  String get forgotPassword;
+  String get authForgotPassword;
+
+  /// No description provided for @homeAppBarNews.
+  ///
+  /// In en, this message translates to:
+  /// **'News'**
+  String get homeAppBarNews;
+
+  /// No description provided for @homeAppBarTimetable.
+  ///
+  /// In en, this message translates to:
+  /// **'Timetable'**
+  String get homeAppBarTimetable;
+
+  /// No description provided for @homeAppBarChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get homeAppBarChat;
+
+  /// No description provided for @profileStudentNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Student number'**
+  String get profileStudentNumber;
+
+  /// No description provided for @profileGradeBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Grade book'**
+  String get profileGradeBook;
+
+  /// No description provided for @profileListOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'List of orders'**
+  String get profileListOrders;
+
+  /// No description provided for @profileStudyPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Study plan'**
+  String get profileStudyPlan;
+
+  /// No description provided for @profileSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileSettings;
+
+  /// No description provided for @profileLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get profileLogout;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsTheme;
+
+  /// No description provided for @settingsThemeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsThemeSystem;
+
+  /// No description provided for @settingsThemeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get settingsThemeLight;
+
+  /// No description provided for @settingsThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsThemeDark;
+
+  /// No description provided for @timetableError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get timetableError;
+
+  /// No description provided for @timetableNotFoundData.
+  ///
+  /// In en, this message translates to:
+  /// **'Not found data'**
+  String get timetableNotFoundData;
+
+  /// No description provided for @timetableNoLessonsThisWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'No lesson on this week'**
+  String get timetableNoLessonsThisWeek;
+
+  /// No description provided for @timetableNoLessonsThisDay.
+  ///
+  /// In en, this message translates to:
+  /// **'No lesson on this day'**
+  String get timetableNoLessonsThisDay;
+
+  /// No description provided for @timetableOddWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'odd'**
+  String get timetableOddWeek;
+
+  /// No description provided for @timetableEvenWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'even'**
+  String get timetableEvenWeek;
+
+  /// No description provided for @timetableMonday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get timetableMonday;
+
+  /// No description provided for @timetableTuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get timetableTuesday;
+
+  /// No description provided for @timetableWednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get timetableWednesday;
+
+  /// No description provided for @timetableThursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get timetableThursday;
+
+  /// No description provided for @timetableFriday.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get timetableFriday;
+
+  /// No description provided for @timetableSaturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get timetableSaturday;
+
+  /// No description provided for @timetableSunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get timetableSunday;
+
+  /// No description provided for @timetableDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get timetableDay;
 }
 
 class _AppLocalizationsDelegate

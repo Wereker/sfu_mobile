@@ -91,6 +91,8 @@ class _ErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -98,13 +100,13 @@ class _ErrorScreen extends StatelessWidget {
           children: [
             const Icon(Icons.error, size: 48, color: Colors.red),
             const SizedBox(height: 16),
-            Text('Ошибка: $message', textAlign: TextAlign.center),
+            Text('${t?.appError}: $message', textAlign: TextAlign.center),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () => context.read<SettingsBloc>().add(
                 SettingsEvent.getAppSettings(),
               ),
-              child: const Text('Повторить попытку'),
+              child: Text(t!.appError),
             ),
           ],
         ),

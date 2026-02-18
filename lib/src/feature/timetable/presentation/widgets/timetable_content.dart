@@ -14,6 +14,8 @@ class _TimetableContentState extends State<_TimetableContent> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
     final week = widget.timetable.weeks.firstWhere(
       (w) => w.week == _selectedWeek,
       orElse: () => widget.timetable.weeks.first,
@@ -29,9 +31,9 @@ class _TimetableContentState extends State<_TimetableContent> {
 
         // Список дней с занятиями
         if (lessonsByDay.isEmpty)
-          const Center(
+          Center(
             child: Text(
-              'На этой неделе занятий нет',
+              t!.timetableNoLessonsThisWeek,
               style: TextStyle(fontSize: 18, color: Colors.grey),
             ),
           )
@@ -67,6 +69,8 @@ class _TimetableContentState extends State<_TimetableContent> {
   }
 
   Widget _buildWeekToggleButtons() {
+    final t = AppLocalizations.of(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey.withValues(alpha: 0.1),
@@ -75,7 +79,7 @@ class _TimetableContentState extends State<_TimetableContent> {
       child: Row(
         children: [
           _buildWeekButton(
-            label: 'нечетная',
+            label: t!.timetableOddWeek,
             week: '1',
             isSelected: _selectedWeek == '1',
             borderRadius: const BorderRadius.only(
@@ -84,7 +88,7 @@ class _TimetableContentState extends State<_TimetableContent> {
             ),
           ),
           _buildWeekButton(
-            label: 'четная',
+            label: t.timetableEvenWeek,
             week: '2',
             isSelected: _selectedWeek == '2',
             borderRadius: const BorderRadius.only(

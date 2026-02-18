@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/core/dependency_injection/injection.dart' as di;
+import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/lesson/lesson.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/timetable/timetable.dart';
@@ -16,6 +17,8 @@ class TimetableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
     return BlocProvider(
       create: (context) =>
           di.sl<TimetableBloc>()..add(TimetableEvent.loadDataForGroup()),
@@ -32,11 +35,11 @@ class TimetableScreen extends StatelessWidget {
                   children: [
                     const Icon(Icons.error, size: 48, color: Colors.red),
                     const SizedBox(height: 16),
-                    Text('Ошибка: $message', textAlign: TextAlign.center),
+                    Text('${t!.timetableError}: $message', textAlign: TextAlign.center),
                   ],
                 ),
               ),
-              orElse: () => const Center(child: Text('Нет данных')),
+              orElse: () => Center(child: Text(t!.timetableNotFoundData)),
             );
           },
         ),

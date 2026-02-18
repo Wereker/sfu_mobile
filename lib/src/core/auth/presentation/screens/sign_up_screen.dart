@@ -67,30 +67,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 50),
                     TextField(
                       controller: nameController,
-                      decoration: InputDecoration(hintText: t?.nameHint),
+                      decoration: InputDecoration(hintText: t?.authNameHint),
                     ),
                     const SizedBox(height: 24),
                     TextField(
                       controller: surnameController,
-                      decoration: InputDecoration(hintText: t?.surnameHint),
+                      decoration: InputDecoration(hintText: t?.authSurnameHint),
                     ),
                     const SizedBox(height: 24),
                     TextField(
                       controller: loginController,
-                      decoration: InputDecoration(hintText: t?.loginHint),
+                      decoration: InputDecoration(hintText: t?.authLoginHint),
                     ),
                     const SizedBox(height: 24),
                     TextField(
                       controller: passwordController,
                       obscureText: true,
-                      decoration: InputDecoration(hintText: t?.passwordHint),
+                      decoration: InputDecoration(hintText: t?.authPasswordHint),
                     ),
                     const SizedBox(height: 24),
                     TextField(
                       controller: password2Controller,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: t?.passwordRepeatHint,
+                        hintText: t?.authPasswordRepeatHint,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -108,7 +108,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                       child: state.maybeWhen(
                         loading: () => LoadingIndicatorWidget(),
-                        orElse: () => Text(t!.signUpButton),
+                        orElse: () => Text(t!.authSignUpButton),
                       ),
                     ),
                   ],
