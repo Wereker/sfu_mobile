@@ -281,7 +281,7 @@ abstract class AppLocalizations {
   /// No description provided for @timetableNoLessonsThisDay.
   ///
   /// In en, this message translates to:
-  /// **'No lesson on this day'**
+  /// **'No lesson'**
   String get timetableNoLessonsThisDay;
 
   /// No description provided for @timetableOddWeek.

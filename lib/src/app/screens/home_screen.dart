@@ -14,7 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
 
   final List<Widget> screens = [
-    Scaffold(body: const Center(child: Text("Список новостей"))),
+    Scaffold(body: const Center(child: Text("Новости"),)),
     const TimetableScreen(),
     Scaffold(body: const Center(child: Text("Чат"))),
   ];

@@ -55,11 +55,12 @@ extension TimetableEventPatterns on TimetableEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _TimetableLoadData value)?  loadData,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _TimetableLoadData value)?  loadData,TResult Function( _TimetableLoadDataForTarget value)?  loadDataForTarget,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _TimetableLoadData() when loadData != null:
-return loadData(_that);case _:
+return loadData(_that);case _TimetableLoadDataForTarget() when loadDataForTarget != null:
+return loadDataForTarget(_that);case _:
   return orElse();
 
 }
@@ -77,11 +78,12 @@ return loadData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _TimetableLoadData value)  loadData,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _TimetableLoadData value)  loadData,required TResult Function( _TimetableLoadDataForTarget value)  loadDataForTarget,}){
 final _that = this;
 switch (_that) {
 case _TimetableLoadData():
-return loadData(_that);case _:
+return loadData(_that);case _TimetableLoadDataForTarget():
+return loadDataForTarget(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +100,12 @@ return loadData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _TimetableLoadData value)?  loadData,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _TimetableLoadData value)?  loadData,TResult? Function( _TimetableLoadDataForTarget value)?  loadDataForTarget,}){
 final _that = this;
 switch (_that) {
 case _TimetableLoadData() when loadData != null:
-return loadData(_that);case _:
+return loadData(_that);case _TimetableLoadDataForTarget() when loadDataForTarget != null:
+return loadDataForTarget(_that);case _:
   return null;
 
 }
@@ -119,10 +122,11 @@ return loadData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadData,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadData,TResult Function( String target)?  loadDataForTarget,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TimetableLoadData() when loadData != null:
-return loadData();case _:
+return loadData();case _TimetableLoadDataForTarget() when loadDataForTarget != null:
+return loadDataForTarget(_that.target);case _:
   return orElse();
 
 }
@@ -140,10 +144,11 @@ return loadData();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadData,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadData,required TResult Function( String target)  loadDataForTarget,}) {final _that = this;
 switch (_that) {
 case _TimetableLoadData():
-return loadData();case _:
+return loadData();case _TimetableLoadDataForTarget():
+return loadDataForTarget(_that.target);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +165,11 @@ return loadData();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadData,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadData,TResult? Function( String target)?  loadDataForTarget,}) {final _that = this;
 switch (_that) {
 case _TimetableLoadData() when loadData != null:
-return loadData();case _:
+return loadData();case _TimetableLoadDataForTarget() when loadDataForTarget != null:
+return loadDataForTarget(_that.target);case _:
   return null;
 
 }
@@ -202,6 +208,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _TimetableLoadDataForTarget implements TimetableEvent {
+  const _TimetableLoadDataForTarget(this.target);
+  
+
+ final  String target;
+
+/// Create a copy of TimetableEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$TimetableLoadDataForTargetCopyWith<_TimetableLoadDataForTarget> get copyWith => __$TimetableLoadDataForTargetCopyWithImpl<_TimetableLoadDataForTarget>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimetableLoadDataForTarget&&(identical(other.target, target) || other.target == target));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,target);
+
+@override
+String toString() {
+  return 'TimetableEvent.loadDataForTarget(target: $target)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$TimetableLoadDataForTargetCopyWith<$Res> implements $TimetableEventCopyWith<$Res> {
+  factory _$TimetableLoadDataForTargetCopyWith(_TimetableLoadDataForTarget value, $Res Function(_TimetableLoadDataForTarget) _then) = __$TimetableLoadDataForTargetCopyWithImpl;
+@useResult
+$Res call({
+ String target
+});
+
+
+
+
+}
+/// @nodoc
+class __$TimetableLoadDataForTargetCopyWithImpl<$Res>
+    implements _$TimetableLoadDataForTargetCopyWith<$Res> {
+  __$TimetableLoadDataForTargetCopyWithImpl(this._self, this._then);
+
+  final _TimetableLoadDataForTarget _self;
+  final $Res Function(_TimetableLoadDataForTarget) _then;
+
+/// Create a copy of TimetableEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? target = null,}) {
+  return _then(_TimetableLoadDataForTarget(
+null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 mixin _$TimetableState {

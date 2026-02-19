@@ -22,25 +22,45 @@ class _TimetableContentState extends State<_TimetableContent> {
     );
     final lessonsByDay = _groupLessonsByDay(week.lessons);
 
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        // Кнопки переключения недель
-        _buildWeekToggleButtons(),
-        const SizedBox(height: 16),
-
-        // Список дней с занятиями
-        if (lessonsByDay.isEmpty)
-          Center(
-            child: Text(
-              t!.timetableNoLessonsThisWeek,
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                ),
+                child: TimetableSearchBar(),
+              ),
             ),
-          )
-        else
-          ..._buildDayCards(lessonsByDay),
-          SizedBox(height: MediaQuery.of(context).padding.bottom,)
-      ],
+          ),
+
+          // Остальной контент без изменений
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                _buildWeekToggleButtons(),
+                const SizedBox(height: 16),
+                if (lessonsByDay.isEmpty)
+                  Center(
+                    child: Text(
+                      t!.timetableNoLessonsThisWeek,
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    ),
+                  )
+                else
+                  ..._buildDayCards(lessonsByDay),
+                SizedBox(height: MediaQuery.of(context).padding.bottom),
+              ]),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

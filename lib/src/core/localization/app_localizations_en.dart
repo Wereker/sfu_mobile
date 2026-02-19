@@ -99,7 +99,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timetableNoLessonsThisWeek => 'No lesson on this week';
 
   @override
-  String get timetableNoLessonsThisDay => 'No lesson on this day';
+  String get timetableNoLessonsThisDay => 'No lesson';
 
   @override
   String get timetableOddWeek => 'odd';

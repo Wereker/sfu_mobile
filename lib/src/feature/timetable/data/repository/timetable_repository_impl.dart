@@ -30,4 +30,10 @@ class TimetableRepositoryImpl implements TimetableRepository {
     }
     return Timetable.fromDTO(timetableDTO);
   }
+
+  @override
+  Future<Timetable> getTimetableForTarget(String target) async {
+    final TimetableDTO timetableDTO = await _remote.getTimetableForTarget(target);
+    return Timetable.fromDTO(timetableDTO);
+  }
 }

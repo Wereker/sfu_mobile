@@ -34,7 +34,7 @@
   "timetableError": "Error",
   "timetableNotFoundData": "Not found data",
   "timetableNoLessonsThisWeek": "No lesson on this week",
-  "timetableNoLessonsThisDay": "No lesson on this day",
+  "timetableNoLessonsThisDay": "No lesson",
   "timetableOddWeek": "odd",
   "timetableEvenWeek": "even",
   "timetableMonday": "Monday",

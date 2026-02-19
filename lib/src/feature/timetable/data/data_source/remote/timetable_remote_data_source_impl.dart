@@ -51,4 +51,37 @@ class TimetableRemoteDataSourceImpl implements TimetableRemoteDataSource {
     // TODO: implement getTimetableForTeacher
     throw UnimplementedError();
   }
+
+  @override
+  Future<TimetableDTO> getTimetableForTarget(String target) async {
+    final response = await dio.get(
+      '$baseUrl/api/timetable/get',
+      queryParameters: {'target': target},
+      options: Options(headers: {'Accept': 'application/json'}),
+    );
+    final Map<String, dynamic> json = response.data;
+    final List<dynamic> rawLessons = json['timetable'] ?? [];
+    final Map<String, List<LessonDTO>> lessonsByWeek = {'1': [], '2': []};
+
+    for (final lessonJson in rawLessons) {
+      final lesson = LessonDTO.fromJson(lessonJson);
+      final week = lessonJson['week'] as String;
+
+      if (lessonsByWeek.containsKey(week)) {
+        lessonsByWeek[week]!.add(lesson);
+      }
+    }
+
+    final weeks = [
+      WeekDTO(week: '1', lessons: lessonsByWeek['1']!),
+      WeekDTO(week: '2', lessons: lessonsByWeek['2']!),
+    ];
+
+    return TimetableDTO(
+      target: json['target'],
+      type: json['type'],
+      institute: json['institute'],
+      weeks: weeks,
+    );
+  }
 }

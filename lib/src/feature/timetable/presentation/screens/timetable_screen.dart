@@ -7,6 +7,7 @@ import 'package:sfu/src/feature/timetable/domain/entity/lesson/lesson.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/timetable/timetable.dart';
 import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:sfu/src/feature/timetable/presentation/widgets/timetable_search_bar.dart';
 
 part '../widgets/day_lessons_card.dart';
 part '../widgets/lesson_item.dart';

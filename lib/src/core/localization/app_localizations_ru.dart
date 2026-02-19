@@ -99,7 +99,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get timetableNoLessonsThisWeek => 'На этой недели нет занятий';
 
   @override
-  String get timetableNoLessonsThisDay => 'Сегодня пар нет';
+  String get timetableNoLessonsThisDay => 'Занятий не будет';
 
   @override
   String get timetableOddWeek => 'нечетная';
