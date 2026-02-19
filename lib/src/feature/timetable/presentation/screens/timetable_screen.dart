@@ -21,7 +21,7 @@ class TimetableScreen extends StatelessWidget {
 
     return BlocProvider(
       create: (context) =>
-          di.sl<TimetableBloc>()..add(TimetableEvent.loadDataForGroup()),
+          di.sl<TimetableBloc>()..add(TimetableEvent.loadData()),
       child: Scaffold(
         body: BlocBuilder<TimetableBloc, TimetableState>(
           builder: (BuildContext context, TimetableState state) {

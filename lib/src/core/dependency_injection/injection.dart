@@ -36,10 +36,8 @@ import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remo
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_impl.dart';
 import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_impl.dart';
 import 'package:sfu/src/feature/timetable/domain/repository/timetable_repository.dart';
-import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data__for_group_use_case.dart';
-import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_group_use_case_impl.dart';
-import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_teacher_use_case.dart';
-import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_teacher_use_case_impl.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_use_case.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_use_case_impl.dart';
 import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
 
 final sl = GetIt.instance;
@@ -117,11 +115,8 @@ void _initUseCases() {
     () => UpdateAppThemeModeUseCaseImpl(sl<SettingsRepository>()),
   );
 
-  sl.registerFactory<TimetableLoadDataForTeacherUseCase>(
-    () => TimetableLoadDataForTeacherUseCaseImpl(sl<TimetableRepository>()),
-  );
-  sl.registerFactory<TimetableLoadDataForGroupUseCase>(
-    () => TimetableLoadDataForGroupUseCaseImpl(sl<TimetableRepository>()),
+  sl.registerFactory<TimetableLoadDataUseCase>(
+    () => TimetableLoadDataUseCaseImpl(sl<TimetableRepository>()),
   );
 }
 
@@ -148,8 +143,7 @@ void _initBloc() {
 
   sl.registerFactory<TimetableBloc>(
     () => TimetableBloc(
-      sl<TimetableLoadDataForGroupUseCase>(),
-      sl<TimetableLoadDataForTeacherUseCase>(),
+      sl<TimetableLoadDataUseCase>(),
     ),
   );
 }

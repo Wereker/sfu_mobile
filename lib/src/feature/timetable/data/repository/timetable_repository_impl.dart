@@ -10,18 +10,12 @@ class TimetableRepositoryImpl implements TimetableRepository {
   const TimetableRepositoryImpl({required this.locale, required this.remote});
 
   @override
-  Future<Timetable> getTimetableForGroup() async {
+  Future<Timetable> getTimetable() async {
     final timetableDTO = await remote.getTimetableForGroup(
       'КИ25-14Б',
       '1 подгруппа',
     );
     final timetable = Timetable.fromDTO(timetableDTO);
     return timetable;
-  }
-
-  @override
-  Future<Timetable> getTimetableForTeacher() {
-    // TODO: implement getTimetableForTeacher
-    throw UnimplementedError();
   }
 }

@@ -55,12 +55,11 @@ extension TimetableEventPatterns on TimetableEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _TimetableLoadDataForGroup value)?  loadDataForGroup,TResult Function( _TimetableLoadDataForTeacher value)?  loadDataForTeacher,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _TimetableLoadData value)?  loadData,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _TimetableLoadDataForGroup() when loadDataForGroup != null:
-return loadDataForGroup(_that);case _TimetableLoadDataForTeacher() when loadDataForTeacher != null:
-return loadDataForTeacher(_that);case _:
+case _TimetableLoadData() when loadData != null:
+return loadData(_that);case _:
   return orElse();
 
 }
@@ -78,12 +77,11 @@ return loadDataForTeacher(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _TimetableLoadDataForGroup value)  loadDataForGroup,required TResult Function( _TimetableLoadDataForTeacher value)  loadDataForTeacher,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _TimetableLoadData value)  loadData,}){
 final _that = this;
 switch (_that) {
-case _TimetableLoadDataForGroup():
-return loadDataForGroup(_that);case _TimetableLoadDataForTeacher():
-return loadDataForTeacher(_that);case _:
+case _TimetableLoadData():
+return loadData(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -100,12 +98,11 @@ return loadDataForTeacher(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _TimetableLoadDataForGroup value)?  loadDataForGroup,TResult? Function( _TimetableLoadDataForTeacher value)?  loadDataForTeacher,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _TimetableLoadData value)?  loadData,}){
 final _that = this;
 switch (_that) {
-case _TimetableLoadDataForGroup() when loadDataForGroup != null:
-return loadDataForGroup(_that);case _TimetableLoadDataForTeacher() when loadDataForTeacher != null:
-return loadDataForTeacher(_that);case _:
+case _TimetableLoadData() when loadData != null:
+return loadData(_that);case _:
   return null;
 
 }
@@ -122,11 +119,10 @@ return loadDataForTeacher(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadDataForGroup,TResult Function()?  loadDataForTeacher,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadData,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _TimetableLoadDataForGroup() when loadDataForGroup != null:
-return loadDataForGroup();case _TimetableLoadDataForTeacher() when loadDataForTeacher != null:
-return loadDataForTeacher();case _:
+case _TimetableLoadData() when loadData != null:
+return loadData();case _:
   return orElse();
 
 }
@@ -144,11 +140,10 @@ return loadDataForTeacher();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadDataForGroup,required TResult Function()  loadDataForTeacher,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadData,}) {final _that = this;
 switch (_that) {
-case _TimetableLoadDataForGroup():
-return loadDataForGroup();case _TimetableLoadDataForTeacher():
-return loadDataForTeacher();case _:
+case _TimetableLoadData():
+return loadData();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -165,11 +160,10 @@ return loadDataForTeacher();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadDataForGroup,TResult? Function()?  loadDataForTeacher,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadData,}) {final _that = this;
 switch (_that) {
-case _TimetableLoadDataForGroup() when loadDataForGroup != null:
-return loadDataForGroup();case _TimetableLoadDataForTeacher() when loadDataForTeacher != null:
-return loadDataForTeacher();case _:
+case _TimetableLoadData() when loadData != null:
+return loadData();case _:
   return null;
 
 }
@@ -180,8 +174,8 @@ return loadDataForTeacher();case _:
 /// @nodoc
 
 
-class _TimetableLoadDataForGroup implements TimetableEvent {
-  const _TimetableLoadDataForGroup();
+class _TimetableLoadData implements TimetableEvent {
+  const _TimetableLoadData();
   
 
 
@@ -191,7 +185,7 @@ class _TimetableLoadDataForGroup implements TimetableEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimetableLoadDataForGroup);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimetableLoadData);
 }
 
 
@@ -200,39 +194,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'TimetableEvent.loadDataForGroup()';
-}
-
-
-}
-
-
-
-
-/// @nodoc
-
-
-class _TimetableLoadDataForTeacher implements TimetableEvent {
-  const _TimetableLoadDataForTeacher();
-  
-
-
-
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimetableLoadDataForTeacher);
-}
-
-
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'TimetableEvent.loadDataForTeacher()';
+  return 'TimetableEvent.loadData()';
 }
 
 

@@ -1,6 +1,5 @@
 import 'package:sfu/src/feature/timetable/domain/entity/timetable/timetable.dart';
 
 abstract class TimetableRepository {
-  Future<Timetable> getTimetableForGroup();
-  Future<Timetable> getTimetableForTeacher();
+  Future<Timetable> getTimetable();
 }
