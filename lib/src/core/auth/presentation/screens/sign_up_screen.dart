@@ -14,7 +14,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   late final nameController = TextEditingController();
-  late final surnameController = TextEditingController();
+  late final roleController = TextEditingController();
+  late final groupController = TextEditingController();
   late final loginController = TextEditingController();
   late final passwordController = TextEditingController();
   late final password2Controller = TextEditingController();
@@ -22,7 +23,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void dispose() {
     nameController.dispose();
-    surnameController.dispose();
+    roleController.dispose();
+    groupController.dispose();
     loginController.dispose();
     passwordController.dispose();
     password2Controller.dispose();
@@ -71,11 +73,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 24),
                     TextField(
-                      controller: surnameController,
-                      decoration: InputDecoration(hintText: t?.authSurnameHint),
-                    ),
-                    const SizedBox(height: 24),
-                    TextField(
                       controller: loginController,
                       decoration: InputDecoration(hintText: t?.authLoginHint),
                     ),
@@ -94,6 +91,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
+                    TextField(
+                      controller: groupController,
+                      decoration: InputDecoration(hintText: 'Группа'),
+                    ),
+                    const SizedBox(height: 24),
+                    TextField(
+                      controller: roleController,
+                      decoration: InputDecoration(hintText: 'Роль'),
+                    ),
+                    const SizedBox(height: 24),
                     ElevatedButton(
                       onPressed: () {
                         context.read<AuthBloc>().add(
@@ -101,8 +108,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             login: loginController.text,
                             password1: passwordController.text,
                             password2: password2Controller.text,
-                            firstName: nameController.text,
-                            lastName: surnameController.text,
+                            name: nameController.text,
+                            group: groupController.text,
+                            role: roleController.text,
                           ),
                         );
                       },

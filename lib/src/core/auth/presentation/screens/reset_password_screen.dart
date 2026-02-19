@@ -77,7 +77,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       onPressed: () {
                         context.read<AuthBloc>().add(
                           AuthEvent.resetPassword(
-                            newPassword: passwordController.text,
+                            password: passwordController.text,
+                            newPassword: password2Controller.text,
                           ),
                         );
                       },

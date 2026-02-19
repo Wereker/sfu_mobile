@@ -8,6 +8,7 @@ class AuthEvent with _$AuthEvent {
   }) = _AuthSignIn;
 
   const factory AuthEvent.resetPassword({
+    required String password,
     required String newPassword,
   }) = _AuthResetPassword;
 
@@ -15,8 +16,9 @@ class AuthEvent with _$AuthEvent {
     required String login,
     required String password1,
     required String password2,
-    required String firstName,
-    required String lastName
+    required String name,
+    required String role,
+    required String group,
   }) = _AuthSignUp;
 
   const factory AuthEvent.logout() = _AuthLogout;

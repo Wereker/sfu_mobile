@@ -1,5 +1,10 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:sfu/src/core/auth/data/repository/auth_repository_mock.dart';
+import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
+import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source_impl.dart';
+import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
+import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_mock.dart';
+import 'package:sfu/src/core/auth/data/repository/auth_repository_impl.dart';
 import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case_impl.dart';
@@ -30,8 +35,6 @@ import 'package:sfu/src/core/settings/domain/use_case/update_app_localization_us
 import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case.dart';
 import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case_impl.dart';
 import 'package:sfu/src/core/settings/presentation/bloc/settings_bloc.dart';
-import 'package:sfu/src/feature/timetable/data/data_source/local/timetable_local_data_source.dart';
-import 'package:sfu/src/feature/timetable/data/data_source/local/timetable_local_data_source_impl.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_impl.dart';
 import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_impl.dart';
@@ -39,10 +42,16 @@ import 'package:sfu/src/feature/timetable/domain/repository/timetable_repository
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_use_case_impl.dart';
 import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  final prefs = await SharedPreferences.getInstance();
+  final secureStorage = const FlutterSecureStorage();
+
+  _initLocalStorage(prefs, secureStorage);
+
   //Data Sources
   _initDataSources();
 
@@ -59,26 +68,46 @@ Future<void> init() async {
   _initWidgets();
 }
 
-void _initDataSources() {
-  sl.registerSingleton<SettingsLocalDataSource>(SettingsLocalDataSourceImpl());
+void _initLocalStorage(
+  SharedPreferences prefs,
+  FlutterSecureStorage storage,
+) async {
+  sl.registerSingleton<SharedPreferences>(prefs);
+  sl.registerSingleton<FlutterSecureStorage>(storage);
+}
 
-  sl.registerSingleton<TimetableLocalDataSource>(
-    TimetableLocalDataSourceImpl(),
+Future<void> _initDataSources() async {
+  sl.registerSingleton<AuthLocalDataSource>(
+    AuthLocalDataSourceImpl(
+      sl.get<FlutterSecureStorage>(),
+      sl.get<SharedPreferences>(),
+    ),
   );
+  sl.registerSingleton<AuthRemoteDataSource>(AuthRemoteDataSourceMock());
+
+  sl.registerSingleton<SettingsLocalDataSource>(
+    SettingsLocalDataSourceImpl(sl.get<SharedPreferences>()),
+  );
+
   sl.registerSingleton<TimetableRemoteDataSource>(
     TimetableRemoteDataSourceImpl(),
   );
 }
 
 void _initRepositories() {
-  sl.registerSingleton<AuthRepository>(AuthRepositoryMock());
+  sl.registerSingleton<AuthRepository>(
+    AuthRepositoryImpl(
+      local: sl<AuthLocalDataSource>(),
+      remote: sl<AuthRemoteDataSource>(),
+    ),
+  );
   sl.registerSingleton<ProfileRepository>(ProfileRepositroyMock());
   sl.registerSingleton<SettingsRepository>(
     SettingsRepositoryImpl(sl<SettingsLocalDataSource>()),
   );
   sl.registerSingleton<TimetableRepository>(
     TimetableRepositoryImpl(
-      locale: sl<TimetableLocalDataSource>(),
+      locale: sl<AuthLocalDataSource>(),
       remote: sl<TimetableRemoteDataSource>(),
     ),
   );
@@ -142,9 +171,7 @@ void _initBloc() {
   );
 
   sl.registerFactory<TimetableBloc>(
-    () => TimetableBloc(
-      sl<TimetableLoadDataUseCase>(),
-    ),
+    () => TimetableBloc(sl<TimetableLoadDataUseCase>()),
   );
 }
 

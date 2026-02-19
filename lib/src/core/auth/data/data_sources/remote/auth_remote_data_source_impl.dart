@@ -12,11 +12,45 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<TokenDTO> signUp(
     String login,
     String password,
-    String firstName,
-    String lastName,
-    String phone,
+    String name,
+    String group,
+    String subgroup,
+    String role,
   ) {
     // TODO: implement signUp
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<TokenDTO> resetPassword(
+    String password,
+    String newPassword,
+  ) {
+    // TODO: implement resetPassword
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<TokenDTO> refreshToken(String token) {
+    // TODO: implement refreshToken
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getUserGroup() {
+    // TODO: implement getUserGroup
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getUserRole() {
+    // TODO: implement getUserRole
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getUserSubgroup() {
+    // TODO: implement getUserSubgroup
     throw UnimplementedError();
   }
 }

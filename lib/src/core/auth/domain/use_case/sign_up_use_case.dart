@@ -3,7 +3,8 @@ abstract class SignUpUseCase {
     required String login,
     required String password1,
     required String password2,
-    required String firstName,
-    required String lastName
+    required String name,
+    required String role,
+    required String group,
   });
 }

@@ -20,7 +20,6 @@ class TimetableRemoteDataSourceImpl implements TimetableRemoteDataSource {
       queryParameters: {'target': '$group ($subgroup)'},
       options: Options(headers: {'Accept': 'application/json'}),
     );
-
     final Map<String, dynamic> json = response.data;
     final List<dynamic> rawLessons = json['timetable'] ?? [];
     final Map<String, List<LessonDTO>> lessonsByWeek = {'1': [], '2': []};

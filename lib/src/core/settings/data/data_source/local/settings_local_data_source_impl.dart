@@ -4,31 +4,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
   static const _keyLocale = 'sfu_locale';
   static const _keyThemeMode = 'sfu_theme_mode';
+  final SharedPreferences _pref;
+
+  const SettingsLocalDataSourceImpl(this._pref);
 
   @override
   Future<String?> getLocale() async {
-    final prefs = await SharedPreferences.getInstance();
-    final locale = prefs.getString(_keyLocale);
+    final locale = _pref.getString(_keyLocale);
     return locale?.isNotEmpty == true ? locale : null;
   }
 
   @override
   Future<String?> getTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    final theme = prefs.getString(_keyThemeMode);
+    final theme = _pref.getString(_keyThemeMode);
     return theme?.isNotEmpty == true ? theme : null;
   }
 
   @override
   Future<void> setLocale(String locale) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_keyLocale, locale);
+    await _pref.setString(_keyLocale, locale);
   }
 
   @override
   Future<void> setTheme(String theme) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_keyThemeMode, theme);
+    await _pref.setString(_keyThemeMode, theme);
   }
 
 }
