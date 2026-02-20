@@ -521,7 +521,7 @@ String toString() {
 
 
 class _TimetableSuccess implements TimetableState {
-  const _TimetableSuccess(this.timetable);
+  const _TimetableSuccess({required this.timetable});
   
 
  final  Timetable timetable;
@@ -575,7 +575,7 @@ class __$TimetableSuccessCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? timetable = null,}) {
   return _then(_TimetableSuccess(
-null == timetable ? _self.timetable : timetable // ignore: cast_nullable_to_non_nullable
+timetable: null == timetable ? _self.timetable : timetable // ignore: cast_nullable_to_non_nullable
 as Timetable,
   ));
 }

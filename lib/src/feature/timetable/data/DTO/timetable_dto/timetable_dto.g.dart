@@ -10,7 +10,7 @@ _TimetableDTO _$TimetableDTOFromJson(Map<String, dynamic> json) =>
     _TimetableDTO(
       target: json['target'] as String,
       type: json['type'] as String,
-      institute: json['institute'] as String,
+      institute: json['institute'] as String?,
       weeks: (json['weeks'] as List<dynamic>)
           .map((e) => WeekDTO.fromJson(e as Map<String, dynamic>))
           .toList(),

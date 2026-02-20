@@ -11,6 +11,7 @@ abstract class LessonDTO with _$LessonDTO {
     required String subject,
     required String type,
     required String place,
+    required String building,
     required String sync,
     @Default('') String teacher,
     @Default([]) List<String> groups,

@@ -12,6 +12,8 @@ abstract class Lesson with _$Lesson {
     required String subject,
     required String type,
     required String place,
+    required String building,
+    required List<String> groups,
     required String sync,
   }) = _Lesson;
 
@@ -22,6 +24,8 @@ abstract class Lesson with _$Lesson {
     subject: dto.subject,
     type: dto.type,
     place: dto.place,
+    building: dto.building,
+    groups:  dto.groups,
     sync: dto.sync,
   );
 }

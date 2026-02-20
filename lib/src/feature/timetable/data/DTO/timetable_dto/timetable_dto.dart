@@ -9,7 +9,7 @@ abstract class TimetableDTO with _$TimetableDTO {
   const factory TimetableDTO({
     required String target,
     required String type,
-    required String institute,
+    String? institute,
     required List<WeekDTO> weeks,
   }) = _TimetableDTO;
 

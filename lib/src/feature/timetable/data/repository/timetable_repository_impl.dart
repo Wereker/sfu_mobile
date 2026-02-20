@@ -23,10 +23,10 @@ class TimetableRepositoryImpl implements TimetableRepository {
       final group = await _locale.getUserGroup() ?? 'КИ23-13Б';
       final subgroup = await _locale.getUserSubgroup() ?? '1 подгруппа';
 
-      timetableDTO = await _remote.getTimetableForGroup(group, subgroup);
+      timetableDTO = await _remote.getTimetableForTarget('$group ($subgroup)');
     } else {
       // TODO: добавить получение расписание по имени преподавателя
-      timetableDTO = await _remote.getTimetableForTeacher("Кушнаренко А. В.");
+      timetableDTO = await _remote.getTimetableForTarget("Кушнаренко А. В.");
     }
     return Timetable.fromDTO(timetableDTO);
   }

@@ -16,7 +16,7 @@ abstract class Timetable with _$Timetable {
   static Timetable fromDTO(TimetableDTO dto) => Timetable(
     target: dto.target,
     type: dto.type,
-    institute: dto.institute,
+    institute: dto.institute ?? '',
     weeks: dto.weeks.map((week) => Week.fromDTO(week)).toList(),
   );
 }

@@ -35,15 +35,22 @@ import 'package:sfu/src/core/settings/domain/use_case/update_app_localization_us
 import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case.dart';
 import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case_impl.dart';
 import 'package:sfu/src/core/settings/presentation/bloc/settings_bloc.dart';
+import 'package:sfu/src/feature/timetable/data/data_source/remote/suggestion_remote_data_source.dart';
+import 'package:sfu/src/feature/timetable/data/data_source/remote/suggestion_remote_data_source_impl.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_impl.dart';
+import 'package:sfu/src/feature/timetable/data/repository/suggestion_repository_impl.dart';
 import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_impl.dart';
+import 'package:sfu/src/feature/timetable/domain/repository/suggestion_repository.dart';
 import 'package:sfu/src/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_target_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_target_use_case_impl.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_use_case_impl.dart';
-import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/suggestions_load_use_case.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/suggestions_load_use_case_impl.dart';
+import 'package:sfu/src/feature/timetable/presentation/bloc/suggestions/suggestions_bloc.dart';
+import 'package:sfu/src/feature/timetable/presentation/bloc/timetable/timetable_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -94,6 +101,10 @@ Future<void> _initDataSources() async {
   sl.registerSingleton<TimetableRemoteDataSource>(
     TimetableRemoteDataSourceImpl(),
   );
+
+  sl.registerSingleton<SuggestionRemoteDataSource>(
+    SuggestionRemoteDataSourceImpl(),
+  );
 }
 
 void _initRepositories() {
@@ -112,6 +123,10 @@ void _initRepositories() {
       locale: sl<AuthLocalDataSource>(),
       remote: sl<TimetableRemoteDataSource>(),
     ),
+  );
+
+  sl.registerSingleton<SuggestionRepository>(
+    SuggestionRepositoryImpl(remote: sl<SuggestionRemoteDataSource>()),
   );
 }
 
@@ -152,6 +167,9 @@ void _initUseCases() {
   sl.registerFactory<TimetableLoadDataForTargetUseCase>(
     () => TimetableLoadDataForTargetUseCaseImpl(sl<TimetableRepository>()),
   );
+  sl.registerFactory<SuggestionsLoadUseCase>(
+    () => SuggestionsLoadUseCaseImpl(sl<SuggestionRepository>()),
+  );
 }
 
 void _initBloc() {
@@ -176,7 +194,15 @@ void _initBloc() {
   );
 
   sl.registerFactory<TimetableBloc>(
-    () => TimetableBloc(sl<TimetableLoadDataUseCase>(), sl<TimetableLoadDataForTargetUseCase>()),
+    () => TimetableBloc(
+      timetableLoadDataUseCase: sl<TimetableLoadDataUseCase>(),
+      timetableLoadDataForTargetUseCase:
+          sl<TimetableLoadDataForTargetUseCase>(),
+    ),
+  );
+
+  sl.registerFactory<SuggestionsBloc>(
+    () => SuggestionsBloc(sl<SuggestionsLoadUseCase>()),
   );
 }
 

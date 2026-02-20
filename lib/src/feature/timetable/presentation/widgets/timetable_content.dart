@@ -1,26 +1,60 @@
 part of '../screens/timetable_screen.dart';
 
-class _TimetableContent extends StatefulWidget {
-  final Timetable timetable;
-
-  const _TimetableContent({required this.timetable});
+class _TimetableContent extends StatelessWidget {
+  const _TimetableContent();
 
   @override
-  State<_TimetableContent> createState() => _TimetableContentState();
+  Widget build(BuildContext context) {
+    return BlocBuilder<TimetableBloc, TimetableState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          loading: () => const _LoadingContent(),
+          success: (timetable) => _TimetableContentState(timetable: timetable),
+          error: (message) => const _ErrorContent(),
+          orElse: () => const _EmptyContent(),
+        );
+      },
+    );
+  }
 }
 
-class _TimetableContentState extends State<_TimetableContent> {
-  String _selectedWeek = '1';
+class _LoadingContent extends StatelessWidget {
+  const _LoadingContent();
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: _TimetableSearchBar(),
+              ),
+            ),
+          ),
+          SliverFillRemaining(
+            child: Center(
+              child: LoadingIndicatorWidget(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Новый виджет для ошибки
+class _ErrorContent extends StatelessWidget {
+  const _ErrorContent();
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-
-    final week = widget.timetable.weeks.firstWhere(
-      (w) => w.week == _selectedWeek,
-      orElse: () => widget.timetable.weeks.first,
-    );
-    final lessonsByDay = _groupLessonsByDay(week.lessons);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -31,19 +65,116 @@ class _TimetableContentState extends State<_TimetableContent> {
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                ),
-                child: TimetableSearchBar(),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: _TimetableSearchBar(),
+              ),
+            ),
+          ),
+          SliverFillRemaining(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error, size: 48, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text(
+                    '${t!.timetableError}: Не удалось загрузить расписание',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EmptyContent extends StatelessWidget {
+  const _EmptyContent();
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: _TimetableSearchBar(),
+              ),
+            ),
+          ),
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                t!.timetableNotFoundData,
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TimetableContentState extends StatefulWidget {
+  final Timetable timetable;
+
+  const _TimetableContentState({required this.timetable});
+
+  @override
+  State<_TimetableContentState> createState() => _TimetableContentStateState();
+}
+
+class _TimetableContentStateState extends State<_TimetableContentState> {
+  String _selectedWeek = '1';
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
+    final week = widget.timetable.weeks.firstWhere(
+          (w) => w.week == _selectedWeek,
+      orElse: () => widget.timetable.weeks.first,
+    );
+    final lessonsByDay = _groupLessonsByDay(week.lessons);
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: CustomScrollView(
+        slivers: [
+          // Поиск остаётся без изменений
+          SliverToBoxAdapter(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: _TimetableSearchBar(),
               ),
             ),
           ),
 
-          // Остальной контент без изменений
+          // Основной контент с расписанием
           SliverPadding(
             padding: const EdgeInsets.all(16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
+                Text(
+                  'Расписание ${widget.timetable.target}',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
                 _buildWeekToggleButtons(),
                 const SizedBox(height: 16),
                 if (lessonsByDay.isEmpty)

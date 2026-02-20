@@ -12,6 +12,7 @@ _LessonDTO _$LessonDTOFromJson(Map<String, dynamic> json) => _LessonDTO(
   subject: json['subject'] as String,
   type: json['type'] as String,
   place: json['place'] as String,
+  building: json['building'] as String,
   sync: json['sync'] as String,
   teacher: json['teacher'] as String? ?? '',
   groups:
@@ -26,6 +27,7 @@ Map<String, dynamic> _$LessonDTOToJson(_LessonDTO instance) =>
       'subject': instance.subject,
       'type': instance.type,
       'place': instance.place,
+      'building': instance.building,
       'sync': instance.sync,
       'teacher': instance.teacher,
       'groups': instance.groups,

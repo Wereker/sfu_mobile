@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TimetableDTO {
 
- String get target; String get type; String get institute; List<WeekDTO> get weeks;
+ String get target; String get type; String? get institute; List<WeekDTO> get weeks;
 /// Create a copy of TimetableDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $TimetableDTOCopyWith<$Res>  {
   factory $TimetableDTOCopyWith(TimetableDTO value, $Res Function(TimetableDTO) _then) = _$TimetableDTOCopyWithImpl;
 @useResult
 $Res call({
- String target, String type, String institute, List<WeekDTO> weeks
+ String target, String type, String? institute, List<WeekDTO> weeks
 });
 
 
@@ -65,12 +65,12 @@ class _$TimetableDTOCopyWithImpl<$Res>
 
 /// Create a copy of TimetableDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? target = null,Object? type = null,Object? institute = null,Object? weeks = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? target = null,Object? type = null,Object? institute = freezed,Object? weeks = null,}) {
   return _then(_self.copyWith(
 target: null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,institute: null == institute ? _self.institute : institute // ignore: cast_nullable_to_non_nullable
-as String,weeks: null == weeks ? _self.weeks : weeks // ignore: cast_nullable_to_non_nullable
+as String,institute: freezed == institute ? _self.institute : institute // ignore: cast_nullable_to_non_nullable
+as String?,weeks: null == weeks ? _self.weeks : weeks // ignore: cast_nullable_to_non_nullable
 as List<WeekDTO>,
   ));
 }
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String target,  String type,  String institute,  List<WeekDTO> weeks)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String target,  String type,  String? institute,  List<WeekDTO> weeks)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TimetableDTO() when $default != null:
 return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
@@ -177,7 +177,7 @@ return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String target,  String type,  String institute,  List<WeekDTO> weeks)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String target,  String type,  String? institute,  List<WeekDTO> weeks)  $default,) {final _that = this;
 switch (_that) {
 case _TimetableDTO():
 return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
@@ -197,7 +197,7 @@ return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String target,  String type,  String institute,  List<WeekDTO> weeks)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String target,  String type,  String? institute,  List<WeekDTO> weeks)?  $default,) {final _that = this;
 switch (_that) {
 case _TimetableDTO() when $default != null:
 return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
@@ -212,12 +212,12 @@ return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
 @JsonSerializable()
 
 class _TimetableDTO implements TimetableDTO {
-  const _TimetableDTO({required this.target, required this.type, required this.institute, required final  List<WeekDTO> weeks}): _weeks = weeks;
+  const _TimetableDTO({required this.target, required this.type, this.institute, required final  List<WeekDTO> weeks}): _weeks = weeks;
   factory _TimetableDTO.fromJson(Map<String, dynamic> json) => _$TimetableDTOFromJson(json);
 
 @override final  String target;
 @override final  String type;
-@override final  String institute;
+@override final  String? institute;
  final  List<WeekDTO> _weeks;
 @override List<WeekDTO> get weeks {
   if (_weeks is EqualUnmodifiableListView) return _weeks;
@@ -259,7 +259,7 @@ abstract mixin class _$TimetableDTOCopyWith<$Res> implements $TimetableDTOCopyWi
   factory _$TimetableDTOCopyWith(_TimetableDTO value, $Res Function(_TimetableDTO) _then) = __$TimetableDTOCopyWithImpl;
 @override @useResult
 $Res call({
- String target, String type, String institute, List<WeekDTO> weeks
+ String target, String type, String? institute, List<WeekDTO> weeks
 });
 
 
@@ -276,12 +276,12 @@ class __$TimetableDTOCopyWithImpl<$Res>
 
 /// Create a copy of TimetableDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? target = null,Object? type = null,Object? institute = null,Object? weeks = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? target = null,Object? type = null,Object? institute = freezed,Object? weeks = null,}) {
   return _then(_TimetableDTO(
 target: null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,institute: null == institute ? _self.institute : institute // ignore: cast_nullable_to_non_nullable
-as String,weeks: null == weeks ? _self._weeks : weeks // ignore: cast_nullable_to_non_nullable
+as String,institute: freezed == institute ? _self.institute : institute // ignore: cast_nullable_to_non_nullable
+as String?,weeks: null == weeks ? _self._weeks : weeks // ignore: cast_nullable_to_non_nullable
 as List<WeekDTO>,
   ));
 }

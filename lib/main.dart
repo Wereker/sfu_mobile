@@ -15,11 +15,10 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              di.sl<AuthBloc>()..add(AuthEvent.checkAuthStatus()),
+          create: (_) => di.sl<AuthBloc>()..add(AuthEvent.checkAuthStatus()),
         ),
         BlocProvider(
-          create: (context) =>
+          create: (_) =>
               di.sl<SettingsBloc>()..add(SettingsEvent.getAppSettings()),
         ),
       ],

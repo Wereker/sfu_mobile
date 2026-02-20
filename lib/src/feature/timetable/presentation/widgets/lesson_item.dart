@@ -82,24 +82,53 @@ class _LessonItem extends StatelessWidget {
               ),
             ],
           ),
-          if (lesson.place.isNotEmpty) const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                lesson.teacher,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
+          const SizedBox(height: 10),
+          if (lesson.teacher.isNotEmpty || lesson.groups.isNotEmpty || lesson.place.isNotEmpty)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Левая часть: преподаватель ИЛИ колонка групп
+                Expanded(
+                  child: lesson.teacher.isNotEmpty
+                      ? Text(
+                    lesson.teacher,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 14,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                      : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: lesson.groups
+                        .where((g) => g.isNotEmpty)
+                        .map((group) => Text(
+                      group,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: 14,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ))
+                        .toList(),
+                  ),
                 ),
-              ),
-              Text(
-                lesson.place,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-            ],
-          ),
+                if (lesson.place.isNotEmpty)
+                  Text(
+                    lesson.place.length > 30 ? lesson.building : lesson.place,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 14,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            ),
           if (!isLast) const Divider(),
         ],
       ),
