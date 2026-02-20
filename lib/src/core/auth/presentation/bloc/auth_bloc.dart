@@ -46,10 +46,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.error(error: "Ошибка авторизации"));
         }
       },
-      resetPassword: (password) async {
+      resetPassword: (password, newPassword) async {
         emit(AuthState.loading());
         try {
-          await resetPasswordUseCase.call(password);
+          await resetPasswordUseCase.call(password, newPassword);
           emit(AuthState.unauthorized());
         } on NetworkError {
           emit(AuthState.error(error: "Ошибка подключения к интернету"));
@@ -75,8 +75,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             String login,
             String password1,
             String password2,
-            String firstName,
-            String lastName,
+            String name,
+            String role,
+            String group,
           ) async {
             emit(AuthState.loading());
             try {
@@ -84,10 +85,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 login: login,
                 password1: password1,
                 password2: password2,
-                firstName: firstName,
-                lastName: lastName,
+                name: name,
+                role: role,
+                group: group,
               );
-              emit(AuthState.unauthorized());
+              emit(AuthState.authorized());
             } on InvalidCredentialsError {
               emit(AuthState.error(error: "Неккоректно введены данные"));
             } on NetworkError {
@@ -101,8 +103,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         try {
           await checkAuthStatusUseCase.call();
-          // emit(AuthState.authorized());
-          emit(AuthState.unauthorized());
+          emit(AuthState.authorized());
         } catch (_) {
           emit(AuthState.unauthorized());
         }

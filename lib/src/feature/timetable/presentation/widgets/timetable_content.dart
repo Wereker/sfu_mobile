@@ -1,0 +1,285 @@
+part of '../screens/timetable_screen.dart';
+
+class _TimetableContent extends StatelessWidget {
+  const _TimetableContent();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TimetableBloc, TimetableState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          loading: () => const _LoadingContent(),
+          success: (timetable) => _TimetableContentState(timetable: timetable),
+          error: (message) => const _ErrorContent(),
+          orElse: () => const _EmptyContent(),
+        );
+      },
+    );
+  }
+}
+
+class _LoadingContent extends StatelessWidget {
+  const _LoadingContent();
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: _TimetableSearchBar(),
+              ),
+            ),
+          ),
+          SliverFillRemaining(
+            child: Center(
+              child: LoadingIndicatorWidget(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Новый виджет для ошибки
+class _ErrorContent extends StatelessWidget {
+  const _ErrorContent();
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: _TimetableSearchBar(),
+              ),
+            ),
+          ),
+          SliverFillRemaining(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error, size: 48, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text(
+                    '${t!.timetableError}: Не удалось загрузить расписание',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EmptyContent extends StatelessWidget {
+  const _EmptyContent();
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: _TimetableSearchBar(),
+              ),
+            ),
+          ),
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                t!.timetableNotFoundData,
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TimetableContentState extends StatefulWidget {
+  final Timetable timetable;
+
+  const _TimetableContentState({required this.timetable});
+
+  @override
+  State<_TimetableContentState> createState() => _TimetableContentStateState();
+}
+
+class _TimetableContentStateState extends State<_TimetableContentState> {
+  String _selectedWeek = '1';
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
+    final week = widget.timetable.weeks.firstWhere(
+          (w) => w.week == _selectedWeek,
+      orElse: () => widget.timetable.weeks.first,
+    );
+    final lessonsByDay = _groupLessonsByDay(week.lessons);
+
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: CustomScrollView(
+        slivers: [
+          // Поиск остаётся без изменений
+          SliverToBoxAdapter(
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: _TimetableSearchBar(),
+              ),
+            ),
+          ),
+
+          // Основной контент с расписанием
+          SliverPadding(
+            padding: const EdgeInsets.all(16),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                Text(
+                  'Расписание ${widget.timetable.target}',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                _buildWeekToggleButtons(),
+                const SizedBox(height: 16),
+                if (lessonsByDay.isEmpty)
+                  Center(
+                    child: Text(
+                      t!.timetableNoLessonsThisWeek,
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    ),
+                  )
+                else
+                  ..._buildDayCards(lessonsByDay),
+                SizedBox(height: MediaQuery.of(context).padding.bottom),
+              ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Map<int, List<Lesson>> _groupLessonsByDay(List<Lesson> lessons) {
+    final grouped = <int, List<Lesson>>{};
+    for (int day = 1; day <= 7; day++) {
+      grouped[day] = [];
+    }
+
+    for (final lesson in lessons) {
+      final day = int.tryParse(lesson.day) ?? 0;
+      if (day >= 1 && day <= 7) {
+        grouped[day]!.add(lesson);
+      }
+    }
+    return grouped;
+  }
+
+  List<Widget> _buildDayCards(Map<int, List<Lesson>> lessonsByDay) {
+    final sortedDays = lessonsByDay.keys.toList()..sort();
+
+    return sortedDays.map((dayNumber) {
+      final lessons = lessonsByDay[dayNumber]!;
+      return _DayLessonsCard(dayNumber: dayNumber, lessons: lessons);
+    }).toList();
+  }
+
+  Widget _buildWeekToggleButtons() {
+    final t = AppLocalizations.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          _buildWeekButton(
+            label: t!.timetableOddWeek,
+            week: '1',
+            isSelected: _selectedWeek == '1',
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(12),
+              bottomLeft: Radius.circular(12),
+            ),
+          ),
+          _buildWeekButton(
+            label: t.timetableEvenWeek,
+            week: '2',
+            isSelected: _selectedWeek == '2',
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(12),
+              bottomRight: Radius.circular(12),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeekButton({
+    required String label,
+    required String week,
+    required bool isSelected,
+    required BorderRadius borderRadius,
+  }) {
+    return Expanded(
+      child: TextButton(
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: isSelected
+              ? Colors.orange.withValues(alpha: 0.1)
+              : Colors.transparent,
+          foregroundColor: isSelected ? Colors.orange : Colors.grey[800],
+          shape: RoundedRectangleBorder(
+            borderRadius: borderRadius,
+            side: BorderSide.none,
+          ),
+        ),
+        onPressed: () => setState(() => _selectedWeek = week),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
+}

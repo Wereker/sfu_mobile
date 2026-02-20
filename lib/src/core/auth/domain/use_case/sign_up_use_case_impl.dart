@@ -11,18 +11,25 @@ class SignUpUseCaseImpl implements SignUpUseCase {
     required String login,
     required String password1,
     required String password2,
-    required String firstName,
-    required String lastName
+    required String name,
+    required String role,
+    required String group,
   }) async {
     if (password1 != password2) {
-
+      throw Exception();
     }
 
-    return await authRepo.singUp(
+    final parts = group.split('(');
+    final shortGroup = parts[0].trim();
+    final subgroup = parts[1].replaceAll(')', '').trim();
+
+    return await authRepo.signUp(
       login: login,
       password: password1,
-      firstName: firstName,
-      lastName: lastName,
+      name: name,
+      group: shortGroup,
+      subgroup: subgroup,
+      role: role,
     );
   }
 }

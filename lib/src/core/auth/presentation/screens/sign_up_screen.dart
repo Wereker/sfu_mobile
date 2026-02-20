@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -13,7 +14,8 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   late final nameController = TextEditingController();
-  late final surnameController = TextEditingController();
+  late final roleController = TextEditingController();
+  late final groupController = TextEditingController();
   late final loginController = TextEditingController();
   late final passwordController = TextEditingController();
   late final password2Controller = TextEditingController();
@@ -21,7 +23,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void dispose() {
     nameController.dispose();
-    surnameController.dispose();
+    roleController.dispose();
+    groupController.dispose();
     loginController.dispose();
     passwordController.dispose();
     password2Controller.dispose();
@@ -66,31 +69,36 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 50),
                     TextField(
                       controller: nameController,
-                      decoration: InputDecoration(hintText: t?.nameHint),
-                    ),
-                    const SizedBox(height: 24),
-                    TextField(
-                      controller: surnameController,
-                      decoration: InputDecoration(hintText: t?.surnameHint),
+                      decoration: InputDecoration(hintText: t?.authNameHint),
                     ),
                     const SizedBox(height: 24),
                     TextField(
                       controller: loginController,
-                      decoration: InputDecoration(hintText: t?.loginHint),
+                      decoration: InputDecoration(hintText: t?.authLoginHint),
                     ),
                     const SizedBox(height: 24),
                     TextField(
                       controller: passwordController,
                       obscureText: true,
-                      decoration: InputDecoration(hintText: t?.passwordHint),
+                      decoration: InputDecoration(hintText: t?.authPasswordHint),
                     ),
                     const SizedBox(height: 24),
                     TextField(
                       controller: password2Controller,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: t?.passwordRepeatHint,
+                        hintText: t?.authPasswordRepeatHint,
                       ),
+                    ),
+                    const SizedBox(height: 24),
+                    TextField(
+                      controller: groupController,
+                      decoration: InputDecoration(hintText: 'Группа'),
+                    ),
+                    const SizedBox(height: 24),
+                    TextField(
+                      controller: roleController,
+                      decoration: InputDecoration(hintText: 'Роль'),
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton(
@@ -100,14 +108,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             login: loginController.text,
                             password1: passwordController.text,
                             password2: password2Controller.text,
-                            firstName: nameController.text,
-                            lastName: surnameController.text,
+                            name: nameController.text,
+                            group: groupController.text,
+                            role: roleController.text,
                           ),
                         );
                       },
                       child: state.maybeWhen(
-                        loading: () => CircularProgressIndicator(),
-                        orElse: () => Text(t!.signUpButton),
+                        loading: () => LoadingIndicatorWidget(),
+                        orElse: () => Text(t!.authSignUpButton),
                       ),
                     ),
                   ],

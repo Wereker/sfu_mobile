@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
 
 class ProfileBodyWidget extends StatelessWidget {
@@ -9,6 +10,8 @@ class ProfileBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -27,7 +30,7 @@ class ProfileBodyWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('${user.institute} ${user.group}'),
-                    Text('Номер студенческого:'),
+                    Text('${t!.profileStudentNumber}:'),
                     Text('№${user.recordBookNumber}'),
                   ],
                 ),
@@ -35,6 +38,7 @@ class ProfileBodyWidget extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Card(
+              clipBehavior: Clip.antiAlias,
               child: ListTile(
                 leading: SvgPicture.asset(
                   'assets/images/recordBook.svg',
@@ -43,11 +47,13 @@ class ProfileBodyWidget extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                title: Text('Зачетная книжка'),
+                title: Text(t.profileGradeBook),
+                onTap: () { },
               ),
             ),
             const SizedBox(height: 10),
             Card(
+              clipBehavior: Clip.antiAlias,
               child: ListTile(
                 leading: SvgPicture.asset(
                   'assets/images/list.svg',
@@ -56,11 +62,13 @@ class ProfileBodyWidget extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                title: Text('Список приказов'),
+                title: Text(t.profileListOrders),
+                onTap: () { },
               ),
             ),
             const SizedBox(height: 10),
             Card(
+              clipBehavior: Clip.antiAlias,
               child: ListTile(
                 leading: SvgPicture.asset(
                   'assets/images/event-schedule.svg',
@@ -69,17 +77,22 @@ class ProfileBodyWidget extends StatelessWidget {
                     BlendMode.srcIn,
                   ),
                 ),
-                title: Text('Учебный план'),
+                title: Text(t.profileStudyPlan),
+                onTap: () { },
               ),
             ),
             const SizedBox(height: 10),
             Card(
+              clipBehavior: Clip.antiAlias,
               child: ListTile(
                 leading: Icon(
                   Icons.settings,
                   color: Theme.of(context).colorScheme.primary,
                 ),
-                title: Text('Настройки'),
+                title: Text(t.profileSettings),
+                onTap: () {
+                  Navigator.pushNamed(context, '/settings');
+                },
               ),
             ),
           ],

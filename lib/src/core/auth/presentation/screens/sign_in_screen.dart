@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
+
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -61,14 +63,14 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SizedBox(height: 50),
                   TextField(
                     controller: loginController,
-                    decoration: InputDecoration(hintText: t?.loginHint),
+                    decoration: InputDecoration(hintText: t?.authLoginHint),
                   ),
                   const SizedBox(height: 24),
                   TextField(
                     controller: passwordController,
                     autofillHints: const [AutofillHints.password],
                     obscureText: true,
-                    decoration: InputDecoration(hintText: t?.passwordHint),
+                    decoration: InputDecoration(hintText: t?.authPasswordHint),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
@@ -82,8 +84,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     },
                     child: BlocBuilder<AuthBloc, AuthState>(
                       builder: (context, state) => state.maybeWhen(
-                        loading: () => CircularProgressIndicator(),
-                        orElse: () => Text(t!.signInButton),
+                        loading: () => LoadingIndicatorWidget(),
+                        orElse: () => Text(t!.authSignInButton),
                       ),
                     ),
                   ),
@@ -92,13 +94,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/signUp');
                     },
-                    child: Text(t!.signUpButton),
+                    child: Text(t!.authSignUpButton),
                   ),
                   OutlinedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/resetPassword');
                     },
-                    child: Text(t!.forgotPassword),
+                    child: Text(t.authForgotPassword),
                   ),
                 ],
               ),

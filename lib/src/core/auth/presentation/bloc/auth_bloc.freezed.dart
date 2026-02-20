@@ -131,12 +131,12 @@ return checkAuthStatus(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String login,  String password)?  signIn,TResult Function( String newPassword)?  resetPassword,TResult Function( String login,  String password1,  String password2,  String firstName,  String lastName)?  signUp,TResult Function()?  logout,TResult Function()?  checkAuthStatus,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String login,  String password)?  signIn,TResult Function( String password,  String newPassword)?  resetPassword,TResult Function( String login,  String password1,  String password2,  String name,  String role,  String group)?  signUp,TResult Function()?  logout,TResult Function()?  checkAuthStatus,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
 return signIn(_that.login,_that.password);case _AuthResetPassword() when resetPassword != null:
-return resetPassword(_that.newPassword);case _AuthSignUp() when signUp != null:
-return signUp(_that.login,_that.password1,_that.password2,_that.firstName,_that.lastName);case _AuthLogout() when logout != null:
+return resetPassword(_that.password,_that.newPassword);case _AuthSignUp() when signUp != null:
+return signUp(_that.login,_that.password1,_that.password2,_that.name,_that.role,_that.group);case _AuthLogout() when logout != null:
 return logout();case _AuthCheckAuthStatus() when checkAuthStatus != null:
 return checkAuthStatus();case _:
   return orElse();
@@ -156,12 +156,12 @@ return checkAuthStatus();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String login,  String password)  signIn,required TResult Function( String newPassword)  resetPassword,required TResult Function( String login,  String password1,  String password2,  String firstName,  String lastName)  signUp,required TResult Function()  logout,required TResult Function()  checkAuthStatus,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String login,  String password)  signIn,required TResult Function( String password,  String newPassword)  resetPassword,required TResult Function( String login,  String password1,  String password2,  String name,  String role,  String group)  signUp,required TResult Function()  logout,required TResult Function()  checkAuthStatus,}) {final _that = this;
 switch (_that) {
 case _AuthSignIn():
 return signIn(_that.login,_that.password);case _AuthResetPassword():
-return resetPassword(_that.newPassword);case _AuthSignUp():
-return signUp(_that.login,_that.password1,_that.password2,_that.firstName,_that.lastName);case _AuthLogout():
+return resetPassword(_that.password,_that.newPassword);case _AuthSignUp():
+return signUp(_that.login,_that.password1,_that.password2,_that.name,_that.role,_that.group);case _AuthLogout():
 return logout();case _AuthCheckAuthStatus():
 return checkAuthStatus();case _:
   throw StateError('Unexpected subclass');
@@ -180,12 +180,12 @@ return checkAuthStatus();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String login,  String password)?  signIn,TResult? Function( String newPassword)?  resetPassword,TResult? Function( String login,  String password1,  String password2,  String firstName,  String lastName)?  signUp,TResult? Function()?  logout,TResult? Function()?  checkAuthStatus,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String login,  String password)?  signIn,TResult? Function( String password,  String newPassword)?  resetPassword,TResult? Function( String login,  String password1,  String password2,  String name,  String role,  String group)?  signUp,TResult? Function()?  logout,TResult? Function()?  checkAuthStatus,}) {final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
 return signIn(_that.login,_that.password);case _AuthResetPassword() when resetPassword != null:
-return resetPassword(_that.newPassword);case _AuthSignUp() when signUp != null:
-return signUp(_that.login,_that.password1,_that.password2,_that.firstName,_that.lastName);case _AuthLogout() when logout != null:
+return resetPassword(_that.password,_that.newPassword);case _AuthSignUp() when signUp != null:
+return signUp(_that.login,_that.password1,_that.password2,_that.name,_that.role,_that.group);case _AuthLogout() when logout != null:
 return logout();case _AuthCheckAuthStatus() when checkAuthStatus != null:
 return checkAuthStatus();case _:
   return null;
@@ -267,9 +267,10 @@ as String,
 
 
 class _AuthResetPassword implements AuthEvent {
-  const _AuthResetPassword({required this.newPassword});
+  const _AuthResetPassword({required this.password, required this.newPassword});
   
 
+ final  String password;
  final  String newPassword;
 
 /// Create a copy of AuthEvent
@@ -282,16 +283,16 @@ _$AuthResetPasswordCopyWith<_AuthResetPassword> get copyWith => __$AuthResetPass
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResetPassword&&(identical(other.newPassword, newPassword) || other.newPassword == newPassword));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResetPassword&&(identical(other.password, password) || other.password == password)&&(identical(other.newPassword, newPassword) || other.newPassword == newPassword));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,newPassword);
+int get hashCode => Object.hash(runtimeType,password,newPassword);
 
 @override
 String toString() {
-  return 'AuthEvent.resetPassword(newPassword: $newPassword)';
+  return 'AuthEvent.resetPassword(password: $password, newPassword: $newPassword)';
 }
 
 
@@ -302,7 +303,7 @@ abstract mixin class _$AuthResetPasswordCopyWith<$Res> implements $AuthEventCopy
   factory _$AuthResetPasswordCopyWith(_AuthResetPassword value, $Res Function(_AuthResetPassword) _then) = __$AuthResetPasswordCopyWithImpl;
 @useResult
 $Res call({
- String newPassword
+ String password, String newPassword
 });
 
 
@@ -319,9 +320,10 @@ class __$AuthResetPasswordCopyWithImpl<$Res>
 
 /// Create a copy of AuthEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? newPassword = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? password = null,Object? newPassword = null,}) {
   return _then(_AuthResetPassword(
-newPassword: null == newPassword ? _self.newPassword : newPassword // ignore: cast_nullable_to_non_nullable
+password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as String,newPassword: null == newPassword ? _self.newPassword : newPassword // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -333,14 +335,15 @@ as String,
 
 
 class _AuthSignUp implements AuthEvent {
-  const _AuthSignUp({required this.login, required this.password1, required this.password2, required this.firstName, required this.lastName});
+  const _AuthSignUp({required this.login, required this.password1, required this.password2, required this.name, required this.role, required this.group});
   
 
  final  String login;
  final  String password1;
  final  String password2;
- final  String firstName;
- final  String lastName;
+ final  String name;
+ final  String role;
+ final  String group;
 
 /// Create a copy of AuthEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -352,16 +355,16 @@ _$AuthSignUpCopyWith<_AuthSignUp> get copyWith => __$AuthSignUpCopyWithImpl<_Aut
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthSignUp&&(identical(other.login, login) || other.login == login)&&(identical(other.password1, password1) || other.password1 == password1)&&(identical(other.password2, password2) || other.password2 == password2)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthSignUp&&(identical(other.login, login) || other.login == login)&&(identical(other.password1, password1) || other.password1 == password1)&&(identical(other.password2, password2) || other.password2 == password2)&&(identical(other.name, name) || other.name == name)&&(identical(other.role, role) || other.role == role)&&(identical(other.group, group) || other.group == group));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,login,password1,password2,firstName,lastName);
+int get hashCode => Object.hash(runtimeType,login,password1,password2,name,role,group);
 
 @override
 String toString() {
-  return 'AuthEvent.signUp(login: $login, password1: $password1, password2: $password2, firstName: $firstName, lastName: $lastName)';
+  return 'AuthEvent.signUp(login: $login, password1: $password1, password2: $password2, name: $name, role: $role, group: $group)';
 }
 
 
@@ -372,7 +375,7 @@ abstract mixin class _$AuthSignUpCopyWith<$Res> implements $AuthEventCopyWith<$R
   factory _$AuthSignUpCopyWith(_AuthSignUp value, $Res Function(_AuthSignUp) _then) = __$AuthSignUpCopyWithImpl;
 @useResult
 $Res call({
- String login, String password1, String password2, String firstName, String lastName
+ String login, String password1, String password2, String name, String role, String group
 });
 
 
@@ -389,13 +392,14 @@ class __$AuthSignUpCopyWithImpl<$Res>
 
 /// Create a copy of AuthEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? login = null,Object? password1 = null,Object? password2 = null,Object? firstName = null,Object? lastName = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? login = null,Object? password1 = null,Object? password2 = null,Object? name = null,Object? role = null,Object? group = null,}) {
   return _then(_AuthSignUp(
 login: null == login ? _self.login : login // ignore: cast_nullable_to_non_nullable
 as String,password1: null == password1 ? _self.password1 : password1 // ignore: cast_nullable_to_non_nullable
 as String,password2: null == password2 ? _self.password2 : password2 // ignore: cast_nullable_to_non_nullable
-as String,firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
-as String,lastName: null == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

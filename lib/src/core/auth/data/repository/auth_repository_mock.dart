@@ -1,4 +1,3 @@
-import 'package:sfu/src/core/auth/domain/entity/token.dart';
 import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 
 class AuthRepositoryMock implements AuthRepository {
@@ -6,12 +5,6 @@ class AuthRepositoryMock implements AuthRepository {
   Future<bool> signIn(String login, String password) async {
     await Future.delayed(Duration(seconds: 1));
 
-    final token = Token(
-      access: "i0L7CtovHpaCCDlsY22ObO4qACz57Khr",
-      refresh: "dyqcelydolMLJQbT68x2EB9VqvvgMQmT",
-      type: "Bearer",
-      expires: 3600,
-    );
     return true;
   }
 
@@ -22,17 +15,19 @@ class AuthRepositoryMock implements AuthRepository {
   }
 
   @override
-  Future<bool> resetPassword(String password) async {
+  Future<bool> resetPassword(String password, String newPassword) async {
     await Future.delayed(Duration(seconds: 1));
     return true;
   }
 
   @override
-  Future<bool> singUp({
+  Future<bool> signUp({
     required String login,
     required String password,
-    required String firstName,
-    required String lastName,
+    required String name,
+    required String group,
+    required String subgroup,
+    required String role,
   }) async {
     await Future.delayed(Duration(seconds: 1));
     return true;

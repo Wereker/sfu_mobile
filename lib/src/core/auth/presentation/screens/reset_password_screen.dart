@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
@@ -61,14 +62,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     TextField(
                       controller: passwordController,
                       obscureText: true,
-                      decoration: InputDecoration(hintText: t?.passwordHint),
+                      decoration: InputDecoration(hintText: t?.authPasswordHint),
                     ),
                     const SizedBox(height: 24),
                     TextField(
                       controller: password2Controller,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: t?.passwordRepeatHint,
+                        hintText: t?.authPasswordRepeatHint,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -76,13 +77,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       onPressed: () {
                         context.read<AuthBloc>().add(
                           AuthEvent.resetPassword(
-                            newPassword: passwordController.text,
+                            password: passwordController.text,
+                            newPassword: password2Controller.text,
                           ),
                         );
                       },
                       child: state.maybeWhen(
-                        loading: () => CircularProgressIndicator(),
-                        orElse: () => Text(t!.resetPasswordButton),
+                        loading: () => LoadingIndicatorWidget(),
+                        orElse: () => Text(t!.authResetPasswordButton),
                       ),
                     ),
                   ],

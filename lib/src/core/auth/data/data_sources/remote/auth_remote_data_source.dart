@@ -5,8 +5,17 @@ abstract class AuthRemoteDataSource {
   Future<TokenDTO> signUp(
     String login,
     String password,
-    String firstName,
-    String lastName,
-    String phone,
+    String name,
+    String group,
+    String subgroup,
+    String role,
   );
+  Future<TokenDTO> resetPassword(
+    String password,
+    String newPassword,
+  );
+  Future<TokenDTO> refreshToken(String token);
+  Future<String> getUserGroup();
+  Future<String> getUserRole();
+  Future<String> getUserSubgroup();
 }

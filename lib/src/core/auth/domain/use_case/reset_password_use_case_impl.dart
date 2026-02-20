@@ -7,8 +7,8 @@ class ResetPasswordUseCaseImpl implements ResetPasswordUseCase {
   const ResetPasswordUseCaseImpl(this.authRepo);
 
   @override
-  Future<bool> call(String password) async {
-    return await authRepo.resetPassword(password);
+  Future<bool> call(String password, String newPassword) async {
+    return await authRepo.resetPassword(password, newPassword);
   }
 
 }
