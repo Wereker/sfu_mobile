@@ -33,7 +33,7 @@ class _LoadingContent extends StatelessWidget {
               bottom: false,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: _TimetableSearchBar(),
+                child: TimetableSearchBar(),
               ),
             ),
           ),
@@ -66,7 +66,7 @@ class _ErrorContent extends StatelessWidget {
               bottom: false,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: _TimetableSearchBar(),
+                child: TimetableSearchBar(),
               ),
             ),
           ),
@@ -109,7 +109,7 @@ class _EmptyContent extends StatelessWidget {
               bottom: false,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: _TimetableSearchBar(),
+                child: TimetableSearchBar(),
               ),
             ),
           ),
@@ -160,7 +160,7 @@ class _TimetableContentStateState extends State<_TimetableContentState> {
               bottom: false,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                child: _TimetableSearchBar(),
+                child: TimetableSearchBar(),
               ),
             ),
           ),

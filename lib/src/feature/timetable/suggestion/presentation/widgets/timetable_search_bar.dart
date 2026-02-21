@@ -1,7 +1,10 @@
-part of '../screens/timetable_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
+import 'package:sfu/src/feature/timetable/suggestion/presentation/bloc/suggestions_bloc.dart';
 
-class _TimetableSearchBar extends StatelessWidget {
-  const _TimetableSearchBar({super.key});
+class TimetableSearchBar extends StatelessWidget {
+  const TimetableSearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {
