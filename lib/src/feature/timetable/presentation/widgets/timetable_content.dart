@@ -37,18 +37,13 @@ class _LoadingContent extends StatelessWidget {
               ),
             ),
           ),
-          SliverFillRemaining(
-            child: Center(
-              child: LoadingIndicatorWidget(),
-            ),
-          ),
+          SliverFillRemaining(child: Center(child: LoadingIndicatorWidget())),
         ],
       ),
     );
   }
 }
 
-// Новый виджет для ошибки
 class _ErrorContent extends StatelessWidget {
   const _ErrorContent();
 
@@ -138,6 +133,43 @@ class _TimetableContentState extends StatefulWidget {
 
 class _TimetableContentStateState extends State<_TimetableContentState> {
   String _selectedWeek = '1';
+  DateTime _currentTime = DateTime.now();
+  Timer? _timeUpdateTimer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final isEven = TimetableUtils.isEvenWeek(DateTime.now());
+    setState(() => _selectedWeek = isEven ? '2' : '1');
+
+    _startTimeUpdater();
+  }
+
+  @override
+  void dispose() {
+    _timeUpdateTimer?.cancel();
+    super.dispose();
+  }
+
+  void _startTimeUpdater() {
+    _timeUpdateTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      if (mounted) {
+        final now = DateTime.now();
+        if (now.minute != _currentTime.minute ||
+            now.hour != _currentTime.hour ||
+            now.day != _currentTime.day) {
+          setState(() => _currentTime = now);
+        }
+      }
+    });
+  }
+
+  Future<void> _refreshTimetable() async {
+    context.read<TimetableBloc>().add(TimetableEvent.loadData());
+
+    await Future.delayed(const Duration(seconds: 3));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,48 +181,51 @@ class _TimetableContentStateState extends State<_TimetableContentState> {
     );
     final lessonsByDay = _groupLessonsByDay(week.lessons);
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: CustomScrollView(
-        slivers: [
-          // Поиск остаётся без изменений
-          SliverToBoxAdapter(
-            child: SafeArea(
-              bottom: false,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                child: TimetableSearchBar(),
+    return RefreshIndicator(
+      onRefresh: _refreshTimetable,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: TimetableSearchBar(),
+                ),
               ),
             ),
-          ),
-
-          // Основной контент с расписанием
-          SliverPadding(
-            padding: const EdgeInsets.all(16),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                Text(
-                  'Расписание ${widget.timetable.target}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16),
-                _buildWeekToggleButtons(),
-                const SizedBox(height: 16),
-                if (lessonsByDay.isEmpty)
-                  Center(
-                    child: Text(
-                      t!.timetableNoLessonsThisWeek,
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  Text(
+                    'Расписание ${widget.timetable.target}',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildWeekToggleButtons(),
+                  const SizedBox(height: 16),
+                  if (lessonsByDay.isEmpty)
+                    Center(
+                      child: Text(
+                        t!.timetableNoLessonsThisWeek,
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                    )
+                  else
+                    ..._buildDayCards(
+                      lessonsByDay,
+                      _currentTime,
                     ),
-                  )
-                else
-                  ..._buildDayCards(lessonsByDay),
-                SizedBox(height: MediaQuery.of(context).padding.bottom),
-              ]),
+                  SizedBox(height: MediaQuery.of(context).padding.bottom),
+                ]),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -210,12 +245,23 @@ class _TimetableContentStateState extends State<_TimetableContentState> {
     return grouped;
   }
 
-  List<Widget> _buildDayCards(Map<int, List<Lesson>> lessonsByDay) {
+  List<Widget> _buildDayCards(
+    Map<int, List<Lesson>> lessonsByDay,
+    DateTime now,
+  ) {
     final sortedDays = lessonsByDay.keys.toList()..sort();
+    final currentDay = now.weekday;
 
-    return sortedDays.map((dayNumber) {
+    return sortedDays.where((dayNumber) => dayNumber != 7).map((dayNumber) {
       final lessons = lessonsByDay[dayNumber]!;
-      return _DayLessonsCard(dayNumber: dayNumber, lessons: lessons);
+      final isToday = dayNumber == currentDay;
+
+      return _DayLessonsCard(
+        dayNumber: dayNumber,
+        lessons: lessons,
+        isToday: isToday,
+        now: now,
+      );
     }).toList();
   }
 

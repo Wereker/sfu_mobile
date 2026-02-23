@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/dependency_injection/injection.dart' as di;
 import 'package:sfu/src/core/localization/app_localizations.dart';
+import 'package:sfu/src/core/utils/timetable_utils/lesson_status/lesson_status.dart';
+import 'package:sfu/src/core/utils/timetable_utils/timetable_utils.dart';
 import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/lesson/lesson.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/timetable/timetable.dart';

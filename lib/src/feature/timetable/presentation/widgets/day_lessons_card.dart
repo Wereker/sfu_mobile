@@ -3,34 +3,61 @@ part of '../screens/timetable_screen.dart';
 class _DayLessonsCard extends StatelessWidget {
   final int dayNumber;
   final List<Lesson> lessons;
+  final bool isToday;
+  final DateTime now;
 
-  const _DayLessonsCard({required this.dayNumber, required this.lessons});
+  const _DayLessonsCard({
+    required this.dayNumber,
+    required this.lessons,
+    this.isToday = false,
+    required this.now,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context);
-
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: isToday
+            ? BorderSide(color: Colors.orange, width: 1)
+            : BorderSide(color: Theme.of(context).colorScheme.primary, width: 1),
+      ),
       margin: const EdgeInsets.only(bottom: 20),
+      color: isToday
+          ? Colors.orange.withValues(alpha: 0.1)
+          : Colors.transparent,
+      elevation: 0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.all(12),
+            decoration: isToday
+                ? BoxDecoration(
+                    color: Colors.orange.withOpacity(0.1),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    ),
+                  )
+                : null,
             child: Center(
               child: Text(
                 _getDayWithDate(context, dayNumber),
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: isToday ? Colors.orange : null,
+                ),
               ),
             ),
           ),
-
           if (lessons.isEmpty)
             Padding(
               padding: const EdgeInsets.all(16),
               child: Center(
                 child: Text(
-                  t!.timetableNoLessonsThisDay,
+                  AppLocalizations.of(context)!.timetableNoLessonsThisDay,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
                   ),
@@ -41,10 +68,15 @@ class _DayLessonsCard extends StatelessWidget {
             ...lessons.asMap().entries.map((entry) {
               final index = entry.key + 1;
               final isLast = entry.key == lessons.length - 1;
+              final isFirstLesson = entry.key == 0;
+
               return _LessonItem(
                 lesson: entry.value,
                 index: index,
                 isLast: isLast,
+                now: now,
+                isToday: isToday,
+                isFirstLesson: isFirstLesson,
               );
             }),
         ],

@@ -551,7 +551,7 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'SuggestionState.success(suggestion: $suggestions)';
+  return 'SuggestionState.success(suggestions: $suggestions)';
 }
 
 
