@@ -17,6 +17,7 @@ abstract class User with _$User {
     required String role,
     required String institute,
     required String group,
+    required String subgroup,
     required String recordBookNumber,
   }) = _User;
 

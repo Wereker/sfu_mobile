@@ -4,7 +4,6 @@ import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source_impl.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_firebase_impl.dart';
-import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_mock.dart';
 import 'package:sfu/src/core/auth/data/repository/auth_repository_impl.dart';
 import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case.dart';
@@ -115,7 +114,7 @@ void _initRepositories() {
       remote: sl<AuthRemoteDataSource>(),
     ),
   );
-  sl.registerSingleton<ProfileRepository>(ProfileRepositroyMock());
+  sl.registerSingleton<ProfileRepository>(ProfileRepositoryMock(sl<AuthLocalDataSource>()));
   sl.registerSingleton<SettingsRepository>(
     SettingsRepositoryImpl(sl<SettingsLocalDataSource>()),
   );

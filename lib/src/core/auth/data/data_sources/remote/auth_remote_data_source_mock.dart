@@ -131,6 +131,12 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
     await Future.delayed(const Duration(milliseconds: 500));
     return _currentUser.subgroup;
   }
+
+  @override
+  Future<String> getUserName() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    return _currentUser.login;
+  }
 }
 
 class _UserMock {

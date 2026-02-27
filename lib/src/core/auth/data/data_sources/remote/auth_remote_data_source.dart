@@ -14,6 +14,7 @@ abstract class AuthRemoteDataSource {
     String newPassword,
   );
   Future<TokenDTO> refreshToken(String token);
+  Future<String> getUserName();
   Future<String> getUserGroup();
   Future<String> getUserRole();
   Future<String> getUserSubgroup();

@@ -19,6 +19,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   role: json['role'] as String,
   institute: json['institute'] as String,
   group: json['group'] as String,
+  subgroup: json['subgroup'] as String,
   recordBookNumber: json['recordBookNumber'] as String,
 );
 
@@ -33,5 +34,6 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'role': instance.role,
   'institute': instance.institute,
   'group': instance.group,
+  'subgroup': instance.subgroup,
   'recordBookNumber': instance.recordBookNumber,
 };

@@ -52,4 +52,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     // TODO: implement getUserSubgroup
     throw UnimplementedError();
   }
+
+  @override
+  Future<String> getUserName() {
+    // TODO: implement getUserName
+    throw UnimplementedError();
+  }
 }
