@@ -46,6 +46,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         builder: (context, state) {
           return Scaffold(
             resizeToAvoidBottomInset: true,
+            appBar: AppBar(),
             body: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 45, vertical: 100),
@@ -77,7 +78,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       onPressed: () {
                         context.read<AuthBloc>().add(
                           AuthEvent.resetPassword(
-                            password: passwordController.text,
                             newPassword: password2Controller.text,
                           ),
                         );

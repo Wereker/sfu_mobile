@@ -18,7 +18,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get appRepeatTry => 'Повторить попытку';
 
   @override
-  String get authLoginTitle => 'Вход';
+  String get authLoginTitle => 'Почта';
 
   @override
   String get authNameHint => 'Имя';
@@ -27,7 +27,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get authSurnameHint => 'Фамилия';
 
   @override
-  String get authLoginHint => 'Логин';
+  String get authLoginHint => 'Почта';
 
   @override
   String get authPasswordHint => 'Пароль';

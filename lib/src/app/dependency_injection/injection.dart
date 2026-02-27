@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source_impl.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
+import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_firebase_impl.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_mock.dart';
 import 'package:sfu/src/core/auth/data/repository/auth_repository_impl.dart';
 import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
@@ -92,7 +93,7 @@ Future<void> _initDataSources() async {
       sl.get<SharedPreferences>(),
     ),
   );
-  sl.registerSingleton<AuthRemoteDataSource>(AuthRemoteDataSourceMock());
+  sl.registerSingleton<AuthRemoteDataSource>(AuthRemoteDataSourceFirebaseImpl());
 
   sl.registerSingleton<SettingsLocalDataSource>(
     SettingsLocalDataSourceImpl(sl.get<SharedPreferences>()),

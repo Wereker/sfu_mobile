@@ -3,10 +3,10 @@
   "appError": "Ошибка",
   "appRepeatTry": "Повторить попытку",
 
-  "authLoginTitle": "Вход",
+  "authLoginTitle": "Почта",
   "authNameHint": "Имя",
   "authSurnameHint": "Фамилия",
-  "authLoginHint": "Логин",
+  "authLoginHint": "Почта",
   "authPasswordHint": "Пароль",
   "authPasswordRepeatHint": "Повторите пароль",
   "authSignUpButton": "Регистрация",

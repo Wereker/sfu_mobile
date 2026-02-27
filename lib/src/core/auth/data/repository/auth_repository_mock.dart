@@ -15,14 +15,14 @@ class AuthRepositoryMock implements AuthRepository {
   }
 
   @override
-  Future<bool> resetPassword(String password, String newPassword) async {
+  Future<bool> resetPassword(String newPassword) async {
     await Future.delayed(Duration(seconds: 1));
     return true;
   }
 
   @override
   Future<bool> signUp({
-    required String login,
+    required String email,
     required String password,
     required String name,
     required String group,
@@ -35,6 +35,12 @@ class AuthRepositoryMock implements AuthRepository {
 
   @override
   Future<bool> checkAuthStatus() async {
+    await Future.delayed(Duration(seconds: 1));
+    return true;
+  }
+
+  @override
+  Future<bool> signInWithGoogle() async {
     await Future.delayed(Duration(seconds: 1));
     return true;
   }

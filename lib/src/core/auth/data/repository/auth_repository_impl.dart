@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sfu/src/core/auth/data/DTO/token_dto.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
@@ -17,13 +18,14 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<bool> logout() async {
     await Future.delayed(const Duration(seconds: 1));
     await _local.clear();
+    await FirebaseAuth.instance.signOut();
     return true;
   }
 
   @override
-  Future<bool> resetPassword(String password, String newPassword) async {
+  Future<bool> resetPassword(String newPassword) async {
     try {
-      await _remote.resetPassword(password, newPassword);
+      await _remote.resetPassword(newPassword);
       return true;
     } catch (e) {
       rethrow;
@@ -50,7 +52,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<bool> signUp({
-    required String login,
+    required String email,
     required String password,
     required String name,
     required String group,
@@ -59,7 +61,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }) async {
     try {
       final TokenDTO tokenDTO = await _remote.signUp(
-        login,
+        email,
         password,
         name,
         group,
@@ -104,5 +106,11 @@ class AuthRepositoryImpl implements AuthRepository {
     } catch (_) {
       rethrow;
     }
+  }
+
+  @override
+  Future<bool> signInWithGoogle() {
+    // TODO: implement signInWithGoogle
+    throw UnimplementedError();
   }
 }

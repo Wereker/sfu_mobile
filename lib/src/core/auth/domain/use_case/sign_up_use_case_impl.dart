@@ -8,7 +8,7 @@ class SignUpUseCaseImpl implements SignUpUseCase {
 
   @override
   Future<bool> call({
-    required String login,
+    required String email,
     required String password1,
     required String password2,
     required String name,
@@ -24,7 +24,7 @@ class SignUpUseCaseImpl implements SignUpUseCase {
     final subgroup = parts[1].replaceAll(')', '').trim();
 
     return await authRepo.signUp(
-      login: login,
+      email: email,
       password: password1,
       name: name,
       group: shortGroup,

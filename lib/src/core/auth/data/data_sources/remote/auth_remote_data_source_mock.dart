@@ -78,11 +78,11 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
   }
 
   @override
-  Future<TokenDTO> resetPassword(String password, String newPassword) async {
+  Future<TokenDTO> resetPassword(String newPassword) async {
     await Future.delayed(const Duration(seconds: 1));
 
     _UserMock? user = _items
-        .where((item) => item.password == password)
+        .where((item) => item.password == newPassword)
         .firstOrNull;
 
     if (user != null) {

@@ -119,7 +119,7 @@ abstract class AppLocalizations {
   /// No description provided for @authLoginTitle.
   ///
   /// In en, this message translates to:
-  /// **'Login'**
+  /// **'Email'**
   String get authLoginTitle;
 
   /// No description provided for @authNameHint.
@@ -137,7 +137,7 @@ abstract class AppLocalizations {
   /// No description provided for @authLoginHint.
   ///
   /// In en, this message translates to:
-  /// **'Login'**
+  /// **'Email'**
   String get authLoginHint;
 
   /// No description provided for @authPasswordHint.
