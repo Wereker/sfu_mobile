@@ -46,6 +46,10 @@ class TimetableSearchBar extends StatelessWidget {
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
                       hintText: 'Поиск предмета...',
+                      fillColor: Theme.of(context).brightness == Brightness.light
+                          ? Colors.orange.withOpacity(0.1)
+                          : Colors.grey.withOpacity(0.2),
+                      filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,
@@ -53,12 +57,10 @@ class TimetableSearchBar extends StatelessWidget {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary,
                           width: 1.0,
-                          color: Theme.of(context).dividerColor,
                         ),
                       ),
-                      filled: true,
-                      fillColor: Theme.of(context).cardColor,
                     ),
                     onSubmitted: (value) => onFieldSubmitted(),
                   );

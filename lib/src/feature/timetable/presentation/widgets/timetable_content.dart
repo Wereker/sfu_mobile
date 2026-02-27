@@ -246,15 +246,18 @@ class _TimetableContentStateState extends State<_TimetableContentState> {
   }
 
   List<Widget> _buildDayCards(
-    Map<int, List<Lesson>> lessonsByDay,
-    DateTime now,
-  ) {
+      Map<int, List<Lesson>> lessonsByDay,
+      DateTime now,
+      ) {
     final sortedDays = lessonsByDay.keys.toList()..sort();
     final currentDay = now.weekday;
+    final isCurrentWeek = _isCurrentWeek(now);
 
-    return sortedDays.where((dayNumber) => dayNumber != 7).map((dayNumber) {
+    return sortedDays
+        .where((dayNumber) => dayNumber != 7)
+        .map((dayNumber) {
       final lessons = lessonsByDay[dayNumber]!;
-      final isToday = dayNumber == currentDay;
+      final isToday = isCurrentWeek && (dayNumber == currentDay);
 
       return _DayLessonsCard(
         dayNumber: dayNumber,
@@ -263,6 +266,14 @@ class _TimetableContentStateState extends State<_TimetableContentState> {
         now: now,
       );
     }).toList();
+  }
+
+  bool _isCurrentWeek(DateTime now) {
+    final actualWeekNumber = TimetableUtils.getWeekNumberFromAcademicStart(now);
+    final isActualEven = actualWeekNumber.isEven;
+
+    return (_selectedWeek == '1' && !isActualEven) ||
+        (_selectedWeek == '2' && isActualEven);
   }
 
   Widget _buildWeekToggleButtons() {

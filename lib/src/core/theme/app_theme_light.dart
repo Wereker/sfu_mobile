@@ -68,5 +68,6 @@ class LightTheme {
         color: AppTheme.primaryLight
       )
     ),
+    dividerColor: Colors.orange,
   );
 }

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sfu/src/feature/timetable/data/DTO/lesson_dto/lesson_dto.dart';
 import 'package:sfu/src/feature/timetable/data/DTO/timetable_dto/timetable_dto.dart';

@@ -63,6 +63,6 @@ class DarkTheme {
         side: BorderSide(color: Colors.transparent, width: 1),
       ),
     ),
-    cardColor: Colors.grey[900],
+    dividerColor: Colors.white,
   );
 }

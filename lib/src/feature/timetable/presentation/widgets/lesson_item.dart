@@ -172,7 +172,9 @@ class _LessonItem extends StatelessWidget {
                   ),
               ],
             ),
-          if (!isLast) const Divider(),
+          if (!isLast) Divider(
+            color: isToday ? Colors.orange : Theme.of(context).dividerColor,
+          ),
         ],
       ),
     );
