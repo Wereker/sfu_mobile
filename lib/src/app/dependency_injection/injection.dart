@@ -5,7 +5,6 @@ import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_firebase_impl.dart';
 import 'package:sfu/src/core/auth/data/repository/auth_repository_firebase_impl.dart';
-import 'package:sfu/src/core/auth/data/repository/auth_repository_impl.dart';
 import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case_impl.dart';
@@ -21,7 +20,6 @@ import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 import 'package:sfu/src/core/utils/loading_indicator/loading_indicator.dart';
 import 'package:sfu/src/core/utils/loading_indicator/standard_loading_indicator.dart';
 import 'package:sfu/src/feature/profile/data/repository/profile_repository_firebase_impl.dart';
-import 'package:sfu/src/feature/profile/data/repository/profile_repositroy_mock.dart';
 import 'package:sfu/src/feature/profile/domain/repository/profile_repository.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/profile_load_data_use_case.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/profile_load_data_use_case_impl.dart';
@@ -43,7 +41,6 @@ import 'package:sfu/src/feature/timetable/suggestion/data/data_source/remote/sug
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_impl.dart';
 import 'package:sfu/src/feature/timetable/suggestion/data/repository/suggestion_repository_impl.dart';
-import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_mock.dart';
 import 'package:sfu/src/feature/timetable/suggestion/domain/repository/suggestion_repository.dart';
 import 'package:sfu/src/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_target_use_case.dart';

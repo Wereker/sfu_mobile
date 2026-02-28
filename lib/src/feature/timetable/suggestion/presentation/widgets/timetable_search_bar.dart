@@ -47,8 +47,8 @@ class TimetableSearchBar extends StatelessWidget {
                       prefixIcon: const Icon(Icons.search),
                       hintText: 'Поиск предмета...',
                       fillColor: Theme.of(context).brightness == Brightness.light
-                          ? Colors.orange.withOpacity(0.1)
-                          : Colors.grey.withOpacity(0.2),
+                          ? Colors.orange.withValues(alpha: .1)
+                          : Colors.grey.withValues(alpha: .2),
                       filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),

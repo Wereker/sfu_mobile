@@ -23,8 +23,6 @@ class TimetableScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context);
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => di.sl<TimetableBloc>()..add(TimetableEvent.loadData())),

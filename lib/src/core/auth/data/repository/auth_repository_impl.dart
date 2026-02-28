@@ -54,14 +54,14 @@ class AuthRepositoryImpl implements AuthRepository {
     required String role,
   }) async {
     try {
-      final TokenDTO tokenDTO = await _remote.signUp(
-        email,
-        password,
-        name,
-        group,
-        subgroup,
-        role,
-      );
+      // final TokenDTO tokenDTO = await _remote.signUp(
+      //   email,
+      //   password,
+      //   name,
+      //   group,
+      //   subgroup,
+      //   role,
+      // );
       // await _local.cacheAccessToken(tokenDTO.access);
       // await _local.cacheRefreshToken(tokenDTO.refresh);
       // await _local.cacheUserGroup(group);
@@ -88,7 +88,7 @@ class AuthRepositoryImpl implements AuthRepository {
     }
 
     try {
-      final TokenDTO newToken = await _remote.refreshToken(refreshToken);
+      // final TokenDTO newToken = await _remote.refreshToken(refreshToken);
       // final String group = await _remote.getUserGroup();
       // final String role = await _remote.getUserRole();
       // final String subgroup = await _remote.getUserSubgroup();

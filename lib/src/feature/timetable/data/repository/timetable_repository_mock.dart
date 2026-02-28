@@ -1,18 +1,13 @@
-import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:sfu/src/feature/timetable/data/DTO/timetable_dto/timetable_dto.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/timetable/timetable.dart';
 import 'package:sfu/src/feature/timetable/domain/repository/timetable_repository.dart';
 
 class TimetableRepositoryMock implements TimetableRepository {
-  final AuthLocalDataSource _locale;
   final TimetableRemoteDataSource _remote;
 
-  const TimetableRepositoryMock({
-    required AuthLocalDataSource locale,
-    required TimetableRemoteDataSource remote,
-  }) : _locale = locale,
-       _remote = remote;
+  const TimetableRepositoryMock({required TimetableRemoteDataSource remote})
+    : _remote = remote;
 
   @override
   Future<Timetable> getTimetable() async {
@@ -33,7 +28,9 @@ class TimetableRepositoryMock implements TimetableRepository {
 
   @override
   Future<Timetable> getTimetableForTarget(String target) async {
-    final TimetableDTO timetableDTO = await _remote.getTimetableForTarget(target);
+    final TimetableDTO timetableDTO = await _remote.getTimetableForTarget(
+      target,
+    );
     return Timetable.fromDTO(timetableDTO);
   }
 }

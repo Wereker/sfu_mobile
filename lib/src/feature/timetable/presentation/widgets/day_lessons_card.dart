@@ -34,7 +34,7 @@ class _DayLessonsCard extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             decoration: isToday
                 ? BoxDecoration(
-                    color: Colors.orange.withOpacity(0.1),
+                    color: Colors.orange.withValues(alpha: .1),
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
