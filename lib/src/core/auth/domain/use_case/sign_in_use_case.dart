@@ -1,3 +1,3 @@
 abstract class SignInUseCase {
-  Future<bool> call(String email, String password);
+  Future<void> call(String email, String password);
 }

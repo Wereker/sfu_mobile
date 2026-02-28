@@ -133,26 +133,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<AuthBloc>().add(
-                          AuthEvent.signUp(
-                            email: emailController.text,
-                            password1: passwordController.text,
-                            password2: password2Controller.text,
-                            name: nameController.text,
-                            group: _group!,
-                            role: _role!.name,
-                          ),
-                        );
-                      },
-                      child: state.maybeWhen(
-                        loading: () => LoadingIndicatorWidget(),
-                        orElse: () => Text(t!.authSignUpButton),
-                      ),
-                    ),
                   ],
+                ),
+              ),
+            ),
+            bottomNavigationBar: Container(
+              height: 60,
+              margin: EdgeInsets.fromLTRB(
+                50,
+                0,
+                50,
+                MediaQuery.of(context).padding.bottom + 8,
+              ),
+              child: ElevatedButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(
+                    AuthEvent.signUp(
+                      email: emailController.text,
+                      password1: passwordController.text,
+                      password2: password2Controller.text,
+                      name: nameController.text,
+                      group: _group!,
+                      role: _role!.name,
+                    ),
+                  );
+                },
+                child: state.maybeWhen(
+                  loading: () => LoadingIndicatorWidget(),
+                  orElse: () => Text(t!.authSignUpButton),
                 ),
               ),
             ),

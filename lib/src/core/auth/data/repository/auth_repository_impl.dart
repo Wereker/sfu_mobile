@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sfu/src/core/auth/data/DTO/token_dto.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
@@ -15,43 +14,38 @@ class AuthRepositoryImpl implements AuthRepository {
        _remote = remote;
 
   @override
-  Future<bool> logout() async {
-    await Future.delayed(const Duration(seconds: 1));
+  Future<void> logout() async {
     await _local.clear();
-    await FirebaseAuth.instance.signOut();
-    return true;
   }
 
   @override
-  Future<bool> resetPassword(String newPassword) async {
+  Future<void> resetPassword(String newPassword) async {
     try {
       await _remote.resetPassword(newPassword);
-      return true;
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<bool> signIn(String login, String password) async {
+  Future<void> signIn(String login, String password) async {
     try {
       final TokenDTO token = await _remote.signIn(login, password);
       await _local.cacheAccessToken(token.access);
       await _local.cacheRefreshToken(token.refresh);
-
-      final String group = await _remote.getUserGroup();
-      final String role = await _remote.getUserRole();
-      await _local.cacheUserGroup(group);
-      await _local.cacheUserRole(role);
-
-      return true;
+      // final String group = await _remote.getUserGroup();
+      // final String role = await _remote.getUserRole();
+      // final String subgroup = await _remote.getUserSubgroup();
+      // await _local.cacheUserGroup(group);
+      // await _local.cacheUserRole(role);
+      // await _local.cacheUserSubgroup(subgroup);
     } catch (_) {
       rethrow;
     }
   }
 
   @override
-  Future<bool> signUp({
+  Future<void> signUp({
     required String email,
     required String password,
     required String name,
@@ -68,11 +62,11 @@ class AuthRepositoryImpl implements AuthRepository {
         subgroup,
         role,
       );
-      await _local.cacheAccessToken(tokenDTO.access);
-      await _local.cacheRefreshToken(tokenDTO.refresh);
-      await _local.cacheUserGroup(group);
-      await _local.cacheUserRole(role);
-      return true;
+      // await _local.cacheAccessToken(tokenDTO.access);
+      // await _local.cacheRefreshToken(tokenDTO.refresh);
+      // await _local.cacheUserGroup(group);
+      // await _local.cacheUserRole(role);
+      // await _local.cacheUserSubgroup(subgroup);
     } catch (_) {
       rethrow;
     }
@@ -80,11 +74,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   @override
-  Future<bool> checkAuthStatus() async {
+  Future<void> checkAuthStatus() async {
     final String? token = await _local.getAccessToken();
 
     if (token != null) {
-      return true;
+      return;
     }
 
     final String? refreshToken = await _local.getRefreshToken();
@@ -95,21 +89,22 @@ class AuthRepositoryImpl implements AuthRepository {
 
     try {
       final TokenDTO newToken = await _remote.refreshToken(refreshToken);
-      final String group = await _remote.getUserGroup();
-      final String role = await _remote.getUserRole();
-
-      await _local.cacheAccessToken(newToken.access);
-      await _local.cacheRefreshToken(newToken.refresh);
-      await _local.cacheUserGroup(group);
-      await _local.cacheUserRole(role);
-      return true;
+      // final String group = await _remote.getUserGroup();
+      // final String role = await _remote.getUserRole();
+      // final String subgroup = await _remote.getUserSubgroup();
+      //
+      // await _local.cacheAccessToken(newToken.access);
+      // await _local.cacheRefreshToken(newToken.refresh);
+      // await _local.cacheUserGroup(group);
+      // await _local.cacheUserRole(role);
+      // await _local.cacheUserSubgroup(subgroup);
     } catch (_) {
       rethrow;
     }
   }
 
   @override
-  Future<bool> signInWithGoogle() {
+  Future<void> signInWithGoogle() {
     // TODO: implement signInWithGoogle
     throw UnimplementedError();
   }

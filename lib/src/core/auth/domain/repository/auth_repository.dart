@@ -1,6 +1,6 @@
 abstract class AuthRepository {
-  Future<bool> signIn(String email, String password);
-  Future<bool> signUp({
+  Future<void> signIn(String email, String password);
+  Future<void> signUp({
     required String email,
     required String password,
     required String name,
@@ -8,8 +8,8 @@ abstract class AuthRepository {
     required String subgroup,
     required String role,
   });
-  Future<bool> signInWithGoogle();
-  Future<bool> resetPassword(String newPassword);
-  Future<bool> logout();
-  Future<bool> checkAuthStatus();
+  Future<void> signInWithGoogle();
+  Future<void> resetPassword(String newPassword);
+  Future<void> logout();
+  Future<void> checkAuthStatus();
 }

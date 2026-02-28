@@ -1,5 +1,5 @@
 abstract class SignUpUseCase {
-  Future<bool> call({
+  Future<void> call({
     required String email,
     required String password1,
     required String password2,

@@ -7,7 +7,7 @@ class LogoutUseCaseImpl implements LogoutUseCase {
   const LogoutUseCaseImpl(this.authRepo);
 
   @override
-  Future<bool> call() async {
-    return await authRepo.logout();
+  Future<void> call() async {
+    await authRepo.logout();
   }
 }

@@ -1,11 +1,8 @@
-import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
 import 'package:sfu/src/feature/profile/domain/repository/profile_repository.dart';
 
 class ProfileRepositoryMock implements ProfileRepository {
-  final AuthLocalDataSource _authLocale;
-
-  const ProfileRepositoryMock(this._authLocale);
+  const ProfileRepositoryMock();
 
   @override
   Future<User> loadData() async {
@@ -14,10 +11,10 @@ class ProfileRepositoryMock implements ProfileRepository {
       firstName: 'Тарас',
       lastName: 'Бубля',
       phone: '89133451825',
-      role: await _authLocale.getUserRole() ?? '',
+      role: 'student',
       institute: 'ИКИТ',
-      group: await _authLocale.getUserGroup() ?? '',
-      subgroup: await _authLocale.getUserSubgroup() ?? '',
+      group: 'КИ22-13Б',
+      subgroup: '1 подгруппа',
       recordBookNumber: '032049803',
     );
   }

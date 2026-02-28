@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sfu/src/core/auth/data/DTO/auth_user_data.dart';
 import 'package:sfu/src/core/auth/data/DTO/token_dto.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -70,34 +71,13 @@ class AuthRemoteDataSourceFirebaseImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<String> getUserGroup() async {
-    final user = _firebaseAuth.currentUser;
-    if (user == null) throw Exception('Not authenticated');
-    final doc = await _firebaseFirestore.collection('users').doc(user.uid).get();
-    return doc.get('group') ?? '';
-  }
-
-  @override
-  Future<String> getUserRole() async {
-    final user = _firebaseAuth.currentUser;
-    if (user == null) throw Exception('Not authenticated');
-    final doc = await _firebaseFirestore.collection('users').doc(user.uid).get();
-    return doc.get('role') ?? '';
-  }
-
-  @override
-  Future<String> getUserSubgroup() async {
-    final user = _firebaseAuth.currentUser;
-    if (user == null) throw Exception('Not authenticated');
-    final doc = await _firebaseFirestore.collection('users').doc(user.uid).get();
-    return doc.get('subgroup') ?? '';
-  }
-
-  @override
-  Future<String> getUserName() async {
-    final user = _firebaseAuth.currentUser;
-    if (user == null) throw Exception('Not authenticated');
-    final doc = await _firebaseFirestore.collection('users').doc(user.uid).get();
-    return doc.get('name') ?? '';
+  Future<AuthMetadata> getUserData(String uid) async {
+    final doc = await _firebaseFirestore.collection('users').doc(uid).get();
+    return AuthMetadata(
+      name: doc.get('name'),
+      group: doc.get('group'),
+      role: doc.get('role'),
+      subgroup: doc.get('subgroup'),
+    );
   }
 }

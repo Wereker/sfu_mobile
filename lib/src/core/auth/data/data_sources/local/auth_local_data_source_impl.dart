@@ -1,14 +1,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sfu/src/core/auth/data/DTO/auth_user_data.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
-  static final String _userAccessKey = 'access_token';
-  static final String _userRefreshToken = 'refresh_token';
-  static final String _userGroupKey = 'user_group';
-  static final String _userSubgroupKey = 'user_subgroup';
-  static final String _userRoleKey = 'user_role';
-
   final FlutterSecureStorage _secureStorage;
   final SharedPreferences _pref;
 
@@ -16,57 +11,78 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<void> cacheAccessToken(String token) async {
-    await _secureStorage.write(key: _userAccessKey, value: token);
+    await _secureStorage.write(key: 'user.token.access', value: token);
   }
 
   @override
   Future<void> cacheRefreshToken(String token) async {
-    await _secureStorage.write(key: _userRefreshToken, value: token);
+    await _secureStorage.write(key: 'user.token.refresh', value: token);
   }
 
   @override
   Future<String?> getAccessToken() async {
-    return await _secureStorage.read(key: _userAccessKey);
+    return await _secureStorage.read(key: 'user.token.access');
   }
 
   @override
   Future<String?> getRefreshToken() async {
-    return await _secureStorage.read(key: _userRefreshToken);
+    return await _secureStorage.read(key: 'user.token.refresh');
   }
 
   @override
-  Future<void> cacheUserGroup(String group) async {
-    await _pref.setString(_userGroupKey, group);
+  Future<String?> getUserGroup(String uid) async {
+    return _pref.getString('user.$uid.group');
   }
 
   @override
-  Future<void> cacheUserRole(String role) async {
-    await _pref.setString(_userRoleKey, role);
+  Future<String?> getUserRole(String uid) async {
+    return _pref.getString('user.$uid.role');
   }
 
   @override
-  Future<void> cacheUserSubgroup(String subgroup) async {
-    await _pref.setString(_userSubgroupKey, subgroup);
+  Future<String?> getUserSubgroup(String uid) async {
+    return _pref.getString('user.$uid.subgroup');
   }
 
   @override
-  Future<String?> getUserGroup() async {
-    return _pref.getString(_userGroupKey);
-  }
-
-  @override
-  Future<String?> getUserRole() async {
-    return _pref.getString(_userRoleKey);
-  }
-
-  @override
-  Future<String?> getUserSubgroup() async {
-    return _pref.getString(_userSubgroupKey);
+  Future<String?> getUserName(String uid) async {
+    return _pref.getString('user.$uid.name');
   }
 
   @override
   Future<void> clear() async {
     await _secureStorage.deleteAll();
-    await _pref.clear();
+  }
+
+  @override
+  Future<void> cacheUserData({
+    required String uid,
+    String? name,
+    String? group,
+    String? role,
+    String? subgroup,
+  }) async {
+    if (name != null) {
+      await _pref.setString('user.$uid.name', name);
+    }
+    if (group != null) {
+      await _pref.setString('user.$uid.group', group);
+    }
+    if (role != null) {
+      await _pref.setString('user.$uid.role', role);
+    }
+    if (subgroup != null) {
+      await _pref.setString('user.$uid.subgroup', subgroup);
+    }
+  }
+
+  @override
+  Future<AuthMetadata> getUserData(String uid) async {
+    return AuthMetadata(
+      name: _pref.getString('user.$uid.name'),
+      group: _pref.getString('user.$uid.group'),
+      role: _pref.getString('user.$uid.role'),
+      subgroup: _pref.getString('user.$uid.subgroup'),
+    );
   }
 }
