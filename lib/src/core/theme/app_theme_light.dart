@@ -57,6 +57,7 @@ class LightTheme {
     ),
     iconTheme: const IconThemeData(color: AppTheme.primaryLight),
     cardTheme: CardThemeData(
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(color: AppTheme.primaryLight, width: 1),
@@ -67,5 +68,6 @@ class LightTheme {
         color: AppTheme.primaryLight
       )
     ),
+    dividerColor: Colors.orange,
   );
 }

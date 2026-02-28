@@ -1,9 +1,11 @@
+import 'package:sfu/src/core/auth/data/DTO/auth_user_data.dart';
 import 'package:sfu/src/core/auth/data/DTO/token_dto.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
 
 class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
   final List<_UserMock> _items = [
     _UserMock(
+      name: 'matvey',
       login: 'user',
       password: '1234',
       group: 'КИ22-13Б',
@@ -19,6 +21,7 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
   ];
 
   _UserMock _currentUser = _UserMock(
+    name: 'matvey',
     login: 'user',
     password: '1234',
     group: 'КИ22-13Б',
@@ -61,6 +64,7 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
     await Future.delayed(const Duration(seconds: 1));
 
     final _UserMock newUser = _UserMock(
+      name: 'matvey',
       login: 'user',
       password: '1234',
       group: group,
@@ -78,16 +82,17 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
   }
 
   @override
-  Future<TokenDTO> resetPassword(String password, String newPassword) async {
+  Future<TokenDTO> resetPassword(String newPassword) async {
     await Future.delayed(const Duration(seconds: 1));
 
     _UserMock? user = _items
-        .where((item) => item.password == password)
+        .where((item) => item.password == newPassword)
         .firstOrNull;
 
     if (user != null) {
       final index = _items.indexOf(user);
       _items[index] = _UserMock(
+        name: user.name,
         login: user.login,
         password: newPassword,
         token: user.token,
@@ -115,25 +120,19 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
   }
 
   @override
-  Future<String> getUserGroup() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return _currentUser.group;
-  }
-
-  @override
-  Future<String> getUserRole() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return _currentUser.role;
-  }
-
-  @override
-  Future<String> getUserSubgroup() async {
-    await Future.delayed(const Duration(milliseconds: 500));
-    return _currentUser.subgroup;
+  Future<AuthMetadata> getUserData(String uid) async {
+    await Future.delayed(const Duration(seconds: 1));
+    return AuthMetadata(
+      name: _currentUser.name,
+      group: _currentUser.group,
+      role: _currentUser.role,
+      subgroup: _currentUser.subgroup,
+    );
   }
 }
 
 class _UserMock {
+  final String name;
   final String login;
   final String password;
   final String group;
@@ -142,6 +141,7 @@ class _UserMock {
   final TokenDTO token;
 
   const _UserMock({
+    required this.name,
     required this.login,
     required this.password,
     required this.token,

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sfu/src/feature/timetable/domain/use_case/suggestions_load_use_case.dart';
+import 'package:sfu/src/feature/timetable/suggestion/domain/use_case/suggestions_load_use_case.dart';
 
 part 'suggestions_bloc.freezed.dart';
 part 'suggestions_event.dart';

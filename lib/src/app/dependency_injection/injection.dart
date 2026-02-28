@@ -3,8 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source_impl.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
-import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_mock.dart';
-import 'package:sfu/src/core/auth/data/repository/auth_repository_impl.dart';
+import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_firebase_impl.dart';
+import 'package:sfu/src/core/auth/data/repository/auth_repository_firebase_impl.dart';
 import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case_impl.dart';
@@ -19,7 +19,7 @@ import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case_impl.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 import 'package:sfu/src/core/utils/loading_indicator/loading_indicator.dart';
 import 'package:sfu/src/core/utils/loading_indicator/standard_loading_indicator.dart';
-import 'package:sfu/src/feature/profile/data/repository/profile_repositroy_mock.dart';
+import 'package:sfu/src/feature/profile/data/repository/profile_repository_firebase_impl.dart';
 import 'package:sfu/src/feature/profile/domain/repository/profile_repository.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/profile_load_data_use_case.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/profile_load_data_use_case_impl.dart';
@@ -35,22 +35,22 @@ import 'package:sfu/src/core/settings/domain/use_case/update_app_localization_us
 import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case.dart';
 import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case_impl.dart';
 import 'package:sfu/src/core/settings/presentation/bloc/settings_bloc.dart';
-import 'package:sfu/src/feature/timetable/data/data_source/remote/suggestion_remote_data_source.dart';
-import 'package:sfu/src/feature/timetable/data/data_source/remote/suggestion_remote_data_source_impl.dart';
+import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_firebase_impl.dart';
+import 'package:sfu/src/feature/timetable/suggestion/data/data_source/remote/suggestion_remote_data_source.dart';
+import 'package:sfu/src/feature/timetable/suggestion/data/data_source/remote/suggestion_remote_data_source_impl.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_impl.dart';
-import 'package:sfu/src/feature/timetable/data/repository/suggestion_repository_impl.dart';
-import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_impl.dart';
-import 'package:sfu/src/feature/timetable/domain/repository/suggestion_repository.dart';
+import 'package:sfu/src/feature/timetable/suggestion/data/repository/suggestion_repository_impl.dart';
+import 'package:sfu/src/feature/timetable/suggestion/domain/repository/suggestion_repository.dart';
 import 'package:sfu/src/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_target_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_target_use_case_impl.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_use_case_impl.dart';
-import 'package:sfu/src/feature/timetable/domain/use_case/suggestions_load_use_case.dart';
-import 'package:sfu/src/feature/timetable/domain/use_case/suggestions_load_use_case_impl.dart';
-import 'package:sfu/src/feature/timetable/presentation/bloc/suggestions/suggestions_bloc.dart';
-import 'package:sfu/src/feature/timetable/presentation/bloc/timetable/timetable_bloc.dart';
+import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
+import 'package:sfu/src/feature/timetable/suggestion/domain/use_case/suggestions_load_use_case.dart';
+import 'package:sfu/src/feature/timetable/suggestion/domain/use_case/suggestions_load_use_case_impl.dart';
+import 'package:sfu/src/feature/timetable/suggestion/presentation/bloc/suggestions_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -92,7 +92,9 @@ Future<void> _initDataSources() async {
       sl.get<SharedPreferences>(),
     ),
   );
-  sl.registerSingleton<AuthRemoteDataSource>(AuthRemoteDataSourceMock());
+  sl.registerSingleton<AuthRemoteDataSource>(
+    AuthRemoteDataSourceFirebaseImpl(),
+  );
 
   sl.registerSingleton<SettingsLocalDataSource>(
     SettingsLocalDataSourceImpl(sl.get<SharedPreferences>()),
@@ -109,17 +111,19 @@ Future<void> _initDataSources() async {
 
 void _initRepositories() {
   sl.registerSingleton<AuthRepository>(
-    AuthRepositoryImpl(
+    AuthRepositoryFirebaseImpl(
       local: sl<AuthLocalDataSource>(),
       remote: sl<AuthRemoteDataSource>(),
     ),
   );
-  sl.registerSingleton<ProfileRepository>(ProfileRepositroyMock());
+  sl.registerSingleton<ProfileRepository>(
+    ProfileRepositoryFirebaseImpl(sl<AuthLocalDataSource>()),
+  );
   sl.registerSingleton<SettingsRepository>(
     SettingsRepositoryImpl(sl<SettingsLocalDataSource>()),
   );
   sl.registerSingleton<TimetableRepository>(
-    TimetableRepositoryImpl(
+    TimetableRepositoryFirebaseImpl(
       locale: sl<AuthLocalDataSource>(),
       remote: sl<TimetableRemoteDataSource>(),
     ),

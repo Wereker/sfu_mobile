@@ -1,5 +1,5 @@
-import 'package:sfu/src/feature/timetable/domain/repository/suggestion_repository.dart';
-import 'package:sfu/src/feature/timetable/domain/use_case/suggestions_load_use_case.dart';
+import 'package:sfu/src/feature/timetable/suggestion/domain/repository/suggestion_repository.dart';
+import 'package:sfu/src/feature/timetable/suggestion/domain/use_case/suggestions_load_use_case.dart';
 
 class SuggestionsLoadUseCaseImpl implements SuggestionsLoadUseCase {
   final SuggestionRepository suggestionsRepo;

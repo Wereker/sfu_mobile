@@ -3,10 +3,10 @@
   "appError": "Error",
   "appRepeatTry": "Try again",
 
-  "authLoginTitle": "Login",
+  "authLoginTitle": "Email",
   "authNameHint": "Name",
   "authSurnameHint": "Surname",
-  "authLoginHint": "Login",
+  "authLoginHint": "Email",
   "authPasswordHint": "Password",
   "authPasswordRepeatHint": "Repeat Password",
   "authSignInButton": "Sign In",

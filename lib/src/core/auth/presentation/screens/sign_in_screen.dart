@@ -14,12 +14,12 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  late final TextEditingController loginController = TextEditingController();
+  late final TextEditingController emailController = TextEditingController();
   late final TextEditingController passwordController = TextEditingController();
 
   @override
   void dispose() {
-    loginController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -48,6 +48,7 @@ class _SignInScreenState extends State<SignInScreen> {
         },
         child: Scaffold(
           resizeToAvoidBottomInset: true,
+          appBar: AppBar(),
           body: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 45, vertical: 100),
@@ -62,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   const SizedBox(height: 50),
                   TextField(
-                    controller: loginController,
+                    controller: emailController,
                     decoration: InputDecoration(hintText: t?.authLoginHint),
                   ),
                   const SizedBox(height: 24),
@@ -77,7 +78,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     onPressed: () {
                       context.read<AuthBloc>().add(
                         AuthEvent.signIn(
-                          login: loginController.text,
+                          email: emailController.text,
                           password: passwordController.text,
                         ),
                       );
@@ -95,12 +96,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       Navigator.pushNamed(context, '/signUp');
                     },
                     child: Text(t!.authSignUpButton),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/resetPassword');
-                    },
-                    child: Text(t.authForgotPassword),
                   ),
                 ],
               ),

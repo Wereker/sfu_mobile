@@ -18,7 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appRepeatTry => 'Try again';
 
   @override
-  String get authLoginTitle => 'Login';
+  String get authLoginTitle => 'Email';
 
   @override
   String get authNameHint => 'Name';
@@ -27,7 +27,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get authSurnameHint => 'Surname';
 
   @override
-  String get authLoginHint => 'Login';
+  String get authLoginHint => 'Email';
 
   @override
   String get authPasswordHint => 'Password';

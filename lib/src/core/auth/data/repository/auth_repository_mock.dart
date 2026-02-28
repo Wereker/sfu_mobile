@@ -2,27 +2,23 @@ import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 
 class AuthRepositoryMock implements AuthRepository {
   @override
-  Future<bool> signIn(String login, String password) async {
+  Future<void> signIn(String login, String password) async {
     await Future.delayed(Duration(seconds: 1));
-
-    return true;
   }
 
   @override
-  Future<bool> logout() async {
+  Future<void> logout() async {
     await Future.delayed(Duration(seconds: 1));
-    return true;
   }
 
   @override
-  Future<bool> resetPassword(String password, String newPassword) async {
+  Future<void> resetPassword(String newPassword) async {
     await Future.delayed(Duration(seconds: 1));
-    return true;
   }
 
   @override
-  Future<bool> signUp({
-    required String login,
+  Future<void> signUp({
+    required String email,
     required String password,
     required String name,
     required String group,
@@ -30,12 +26,15 @@ class AuthRepositoryMock implements AuthRepository {
     required String role,
   }) async {
     await Future.delayed(Duration(seconds: 1));
-    return true;
   }
 
   @override
-  Future<bool> checkAuthStatus() async {
+  Future<void> checkAuthStatus() async {
     await Future.delayed(Duration(seconds: 1));
-    return true;
+  }
+
+  @override
+  Future<void> signInWithGoogle() async {
+    await Future.delayed(Duration(seconds: 1));
   }
 }

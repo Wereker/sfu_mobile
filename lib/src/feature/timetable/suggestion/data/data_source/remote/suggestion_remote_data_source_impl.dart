@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:sfu/src/feature/timetable/data/data_source/remote/suggestion_remote_data_source.dart';
+import 'package:sfu/src/feature/timetable/suggestion/data/data_source/remote/suggestion_remote_data_source.dart';
 
 class SuggestionRemoteDataSourceImpl implements SuggestionRemoteDataSource {
   // TODO: Вынести DIO в отдельную структуру

@@ -14,43 +14,39 @@ class AuthRepositoryImpl implements AuthRepository {
        _remote = remote;
 
   @override
-  Future<bool> logout() async {
-    await Future.delayed(const Duration(seconds: 1));
+  Future<void> logout() async {
     await _local.clear();
-    return true;
   }
 
   @override
-  Future<bool> resetPassword(String password, String newPassword) async {
+  Future<void> resetPassword(String newPassword) async {
     try {
-      await _remote.resetPassword(password, newPassword);
-      return true;
+      await _remote.resetPassword(newPassword);
     } catch (e) {
       rethrow;
     }
   }
 
   @override
-  Future<bool> signIn(String login, String password) async {
+  Future<void> signIn(String login, String password) async {
     try {
       final TokenDTO token = await _remote.signIn(login, password);
       await _local.cacheAccessToken(token.access);
       await _local.cacheRefreshToken(token.refresh);
-
-      final String group = await _remote.getUserGroup();
-      final String role = await _remote.getUserRole();
-      await _local.cacheUserGroup(group);
-      await _local.cacheUserRole(role);
-
-      return true;
+      // final String group = await _remote.getUserGroup();
+      // final String role = await _remote.getUserRole();
+      // final String subgroup = await _remote.getUserSubgroup();
+      // await _local.cacheUserGroup(group);
+      // await _local.cacheUserRole(role);
+      // await _local.cacheUserSubgroup(subgroup);
     } catch (_) {
       rethrow;
     }
   }
 
   @override
-  Future<bool> signUp({
-    required String login,
+  Future<void> signUp({
+    required String email,
     required String password,
     required String name,
     required String group,
@@ -58,19 +54,19 @@ class AuthRepositoryImpl implements AuthRepository {
     required String role,
   }) async {
     try {
-      final TokenDTO tokenDTO = await _remote.signUp(
-        login,
-        password,
-        name,
-        group,
-        subgroup,
-        role,
-      );
-      await _local.cacheAccessToken(tokenDTO.access);
-      await _local.cacheRefreshToken(tokenDTO.refresh);
-      await _local.cacheUserGroup(group);
-      await _local.cacheUserRole(role);
-      return true;
+      // final TokenDTO tokenDTO = await _remote.signUp(
+      //   email,
+      //   password,
+      //   name,
+      //   group,
+      //   subgroup,
+      //   role,
+      // );
+      // await _local.cacheAccessToken(tokenDTO.access);
+      // await _local.cacheRefreshToken(tokenDTO.refresh);
+      // await _local.cacheUserGroup(group);
+      // await _local.cacheUserRole(role);
+      // await _local.cacheUserSubgroup(subgroup);
     } catch (_) {
       rethrow;
     }
@@ -78,11 +74,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   @override
-  Future<bool> checkAuthStatus() async {
+  Future<void> checkAuthStatus() async {
     final String? token = await _local.getAccessToken();
 
     if (token != null) {
-      return true;
+      return;
     }
 
     final String? refreshToken = await _local.getRefreshToken();
@@ -92,17 +88,24 @@ class AuthRepositoryImpl implements AuthRepository {
     }
 
     try {
-      final TokenDTO newToken = await _remote.refreshToken(refreshToken);
-      final String group = await _remote.getUserGroup();
-      final String role = await _remote.getUserRole();
-
-      await _local.cacheAccessToken(newToken.access);
-      await _local.cacheRefreshToken(newToken.refresh);
-      await _local.cacheUserGroup(group);
-      await _local.cacheUserRole(role);
-      return true;
+      // final TokenDTO newToken = await _remote.refreshToken(refreshToken);
+      // final String group = await _remote.getUserGroup();
+      // final String role = await _remote.getUserRole();
+      // final String subgroup = await _remote.getUserSubgroup();
+      //
+      // await _local.cacheAccessToken(newToken.access);
+      // await _local.cacheRefreshToken(newToken.refresh);
+      // await _local.cacheUserGroup(group);
+      // await _local.cacheUserRole(role);
+      // await _local.cacheUserSubgroup(subgroup);
     } catch (_) {
       rethrow;
     }
+  }
+
+  @override
+  Future<void> signInWithGoogle() {
+    // TODO: implement signInWithGoogle
+    throw UnimplementedError();
   }
 }

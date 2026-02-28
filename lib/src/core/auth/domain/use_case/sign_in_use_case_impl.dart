@@ -8,10 +8,10 @@ class SignInUseCaseImpl implements SignInUseCase {
   const SignInUseCaseImpl(this.authRepo);
 
   @override
-  Future<bool> call(String login, String password) async {
-    if (login.trim().isEmpty || password.trim().isEmpty) {
+  Future<void> call(String email, String password) async {
+    if (email.trim().isEmpty || password.trim().isEmpty) {
       throw InvalidCredentialsError();
     }
-    return await authRepo.signIn(login, password);
+    await authRepo.signIn(email, password);
   }
 }

@@ -1,4 +1,4 @@
 abstract class LogoutUseCase {
-  Future<bool> call();
+  Future<void> call();
 }
 

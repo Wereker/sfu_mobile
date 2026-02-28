@@ -1,5 +1,5 @@
-import 'package:sfu/src/feature/timetable/data/data_source/remote/suggestion_remote_data_source.dart';
-import 'package:sfu/src/feature/timetable/domain/repository/suggestion_repository.dart';
+import 'package:sfu/src/feature/timetable/suggestion/data/data_source/remote/suggestion_remote_data_source.dart';
+import 'package:sfu/src/feature/timetable/suggestion/domain/repository/suggestion_repository.dart';
 
 class SuggestionRepositoryImpl implements SuggestionRepository {
   final SuggestionRemoteDataSource _remote;

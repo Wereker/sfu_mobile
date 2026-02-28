@@ -29,7 +29,7 @@ class ProfileBodyWidget extends StatelessWidget {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${user.institute} ${user.group}'),
+                    Text('${user.institute} • ${user.group} (${user.subgroup})'),
                     Text('${t!.profileStudentNumber}:'),
                     Text('№${user.recordBookNumber}'),
                   ],

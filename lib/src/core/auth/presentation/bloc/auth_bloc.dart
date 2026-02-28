@@ -46,10 +46,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.error(error: "Ошибка авторизации"));
         }
       },
-      resetPassword: (password, newPassword) async {
+      resetPassword: (newPassword) async {
         emit(AuthState.loading());
         try {
-          await resetPasswordUseCase.call(password, newPassword);
+          await resetPasswordUseCase.call(newPassword);
           emit(AuthState.unauthorized());
         } on NetworkError {
           emit(AuthState.error(error: "Ошибка подключения к интернету"));
@@ -82,7 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             emit(AuthState.loading());
             try {
               await signUpUseCase.call(
-                login: login,
+                email: login,
                 password1: password1,
                 password2: password2,
                 name: name,
@@ -94,8 +94,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(AuthState.error(error: "Неккоректно введены данные"));
             } on NetworkError {
               emit(AuthState.error(error: "Ошибка подключения к интернету"));
-            } catch (_) {
-              emit(AuthState.error(error: "Ошибка авторизации"));
+            } catch (e) {
+              emit(AuthState.error(error: e.toString()));
             }
           },
       checkAuthStatus: () async {

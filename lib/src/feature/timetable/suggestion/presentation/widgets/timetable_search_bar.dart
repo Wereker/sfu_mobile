@@ -1,7 +1,10 @@
-part of '../screens/timetable_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
+import 'package:sfu/src/feature/timetable/suggestion/presentation/bloc/suggestions_bloc.dart';
 
-class _TimetableSearchBar extends StatelessWidget {
-  const _TimetableSearchBar({super.key});
+class TimetableSearchBar extends StatelessWidget {
+  const TimetableSearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +46,10 @@ class _TimetableSearchBar extends StatelessWidget {
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
                       hintText: 'Поиск предмета...',
+                      fillColor: Theme.of(context).brightness == Brightness.light
+                          ? Colors.orange.withValues(alpha: .1)
+                          : Colors.grey.withValues(alpha: .2),
+                      filled: true,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide.none,
@@ -50,12 +57,10 @@ class _TimetableSearchBar extends StatelessWidget {
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary,
                           width: 1.0,
-                          color: Theme.of(context).dividerColor,
                         ),
                       ),
-                      filled: true,
-                      fillColor: Theme.of(context).cardColor,
                     ),
                     onSubmitted: (value) => onFieldSubmitted(),
                   );

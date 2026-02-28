@@ -7,8 +7,8 @@ class CheckAuthStatusUseCaseImpl implements CheckAuthStatusUseCase {
   const CheckAuthStatusUseCaseImpl(this.authRepo);
 
   @override
-  Future<bool> call() async {
-    return await authRepo.checkAuthStatus();
+  Future<void> call() async {
+    await authRepo.checkAuthStatus();
   }
 
 }

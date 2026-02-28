@@ -103,12 +103,20 @@ class SettingsScreen extends StatelessWidget {
       String label,
       ) {
     final isSelected = currentThemeMode == value;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return ChoiceChip(
       key: ValueKey<String>('theme_$value'),
       label: Text(label),
       selected: isSelected,
-      selectedColor: Theme.of(context).primaryColor.withValues(alpha: .2),
+      selectedColor: isDark
+          ? Colors.grey.withValues(alpha: 0.3)
+          : Colors.orange.withValues(alpha: 0.2),
+      checkmarkColor: isDark
+          ? Colors.white
+          : Colors.black,
+      labelStyle: isDark ? TextStyle(color: Colors.white) : TextStyle(color: Colors.black),
       onSelected: (selected) {
         if (selected && !isSelected) {
           context.read<SettingsBloc>().add(
