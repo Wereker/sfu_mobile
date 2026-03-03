@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sfu/src/app/widgets/app_navigation_bar.dart';
 import 'package:sfu/src/app/widgets/custom_app_bar.dart';
+import 'package:sfu/src/feature/news/presentation/screens/news_screen.dart';
 import 'package:sfu/src/feature/timetable/presentation/screens/timetable_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
 
   final List<Widget> screens = [
-    Scaffold(body: const Center(child: Text("Новости"),)),
+    const NewsScreen(),
     const TimetableScreen(),
     Scaffold(body: const Center(child: Text("Чат"))),
   ];
