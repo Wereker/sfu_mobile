@@ -1,16 +1,66 @@
-# sfu
+# 📱 SFU — Мобильное приложение для студентов ИКИТ СФУ
 
-Mobile application for SFU
+Мобильное приложение для студентов кафедры «Систем искусственного интеллекта»
+Институт компьютерных информационных технологий, Сибирский федеральный университет
 
-## Getting Started
+## 🎯 Основной функционал
 
-This project is a starting point for a Flutter application.
+![alt text](screenshots/sfu-1.png)
 
-A few resources to get you started if this is your first Flutter project:
+### 📰Новости ИКИТ СФУ
+Просмотр актуальных новостей кафедры: мероприятия, конкурсы,явления, конференции.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 📅 Расписание занятий
+Отображение расписания по неделям (чётная/нечётная), с возможностью фильтрации по дням. Автоматическое обновление статуса пар («Начнётся через», «Идёт», «Закончится»).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### 💬 Чаты
+Общение с преподавателя, группой, потоком и старостой в едином интерфейсе — как в Telegram:
+
+### 🔍 QR-сканирование
+Скание QR-кода на паре для автоматической отметки посещаемости. Поддержка офлайн-режима с последующей синхронизацией.
+
+![alt text](screenshots/sfu-2.png)
+
+## 🔐 Авторизация
+
+![alt text](screenshots/auth.png)
+
+Авторизация реализована через Firebase Authentication:
+- Вход по email/password
+- Кэширование профиля (ФИО, группа, подгруппа, роль) в SharedPreferences
+- Поддержка двух режимов: локальный API и Firebase (через DI)
+
+## 🏗️ Архитектура проекта
+
+### Структура файлов
+```txt
+lib/
+├── app/
+│   ├── di/
+│   ├── screens/
+│   └── widgets/
+├── core/
+│   ├── auth/
+│   ├── localization/
+│   ├── theme/
+│   └── utils/      
+├── feature/           
+│   ├── chat/
+│   │   ├── data/
+│   │   │   ├── data_source/
+│   │   │   ├── DTO/
+│   │   │   └── repository/      
+│   │   ├── domain/
+│   │   │   ├── entity/
+│   │   │   ├── repository/
+│   │   │   └── use_case/
+│   │   └── presentation/
+│   │       ├── bloc/
+│   │       ├── screens/
+│   │       └── widgets/
+│   └── ...
+└── main.dart           
+```
+### Компонентная архитектура
+
+![alt text](screenshots/architecture.png)
