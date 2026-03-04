@@ -81,20 +81,6 @@ class ProfileBodyWidget extends StatelessWidget {
                 onTap: () { },
               ),
             ),
-            const SizedBox(height: 10),
-            Card(
-              clipBehavior: Clip.antiAlias,
-              child: ListTile(
-                leading: Icon(
-                  Icons.settings,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                title: Text(t.profileSettings),
-                onTap: () {
-                  Navigator.pushNamed(context, '/settings');
-                },
-              ),
-            ),
           ],
         ),
       ),

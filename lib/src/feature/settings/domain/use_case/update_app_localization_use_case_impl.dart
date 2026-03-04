@@ -1,5 +1,5 @@
-import 'package:sfu/src/core/settings/domain/repository/settings_repository.dart';
-import 'package:sfu/src/core/settings/domain/use_case/update_app_localization_use_case.dart';
+import 'package:sfu/src/feature/settings/domain/repository/settings_repository.dart';
+import 'package:sfu/src/feature/settings/domain/use_case/update_app_localization_use_case.dart';
 
 class UpdateAppLocalizationUseCaseImpl implements UpdateAppLocalizationUseCase {
   final SettingsRepository settingsRepo;

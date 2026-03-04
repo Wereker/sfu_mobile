@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sfu/src/core/settings/domain/entity/app_settings.dart';
-import 'package:sfu/src/core/settings/domain/use_case/get_app_settings_use_case.dart';
-import 'package:sfu/src/core/settings/domain/use_case/update_app_localization_use_case.dart';
-import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case.dart';
+import 'package:sfu/src/feature/settings/domain/entity/app_settings.dart';
+import 'package:sfu/src/feature/settings/domain/use_case/get_app_settings_use_case.dart';
+import 'package:sfu/src/feature/settings/domain/use_case/update_app_localization_use_case.dart';
+import 'package:sfu/src/feature/settings/domain/use_case/update_app_theme_mode_use_case.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';

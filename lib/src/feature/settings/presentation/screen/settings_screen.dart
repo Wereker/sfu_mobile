@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/widgets/custom_app_bar.dart';
 import 'package:sfu/src/core/localization/app_localizations.dart';
-import 'package:sfu/src/core/settings/presentation/bloc/settings_bloc.dart';
+import 'package:sfu/src/feature/settings/presentation/bloc/settings_bloc.dart';
 import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -13,7 +13,6 @@ class SettingsScreen extends StatelessWidget {
     final t = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Column(

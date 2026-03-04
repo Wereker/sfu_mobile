@@ -1,5 +1,5 @@
-import 'package:sfu/src/core/settings/data/data_source/local/settings_local_data_source.dart';
-import 'package:sfu/src/core/settings/domain/repository/settings_repository.dart';
+import 'package:sfu/src/feature/settings/data/data_source/local/settings_local_data_source.dart';
+import 'package:sfu/src/feature/settings/domain/repository/settings_repository.dart';
 
 class SettingsRepositoryImpl implements SettingsRepository {
   final String _defaultLocalization = 'ru';

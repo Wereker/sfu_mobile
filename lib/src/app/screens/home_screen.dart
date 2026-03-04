@@ -3,6 +3,7 @@ import 'package:sfu/src/app/widgets/app_navigation_bar.dart';
 import 'package:sfu/src/app/widgets/custom_app_bar.dart';
 import 'package:sfu/src/feature/chat/presentation/screens/chat_screen.dart';
 import 'package:sfu/src/feature/news/presentation/screens/news_screen.dart';
+import 'package:sfu/src/feature/settings/presentation/screen/settings_screen.dart';
 import 'package:sfu/src/feature/timetable/presentation/screens/timetable_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const NewsScreen(),
     const TimetableScreen(),
     const ChatScreen(),
+    const SettingsScreen(),
   ];
 
   @override

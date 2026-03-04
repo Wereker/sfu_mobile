@@ -1,4 +1,4 @@
-import 'package:sfu/src/core/settings/data/data_source/local/settings_local_data_source.dart';
+import 'package:sfu/src/feature/settings/data/data_source/local/settings_local_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
