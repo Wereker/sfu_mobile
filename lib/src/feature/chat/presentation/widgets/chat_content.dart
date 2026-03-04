@@ -95,80 +95,93 @@ class _ChatEmptyContent extends StatelessWidget {
   }
 }
 
-class _ChatContentState extends StatelessWidget {
+class _ChatContentState extends StatefulWidget {
   final List<Chat> chats;
 
   const _ChatContentState({required this.chats});
 
   @override
+  State<_ChatContentState> createState() => _ChatContentStateState();
+}
+
+class _ChatContentStateState extends State<_ChatContentState> {
+  Future<void> _refreshNews() async {
+    context.read<ChatBloc>().add(ChatEvent.loadData());
+
+    await Future.delayed(const Duration(seconds: 3));
+  }
+
+  @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
 
-    return CustomScrollView(
-      slivers: [
-        // Заголовок экрана + поиск
-        SliverAppBar(
-          pinned: true,
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          title: Text(
-            "Чаты пользователя",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(56),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: 'Поиск чата...',
-                  filled: true,
-                  fillColor: Theme.of(context).brightness == Brightness.light
-                      ? Colors.orange.withOpacity(0.1)
-                      : Colors.grey.withOpacity(0.2),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
+    return RefreshIndicator(
+      onRefresh: _refreshNews,
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            title: Text(
+              "Чаты пользователя",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(56),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search),
+                    hintText: 'Поиск чата...',
+                    filled: true,
+                    fillColor: Theme.of(context).brightness == Brightness.light
+                        ? Colors.orange.withOpacity(0.1)
+                        : Colors.grey.withOpacity(0.2),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-        SliverPadding(padding: EdgeInsets.only(top: 16)),
+          SliverPadding(padding: EdgeInsets.only(top: 16)),
 
-        // Список чатов
-        if (chats.isEmpty)
-          SliverFillRemaining(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.chat_outlined, size: 48, color: Colors.grey),
-                  const SizedBox(height: 16),
-                  Text(
-                    'У вас пока нет чатов с пользователями',
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                ],
+          // Список чатов
+          if (widget.chats.isEmpty)
+            SliverFillRemaining(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.chat_outlined, size: 48, color: Colors.grey),
+                    const SizedBox(height: 16),
+                    Text(
+                      'У вас пока нет чатов с пользователями',
+                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  ],
+                ),
               ),
+            )
+          else
+            SliverList(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final chat = widget.chats[index];
+                return ChatItem(chat: chat);
+              }, childCount: widget.chats.length),
             ),
-          )
-        else
-          SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-              final chat = chats[index];
-              return ChatItem(chat: chat);
-            }, childCount: chats.length),
-          ),
 
-        // Отступ снизу для комфортной прокрутки
-        SliverPadding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).padding.bottom,
+          // Отступ снизу для комфортной прокрутки
+          SliverPadding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -181,7 +194,12 @@ class ChatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MessageScreen(chatId: chat.id,)),
+        );
+      },
       child: Container(
         color: Colors.transparent,
         child: Padding(

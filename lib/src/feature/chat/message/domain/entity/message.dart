@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sfu/src/feature/chat/data/dto/message_dto/message_dto.dart';
+import 'package:sfu/src/feature/chat/message/data/DTO/message_dto.dart';
 
 part 'message.freezed.dart';
 

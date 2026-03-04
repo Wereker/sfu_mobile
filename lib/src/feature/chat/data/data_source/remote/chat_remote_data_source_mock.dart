@@ -1,5 +1,5 @@
 import 'package:sfu/src/feature/chat/data/data_source/remote/chat_remote_data_source.dart';
-import 'package:sfu/src/feature/chat/data/dto/chat_dto/chat_dto.dart';
+import 'package:sfu/src/feature/chat/data/dto/chat_dto.dart';
 
 class ChatRemoteDataSourceMock implements ChatRemoteDataSource {
   final Map<String, dynamic> json = {

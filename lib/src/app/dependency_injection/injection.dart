@@ -27,6 +27,13 @@ import 'package:sfu/src/feature/chat/data/repository/chat_repository_mock.dart';
 import 'package:sfu/src/feature/chat/domain/repository/chat_repository.dart';
 import 'package:sfu/src/feature/chat/domain/use_case/chat_load_data_use_case.dart';
 import 'package:sfu/src/feature/chat/domain/use_case/chat_load_data_use_case_impl.dart';
+import 'package:sfu/src/feature/chat/message/data/data_source/remote/message_remote_data_source.dart';
+import 'package:sfu/src/feature/chat/message/data/data_source/remote/message_remote_data_source_mock.dart';
+import 'package:sfu/src/feature/chat/message/data/repository/message_repository_mock.dart';
+import 'package:sfu/src/feature/chat/message/domain/repository/message_repository.dart';
+import 'package:sfu/src/feature/chat/message/domain/use_case/message_get_messages_for_chat_use_case.dart';
+import 'package:sfu/src/feature/chat/message/domain/use_case/message_get_messages_for_chat_use_case_impl.dart';
+import 'package:sfu/src/feature/chat/message/presentation/bloc/message_bloc.dart';
 import 'package:sfu/src/feature/chat/presentation/bloc/chat_bloc.dart';
 import 'package:sfu/src/feature/news/data/data_source/local/news_locale_data_source.dart';
 import 'package:sfu/src/feature/news/data/data_source/local/news_locale_data_source_impl.dart';
@@ -139,6 +146,9 @@ Future<void> _initDataSources() async {
   sl.registerSingleton<ChatLocaleDataSource>(
     ChatLocaleDataSourceMock(),
   );
+  sl.registerSingleton<MessageRemoteDataSource>(
+    MessageRemoteDataSourceMock(),
+  );
 }
 
 void _initRepositories() {
@@ -171,6 +181,10 @@ void _initRepositories() {
 
   sl.registerSingleton<ChatRepository>(
     ChatRepositoryMock(sl<ChatRemoteDataSource>(), sl<ChatLocaleDataSource>()),
+  );
+
+  sl.registerSingleton<MessageRepository>(
+    MessageRepositoryMock(sl<MessageRemoteDataSource>()),
   );
 }
 
@@ -220,6 +234,9 @@ void _initUseCases() {
   sl.registerFactory<ChatLoadDataUseCase>(
       () => ChatLoadDataUseCaseImpl(sl<ChatRepository>()),
   );
+  sl.registerFactory<MessageGetMessagesForChatUseCase>(
+      () => MessageGetMessagesForChatUseCaseImpl(sl<MessageRepository>()),
+  );
 }
 
 void _initBloc() {
@@ -261,6 +278,10 @@ void _initBloc() {
 
   sl.registerFactory<ChatBloc>(
       () => ChatBloc(sl<ChatLoadDataUseCase>()),
+  );
+
+  sl.registerFactory<MessageBloc>(
+      () => MessageBloc(sl<MessageGetMessagesForChatUseCase>()),
   );
 }
 

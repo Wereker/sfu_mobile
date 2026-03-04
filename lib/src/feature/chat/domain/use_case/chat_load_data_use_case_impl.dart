@@ -1,4 +1,4 @@
-import 'package:sfu/src/feature/chat/domain/entity/chat/chat.dart';
+import 'package:sfu/src/feature/chat/domain/entity/chat.dart';
 import 'package:sfu/src/feature/chat/domain/repository/chat_repository.dart';
 import 'package:sfu/src/feature/chat/domain/use_case/chat_load_data_use_case.dart';
 

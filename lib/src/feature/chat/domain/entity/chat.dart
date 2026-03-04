@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sfu/src/feature/chat/data/dto/chat_dto/chat_dto.dart';
-import 'package:sfu/src/feature/chat/domain/entity/message/message.dart';
+import 'package:sfu/src/feature/chat/data/dto/chat_dto.dart';
+import 'package:sfu/src/feature/chat/message/domain/entity/message.dart';
 
 part 'chat.freezed.dart';
 

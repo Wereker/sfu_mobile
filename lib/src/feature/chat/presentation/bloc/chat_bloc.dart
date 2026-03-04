@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sfu/src/feature/chat/domain/entity/chat/chat.dart';
+import 'package:sfu/src/feature/chat/domain/entity/chat.dart';
 import 'package:sfu/src/feature/chat/domain/use_case/chat_load_data_use_case.dart';
 
 part 'chat_event.dart';

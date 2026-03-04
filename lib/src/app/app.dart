@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/screens/auth_wrapper.dart';
 import 'package:sfu/src/app/screens/home_screen.dart';
+import 'package:sfu/src/feature/chat/message/presentation/screens/message_screen.dart';
 import 'package:sfu/src/feature/settings/presentation/bloc/settings_bloc.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/auth/presentation/screens/reset_password_screen.dart';
@@ -79,7 +80,6 @@ class App extends StatelessWidget {
       '/resetPassword': (context) => const ResetPasswordScreen(),
       '/home': (context) => const HomeScreen(),
       '/profile': (context) => const ProfileScreen(),
-      '/settings': (context) => const SettingsScreen(),
     };
   }
 }
