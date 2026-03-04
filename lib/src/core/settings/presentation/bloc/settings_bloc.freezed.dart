@@ -309,7 +309,7 @@ int get hashCode => Object.hash(runtimeType,locale);
 
 @override
 String toString() {
-  return 'SettingsEvent.updateAppLocalization(locale: $locale)';
+  return 'SettingsEvent.updateAppLocalization(local: $locale)';
 }
 
 
@@ -683,7 +683,7 @@ int get hashCode => Object.hash(runtimeType,message);
 
 @override
 String toString() {
-  return 'SettingsState.error(message: $message)';
+  return 'SettingsState.error(message_dto: $message)';
 }
 
 

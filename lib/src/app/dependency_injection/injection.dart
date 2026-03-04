@@ -19,6 +19,15 @@ import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case_impl.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 import 'package:sfu/src/core/utils/loading_indicator/loading_indicator.dart';
 import 'package:sfu/src/core/utils/loading_indicator/standard_loading_indicator.dart';
+import 'package:sfu/src/feature/chat/data/data_source/local/chat_locale_data_source.dart';
+import 'package:sfu/src/feature/chat/data/data_source/local/chat_locale_data_source_mock.dart';
+import 'package:sfu/src/feature/chat/data/data_source/remote/chat_remote_data_source.dart';
+import 'package:sfu/src/feature/chat/data/data_source/remote/chat_remote_data_source_mock.dart';
+import 'package:sfu/src/feature/chat/data/repository/chat_repository_mock.dart';
+import 'package:sfu/src/feature/chat/domain/repository/chat_repository.dart';
+import 'package:sfu/src/feature/chat/domain/use_case/chat_load_data_use_case.dart';
+import 'package:sfu/src/feature/chat/domain/use_case/chat_load_data_use_case_impl.dart';
+import 'package:sfu/src/feature/chat/presentation/bloc/chat_bloc.dart';
 import 'package:sfu/src/feature/news/data/data_source/local/news_locale_data_source.dart';
 import 'package:sfu/src/feature/news/data/data_source/local/news_locale_data_source_impl.dart';
 import 'package:sfu/src/feature/news/data/data_source/remote/news_remote_data_source.dart';
@@ -120,9 +129,15 @@ Future<void> _initDataSources() async {
   sl.registerSingleton<NewsRemoteDataSource>(
     NewsRemoteDataSourceMock(),
   );
-
   sl.registerSingleton<NewsLocaleDataSource>(
     NewsLocaleDataSourceImpl(),
+  );
+
+  sl.registerSingleton<ChatRemoteDataSource>(
+    ChatRemoteDataSourceMock(),
+  );
+  sl.registerSingleton<ChatLocaleDataSource>(
+    ChatLocaleDataSourceMock(),
   );
 }
 
@@ -152,6 +167,10 @@ void _initRepositories() {
 
   sl.registerSingleton<NewsRepository>(
     NewsRepositoryMock(sl<NewsRemoteDataSource>(), sl<NewsLocaleDataSource>()),
+  );
+
+  sl.registerSingleton<ChatRepository>(
+    ChatRepositoryMock(sl<ChatRemoteDataSource>(), sl<ChatLocaleDataSource>()),
   );
 }
 
@@ -198,6 +217,9 @@ void _initUseCases() {
   sl.registerFactory<NewsLoadDataUseCase>(
       () => NewsLoadDataUseCaseImpl(sl<NewsRepository>()),
   );
+  sl.registerFactory<ChatLoadDataUseCase>(
+      () => ChatLoadDataUseCaseImpl(sl<ChatRepository>()),
+  );
 }
 
 void _initBloc() {
@@ -235,6 +257,10 @@ void _initBloc() {
 
   sl.registerFactory<NewsBloc>(
       () => NewsBloc(sl<NewsLoadDataUseCase>()),
+  );
+
+  sl.registerFactory<ChatBloc>(
+      () => ChatBloc(sl<ChatLoadDataUseCase>()),
   );
 }
 

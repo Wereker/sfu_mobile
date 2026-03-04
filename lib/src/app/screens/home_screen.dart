@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sfu/src/app/widgets/app_navigation_bar.dart';
 import 'package:sfu/src/app/widgets/custom_app_bar.dart';
+import 'package:sfu/src/feature/chat/presentation/screens/chat_screen.dart';
 import 'package:sfu/src/feature/news/presentation/screens/news_screen.dart';
 import 'package:sfu/src/feature/timetable/presentation/screens/timetable_screen.dart';
 
@@ -17,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> screens = [
     const NewsScreen(),
     const TimetableScreen(),
-    Scaffold(body: const Center(child: Text("Чат"))),
+    const ChatScreen(),
   ];
 
   @override
