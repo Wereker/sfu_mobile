@@ -19,22 +19,47 @@ import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case_impl.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 import 'package:sfu/src/core/utils/loading_indicator/loading_indicator.dart';
 import 'package:sfu/src/core/utils/loading_indicator/standard_loading_indicator.dart';
+import 'package:sfu/src/feature/chat/data/data_source/local/chat_locale_data_source.dart';
+import 'package:sfu/src/feature/chat/data/data_source/local/chat_locale_data_source_mock.dart';
+import 'package:sfu/src/feature/chat/data/data_source/remote/chat_remote_data_source.dart';
+import 'package:sfu/src/feature/chat/data/data_source/remote/chat_remote_data_source_mock.dart';
+import 'package:sfu/src/feature/chat/data/repository/chat_repository_mock.dart';
+import 'package:sfu/src/feature/chat/domain/repository/chat_repository.dart';
+import 'package:sfu/src/feature/chat/domain/use_case/chat_load_data_use_case.dart';
+import 'package:sfu/src/feature/chat/domain/use_case/chat_load_data_use_case_impl.dart';
+import 'package:sfu/src/feature/chat/message/data/data_source/remote/message_remote_data_source.dart';
+import 'package:sfu/src/feature/chat/message/data/data_source/remote/message_remote_data_source_mock.dart';
+import 'package:sfu/src/feature/chat/message/data/repository/message_repository_mock.dart';
+import 'package:sfu/src/feature/chat/message/domain/repository/message_repository.dart';
+import 'package:sfu/src/feature/chat/message/domain/use_case/message_get_messages_for_chat_use_case.dart';
+import 'package:sfu/src/feature/chat/message/domain/use_case/message_get_messages_for_chat_use_case_impl.dart';
+import 'package:sfu/src/feature/chat/message/presentation/bloc/message_bloc.dart';
+import 'package:sfu/src/feature/chat/presentation/bloc/chat_bloc.dart';
+import 'package:sfu/src/feature/news/data/data_source/local/news_locale_data_source.dart';
+import 'package:sfu/src/feature/news/data/data_source/local/news_locale_data_source_impl.dart';
+import 'package:sfu/src/feature/news/data/data_source/remote/news_remote_data_source.dart';
+import 'package:sfu/src/feature/news/data/data_source/remote/news_remote_data_source_mock.dart';
+import 'package:sfu/src/feature/news/data/repository/news_repository_mock.dart';
+import 'package:sfu/src/feature/news/domain/repository/news_repository.dart';
+import 'package:sfu/src/feature/news/domain/use_case/news_load_data_use_case.dart';
+import 'package:sfu/src/feature/news/domain/use_case/news_load_data_use_case_impl.dart';
+import 'package:sfu/src/feature/news/presentation/bloc/news_bloc.dart';
 import 'package:sfu/src/feature/profile/data/repository/profile_repository_firebase_impl.dart';
 import 'package:sfu/src/feature/profile/domain/repository/profile_repository.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/profile_load_data_use_case.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/profile_load_data_use_case_impl.dart';
 import 'package:sfu/src/feature/profile/presentation/bloc/profile_bloc.dart';
-import 'package:sfu/src/core/settings/data/data_source/local/settings_local_data_source.dart';
-import 'package:sfu/src/core/settings/data/data_source/local/settings_local_data_source_impl.dart';
-import 'package:sfu/src/core/settings/data/repository/settings_repository_impl.dart';
-import 'package:sfu/src/core/settings/domain/repository/settings_repository.dart';
-import 'package:sfu/src/core/settings/domain/use_case/get_app_settings_use_case.dart';
-import 'package:sfu/src/core/settings/domain/use_case/get_app_settings_use_case_impl.dart';
-import 'package:sfu/src/core/settings/domain/use_case/update_app_localization_use_case.dart';
-import 'package:sfu/src/core/settings/domain/use_case/update_app_localization_use_case_impl.dart';
-import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case.dart';
-import 'package:sfu/src/core/settings/domain/use_case/update_app_theme_mode_use_case_impl.dart';
-import 'package:sfu/src/core/settings/presentation/bloc/settings_bloc.dart';
+import 'package:sfu/src/feature/settings/data/data_source/local/settings_local_data_source.dart';
+import 'package:sfu/src/feature/settings/data/data_source/local/settings_local_data_source_impl.dart';
+import 'package:sfu/src/feature/settings/data/repository/settings_repository_impl.dart';
+import 'package:sfu/src/feature/settings/domain/repository/settings_repository.dart';
+import 'package:sfu/src/feature/settings/domain/use_case/get_app_settings_use_case.dart';
+import 'package:sfu/src/feature/settings/domain/use_case/get_app_settings_use_case_impl.dart';
+import 'package:sfu/src/feature/settings/domain/use_case/update_app_localization_use_case.dart';
+import 'package:sfu/src/feature/settings/domain/use_case/update_app_localization_use_case_impl.dart';
+import 'package:sfu/src/feature/settings/domain/use_case/update_app_theme_mode_use_case.dart';
+import 'package:sfu/src/feature/settings/domain/use_case/update_app_theme_mode_use_case_impl.dart';
+import 'package:sfu/src/feature/settings/presentation/bloc/settings_bloc.dart';
 import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_firebase_impl.dart';
 import 'package:sfu/src/feature/timetable/suggestion/data/data_source/remote/suggestion_remote_data_source.dart';
 import 'package:sfu/src/feature/timetable/suggestion/data/data_source/remote/suggestion_remote_data_source_impl.dart';
@@ -107,6 +132,23 @@ Future<void> _initDataSources() async {
   sl.registerSingleton<SuggestionRemoteDataSource>(
     SuggestionRemoteDataSourceImpl(),
   );
+
+  sl.registerSingleton<NewsRemoteDataSource>(
+    NewsRemoteDataSourceMock(),
+  );
+  sl.registerSingleton<NewsLocaleDataSource>(
+    NewsLocaleDataSourceImpl(),
+  );
+
+  sl.registerSingleton<ChatRemoteDataSource>(
+    ChatRemoteDataSourceMock(),
+  );
+  sl.registerSingleton<ChatLocaleDataSource>(
+    ChatLocaleDataSourceMock(),
+  );
+  sl.registerSingleton<MessageRemoteDataSource>(
+    MessageRemoteDataSourceMock(),
+  );
 }
 
 void _initRepositories() {
@@ -131,6 +173,18 @@ void _initRepositories() {
 
   sl.registerSingleton<SuggestionRepository>(
     SuggestionRepositoryImpl(remote: sl<SuggestionRemoteDataSource>()),
+  );
+
+  sl.registerSingleton<NewsRepository>(
+    NewsRepositoryMock(sl<NewsRemoteDataSource>(), sl<NewsLocaleDataSource>()),
+  );
+
+  sl.registerSingleton<ChatRepository>(
+    ChatRepositoryMock(sl<ChatRemoteDataSource>(), sl<ChatLocaleDataSource>()),
+  );
+
+  sl.registerSingleton<MessageRepository>(
+    MessageRepositoryMock(sl<MessageRemoteDataSource>()),
   );
 }
 
@@ -174,6 +228,15 @@ void _initUseCases() {
   sl.registerFactory<SuggestionsLoadUseCase>(
     () => SuggestionsLoadUseCaseImpl(sl<SuggestionRepository>()),
   );
+  sl.registerFactory<NewsLoadDataUseCase>(
+      () => NewsLoadDataUseCaseImpl(sl<NewsRepository>()),
+  );
+  sl.registerFactory<ChatLoadDataUseCase>(
+      () => ChatLoadDataUseCaseImpl(sl<ChatRepository>()),
+  );
+  sl.registerFactory<MessageGetMessagesForChatUseCase>(
+      () => MessageGetMessagesForChatUseCaseImpl(sl<MessageRepository>()),
+  );
 }
 
 void _initBloc() {
@@ -207,6 +270,18 @@ void _initBloc() {
 
   sl.registerFactory<SuggestionsBloc>(
     () => SuggestionsBloc(sl<SuggestionsLoadUseCase>()),
+  );
+
+  sl.registerFactory<NewsBloc>(
+      () => NewsBloc(sl<NewsLoadDataUseCase>()),
+  );
+
+  sl.registerFactory<ChatBloc>(
+      () => ChatBloc(sl<ChatLoadDataUseCase>()),
+  );
+
+  sl.registerFactory<MessageBloc>(
+      () => MessageBloc(sl<MessageGetMessagesForChatUseCase>()),
   );
 }
 

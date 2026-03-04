@@ -17,9 +17,9 @@ class AppNavigationBar extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.fromLTRB(
-        80,
+        40,
         0,
-        80,
+        40,
         MediaQuery.of(context).padding.bottom + 8,
       ),
       decoration: BoxDecoration(
@@ -49,7 +49,8 @@ class AppNavigationBar extends StatelessWidget {
               icon: Icon(Icons.event_note),
               label: t.homeAppBarTimetable,
             ),
-            NavigationDestination(icon: Icon(Icons.chat), label: t.homeAppBarChat),
+            NavigationDestination(icon: Icon(Icons.wechat), label: 'Чаты'),
+            NavigationDestination(icon: Icon(Icons.settings), label: 'Настройки'),
           ],
         ),
       ),
