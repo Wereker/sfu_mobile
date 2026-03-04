@@ -120,6 +120,34 @@ class _NewsContentStateState extends State<_NewsContentState> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: CustomScrollView(
           slivers: [
+            SliverAppBar(
+              pinned: true,
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              title: Text(
+                "Новости СФУ",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(56),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      hintText: 'Найти новость...',
+                      filled: true,
+                      fillColor: Theme.of(context).brightness == Brightness.light
+                          ? Colors.orange.withOpacity(0.1)
+                          : Colors.grey.withOpacity(0.2),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
             SliverPadding(
               padding: EdgeInsets.only(
                 top: 16,

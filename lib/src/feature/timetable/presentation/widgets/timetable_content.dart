@@ -176,7 +176,7 @@ class _TimetableContentStateState extends State<_TimetableContentState> {
     final t = AppLocalizations.of(context);
 
     final week = widget.timetable.weeks.firstWhere(
-          (w) => w.week == _selectedWeek,
+      (w) => w.week == _selectedWeek,
       orElse: () => widget.timetable.weeks.first,
     );
     final lessonsByDay = _groupLessonsByDay(week.lessons);
@@ -188,23 +188,20 @@ class _TimetableContentStateState extends State<_TimetableContentState> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: SafeArea(
-                bottom: false,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  child: TimetableSearchBar(),
-                ),
+            SliverAppBar(
+              title: Text(
+                'Расписание ${widget.timetable.target}',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(56),
+                child: TimetableSearchBar(),
               ),
             ),
             SliverPadding(
               padding: const EdgeInsets.all(16),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  Text(
-                    'Расписание ${widget.timetable.target}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
                   const SizedBox(height: 16),
                   _buildWeekToggleButtons(),
                   const SizedBox(height: 16),
@@ -216,10 +213,7 @@ class _TimetableContentStateState extends State<_TimetableContentState> {
                       ),
                     )
                   else
-                    ..._buildDayCards(
-                      lessonsByDay,
-                      _currentTime,
-                    ),
+                    ..._buildDayCards(lessonsByDay, _currentTime),
                   SizedBox(height: MediaQuery.of(context).padding.bottom),
                 ]),
               ),
@@ -246,16 +240,14 @@ class _TimetableContentStateState extends State<_TimetableContentState> {
   }
 
   List<Widget> _buildDayCards(
-      Map<int, List<Lesson>> lessonsByDay,
-      DateTime now,
-      ) {
+    Map<int, List<Lesson>> lessonsByDay,
+    DateTime now,
+  ) {
     final sortedDays = lessonsByDay.keys.toList()..sort();
     final currentDay = now.weekday;
     final isCurrentWeek = _isCurrentWeek(now);
 
-    return sortedDays
-        .where((dayNumber) => dayNumber != 7)
-        .map((dayNumber) {
+    return sortedDays.where((dayNumber) => dayNumber != 7).map((dayNumber) {
       final lessons = lessonsByDay[dayNumber]!;
       final isToday = isCurrentWeek && (dayNumber == currentDay);
 

@@ -19,13 +19,13 @@ class SettingsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            Text(t!.settingsLanguage, style: Theme.of(context).textTheme.titleMedium),
+            Text(t!.settingsLanguage, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
             const SizedBox(height: 8),
 
             _buildLanguageSelector(),
 
             const SizedBox(height: 32),
-            Text(t.settingsTheme, style: Theme.of(context).textTheme.titleMedium),
+            Text(t.settingsTheme, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
             const SizedBox(height: 8),
 
             _buildThemeSelector(context),

@@ -110,7 +110,10 @@ class _ChatContentState extends StatelessWidget {
         SliverAppBar(
           pinned: true,
           backgroundColor: Theme.of(context).colorScheme.surface,
-          title: Text("Чаты пользователя"),
+          title: Text(
+            "Чаты пользователя",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(56),
             child: Padding(
@@ -132,11 +135,7 @@ class _ChatContentState extends StatelessWidget {
             ),
           ),
         ),
-        SliverPadding(
-          padding: EdgeInsets.only(
-            top: 16,
-          ),
-        ),
+        SliverPadding(padding: EdgeInsets.only(top: 16)),
 
         // Список чатов
         if (chats.isEmpty)
@@ -223,7 +222,9 @@ class ChatItem extends StatelessWidget {
                               color: chat.unreadCount > 0
                                   ? Theme.of(context).colorScheme.onSurface
                                   : Colors.grey,
-                              fontWeight: chat.unreadCount > 0 ? FontWeight.bold : FontWeight.normal,
+                              fontWeight: chat.unreadCount > 0
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                               fontSize: 14,
                             ),
                             maxLines: 2,
@@ -236,7 +237,8 @@ class ChatItem extends StatelessWidget {
                             child: Icon(
                               Icons.done_all,
                               size: 14,
-                              color: chat.lastMessage.status == MessageStatus.read
+                              color:
+                                  chat.lastMessage.status == MessageStatus.read
                                   ? Colors.green
                                   : Colors.blue,
                             ),
