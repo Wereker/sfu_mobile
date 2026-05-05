@@ -17,6 +17,17 @@ class TimetableRemoteDataSourceImpl implements TimetableRemoteDataSource {
       queryParameters: {'target': target},
       options: Options(headers: {'Accept': 'application/json'}),
     );
+
+    // try {
+    //   final res = await dio.get(
+    //     'http://127.0.0.1:8000/health',
+    //     options: Options(headers: {'Accept': 'application/json'}),
+    //   );
+    //   print(res.data);
+    // } catch (e) {
+    //   print(e);
+    // }
+
     final Map<String, dynamic> json = response.data;
     final List<dynamic> rawLessons = json['timetable'] ?? [];
     final Map<String, List<LessonDTO>> lessonsByWeek = {'1': [], '2': []};

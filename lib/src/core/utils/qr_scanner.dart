@@ -252,7 +252,7 @@ class _ScanOverlayPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withValues(alpha: .3)
+      ..color = Colors.transparent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
@@ -270,7 +270,7 @@ class _ScanOverlayPainter extends CustomPainter {
     canvas.drawRect(rect, paint);
 
     final cornerPaint = Paint()
-      ..color = Colors.white
+      ..color = Color(0xFFFF9900)
       ..strokeWidth = 3;
 
     final cornerLength = 24.0;

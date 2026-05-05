@@ -35,15 +35,6 @@ import 'package:sfu/src/feature/chat/message/domain/use_case/message_get_message
 import 'package:sfu/src/feature/chat/message/domain/use_case/message_get_messages_for_chat_use_case_impl.dart';
 import 'package:sfu/src/feature/chat/message/presentation/bloc/message_bloc.dart';
 import 'package:sfu/src/feature/chat/presentation/bloc/chat_bloc.dart';
-import 'package:sfu/src/feature/news/data/data_source/local/news_locale_data_source.dart';
-import 'package:sfu/src/feature/news/data/data_source/local/news_locale_data_source_impl.dart';
-import 'package:sfu/src/feature/news/data/data_source/remote/news_remote_data_source.dart';
-import 'package:sfu/src/feature/news/data/data_source/remote/news_remote_data_source_mock.dart';
-import 'package:sfu/src/feature/news/data/repository/news_repository_mock.dart';
-import 'package:sfu/src/feature/news/domain/repository/news_repository.dart';
-import 'package:sfu/src/feature/news/domain/use_case/news_load_data_use_case.dart';
-import 'package:sfu/src/feature/news/domain/use_case/news_load_data_use_case_impl.dart';
-import 'package:sfu/src/feature/news/presentation/bloc/news_bloc.dart';
 import 'package:sfu/src/feature/profile/data/repository/profile_repository_firebase_impl.dart';
 import 'package:sfu/src/feature/profile/domain/repository/profile_repository.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/profile_load_data_use_case.dart';
@@ -133,13 +124,6 @@ Future<void> _initDataSources() async {
     SuggestionRemoteDataSourceImpl(),
   );
 
-  sl.registerSingleton<NewsRemoteDataSource>(
-    NewsRemoteDataSourceMock(),
-  );
-  sl.registerSingleton<NewsLocaleDataSource>(
-    NewsLocaleDataSourceImpl(),
-  );
-
   sl.registerSingleton<ChatRemoteDataSource>(
     ChatRemoteDataSourceMock(),
   );
@@ -173,10 +157,6 @@ void _initRepositories() {
 
   sl.registerSingleton<SuggestionRepository>(
     SuggestionRepositoryImpl(remote: sl<SuggestionRemoteDataSource>()),
-  );
-
-  sl.registerSingleton<NewsRepository>(
-    NewsRepositoryMock(sl<NewsRemoteDataSource>(), sl<NewsLocaleDataSource>()),
   );
 
   sl.registerSingleton<ChatRepository>(
@@ -228,9 +208,6 @@ void _initUseCases() {
   sl.registerFactory<SuggestionsLoadUseCase>(
     () => SuggestionsLoadUseCaseImpl(sl<SuggestionRepository>()),
   );
-  sl.registerFactory<NewsLoadDataUseCase>(
-      () => NewsLoadDataUseCaseImpl(sl<NewsRepository>()),
-  );
   sl.registerFactory<ChatLoadDataUseCase>(
       () => ChatLoadDataUseCaseImpl(sl<ChatRepository>()),
   );
@@ -270,10 +247,6 @@ void _initBloc() {
 
   sl.registerFactory<SuggestionsBloc>(
     () => SuggestionsBloc(sl<SuggestionsLoadUseCase>()),
-  );
-
-  sl.registerFactory<NewsBloc>(
-      () => NewsBloc(sl<NewsLoadDataUseCase>()),
   );
 
   sl.registerFactory<ChatBloc>(

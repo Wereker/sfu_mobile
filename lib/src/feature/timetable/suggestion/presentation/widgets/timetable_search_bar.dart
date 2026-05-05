@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
 import 'package:sfu/src/feature/timetable/suggestion/presentation/bloc/suggestions_bloc.dart';
 
@@ -8,8 +9,11 @@ class TimetableSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ext = Theme.of(context).extension<AppColors>()!;
+    final tt = Theme.of(context).textTheme;
+
     return BlocBuilder<SuggestionsBloc, SuggestionState>(
-      builder: (BuildContext context, SuggestionState state) {
+      builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Autocomplete<String>(
@@ -24,7 +28,7 @@ class TimetableSearchBar extends StatelessWidget {
 
               return state.maybeWhen(
                 success: (suggestions) => suggestions.where(
-                  (item) => item.toLowerCase().contains(
+                      (item) => item.toLowerCase().contains(
                     textEditingValue.text.toLowerCase(),
                   ),
                 ),
@@ -38,61 +42,73 @@ class TimetableSearchBar extends StatelessWidget {
               );
             },
 
-            fieldViewBuilder:
-                (context, textEditingController, focusNode, onFieldSubmitted) {
-                  return TextField(
-                    controller: textEditingController,
-                    focusNode: focusNode,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.search),
-                      hintText: 'Поиск предмета...',
-                      fillColor: Theme.of(context).brightness == Brightness.light
-                          ? Colors.orange.withValues(alpha: .1)
-                          : Colors.grey.withValues(alpha: .2),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 1.0,
-                        ),
-                      ),
-                    ),
-                    onSubmitted: (value) => onFieldSubmitted(),
-                  );
-                },
+            fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+              return TextField(
+                controller: controller,
+                focusNode: focusNode,
+                onSubmitted: (_) => onFieldSubmitted(),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: ext.textTertiary,
+                    size: 20,
+                  ),
+                  hintText: 'Поиск группы или преподавателя',
+                  hintStyle: tt.bodyMedium?.copyWith(color: ext.textTertiary),
+                ),
+              );
+            },
 
             optionsViewBuilder: (context, onSelected, options) {
               return BlocBuilder<SuggestionsBloc, SuggestionState>(
-                builder: (BuildContext context, SuggestionState state) {
+                builder: (context, state) {
                   return Align(
                     alignment: Alignment.topLeft,
                     child: Material(
                       elevation: 0,
-                      child: ConstrainedBox(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                      child: Container(
                         constraints: const BoxConstraints(maxHeight: 220),
-                        child: state.maybeWhen(
-                          loading: () =>
-                              const Center(child: CircularProgressIndicator()),
-                          success: (_) => ListView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            itemCount: options.length,
-                            itemBuilder: (context, index) {
-                              final item = options.elementAt(index);
-                              return ListTile(
-                                title: Text(item),
-                                onTap: () => onSelected(item),
-                              );
-                            },
+                        decoration: BoxDecoration(
+                          border: Border.all(color: ext.border),
+                          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                          child: state.maybeWhen(
+                            loading: () => const SizedBox(
+                              height: 56,
+                              child: Center(child: CircularProgressIndicator()),
+                            ),
+                            success: (_) => ListView.separated(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              itemCount: options.length,
+                              separatorBuilder: (_, __) => Divider(
+                                height: 1,
+                                color: ext.divider,
+                              ),
+                              itemBuilder: (context, index) {
+                                final item = options.elementAt(index);
+                                return ListTile(
+                                  dense: true,
+                                  leading: Icon(
+                                    Icons.search,
+                                    size: 16,
+                                    color: ext.textTertiary,
+                                  ),
+                                  title: Text(
+                                    item,
+                                    style: tt.labelLarge,
+                                  ),
+                                  onTap: () => onSelected(item),
+                                );
+                              },
+                            ),
+                            error: (_) => const SizedBox(),
+                            orElse: () => const SizedBox(),
                           ),
-                          error: (message) =>
-                              Center(child: Text('Ошибка: $message')),
-                          orElse: () => const SizedBox(),
                         ),
                       ),
                     ),
