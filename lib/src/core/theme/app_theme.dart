@@ -156,9 +156,9 @@ class AppTheme {
   static const Color secondary = Color(0xFFFFB84D);
 
   // Радиусы — только три размера + full
-  static const double radiusSm = 8;   // status badges
-  static const double radiusMd = 12;  // buttons, chips, inputs
-  static const double radiusLg = 16;  // cards, sheets
+  static const double radiusSm = 8; // status badges
+  static const double radiusMd = 12; // buttons, chips, inputs
+  static const double radiusLg = 16; // cards, sheets
 
   // Палитры для каждой темы
   static const _light = _Palette(
@@ -189,6 +189,8 @@ class AppTheme {
     infoBg: Color(0x1AFF9900),
     infoFg: Color(0xFFB45309),
     brightness: Brightness.light,
+    splashBg: Colors.transparent,
+    highlightBg: Colors.transparent,
   );
 
   static const _dark = _Palette(
@@ -219,6 +221,8 @@ class AppTheme {
     infoBg: Color(0x24FF9900),
     infoFg: Color(0xFFFCD34D),
     brightness: Brightness.dark,
+    splashBg: Colors.transparent,
+    highlightBg: Colors.transparent,
   );
 
   static final ThemeData light = _build(_light);
@@ -276,6 +280,9 @@ class AppTheme {
       scaffoldBackgroundColor: p.bg,
       dividerColor: p.divider,
       iconTheme: IconThemeData(color: p.textPrimary),
+      splashColor: p.splashBg,
+      highlightColor: p.highlightBg,
+      splashFactory: NoSplash.splashFactory,
 
       // Поля ввода
       inputDecorationTheme: InputDecorationTheme(
@@ -338,7 +345,9 @@ class AppTheme {
         backgroundColor: primary,
         contentTextStyle: const TextStyle(color: Colors.white, fontSize: 15),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radiusSm)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(radiusSm),
+        ),
       ),
 
       // Bottom navigation
@@ -377,37 +386,53 @@ class AppTheme {
       textTheme: TextTheme(
         // display 28/700
         displaySmall: TextStyle(
-          fontSize: 28, fontWeight: FontWeight.w700, height: 1.25,
-          color: p.textPrimary, letterSpacing: -0.28,
+          fontSize: 28,
+          fontWeight: FontWeight.w700,
+          height: 1.25,
+          color: p.textPrimary,
+          letterSpacing: -0.28,
         ),
         // title 20/700
         titleLarge: TextStyle(
-          fontSize: 20, fontWeight: FontWeight.w700, height: 1.25,
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          height: 1.25,
           color: p.textPrimary,
         ),
         // headline 17/600
         titleMedium: TextStyle(
-          fontSize: 17, fontWeight: FontWeight.w600, height: 1.35,
+          fontSize: 17,
+          fontWeight: FontWeight.w600,
+          height: 1.35,
           color: p.textPrimary,
         ),
         // body 15/400
         bodyLarge: TextStyle(
-          fontSize: 15, fontWeight: FontWeight.w400, height: 1.45,
+          fontSize: 15,
+          fontWeight: FontWeight.w400,
+          height: 1.45,
           color: p.textPrimary,
         ),
         bodyMedium: TextStyle(
-          fontSize: 15, fontWeight: FontWeight.w400, height: 1.45,
+          fontSize: 15,
+          fontWeight: FontWeight.w400,
+          height: 1.45,
           color: p.textSecondary,
         ),
         // label 13/500
         labelLarge: TextStyle(
-          fontSize: 13, fontWeight: FontWeight.w500, height: 1.35,
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          height: 1.35,
           color: p.textPrimary,
         ),
         // caption 11/500
         labelSmall: TextStyle(
-          fontSize: 11, fontWeight: FontWeight.w500, height: 1.35,
-          color: p.textSecondary, letterSpacing: 0.22,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+          height: 1.35,
+          color: p.textSecondary,
+          letterSpacing: 0.22,
         ),
       ),
 
@@ -446,6 +471,8 @@ class _Palette {
   final Color infoBg;
   final Color infoFg;
   final Brightness brightness;
+  final Color splashBg;
+  final Color highlightBg;
 
   const _Palette({
     required this.bg,
@@ -475,5 +502,7 @@ class _Palette {
     required this.infoBg,
     required this.infoFg,
     required this.brightness,
+    required this.splashBg,
+    required this.highlightBg,
   });
 }

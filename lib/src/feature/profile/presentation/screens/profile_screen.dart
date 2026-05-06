@@ -15,17 +15,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) =>
-              di.sl<ProfileBloc>()..add(ProfileEvent.loadData()),
-        ),
-        BlocProvider(
-          create: (_) =>
-              di.sl<SettingsBloc>()..add(SettingsEvent.getAppSettings()),
-        ),
-      ],
+    return BlocProvider(
+      create: (_) => di.sl<ProfileBloc>()..add(ProfileEvent.loadData()),
       child: const Scaffold(body: _ProfileContent()),
     );
   }
@@ -264,12 +255,12 @@ class _ProfileBodyState extends State<_ProfileBody> {
 
               Center(
                 child: Text(
-                  'Версия 1.0.0',
+                  'Версия 1.1.0',
                   style: tt.labelSmall?.copyWith(color: ext.textTertiary),
                 ),
               ),
 
-              SizedBox(height: MediaQuery.of(context).padding.bottom + 16),
+              SizedBox(height: MediaQuery.of(context).padding.bottom),
             ]),
           ),
         ),
@@ -353,7 +344,6 @@ class _ProfileHeader extends StatelessWidget {
                 Text(fullName, style: tt.titleMedium),
                 const SizedBox(height: 4),
 
-                // Роль
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
                   decoration: BoxDecoration(
@@ -371,7 +361,6 @@ class _ProfileHeader extends StatelessWidget {
 
                 const SizedBox(height: 10),
 
-                // Метаданные
                 _MetaLine(icon: Icons.groups_outlined,
                     label: '$group · $subgroup подгруппа', ext: ext, tt: tt),
                 if (sex != null && sex!.isNotEmpty) ...[
@@ -532,7 +521,6 @@ class _EditableContactRow extends StatelessWidget {
 
           const SizedBox(width: 8),
 
-          // Кнопка редактирования / сохранения
           GestureDetector(
             onTap: onToggle,
             child: Container(
@@ -580,7 +568,6 @@ class _AppSettingsCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Тема
               _SettingsToggleRow(
                 icon: isDark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
                 label: 'Тёмная тема',
@@ -595,7 +582,6 @@ class _AppSettingsCard extends StatelessWidget {
               ),
               Divider(height: 1, color: ext.divider, indent: 16),
 
-              // Язык
               _SettingsToggleRow(
                 icon: Icons.language_outlined,
                 label: 'Русский язык',
@@ -711,7 +697,7 @@ class _SettingsToggleRow extends StatelessWidget {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: cs.primary,
+            activeThumbColor: cs.primary,
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
         ],

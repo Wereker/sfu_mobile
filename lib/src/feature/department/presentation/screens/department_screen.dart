@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
+import '../widgets/staff_card.dart';
+
 class _StaffMember {
   final String name;
   final String title;
@@ -184,7 +186,7 @@ class _DepartmentAppBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Кафедра САИ', style: tt.displaySmall),
+                    Text('Кафедра СИИ', style: tt.displaySmall),
                     const SizedBox(height: 2),
                     Text(
                       'Системы искусственного интеллекта',
@@ -252,7 +254,7 @@ class _SegmentedControl extends StatelessWidget {
                 duration: const Duration(milliseconds: 150),
                 padding: const EdgeInsets.symmetric(vertical: 9),
                 decoration: BoxDecoration(
-                  color: isSelected ? cs.surface : Colors.transparent,
+                  color: isSelected ? cs.surface : cs.surface.withValues(alpha: 0),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                 ),
                 alignment: Alignment.center,
@@ -287,12 +289,7 @@ class _StaffTab extends StatelessWidget {
     return SliverList.separated(
       separatorBuilder: (_, __) => const SizedBox(height: 10),
       itemCount: _staff.length,
-      itemBuilder: (_, i) => _StaffCard(
-        member: _staff[i],
-        cs: cs,
-        ext: ext,
-        tt: tt,
-      ),
+      itemBuilder: (_, i) => StaffCard(member: sampleStaff[i])
     );
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/screens/auth_wrapper.dart';
 import 'package:sfu/src/app/screens/home_screen.dart';
-import 'package:sfu/src/feature/chat/message/presentation/screens/message_screen.dart';
 import 'package:sfu/src/feature/settings/presentation/bloc/settings_bloc.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/auth/presentation/screens/reset_password_screen.dart';
@@ -11,46 +10,68 @@ import 'package:sfu/src/core/localization/app_localizations.dart';
 import 'package:sfu/src/core/auth/presentation/screens/sign_up_screen.dart';
 import 'package:sfu/src/core/widgets/splash_screen.dart';
 import 'package:sfu/src/feature/profile/presentation/screens/profile_screen.dart';
-import 'package:sfu/src/feature/settings/presentation/screen/settings_screen.dart';
+
+import '../core/auth/presentation/bloc/auth_bloc.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
+  
+  static final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsBloc, SettingsState>(
-      builder: (context, state) {
-        final locale = state.maybeWhen(
-          success: (settings) => _getLocaleFromCode(settings.locale),
-          orElse: () => const Locale('ru'),
-        );
-
-        final themeMode = state.maybeWhen(
-          success: (settings) => _parseThemeMode(settings.themeMode),
-          orElse: () => ThemeMode.system,
-        );
-
-        return MaterialApp(
-          locale: locale,
-          localeResolutionCallback: (locale, supportedLocales) => locale,
-
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          themeMode: themeMode,
-
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-
-          debugShowCheckedModeBanner: false,
-          routes: _buildRoutes(),
-
-          home: state.maybeWhen(
-            success: (settings) => const AuthWrapper(),
-            error: (message) => _ErrorScreen(message: message),
-            orElse: () => const SplashScreen(),
-          ),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        state.maybeWhen(
+          unauthorized: () =>
+              navigatorKey.currentState?.pushNamedAndRemoveUntil(
+                '/signIn',
+                    (route) => false,
+              ),
+          authorized: () =>
+              navigatorKey.currentState?.pushNamedAndRemoveUntil(
+                '/home',
+                    (route) => false,
+              ),
+          orElse: () {},
         );
       },
+      child: BlocBuilder<SettingsBloc, SettingsState>(
+        builder: (context, state) {
+          final locale = state.maybeWhen(
+            success: (settings) => _getLocaleFromCode(settings.locale),
+            orElse: () => const Locale('ru'),
+          );
+      
+          final themeMode = state.maybeWhen(
+            success: (settings) => _parseThemeMode(settings.themeMode),
+            orElse: () => ThemeMode.system,
+          );
+      
+          return MaterialApp(
+            navigatorKey: App.navigatorKey,
+            
+            locale: locale,
+            localeResolutionCallback: (locale, supportedLocales) => locale,
+      
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: themeMode,
+      
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+      
+            debugShowCheckedModeBanner: false,
+            routes: _buildRoutes(),
+      
+            home: state.maybeWhen(
+              success: (settings) => const AuthWrapper(),
+              error: (message) => _ErrorScreen(message: message),
+              orElse: () => const SplashScreen(),
+            ),
+          );
+        },
+      ),
     );
   }
 

@@ -38,7 +38,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         }
       },
       updateAppThemeMode: (theme) async {
-
         try {
           await updateAppThemeModeUseCase.call(theme);
           final settings = await getAppSettingsUseCase.call();

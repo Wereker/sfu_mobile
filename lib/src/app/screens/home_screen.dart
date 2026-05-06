@@ -6,6 +6,8 @@ import 'package:sfu/src/feature/department/presentation/screens/department_scree
 import 'package:sfu/src/feature/qr/presentation/screens/qr_screen.dart';
 import 'package:sfu/src/feature/timetable/presentation/screens/timetable_screen.dart';
 
+import '../widgets/announcement_card.dart';
+import '../widgets/event_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,22 +19,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
-  static const _pages = [
-    _HomeBody(),
-    TimetableScreen(),
-    QrScreen(),
-    ChatScreen(),
-    DepartmentScreen(),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final pages = [
+      _HomeBody(onTabChange: (i) => setState(() => _currentIndex = i)),
+      const TimetableScreen(),
+      const QrScreen(),
+      const ChatScreen(),
+      const DepartmentScreen(),
+    ];
 
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _currentIndex, children: pages),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (i) => setState(() => _currentIndex = i),
@@ -68,19 +66,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// Временная заглушка для других экранов
-class _PlaceholderScreen extends StatelessWidget {
-  const _PlaceholderScreen({required this.label});
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text(label, style: Theme.of(context).textTheme.titleLarge));
-  }
-}
-
 class _HomeBody extends StatelessWidget {
-  const _HomeBody();
+  const _HomeBody({required this.onTabChange});
+  final ValueChanged<int> onTabChange;
 
   @override
   Widget build(BuildContext context) {
@@ -103,11 +91,16 @@ class _HomeBody extends StatelessWidget {
 
               // Быстрые действия
               const SizedBox(height: 12),
-              _QuickActions(cs: cs, ext: ext, tt: tt),
+              _QuickActions(cs: cs, ext: ext, tt: tt, onTabChange: onTabChange),
 
               // События кафедры
               const SizedBox(height: 20),
-              _SectionHeader(title: 'События кафедры', moreLabel: 'Все', ext: ext, tt: tt),
+              _SectionHeader(
+                title: 'События кафедры',
+                moreLabel: 'Все',
+                ext: ext,
+                tt: tt,
+              ),
               const SizedBox(height: 8),
               _EventsRow(cs: cs, ext: ext, tt: tt),
 
@@ -198,9 +191,7 @@ class _HomeAppBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                 ),
                 padding: const EdgeInsets.all(6),
-                child: SvgPicture.asset(
-                  'assets/images/logo_app_bar.svg',
-                ),
+                child: SvgPicture.asset('assets/images/logo_app_bar.svg'),
               ),
             ],
           ),
@@ -225,9 +216,7 @@ class _NextClassCard extends StatelessWidget {
           color: ext.surfaceTinted,
           borderRadius: BorderRadius.circular(AppTheme.radiusLg),
           // pinned left accent
-          border: Border(
-            left: BorderSide(color: cs.primary, width: 3),
-          ),
+          border: Border(left: BorderSide(color: cs.primary, width: 3)),
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -256,10 +245,7 @@ class _NextClassCard extends StatelessWidget {
             const SizedBox(height: 10),
 
             // Название предмета
-            Text(
-              'Машинное обучение',
-              style: tt.titleMedium,
-            ),
+            Text('Машинное обучение', style: tt.titleMedium),
 
             const SizedBox(height: 4),
 
@@ -274,16 +260,20 @@ class _NextClassCard extends StatelessWidget {
             // Преподаватель
             Row(
               children: [
-                _InitialsAvatar(name: 'Соколова Елена', size: 32, primary: cs.primary),
-                const SizedBox(width: 8),
-                Text(
-                  'Соколова Е. В.',
-                  style: tt.labelLarge,
+                _InitialsAvatar(
+                  name: 'Соколова Елена',
+                  size: 32,
+                  primary: cs.primary,
                 ),
+                const SizedBox(width: 8),
+                Text('Соколова Е. В.', style: tt.labelLarge),
                 const SizedBox(width: 4),
                 Text(
                   '· доц., к.т.н.',
-                  style: tt.labelLarge?.copyWith(color: ext.textSecondary, fontWeight: FontWeight.w400),
+                  style: tt.labelLarge?.copyWith(
+                    color: ext.textSecondary,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ],
             ),
@@ -295,16 +285,22 @@ class _NextClassCard extends StatelessWidget {
 }
 
 class _QuickActions extends StatelessWidget {
-  const _QuickActions({required this.cs, required this.ext, required this.tt});
+  const _QuickActions({
+    required this.cs,
+    required this.ext,
+    required this.tt,
+    required this.onTabChange,
+  });
   final ColorScheme cs;
   final AppColors ext;
   final TextTheme tt;
+  final ValueChanged<int> onTabChange;
 
   static const _actions = [
-    (icon: Icons.calendar_month_outlined, label: 'Расписание'),
-    (icon: Icons.qr_code_scanner_outlined, label: 'QR'),
-    (icon: Icons.campaign_outlined,        label: 'Новости'),
-    (icon: Icons.chat_bubble_outline,      label: 'Чат'),
+    (icon: Icons.calendar_month_outlined, label: 'Расписание', tabIndex: 1),
+    (icon: Icons.qr_code_scanner_outlined, label: 'QR', tabIndex: 2),
+    (icon: Icons.campaign_outlined, label: 'Новости', tabIndex: -1),
+    (icon: Icons.chat_bubble_outline, label: 'Чат', tabIndex: 3),
   ];
 
   @override
@@ -315,15 +311,14 @@ class _QuickActions extends StatelessWidget {
         children: _actions.map((a) {
           return Expanded(
             child: Padding(
-              padding: EdgeInsets.only(
-                right: a == _actions.last ? 0 : 10,
-              ),
+              padding: EdgeInsets.only(right: a == _actions.last ? 0 : 10),
               child: _QuickChip(
                 icon: a.icon,
                 label: a.label,
                 cs: cs,
                 ext: ext,
                 tt: tt,
+                onTap: a.tabIndex >= 0 ? () => onTabChange(a.tabIndex) : null,
               ),
             ),
           );
@@ -340,12 +335,14 @@ class _QuickChip extends StatelessWidget {
     required this.cs,
     required this.ext,
     required this.tt,
+    this.onTap,
   });
   final IconData icon;
   final String label;
   final ColorScheme cs;
   final AppColors ext;
   final TextTheme tt;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -354,7 +351,7 @@ class _QuickChip extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppTheme.radiusLg),
       child: InkWell(
         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(color: ext.border),
@@ -368,7 +365,7 @@ class _QuickChip extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 label,
-                style: tt.labelLarge?.copyWith(fontSize: 12),
+                style: tt.labelLarge?.copyWith(fontSize: 10),
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
@@ -388,112 +385,81 @@ class _EventsRow extends StatelessWidget {
   final TextTheme tt;
 
   static const _events = [
-    (day: '07', month: 'МАЯ', title: 'Хакатон по компьютерному зрению',   desc: 'Команды до 4 человек, призовой фонд 150 000 ₽'),
-    (day: '12', month: 'МАЯ', title: 'Лекция: GenAI в индустрии',          desc: 'Открытая встреча с инженерами Yandex'),
-    (day: '18', month: 'МАЯ', title: 'Защита курсовых работ',              desc: 'Поток БИ22, расписание по группам'),
+    (
+      day: '07',
+      month: 'МАЯ',
+      title: 'Хакатон по компьютерному зрению',
+      desc: 'Команды до 4 человек, призовой фонд 150 000 ₽',
+    ),
+    (
+      day: '12',
+      month: 'МАЯ',
+      title: 'Лекция: GenAI в индустрии',
+      desc: 'Открытая встреча с инженерами Yandex',
+    ),
+    (
+      day: '18',
+      month: 'МАЯ',
+      title: 'Защита курсовых работ',
+      desc: 'Поток БИ22, расписание по группам',
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 148,
+      height: 190,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemCount: _events.length,
-        itemBuilder: (_, i) {
-          final e = _events[i];
-          return _EventCard(
-            day: e.day,
-            month: e.month,
-            title: e.title,
-            desc: e.desc,
-            cs: cs,
-            ext: ext,
-            tt: tt,
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _EventCard extends StatelessWidget {
-  const _EventCard({
-    required this.day, required this.month,
-    required this.title, required this.desc,
-    required this.cs, required this.ext, required this.tt,
-  });
-  final String day, month, title, desc;
-  final ColorScheme cs;
-  final AppColors ext;
-  final TextTheme tt;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 240,
-      decoration: BoxDecoration(
-        color: cs.surface,
-        border: Border.all(color: ext.border),
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-      ),
-      padding: const EdgeInsets.all(14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Датный бейдж
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-            decoration: BoxDecoration(
-              color: ext.surfaceTinted,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(day,   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: ext.textOnTinted, height: 1)),
-                const SizedBox(height: 2),
-                Text(month, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500, color: ext.textOnTinted, letterSpacing: 0.5, height: 1)),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(title, style: tt.labelLarge?.copyWith(fontSize: 14, fontWeight: FontWeight.w600), maxLines: 1, overflow: TextOverflow.ellipsis),
-          const SizedBox(height: 5),
-          Text(desc,  style: tt.bodyMedium?.copyWith(fontSize: 12, color: ext.textSecondary), maxLines: 2, overflow: TextOverflow.ellipsis),
-        ],
+        itemCount: sampleEvents.length,
+        itemBuilder: (_, i) => EventCard(event: sampleEvents[i]),
       ),
     );
   }
 }
 
 class _AnnouncementsList extends StatelessWidget {
-  const _AnnouncementsList({required this.cs, required this.ext, required this.tt});
+  const _AnnouncementsList({
+    required this.cs,
+    required this.ext,
+    required this.tt,
+  });
   final ColorScheme cs;
   final AppColors ext;
   final TextTheme tt;
 
   @override
   Widget build(BuildContext context) {
+    // Закреплённые — первыми, остальные — по порядку
+    final sorted = [
+      ...sampleAnnouncements.where((a) => a.isPinned),
+      ...sampleAnnouncements.where((a) => !a.isPinned),
+    ];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
-        children: [
-          // Закреплённое объявление (pinned → left border)
-          _PinnedAnnouncement(cs: cs, ext: ext, tt: tt),
-          const SizedBox(height: 12),
-          // Обычное объявление
-          _PlainAnnouncement(cs: cs, ext: ext, tt: tt),
-        ],
+        children: sorted
+            .map(
+              (a) => Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: AnnouncementCard(announcement: a),
+              ),
+            )
+            .toList(),
       ),
     );
   }
 }
 
 class _PinnedAnnouncement extends StatelessWidget {
-  const _PinnedAnnouncement({required this.cs, required this.ext, required this.tt});
+  const _PinnedAnnouncement({
+    required this.cs,
+    required this.ext,
+    required this.tt,
+  });
   final ColorScheme cs;
   final AppColors ext;
   final TextTheme tt;
@@ -546,7 +512,9 @@ class _PinnedAnnouncement extends StatelessWidget {
             ),
           ),
           Positioned(
-            left: 0, top: 0, bottom: 0,
+            left: 0,
+            top: 0,
+            bottom: 0,
             child: Container(width: 3, color: cs.primary),
           ),
         ],
@@ -556,7 +524,11 @@ class _PinnedAnnouncement extends StatelessWidget {
 }
 
 class _PlainAnnouncement extends StatelessWidget {
-  const _PlainAnnouncement({required this.cs, required this.ext, required this.tt});
+  const _PlainAnnouncement({
+    required this.cs,
+    required this.ext,
+    required this.tt,
+  });
   final ColorScheme cs;
   final AppColors ext;
   final TextTheme tt;
@@ -575,15 +547,36 @@ class _PlainAnnouncement extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('Кафедра', style: tt.labelSmall?.copyWith(color: ext.textSecondary, letterSpacing: 0.5)),
+              Text(
+                'Кафедра',
+                style: tt.labelSmall?.copyWith(
+                  color: ext.textSecondary,
+                  letterSpacing: 0.5,
+                ),
+              ),
               const Spacer(),
-              Text('3 мая', style: tt.labelSmall?.copyWith(color: ext.textTertiary)),
+              Text(
+                '3 мая',
+                style: tt.labelSmall?.copyWith(color: ext.textTertiary),
+              ),
             ],
           ),
           const SizedBox(height: 6),
-          Text('Обновлён список тем ВКР на 2024/25 учебный год', style: tt.labelLarge?.copyWith(fontWeight: FontWeight.w600, fontSize: 15)),
+          Text(
+            'Обновлён список тем ВКР на 2024/25 учебный год',
+            style: tt.labelLarge?.copyWith(
+              fontWeight: FontWeight.w600,
+              fontSize: 15,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text('Добавлено 12 новых тем по направлению NLP и компьютерное зрение.', style: tt.bodyMedium?.copyWith(fontSize: 13, color: ext.textSecondary)),
+          Text(
+            'Добавлено 12 новых тем по направлению NLP и компьютерное зрение.',
+            style: tt.bodyMedium?.copyWith(
+              fontSize: 13,
+              color: ext.textSecondary,
+            ),
+          ),
         ],
       ),
     );
@@ -591,7 +584,12 @@ class _PlainAnnouncement extends StatelessWidget {
 }
 
 class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({required this.title, this.moreLabel, required this.ext, required this.tt});
+  const _SectionHeader({
+    required this.title,
+    this.moreLabel,
+    required this.ext,
+    required this.tt,
+  });
   final String title;
   final String? moreLabel;
   final AppColors ext;
@@ -608,7 +606,10 @@ class _SectionHeader extends StatelessWidget {
             const Spacer(),
             Text(
               moreLabel!,
-              style: tt.labelLarge?.copyWith(color: AppTheme.primary, fontWeight: FontWeight.w500),
+              style: tt.labelLarge?.copyWith(
+                color: AppTheme.primary,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ],
@@ -620,7 +621,11 @@ class _SectionHeader extends StatelessWidget {
 enum _BadgeTone { success, warning, error, neutral }
 
 class _StatusBadge extends StatelessWidget {
-  const _StatusBadge({required this.label, required this.tone, required this.ext});
+  const _StatusBadge({
+    required this.label,
+    required this.tone,
+    required this.ext,
+  });
   final String label;
   final _BadgeTone tone;
   final AppColors ext;
@@ -631,13 +636,17 @@ class _StatusBadge extends StatelessWidget {
     final Color fg;
     switch (tone) {
       case _BadgeTone.success:
-        bg = ext.successBg; fg = ext.successFg;
+        bg = ext.successBg;
+        fg = ext.successFg;
       case _BadgeTone.warning:
-        bg = ext.warningBg; fg = ext.warningFg;
+        bg = ext.warningBg;
+        fg = ext.warningFg;
       case _BadgeTone.error:
-        bg = ext.errorBg;   fg = ext.errorFg;
+        bg = ext.errorBg;
+        fg = ext.errorFg;
       case _BadgeTone.neutral:
-        bg = ext.divider;   fg = ext.textSecondary;
+        bg = ext.divider;
+        fg = ext.textSecondary;
     }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -659,7 +668,11 @@ class _StatusBadge extends StatelessWidget {
 }
 
 class _CircleIconButton extends StatelessWidget {
-  const _CircleIconButton({required this.icon, required this.cs, required this.ext});
+  const _CircleIconButton({
+    required this.icon,
+    required this.cs,
+    required this.ext,
+  });
   final IconData icon;
   final ColorScheme cs;
   final AppColors ext;
@@ -687,21 +700,37 @@ class _CircleIconButton extends StatelessWidget {
 }
 
 class _InitialsAvatar extends StatelessWidget {
-  const _InitialsAvatar({required this.name, required this.size, required this.primary});
+  const _InitialsAvatar({
+    required this.name,
+    required this.size,
+    required this.primary,
+  });
   final String name;
   final double size;
   final Color primary;
 
   static const _hues = [
-    Color(0xFFFF9900), Color(0xFFFFB84D), Color(0xFFE68A00),
-    Color(0xFFCC7A00), Color(0xFFFFA726), Color(0xFFFB8C00),
+    Color(0xFFFF9900),
+    Color(0xFFFFB84D),
+    Color(0xFFE68A00),
+    Color(0xFFCC7A00),
+    Color(0xFFFFA726),
+    Color(0xFFFB8C00),
   ];
 
-  String get _initials => name.split(' ').where((p) => p.isNotEmpty).take(2).map((p) => p[0]).join().toUpperCase();
+  String get _initials => name
+      .split(' ')
+      .where((p) => p.isNotEmpty)
+      .take(2)
+      .map((p) => p[0])
+      .join()
+      .toUpperCase();
 
   Color get _bg {
     int h = 0;
-    for (final c in name.codeUnits) { h = (h * 31 + c) & 0x7FFFFFFF; }
+    for (final c in name.codeUnits) {
+      h = (h * 31 + c) & 0x7FFFFFFF;
+    }
     return _hues[h % _hues.length];
   }
 
@@ -714,7 +743,12 @@ class _InitialsAvatar extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         _initials,
-        style: TextStyle(fontSize: size * 0.36, fontWeight: FontWeight.w600, color: Colors.white, height: 1),
+        style: TextStyle(
+          fontSize: size * 0.36,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+          height: 1,
+        ),
       ),
     );
   }

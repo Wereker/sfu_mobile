@@ -452,7 +452,7 @@ class _PillSegment extends StatelessWidget {
         duration: const Duration(milliseconds: 150),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
         decoration: BoxDecoration(
-          color: isSelected ? cs.surface : Colors.transparent,
+          color: isSelected ? cs.surface : cs.surface.withValues(alpha: 0),
           borderRadius: BorderRadius.circular(AppTheme.radiusSm),
         ),
         child: Text(
