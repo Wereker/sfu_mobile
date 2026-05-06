@@ -15,24 +15,14 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => di.sl<ProfileBloc>()..add(ProfileEvent.loadData()),
-      child: const Scaffold(body: _ProfileContent()),
-    );
-  }
-}
-
-class _ProfileContent extends StatelessWidget {
-  const _ProfileContent();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(
-      builder: (context, state) => state.maybeWhen(
-        loading: () => const _LoadingView(),
-        success: (user) => _ProfileBody(user: user),
-        error: (_) => const _ErrorView(),
-        orElse: () => const _LoadingView(),
+    return Scaffold(
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) => state.maybeWhen(
+          loading: () => const _LoadingView(),
+          success: (user) => _ProfileBody(user: user),
+          error: (_) => const _ErrorView(),
+          orElse: () => const _LoadingView(),
+        ),
       ),
     );
   }

@@ -12,6 +12,7 @@ import 'package:sfu/src/core/widgets/splash_screen.dart';
 import 'package:sfu/src/feature/profile/presentation/screens/profile_screen.dart';
 
 import '../core/auth/presentation/bloc/auth_bloc.dart';
+import '../feature/profile/presentation/bloc/profile_bloc.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -28,11 +29,13 @@ class App extends StatelessWidget {
                 '/signIn',
                     (route) => false,
               ),
-          authorized: () =>
-              navigatorKey.currentState?.pushNamedAndRemoveUntil(
-                '/home',
-                    (route) => false,
-              ),
+          authorized: () {
+            context.read<ProfileBloc>().add(ProfileEvent.loadData());
+            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+              '/home',
+                  (route) => false,
+            );
+          },
           orElse: () {},
         );
       },

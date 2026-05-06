@@ -6,8 +6,6 @@ import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 
-enum _Role { student, staff }
-
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
 
@@ -16,7 +14,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  _Role _role = _Role.student;
   bool _obscure = true;
 
   final _emailCtrl = TextEditingController();
@@ -78,16 +75,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     textAlign: TextAlign.center,
                   ),
 
-                  const SizedBox(height: 28),
-
-                  _RolePill(
-                    selected: _role,
-                    onChanged: (r) => setState(() => _role = r),
-                    cs: cs,
-                    ext: ext,
-                    tt: tt,
-                  ),
-
                   const SizedBox(height: 24),
 
                   AutofillGroup(
@@ -108,12 +95,8 @@ class _SignInScreenState extends State<SignInScreen> {
                               size: 20,
                               color: ext.textTertiary,
                             ),
-                            labelText: _role == _Role.student
-                                ? 'Почта'
-                                : 'Рабочая почта',
-                            hintText: _role == _Role.student
-                                ? 'student@sfu-kras.ru'
-                                : 'teacher@sfu-kras.ru',
+                            labelText: 'Почта',
+                            hintText: 'aaaaaa@sfu-kras.ru'
                           ),
                         ),
 
@@ -227,111 +210,6 @@ class _AuthLogo extends StatelessWidget {
           colorFilter: ColorFilter.mode(cs.primary, BlendMode.srcIn),
         ),
       ],
-    );
-  }
-}
-
-/// Pill-переключатель Студент / Сотрудник
-class _RolePill extends StatelessWidget {
-  const _RolePill({
-    required this.selected,
-    required this.onChanged,
-    required this.cs,
-    required this.ext,
-    required this.tt,
-  });
-
-  final _Role selected;
-  final ValueChanged<_Role> onChanged;
-  final ColorScheme cs;
-  final AppColors ext;
-  final TextTheme tt;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: ext.surfaceTinted,
-        borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-      ),
-      padding: const EdgeInsets.all(4),
-      child: Row(
-        children: [
-          _PillSegment(
-            icon: Icons.school_outlined,
-            label: 'Студент',
-            isSelected: selected == _Role.student,
-            onTap: () => onChanged(_Role.student),
-            cs: cs,
-            ext: ext,
-            tt: tt,
-          ),
-          _PillSegment(
-            icon: Icons.work_outline,
-            label: 'Сотрудник',
-            isSelected: selected == _Role.staff,
-            onTap: () => onChanged(_Role.staff),
-            cs: cs,
-            ext: ext,
-            tt: tt,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PillSegment extends StatelessWidget {
-  const _PillSegment({
-    required this.icon,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-    required this.cs,
-    required this.ext,
-    required this.tt,
-  });
-
-  final IconData icon;
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-  final ColorScheme cs;
-  final AppColors ext;
-  final TextTheme tt;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: isSelected ? cs.surface : cs.surface.withValues(alpha: 0),
-            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 16,
-                color: isSelected ? cs.primary : ext.textSecondary,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                label,
-                style: tt.labelLarge?.copyWith(
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                  color: isSelected ? ext.textPrimary : ext.textSecondary,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/chat/presentation/screens/chat_screen.dart';
@@ -6,6 +7,9 @@ import 'package:sfu/src/feature/department/presentation/screens/department_scree
 import 'package:sfu/src/feature/qr/presentation/screens/qr_screen.dart';
 import 'package:sfu/src/feature/timetable/presentation/screens/timetable_screen.dart';
 
+import '../../feature/attendance/presentation/screens/attendance_screen.dart';
+import '../../feature/management/presentation/screens/management_screen.dart';
+import '../../feature/profile/presentation/bloc/profile_bloc.dart';
 import '../widgets/announcement_card.dart';
 import '../widgets/event_card.dart';
 
@@ -21,48 +25,75 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final pages = [
-      _HomeBody(onTabChange: (i) => setState(() => _currentIndex = i)),
-      const TimetableScreen(),
-      const QrScreen(),
-      const ChatScreen(),
-      const DepartmentScreen(),
-    ];
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        final isTeacher = state.maybeWhen(
+          success: (user) => user.role == 'teacher',
+          orElse: () => false,
+        );
 
-    return Scaffold(
-      body: IndexedStack(index: _currentIndex, children: pages),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (i) => setState(() => _currentIndex = i),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Главная',
+        final pages = isTeacher
+            ? _teacherPages()
+            : _studentPages();
+
+        final destinations = isTeacher
+            ? _teacherDestinations()
+            : _studentDestinations();
+
+        return Scaffold(
+          body: IndexedStack(index: _currentIndex, children: pages),
+          bottomNavigationBar: NavigationBar(
+            selectedIndex: _currentIndex,
+            onDestinationSelected: (i) =>
+                setState(() => _currentIndex = i),
+            destinations: destinations,
           ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_month_outlined),
-            selectedIcon: Icon(Icons.calendar_month),
-            label: 'Расписание',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.qr_code_scanner_outlined),
-            selectedIcon: Icon(Icons.qr_code_scanner),
-            label: 'QR',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.chat_bubble_outline),
-            selectedIcon: Icon(Icons.chat_bubble),
-            label: 'Чат',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.school_outlined),
-            selectedIcon: Icon(Icons.school),
-            label: 'Кафедра',
-          ),
-        ],
-      ),
+        );
+      },
     );
+  }
+
+  List<Widget> _studentPages() => [
+    _HomeBody(onTabChange: (i) => setState(() => _currentIndex = i)),
+    const TimetableScreen(),
+    const QrScreen(),
+    const ChatScreen(),
+    const DepartmentScreen(),
+  ];
+
+  List<Widget> _teacherPages() => [
+    _HomeBody(onTabChange: (i) => setState(() => _currentIndex = i)),
+    const TimetableScreen(),
+    const AttendanceScreen(),
+    const ChatScreen(),
+    const ManagementScreen(),
+  ];
+
+  List<NavigationDestination> _studentDestinations() => const [
+    NavigationDestination(icon: Icon(Icons.home_outlined),             selectedIcon: Icon(Icons.home),              label: 'Главная'),
+    NavigationDestination(icon: Icon(Icons.calendar_month_outlined),   selectedIcon: Icon(Icons.calendar_month),    label: 'Расписание'),
+    NavigationDestination(icon: Icon(Icons.qr_code_scanner_outlined),  selectedIcon: Icon(Icons.qr_code_scanner),   label: 'QR'),
+    NavigationDestination(icon: Icon(Icons.chat_bubble_outline),       selectedIcon: Icon(Icons.chat_bubble),       label: 'Чат'),
+    NavigationDestination(icon: Icon(Icons.school_outlined),           selectedIcon: Icon(Icons.school),            label: 'Кафедра'),
+  ];
+
+  List<NavigationDestination> _teacherDestinations() => const [
+    NavigationDestination(icon: Icon(Icons.home_outlined),             selectedIcon: Icon(Icons.home),              label: 'Главная'),
+    NavigationDestination(icon: Icon(Icons.calendar_month_outlined),   selectedIcon: Icon(Icons.calendar_month),    label: 'Расписание'),
+    NavigationDestination(icon: Icon(Icons.fact_check_outlined),       selectedIcon: Icon(Icons.fact_check),        label: 'Журнал'),
+    NavigationDestination(icon: Icon(Icons.chat_bubble_outline),       selectedIcon: Icon(Icons.chat_bubble),       label: 'Чат'),
+    NavigationDestination(icon: Icon(Icons.admin_panel_settings_outlined), selectedIcon: Icon(Icons.admin_panel_settings), label: 'Управление'),
+  ];
+}
+
+// Временная заглушка для других экранов
+class _PlaceholderScreen extends StatelessWidget {
+  const _PlaceholderScreen({required this.label});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text(label, style: Theme.of(context).textTheme.titleLarge));
   }
 }
 

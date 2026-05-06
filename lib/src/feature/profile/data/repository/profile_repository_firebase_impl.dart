@@ -17,7 +17,7 @@ class ProfileRepositoryFirebaseImpl implements ProfileRepository {
     return User(
       id: '1',
       firstName: await _locale.getUserName(user.uid) ?? 'Тарас',
-      lastName: 'Бубля',
+      lastName: '',
       phone: '89133451825',
       role: await _locale.getUserRole(user.uid) ?? 'student',
       institute: 'ИКИТ',
