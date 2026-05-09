@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
-
 // ════════════════════════════════════════════════════════════
 // Модели
 // ════════════════════════════════════════════════════════════
@@ -27,11 +26,11 @@ class AttendanceStudent {
   });
 
   AttendanceStudent copyWith({AttendanceStatus? status}) => AttendanceStudent(
-        id: id,
-        name: name,
-        isHeadman: isHeadman,
-        status: status ?? this.status,
-      );
+    id: id,
+    name: name,
+    isHeadman: isHeadman,
+    status: status ?? this.status,
+  );
 }
 
 class AttendanceLesson {
@@ -55,8 +54,13 @@ class AttendanceLesson {
     this.isStarted = false,
   });
 
-  int get presentCount =>
-      students.where((s) => s.status == AttendanceStatus.present || s.status == AttendanceStatus.late).length;
+  int get presentCount => students
+      .where(
+        (s) =>
+            s.status == AttendanceStatus.present ||
+            s.status == AttendanceStatus.late,
+      )
+      .length;
 
   int get totalCount => students.length;
 
@@ -66,11 +70,13 @@ class AttendanceLesson {
 List<AttendanceStudent> _makeStudents(List<(String, bool)> data) => data
     .asMap()
     .entries
-    .map((e) => AttendanceStudent(
-          id: 'st_${e.key}',
-          name: e.value.$1,
-          isHeadman: e.value.$2,
-        ))
+    .map(
+      (e) => AttendanceStudent(
+        id: 'st_${e.key}',
+        name: e.value.$1,
+        isHeadman: e.value.$2,
+      ),
+    )
     .toList();
 
 final _sampleLessons = [
@@ -84,7 +90,7 @@ final _sampleLessons = [
     students: _makeStudents([
       ('Алексеев Дмитрий Сергеевич', false),
       ('Борисова Анна Игоревна', false),
-      ('Волков Кирилл Павлович', true),  // Староста
+      ('Волков Кирилл Павлович', true), // Староста
       ('Гришина Мария Александровна', false),
       ('Данилов Артём Олегович', false),
       ('Егорова Полина Вячеславовна', false),
@@ -156,23 +162,27 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     super.initState();
     // Глубокая копия чтобы изменения статусов не портили оригинал
     _lessons = _sampleLessons
-        .map((l) => AttendanceLesson(
-              id: l.id,
-              subject: l.subject,
-              type: l.type,
-              time: l.time,
-              place: l.place,
-              group: l.group,
-              students: l.students
-                  .map((s) => AttendanceStudent(
-                        id: s.id,
-                        name: s.name,
-                        isHeadman: s.isHeadman,
-                        status: s.status,
-                      ))
-                  .toList(),
-              isStarted: l.isStarted,
-            ))
+        .map(
+          (l) => AttendanceLesson(
+            id: l.id,
+            subject: l.subject,
+            type: l.type,
+            time: l.time,
+            place: l.place,
+            group: l.group,
+            students: l.students
+                .map(
+                  (s) => AttendanceStudent(
+                    id: s.id,
+                    name: s.name,
+                    isHeadman: s.isHeadman,
+                    status: s.status,
+                  ),
+                )
+                .toList(),
+            isStarted: l.isStarted,
+          ),
+        )
         .toList();
   }
 
@@ -194,9 +204,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           setState(() {
             final lessonIndex = _lessons.indexWhere((l) => l.id == lesson.id);
             if (lessonIndex == -1) return;
-            final studentIndex = _lessons[lessonIndex]
-                .students
-                .indexWhere((s) => s.id == studentId);
+            final studentIndex = _lessons[lessonIndex].students.indexWhere(
+              (s) => s.id == studentId,
+            );
             if (studentIndex == -1) return;
             _lessons[lessonIndex].students[studentIndex].status = status;
           });
@@ -213,9 +223,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
     final now = DateTime.now();
 
     return Scaffold(
@@ -246,19 +256,20 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           const SizedBox(height: 2),
                           Text(
                             'Посещаемость',
-                            style: tt.labelLarge
-                                ?.copyWith(color: ext.textSecondary),
+                            style: tt.labelLarge?.copyWith(
+                              color: ext.textSecondary,
+                            ),
                           ),
                         ],
                       ),
                     ),
                     const SizedBox(width: 10),
                     Container(
-                      width: 48, height: 48,
+                      width: 48,
+                      height: 48,
                       decoration: BoxDecoration(
                         color: cs.primary,
-                        borderRadius:
-                        BorderRadius.circular(AppTheme.radiusMd),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                       ),
                       padding: const EdgeInsets.all(6),
                       child: SvgPicture.asset('assets/images/logo_app_bar.svg'),
@@ -290,36 +301,41 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           decoration: BoxDecoration(
                             color: isActive ? cs.primary : cs.surface,
-                            borderRadius:
-                                BorderRadius.circular(AppTheme.radiusMd),
+                            borderRadius: BorderRadius.circular(
+                              AppTheme.radiusMd,
+                            ),
                             border: Border.all(
                               color: isActive
                                   ? cs.primary
                                   : isToday
-                                      ? cs.primary.withValues(alpha: .4)
-                                      : ext.border,
+                                  ? cs.primary.withValues(alpha: .4)
+                                  : ext.border,
                             ),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(_dowShort[i],
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w500,
-                                    color: isActive
-                                        ? cs.onPrimary
-                                        : ext.textSecondary,
-                                  )),
+                              Text(
+                                _dowShort[i],
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500,
+                                  color: isActive
+                                      ? cs.onPrimary
+                                      : ext.textSecondary,
+                                ),
+                              ),
                               const SizedBox(height: 3),
-                              Text('${date.day}',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    color: isActive
-                                        ? cs.onPrimary
-                                        : ext.textPrimary,
-                                  )),
+                              Text(
+                                '${date.day}',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  color: isActive
+                                      ? cs.onPrimary
+                                      : ext.textPrimary,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -338,8 +354,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     child: _EmptyDay(ext: ext, tt: tt),
                   )
                 : SliverList.separated(
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: 10),
+                    separatorBuilder: (_, __) => const SizedBox(height: 10),
                     itemCount: _lessons.length,
                     itemBuilder: (_, i) => _LessonAttendanceCard(
                       lesson: _lessons[i],
@@ -376,25 +391,33 @@ class _LessonAttendanceCard extends StatelessWidget {
 
   Color _typeBg() {
     switch (lesson.type) {
-      case 'лекция':      return ext.infoBg;
-      case 'пр. занятие': return ext.successBg;
-      case 'лаб. работа': return ext.warningBg;
-      default:            return ext.divider;
+      case 'лекция':
+        return ext.infoBg;
+      case 'пр. занятие':
+        return ext.successBg;
+      case 'лаб. работа':
+        return ext.warningBg;
+      default:
+        return ext.divider;
     }
   }
 
   Color _typeFg() {
     switch (lesson.type) {
-      case 'лекция':      return ext.infoFg;
-      case 'пр. занятие': return ext.successFg;
-      case 'лаб. работа': return ext.warningFg;
-      default:            return ext.textSecondary;
+      case 'лекция':
+        return ext.infoFg;
+      case 'пр. занятие':
+        return ext.successFg;
+      case 'лаб. работа':
+        return ext.warningFg;
+      default:
+        return ext.textSecondary;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final rate    = lesson.attendanceRate;
+    final rate = lesson.attendanceRate;
     final started = lesson.isStarted;
 
     return GestureDetector(
@@ -419,50 +442,72 @@ class _LessonAttendanceCard extends StatelessWidget {
                       // Тип пары
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 7, vertical: 3),
+                          horizontal: 7,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           color: _typeBg(),
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child: Text(lesson.type,
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: _typeFg(),
-                              height: 1,
-                            )),
+                        child: Text(
+                          lesson.type,
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: _typeFg(),
+                            height: 1,
+                          ),
+                        ),
                       ),
                       const Spacer(),
-                      Text(lesson.time,
-                          style: tt.labelSmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: ext.textSecondary)),
+                      Text(
+                        lesson.time,
+                        style: tt.labelSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: ext.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
 
                   const SizedBox(height: 8),
 
                   // Название
-                  Text(lesson.subject, style: tt.titleMedium?.copyWith(fontSize: 15)),
+                  Text(
+                    lesson.subject,
+                    style: tt.titleMedium?.copyWith(fontSize: 15),
+                  ),
 
                   const SizedBox(height: 4),
 
                   // Группа + место
                   Row(
                     children: [
-                      Icon(Icons.groups_outlined,
-                          size: 13, color: ext.textTertiary),
+                      Icon(
+                        Icons.groups_outlined,
+                        size: 13,
+                        color: ext.textTertiary,
+                      ),
                       const SizedBox(width: 4),
-                      Text(lesson.group,
-                          style: tt.labelSmall
-                              ?.copyWith(color: ext.textSecondary)),
+                      Text(
+                        lesson.group,
+                        style: tt.labelSmall?.copyWith(
+                          color: ext.textSecondary,
+                        ),
+                      ),
                       const SizedBox(width: 10),
-                      Icon(Icons.location_on_outlined,
-                          size: 13, color: ext.textTertiary),
+                      Icon(
+                        Icons.location_on_outlined,
+                        size: 13,
+                        color: ext.textTertiary,
+                      ),
                       const SizedBox(width: 4),
-                      Text(lesson.place,
-                          style: tt.labelSmall
-                              ?.copyWith(color: ext.textSecondary)),
+                      Text(
+                        lesson.place,
+                        style: tt.labelSmall?.copyWith(
+                          color: ext.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
 
@@ -478,15 +523,18 @@ class _LessonAttendanceCard extends StatelessWidget {
                             color: rate >= 0.75
                                 ? ext.successFg
                                 : rate >= 0.5
-                                    ? ext.warningFg
-                                    : ext.errorFg,
+                                ? ext.warningFg
+                                : ext.errorFg,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         const Spacer(),
-                        Text('${(rate * 100).round()}%',
-                            style: tt.labelSmall?.copyWith(
-                                color: ext.textTertiary)),
+                        Text(
+                          '${(rate * 100).round()}%',
+                          style: tt.labelSmall?.copyWith(
+                            color: ext.textTertiary,
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 6),
@@ -500,24 +548,33 @@ class _LessonAttendanceCard extends StatelessWidget {
                           rate >= 0.75
                               ? ext.successFg
                               : rate >= 0.5
-                                  ? ext.warningFg
-                                  : ext.errorFg,
+                              ? ext.warningFg
+                              : ext.errorFg,
                         ),
                       ),
                     ),
                   ] else ...[
                     Row(
                       children: [
-                        Icon(Icons.people_outline,
-                            size: 13, color: ext.textTertiary),
+                        Icon(
+                          Icons.people_outline,
+                          size: 13,
+                          color: ext.textTertiary,
+                        ),
                         const SizedBox(width: 4),
-                        Text('${lesson.totalCount} студентов',
-                            style: tt.labelSmall
-                                ?.copyWith(color: ext.textSecondary)),
+                        Text(
+                          '${lesson.totalCount} студентов',
+                          style: tt.labelSmall?.copyWith(
+                            color: ext.textSecondary,
+                          ),
+                        ),
                         const Spacer(),
-                        Text('Нажмите, чтобы начать',
-                            style: tt.labelSmall
-                                ?.copyWith(color: ext.textTertiary)),
+                        Text(
+                          'Нажмите, чтобы начать',
+                          style: tt.labelSmall?.copyWith(
+                            color: ext.textTertiary,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -528,7 +585,9 @@ class _LessonAttendanceCard extends StatelessWidget {
             // Left border — активная пара
             if (started)
               Positioned(
-                left: 0, top: 0, bottom: 0,
+                left: 0,
+                top: 0,
+                bottom: 0,
                 child: Container(width: 3, color: cs.primary),
               ),
           ],
@@ -550,7 +609,7 @@ class _JournalSheet extends StatefulWidget {
 
   final AttendanceLesson lesson;
   final void Function(String studentId, AttendanceStatus status)
-      onStudentStatusChanged;
+  onStudentStatusChanged;
   final VoidCallback onStartLesson;
 
   @override
@@ -565,12 +624,14 @@ class _JournalSheetState extends State<_JournalSheet> {
   void initState() {
     super.initState();
     _students = widget.lesson.students
-        .map((s) => AttendanceStudent(
-              id: s.id,
-              name: s.name,
-              isHeadman: s.isHeadman,
-              status: s.status,
-            ))
+        .map(
+          (s) => AttendanceStudent(
+            id: s.id,
+            name: s.name,
+            isHeadman: s.isHeadman,
+            status: s.status,
+          ),
+        )
         .toList();
   }
 
@@ -589,15 +650,19 @@ class _JournalSheetState extends State<_JournalSheet> {
     switch (_filter) {
       case 'present':
         return _students
-            .where((s) =>
-                s.status == AttendanceStatus.present ||
-                s.status == AttendanceStatus.late)
+            .where(
+              (s) =>
+                  s.status == AttendanceStatus.present ||
+                  s.status == AttendanceStatus.late,
+            )
             .toList();
       case 'absent':
         return _students
-            .where((s) =>
-                s.status == AttendanceStatus.absent ||
-                s.status == AttendanceStatus.excused)
+            .where(
+              (s) =>
+                  s.status == AttendanceStatus.absent ||
+                  s.status == AttendanceStatus.excused,
+            )
             .toList();
       default:
         return _students;
@@ -605,13 +670,15 @@ class _JournalSheetState extends State<_JournalSheet> {
   }
 
   int get _presentCount => _students
-      .where((s) =>
-          s.status == AttendanceStatus.present ||
-          s.status == AttendanceStatus.late)
+      .where(
+        (s) =>
+            s.status == AttendanceStatus.present ||
+            s.status == AttendanceStatus.late,
+      )
       .length;
 
   void _openQr(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
 
     // Генерируем уникальный токен для пары
@@ -635,9 +702,9 @@ class _JournalSheetState extends State<_JournalSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
     final screenH = MediaQuery.of(context).size.height;
 
     return Stack(
@@ -668,7 +735,8 @@ class _JournalSheetState extends State<_JournalSheet> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 4),
                   child: Container(
-                    width: 36, height: 4,
+                    width: 36,
+                    height: 4,
                     decoration: BoxDecoration(
                       color: ext.border,
                       borderRadius: BorderRadius.circular(2),
@@ -688,13 +756,16 @@ class _JournalSheetState extends State<_JournalSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(widget.lesson.subject,
-                                    style: tt.titleMedium),
+                                Text(
+                                  widget.lesson.subject,
+                                  style: tt.titleMedium,
+                                ),
                                 const SizedBox(height: 2),
                                 Text(
                                   '${widget.lesson.group} · ${widget.lesson.time} · ${widget.lesson.place}',
-                                  style: tt.labelSmall
-                                      ?.copyWith(color: ext.textSecondary),
+                                  style: tt.labelSmall?.copyWith(
+                                    color: ext.textSecondary,
+                                  ),
                                 ),
                               ],
                             ),
@@ -716,11 +787,14 @@ class _JournalSheetState extends State<_JournalSheet> {
                           // Счётчик
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 6),
+                              horizontal: 10,
+                              vertical: 6,
+                            ),
                             decoration: BoxDecoration(
                               color: ext.successBg,
-                              borderRadius:
-                                  BorderRadius.circular(AppTheme.radiusSm),
+                              borderRadius: BorderRadius.circular(
+                                AppTheme.radiusSm,
+                              ),
                             ),
                             child: Text(
                               '$_presentCount / ${_students.length}',
@@ -737,8 +811,7 @@ class _JournalSheetState extends State<_JournalSheet> {
                           _SmallButton(
                             label: 'Все здесь',
                             icon: Icons.done_all,
-                            onTap: () =>
-                                _markAll(AttendanceStatus.present),
+                            onTap: () => _markAll(AttendanceStatus.present),
                             cs: cs,
                             ext: ext,
                           ),
@@ -746,8 +819,7 @@ class _JournalSheetState extends State<_JournalSheet> {
                           _SmallButton(
                             label: 'Сбросить',
                             icon: Icons.restart_alt,
-                            onTap: () =>
-                                _markAll(AttendanceStatus.absent),
+                            onTap: () => _markAll(AttendanceStatus.absent),
                             cs: cs,
                             ext: ext,
                           ),
@@ -763,23 +835,27 @@ class _JournalSheetState extends State<_JournalSheet> {
                             label: 'Все',
                             isActive: _filter == 'all',
                             onTap: () => setState(() => _filter = 'all'),
-                            cs: cs, ext: ext, tt: tt,
+                            cs: cs,
+                            ext: ext,
+                            tt: tt,
                           ),
                           const SizedBox(width: 6),
                           _FilterChip(
                             label: 'Присутствуют',
                             isActive: _filter == 'present',
-                            onTap: () =>
-                                setState(() => _filter = 'present'),
-                            cs: cs, ext: ext, tt: tt,
+                            onTap: () => setState(() => _filter = 'present'),
+                            cs: cs,
+                            ext: ext,
+                            tt: tt,
                           ),
                           const SizedBox(width: 6),
                           _FilterChip(
                             label: 'Отсутствуют',
                             isActive: _filter == 'absent',
-                            onTap: () =>
-                                setState(() => _filter = 'absent'),
-                            cs: cs, ext: ext, tt: tt,
+                            onTap: () => setState(() => _filter = 'absent'),
+                            cs: cs,
+                            ext: ext,
+                            tt: tt,
                           ),
                         ],
                       ),
@@ -853,29 +929,29 @@ class _StudentRow extends StatelessWidget {
 
   static const _statusColors = {
     AttendanceStatus.present: (bg: Color(0x1A10B981), fg: Color(0xFF047857)),
-    AttendanceStatus.absent:  (bg: Color(0x1AEF4444), fg: Color(0xFFB91C1C)),
-    AttendanceStatus.late:    (bg: Color(0x1FF59E0B), fg: Color(0xFFB45309)),
+    AttendanceStatus.absent: (bg: Color(0x1AEF4444), fg: Color(0xFFB91C1C)),
+    AttendanceStatus.late: (bg: Color(0x1FF59E0B), fg: Color(0xFFB45309)),
     AttendanceStatus.excused: (bg: Color(0x1A6366F1), fg: Color(0xFF4338CA)),
   };
 
   static const _statusLabels = {
     AttendanceStatus.present: 'Присут.',
-    AttendanceStatus.absent:  'Отсутст.',
-    AttendanceStatus.late:    'Опоздал',
+    AttendanceStatus.absent: 'Отсутст.',
+    AttendanceStatus.late: 'Опоздал',
     AttendanceStatus.excused: 'УВ',
   };
 
   static const _statusIcons = {
     AttendanceStatus.present: Icons.check_circle_outline,
-    AttendanceStatus.absent:  Icons.cancel_outlined,
-    AttendanceStatus.late:    Icons.watch_later_outlined,
+    AttendanceStatus.absent: Icons.cancel_outlined,
+    AttendanceStatus.late: Icons.watch_later_outlined,
     AttendanceStatus.excused: Icons.info_outline,
   };
 
   void _showStatusPicker(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
-    final cs  = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
 
     showModalBottomSheet(
       context: context,
@@ -893,7 +969,8 @@ class _StudentRow extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                width: 36, height: 4,
+                width: 36,
+                height: 4,
                 margin: const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
                   color: ext.border,
@@ -901,8 +978,7 @@ class _StudentRow extends StatelessWidget {
                 ),
               ),
             ),
-            Text(student.name.split(' ').first,
-                style: tt.titleMedium),
+            Text(student.name.split(' ').first, style: tt.titleMedium),
             const SizedBox(height: 12),
             ...AttendanceStatus.values.map((status) {
               final colors = _statusColors[status]!;
@@ -910,20 +986,20 @@ class _StudentRow extends StatelessWidget {
               return ListTile(
                 dense: true,
                 leading: Container(
-                  width: 32, height: 32,
+                  width: 32,
+                  height: 32,
                   decoration: BoxDecoration(
                     color: colors.bg,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(_statusIcons[status],
-                      size: 16, color: colors.fg),
+                  child: Icon(_statusIcons[status], size: 16, color: colors.fg),
                 ),
-                title: Text(_statusLabels[status]!,
-                    style: tt.labelLarge?.copyWith(
-                      fontWeight: isSelected
-                          ? FontWeight.w700
-                          : FontWeight.w400,
-                    )),
+                title: Text(
+                  _statusLabels[status]!,
+                  style: tt.labelLarge?.copyWith(
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+                  ),
+                ),
                 trailing: isSelected
                     ? Icon(Icons.check, color: cs.primary, size: 18)
                     : null,
@@ -942,8 +1018,8 @@ class _StudentRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = _statusColors[student.status]!;
-    final label  = _statusLabels[student.status]!;
-    final icon   = _statusIcons[student.status]!;
+    final label = _statusLabels[student.status]!;
+    final icon = _statusIcons[student.status]!;
 
     return InkWell(
       onTap: () => _showStatusPicker(context),
@@ -975,17 +1051,22 @@ class _StudentRow extends StatelessWidget {
                         const SizedBox(width: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2),
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: ext.infoBg,
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          child: Text('Ст.',
-                              style: TextStyle(
-                                  fontSize: 9,
-                                  fontWeight: FontWeight.w700,
-                                  color: ext.infoFg,
-                                  height: 1)),
+                          child: Text(
+                            'Ст.',
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w700,
+                              color: ext.infoFg,
+                              height: 1,
+                            ),
+                          ),
                         ),
                       ],
                     ],
@@ -999,7 +1080,9 @@ class _StudentRow extends StatelessWidget {
               onTap: () => _showStatusPicker(context),
               child: Container(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 5),
+                  horizontal: 10,
+                  vertical: 5,
+                ),
                 decoration: BoxDecoration(
                   color: colors.bg,
                   borderRadius: BorderRadius.circular(AppTheme.radiusSm),
@@ -1009,13 +1092,15 @@ class _StudentRow extends StatelessWidget {
                   children: [
                     Icon(icon, size: 12, color: colors.fg),
                     const SizedBox(width: 4),
-                    Text(label,
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
-                          color: colors.fg,
-                          height: 1,
-                        )),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: colors.fg,
+                        height: 1,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -1029,8 +1114,8 @@ class _StudentRow extends StatelessWidget {
   String _shortName(String fullName) {
     final parts = fullName.trim().split(' ');
     if (parts.length == 1) return parts[0];
-    final last   = parts[0];
-    final first  = parts.length > 1 ? '${parts[1][0]}.' : '';
+    final last = parts[0];
+    final first = parts.length > 1 ? '${parts[1][0]}.' : '';
     final middle = parts.length > 2 ? '${parts[2][0]}.' : '';
     return '$last $first$middle';
   }
@@ -1086,9 +1171,9 @@ class _QrModalState extends State<_QrModal> {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = widget.cs;
+    final cs = widget.cs;
     final ext = widget.ext;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
     final screenH = MediaQuery.of(context).size.height;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -1112,14 +1197,17 @@ class _QrModalState extends State<_QrModal> {
               ),
             ),
             padding: EdgeInsets.fromLTRB(
-              24, 16, 24,
+              24,
+              16,
+              24,
               MediaQuery.of(context).padding.bottom + 24,
             ),
             child: Column(
               children: [
                 // Ручка
                 Container(
-                  width: 36, height: 4,
+                  width: 36,
+                  height: 4,
                   margin: const EdgeInsets.only(bottom: 20),
                   decoration: BoxDecoration(
                     color: ext.border,
@@ -1145,8 +1233,9 @@ class _QrModalState extends State<_QrModal> {
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius:
-                                BorderRadius.circular(AppTheme.radiusMd),
+                            borderRadius: BorderRadius.circular(
+                              AppTheme.radiusMd,
+                            ),
                           ),
                           child: QrImageView(
                             data: widget.token,
@@ -1165,15 +1254,20 @@ class _QrModalState extends State<_QrModal> {
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.timer_off_outlined,
-                                size: 48, color: ext.errorFg),
+                            Icon(
+                              Icons.timer_off_outlined,
+                              size: 48,
+                              color: ext.errorFg,
+                            ),
                             const SizedBox(height: 12),
-                            Text('QR-код устарел',
-                                style: tt.titleMedium),
+                            Text('QR-код устарел', style: tt.titleMedium),
                             const SizedBox(height: 6),
-                            Text('Создайте новый',
-                                style: tt.bodyMedium
-                                    ?.copyWith(color: ext.textSecondary)),
+                            Text(
+                              'Создайте новый',
+                              style: tt.bodyMedium?.copyWith(
+                                color: ext.textSecondary,
+                              ),
+                            ),
                           ],
                         ),
                 ),
@@ -1185,11 +1279,13 @@ class _QrModalState extends State<_QrModal> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.timer_outlined,
-                          size: 15,
-                          color: _remaining < 60
-                              ? ext.warningFg
-                              : ext.textTertiary),
+                      Icon(
+                        Icons.timer_outlined,
+                        size: 15,
+                        color: _remaining < 60
+                            ? ext.warningFg
+                            : ext.textTertiary,
+                      ),
                       const SizedBox(width: 6),
                       Text(
                         'Действителен $_timeLabel',
@@ -1215,10 +1311,10 @@ class _QrModalState extends State<_QrModal> {
                     onPressed: _remaining > 0
                         ? () {
                             Clipboard.setData(
-                                ClipboardData(text: widget.token));
+                              ClipboardData(text: widget.token),
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Токен скопирован')),
+                              const SnackBar(content: Text('Токен скопирован')),
                             );
                           }
                         : () => Navigator.pop(context),
@@ -1251,16 +1347,17 @@ class _QrButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: 40, height: 40,
-          decoration: BoxDecoration(
-            color: cs.primary.withValues(alpha: .1),
-            borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-          ),
-          child: Icon(Icons.qr_code_2, color: cs.primary, size: 22),
-        ),
-      );
+    onTap: onTap,
+    child: Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: cs.primary.withValues(alpha: .1),
+        borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+      ),
+      child: Icon(Icons.qr_code_2, color: cs.primary, size: 22),
+    ),
+  );
 }
 
 class _SmallButton extends StatelessWidget {
@@ -1279,28 +1376,30 @@ class _SmallButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            color: ext.surfaceTinted,
-            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+    onTap: onTap,
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: ext.surfaceTinted,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 13, color: ext.textOnTinted),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: ext.textOnTinted,
+              height: 1,
+            ),
           ),
-          child: Row(
-            children: [
-              Icon(icon, size: 13, color: ext.textOnTinted),
-              const SizedBox(width: 4),
-              Text(label,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: ext.textOnTinted,
-                    height: 1,
-                  )),
-            ],
-          ),
-        ),
-      );
+        ],
+      ),
+    ),
+  );
 }
 
 class _FilterChip extends StatelessWidget {
@@ -1321,23 +1420,25 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-          decoration: BoxDecoration(
-            color: isActive ? cs.primary : ext.surfaceTinted,
-            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-          ),
-          child: Text(label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: isActive ? cs.onPrimary : ext.textOnTinted,
-                height: 1,
-              )),
+    onTap: onTap,
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: isActive ? cs.primary : ext.surfaceTinted,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: isActive ? cs.onPrimary : ext.textOnTinted,
+          height: 1,
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class _EmptyDay extends StatelessWidget {
@@ -1347,16 +1448,18 @@ class _EmptyDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 64),
-        child: Column(
-          children: [
-            Icon(Icons.coffee_outlined, size: 40, color: ext.textTertiary),
-            const SizedBox(height: 12),
-            Text('Пар нет, отдыхай',
-                style: tt.bodyMedium?.copyWith(color: ext.textSecondary)),
-          ],
+    padding: const EdgeInsets.only(top: 64),
+    child: Column(
+      children: [
+        Icon(Icons.coffee_outlined, size: 40, color: ext.textTertiary),
+        const SizedBox(height: 12),
+        Text(
+          'Пар нет, отдыхай',
+          style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
         ),
-      );
+      ],
+    ),
+  );
 }
 
 class _InitialsAvatar extends StatelessWidget {
@@ -1370,13 +1473,19 @@ class _InitialsAvatar extends StatelessWidget {
   final Color primary;
 
   static const _hues = [
-    Color(0xFFFF9900), Color(0xFFFFB84D), Color(0xFFE68A00),
-    Color(0xFFCC7A00), Color(0xFFFFA726), Color(0xFFFB8C00),
+    Color(0xFFFF9900),
+    Color(0xFFFFB84D),
+    Color(0xFFE68A00),
+    Color(0xFFCC7A00),
+    Color(0xFFFFA726),
+    Color(0xFFFB8C00),
   ];
 
   Color get _bg {
     int h = 0;
-    for (final c in name.codeUnits) { h = (h * 31 + c) & 0x7FFFFFFF; }
+    for (final c in name.codeUnits) {
+      h = (h * 31 + c) & 0x7FFFFFFF;
+    }
     return _hues[h % _hues.length];
   }
 
@@ -1390,15 +1499,18 @@ class _InitialsAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: size, height: size,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: _bg),
-        alignment: Alignment.center,
-        child: Text(_initials,
-            style: TextStyle(
-              fontSize: size * 0.34,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              height: 1,
-            )),
-      );
+    width: size,
+    height: size,
+    decoration: BoxDecoration(shape: BoxShape.circle, color: _bg),
+    alignment: Alignment.center,
+    child: Text(
+      _initials,
+      style: TextStyle(
+        fontSize: size * 0.34,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+        height: 1,
+      ),
+    ),
+  );
 }

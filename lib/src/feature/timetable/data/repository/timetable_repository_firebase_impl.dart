@@ -14,7 +14,7 @@ class TimetableRepositoryFirebaseImpl implements TimetableRepository {
     required AuthLocalDataSource locale,
     required TimetableRemoteDataSource remote,
   }) : _locale = locale,
-        _remote = remote;
+       _remote = remote;
 
   @override
   Future<Timetable> getTimetable() async {
@@ -40,7 +40,9 @@ class TimetableRepositoryFirebaseImpl implements TimetableRepository {
 
   @override
   Future<Timetable> getTimetableForTarget(String target) async {
-    final TimetableDTO timetableDTO = await _remote.getTimetableForTarget(target);
+    final TimetableDTO timetableDTO = await _remote.getTimetableForTarget(
+      target,
+    );
     return TimetableMapper.fromDTO(timetableDTO);
   }
 }

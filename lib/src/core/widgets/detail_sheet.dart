@@ -22,8 +22,8 @@ class _DetailSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenH = MediaQuery.of(context).size.height;
-    final sheetH  = screenH * 0.68;
-    final cs      = Theme.of(context).colorScheme;
+    final sheetH = screenH * 0.68;
+    final cs = Theme.of(context).colorScheme;
 
     return Stack(
       children: [
@@ -31,9 +31,7 @@ class _DetailSheet extends StatelessWidget {
           onTap: () => Navigator.pop(context),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-            child: Container(
-              color: Colors.black.withValues(alpha: .35),
-            ),
+            child: Container(color: Colors.black.withValues(alpha: .35)),
           ),
         ),
 
@@ -56,9 +54,7 @@ class _DetailSheet extends StatelessWidget {
                     width: 36,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .extension<AppColors>()!
-                          .border,
+                      color: Theme.of(context).extension<AppColors>()!.border,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -67,7 +63,9 @@ class _DetailSheet extends StatelessWidget {
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.fromLTRB(
-                      20, 8, 20,
+                      20,
+                      8,
+                      20,
                       MediaQuery.of(context).padding.bottom + 24,
                     ),
                     child: child,

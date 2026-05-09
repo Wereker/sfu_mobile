@@ -12,14 +12,14 @@ class AnnouncementsBloc extends Bloc<AnnouncementsEvent, AnnouncementsState> {
   final GetAnnouncementsUseCase _getAnnouncementsUseCase;
 
   AnnouncementsBloc(this._getAnnouncementsUseCase)
-      : super(AnnouncementsState.initial()) {
+    : super(AnnouncementsState.initial()) {
     on<AnnouncementsEvent>(_onEvent);
   }
 
   Future<void> _onEvent(
-      AnnouncementsEvent event,
-      Emitter<AnnouncementsState> emit,
-      ) async {
+    AnnouncementsEvent event,
+    Emitter<AnnouncementsState> emit,
+  ) async {
     await event.when(
       load: () async {
         emit(AnnouncementsState.loading());

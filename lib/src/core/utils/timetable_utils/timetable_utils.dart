@@ -23,9 +23,9 @@ class TimetableUtils {
 
   /// Парсит время из строки "8:30-10:05" → (начало, конец)
   static (DateTime start, DateTime end) parseLessonTime(
-      String timeRange,
-      DateTime referenceDate,
-      ) {
+    String timeRange,
+    DateTime referenceDate,
+  ) {
     final parts = timeRange.split('-');
     final startParts = parts[0].trim().split(':');
     final endParts = parts[1].trim().split(':');
@@ -55,7 +55,8 @@ class TimetableUtils {
     final (start, end) = parseLessonTime(timeRange, today);
 
     // Проверяем, что сейчас тот же день
-    if (now.isBefore(today) || now.isAfter(today.add(const Duration(days: 1)))) {
+    if (now.isBefore(today) ||
+        now.isAfter(today.add(const Duration(days: 1)))) {
       return const LessonStatus.notToday();
     }
 
@@ -87,11 +88,16 @@ class TimetableUtils {
   /// Форматирует статус пары для отображения (без локализации)
   static String formatLessonStatus(LessonStatus status) {
     return status.when(
-        notToday: () => '',
-        finished: () => '',
-        willStartIn: (minutes) => minutes == 1 ? 'Начнётся через 1 минуту' : 'Начнётся через $minutes минут',
-        inProgress: (minutes) => minutes == 1 ? 'Идёт 1 минуту' : 'Идёт $minutes минут',
-        willEndIn: (minutes) => minutes == 1 ? 'Закончится через 1 минуту' : 'Закончится через $minutes минут',
+      notToday: () => '',
+      finished: () => '',
+      willStartIn: (minutes) => minutes == 1
+          ? 'Начнётся через 1 минуту'
+          : 'Начнётся через $minutes минут',
+      inProgress: (minutes) =>
+          minutes == 1 ? 'Идёт 1 минуту' : 'Идёт $minutes минут',
+      willEndIn: (minutes) => minutes == 1
+          ? 'Закончится через 1 минуту'
+          : 'Закончится через $minutes минут',
     );
   }
 }

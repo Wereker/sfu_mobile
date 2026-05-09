@@ -4,7 +4,6 @@ import 'package:sfu/src/core/theme/app_theme.dart';
 
 import '../../../../core/widgets/detail_sheet.dart';
 
-
 class StaffMember {
   final String id;
   final String name;
@@ -14,7 +13,7 @@ class StaffMember {
   final String? phone;
   final String? telegram;
   final String? bio;
-  final List<String> tags;    // направления
+  final List<String> tags; // направления
 
   const StaffMember({
     required this.id,
@@ -39,7 +38,8 @@ const sampleStaff = [
     email: 'sokolova@sfu-kras.ru',
     phone: '+7 (391) 206-22-11',
     telegram: '@sokolova_sai',
-    bio: 'Кандидат технических наук, доцент кафедры систем искусственного интеллекта. '
+    bio:
+        'Кандидат технических наук, доцент кафедры систем искусственного интеллекта. '
         'Читает курсы «Машинное обучение» и «Обработка естественного языка». '
         'Научный руководитель 12 выпускных квалификационных работ. '
         'Участник международных конференций AAAI, ACL и Dialogue.',
@@ -53,7 +53,8 @@ const sampleStaff = [
     email: 'petrov@sfu-kras.ru',
     phone: '+7 (391) 206-22-34',
     telegram: '@petrov_db',
-    bio: 'Кандидат физико-математических наук. Специализируется в области теории алгоритмов, '
+    bio:
+        'Кандидат физико-математических наук. Специализируется в области теории алгоритмов, '
         'реляционных и NoSQL баз данных. Ведёт курсы «Базы данных», «Алгоритмы и структуры данных». '
         'Автор 23 научных статей в журналах ВАК.',
     tags: ['Базы данных', 'Алгоритмы', 'NoSQL'],
@@ -65,7 +66,8 @@ const sampleStaff = [
     degree: 'д.т.н.',
     email: 'ivanov@sfu-kras.ru',
     phone: '+7 (391) 206-22-00',
-    bio: 'Доктор технических наук, профессор. Заведующий кафедрой CAИ с 2018 года. '
+    bio:
+        'Доктор технических наук, профессор. Заведующий кафедрой CAИ с 2018 года. '
         'Область научных интересов: методы оптимизации, машинное обучение, цифровая трансформация. '
         'Руководитель трёх грантов РНФ. Соавтор двух учебников по линейной алгебре и '
         'оптимальному управлению, рекомендованных Минобрнауки.',
@@ -78,7 +80,8 @@ const sampleStaff = [
     degree: '',
     email: 'kuznetsova@sfu-kras.ru',
     telegram: '@kuznetsova_cv',
-    bio: 'Старший преподаватель кафедры. Специалист в области компьютерного зрения '
+    bio:
+        'Старший преподаватель кафедры. Специалист в области компьютерного зрения '
         'и обработки изображений. Ведёт практические занятия по Python, OpenCV и PyTorch. '
         'Активный участник хакатонов, ментор команд на соревнованиях Kaggle.',
     tags: ['Python', 'CV', 'PyTorch', 'OpenCV'],
@@ -94,9 +97,9 @@ class StaffCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: () => showDetailSheet(
@@ -114,8 +117,7 @@ class StaffCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Аватар
-            _InitialsAvatar(
-                name: member.name, size: 52, primary: cs.primary),
+            _InitialsAvatar(name: member.name, size: 52, primary: cs.primary),
             const SizedBox(width: 12),
 
             Expanded(
@@ -123,9 +125,13 @@ class StaffCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Имя
-                  Text(member.name,
-                      style: tt.labelLarge?.copyWith(
-                          fontWeight: FontWeight.w600, fontSize: 15)),
+                  Text(
+                    member.name,
+                    style: tt.labelLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                  ),
                   const SizedBox(height: 3),
 
                   // Должность + степень
@@ -165,7 +171,9 @@ class StaffCard extends StatelessWidget {
 class _StaffDetail extends StatelessWidget {
   const _StaffDetail({
     required this.member,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
 
   final StaffMember member;
@@ -181,16 +189,18 @@ class _StaffDetail extends StatelessWidget {
         // Шапка: аватар + имя
         Row(
           children: [
-            _InitialsAvatar(
-                name: member.name, size: 56, primary: cs.primary),
+            _InitialsAvatar(name: member.name, size: 56, primary: cs.primary),
             const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(member.name,
-                      style: tt.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w700)),
+                  Text(
+                    member.name,
+                    style: tt.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   const SizedBox(height: 4),
                   Text(
                     member.degree.isNotEmpty
@@ -221,12 +231,19 @@ class _StaffDetail extends StatelessWidget {
 
         // Биография
         if (member.bio != null && member.bio!.isNotEmpty) ...[
-          Text('О преподавателе',
-              style: tt.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
+          Text(
+            'О преподавателе',
+            style: tt.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 8),
-          Text(member.bio!,
-              style: tt.bodyLarge?.copyWith(
-                  fontSize: 15, height: 1.6, color: ext.textPrimary)),
+          Text(
+            member.bio!,
+            style: tt.bodyLarge?.copyWith(
+              fontSize: 15,
+              height: 1.6,
+              color: ext.textPrimary,
+            ),
+          ),
           const SizedBox(height: 24),
         ],
 
@@ -251,7 +268,9 @@ class _StaffDetail extends StatelessWidget {
 class _ContactsBlock extends StatelessWidget {
   const _ContactsBlock({
     required this.member,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
 
   final StaffMember member;
@@ -267,19 +286,22 @@ class _ContactsBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = <_ContactItem>[
       _ContactItem(
-          icon: Icons.mail_outline,
-          label: 'Почта',
-          value: member.email),
+        icon: Icons.mail_outline,
+        label: 'Почта',
+        value: member.email,
+      ),
       if (member.phone != null)
         _ContactItem(
-            icon: Icons.phone_outlined,
-            label: 'Телефон',
-            value: member.phone!),
+          icon: Icons.phone_outlined,
+          label: 'Телефон',
+          value: member.phone!,
+        ),
       if (member.telegram != null)
         _ContactItem(
-            icon: Icons.telegram,
-            label: 'Telegram',
-            value: member.telegram!),
+          icon: Icons.telegram,
+          label: 'Telegram',
+          value: member.telegram!,
+        ),
     ];
 
     return Container(
@@ -290,7 +312,7 @@ class _ContactsBlock extends StatelessWidget {
       ),
       child: Column(
         children: items.asMap().entries.map((entry) {
-          final i    = entry.key;
+          final i = entry.key;
           final item = entry.value;
           final isLast = i == items.length - 1;
 
@@ -298,13 +320,19 @@ class _ContactsBlock extends StatelessWidget {
             children: [
               InkWell(
                 borderRadius: BorderRadius.vertical(
-                  top: i == 0 ? const Radius.circular(AppTheme.radiusMd) : Radius.zero,
-                  bottom: isLast ? const Radius.circular(AppTheme.radiusMd) : Radius.zero,
+                  top: i == 0
+                      ? const Radius.circular(AppTheme.radiusMd)
+                      : Radius.zero,
+                  bottom: isLast
+                      ? const Radius.circular(AppTheme.radiusMd)
+                      : Radius.zero,
                 ),
                 onTap: () => _copy(context, item.value),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 11),
+                    horizontal: 14,
+                    vertical: 11,
+                  ),
                   child: Row(
                     children: [
                       Icon(item.icon, size: 17, color: ext.textTertiary),
@@ -313,18 +341,27 @@ class _ContactsBlock extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(item.label,
-                                style: tt.labelSmall
-                                    ?.copyWith(color: ext.textSecondary)),
+                            Text(
+                              item.label,
+                              style: tt.labelSmall?.copyWith(
+                                color: ext.textSecondary,
+                              ),
+                            ),
                             const SizedBox(height: 2),
-                            Text(item.value,
-                                style: tt.labelLarge?.copyWith(
-                                    fontWeight: FontWeight.w400)),
+                            Text(
+                              item.value,
+                              style: tt.labelLarge?.copyWith(
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                      Icon(Icons.copy_outlined,
-                          size: 15, color: ext.textTertiary),
+                      Icon(
+                        Icons.copy_outlined,
+                        size: 15,
+                        color: ext.textTertiary,
+                      ),
                     ],
                   ),
                 ),
@@ -342,7 +379,11 @@ class _ContactItem {
   final IconData icon;
   final String label;
   final String value;
-  const _ContactItem({required this.icon, required this.label, required this.value});
+  const _ContactItem({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
 }
 
 // ════════════════════════════════════════════════════════════
@@ -350,7 +391,9 @@ class _ContactItem {
 // ════════════════════════════════════════════════════════════
 class _InitialsAvatar extends StatelessWidget {
   const _InitialsAvatar({
-    required this.name, required this.size, required this.primary,
+    required this.name,
+    required this.size,
+    required this.primary,
   });
 
   final String name;
@@ -358,13 +401,19 @@ class _InitialsAvatar extends StatelessWidget {
   final Color primary;
 
   static const _hues = [
-    Color(0xFFFF9900), Color(0xFFFFB84D), Color(0xFFE68A00),
-    Color(0xFFCC7A00), Color(0xFFFFA726), Color(0xFFFB8C00),
+    Color(0xFFFF9900),
+    Color(0xFFFFB84D),
+    Color(0xFFE68A00),
+    Color(0xFFCC7A00),
+    Color(0xFFFFA726),
+    Color(0xFFFB8C00),
   ];
 
   Color get _bg {
     int h = 0;
-    for (final c in name.codeUnits) { h = (h * 31 + c) & 0x7FFFFFFF; }
+    for (final c in name.codeUnits) {
+      h = (h * 31 + c) & 0x7FFFFFFF;
+    }
     return _hues[h % _hues.length];
   }
 
@@ -378,16 +427,20 @@ class _InitialsAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: size, height: size,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: _bg),
-        alignment: Alignment.center,
-        child: Text(_initials,
-            style: TextStyle(
-                fontSize: size * 0.34,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                height: 1)),
-      );
+    width: size,
+    height: size,
+    decoration: BoxDecoration(shape: BoxShape.circle, color: _bg),
+    alignment: Alignment.center,
+    child: Text(
+      _initials,
+      style: TextStyle(
+        fontSize: size * 0.34,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+        height: 1,
+      ),
+    ),
+  );
 }
 
 // ════════════════════════════════════════════════════════════
@@ -400,17 +453,19 @@ class _Tag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
-        decoration: BoxDecoration(
-          color: ext.surfaceTinted,
-          borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-        ),
-        child: Text(label,
-            style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-                color: ext.textOnTinted,
-                height: 1)),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+    decoration: BoxDecoration(
+      color: ext.surfaceTinted,
+      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+    ),
+    child: Text(
+      label,
+      style: TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.w500,
+        color: ext.textOnTinted,
+        height: 1,
+      ),
+    ),
+  );
 }

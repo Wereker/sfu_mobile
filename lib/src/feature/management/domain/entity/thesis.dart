@@ -9,7 +9,7 @@ abstract class Thesis with _$Thesis {
     required String title,
     required String teacherId,
     required String teacherName,
-    required bool   isFree,
+    required bool isFree,
     String? takenBy,
     String? takenById,
   }) = _Thesis;

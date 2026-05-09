@@ -10,5 +10,4 @@ class UpdateAppLocalizationUseCaseImpl implements UpdateAppLocalizationUseCase {
   Future<void> call(String locale) async {
     await settingsRepo.setLocale(locale);
   }
-
 }

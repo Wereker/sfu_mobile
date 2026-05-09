@@ -10,7 +10,6 @@ import 'package:sfu/src/feature/chat/message/domain/entity/message.dart';
 import 'package:sfu/src/feature/chat/message/presentation/screens/message_screen.dart';
 import 'package:sfu/src/feature/chat/presentation/bloc/chat_bloc.dart';
 
-
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
 
@@ -44,12 +43,14 @@ class _LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: [
-      const _ChatAppBar(),
-      const SliverFillRemaining(
-        child: Center(child: LoadingIndicatorWidget()),
-      ),
-    ]);
+    return CustomScrollView(
+      slivers: [
+        const _ChatAppBar(),
+        const SliverFillRemaining(
+          child: Center(child: LoadingIndicatorWidget()),
+        ),
+      ],
+    );
   }
 }
 
@@ -61,35 +62,48 @@ class _ErrorView extends StatelessWidget {
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt = Theme.of(context).textTheme;
 
-    return CustomScrollView(slivers: [
-      const _ChatAppBar(),
-      SliverFillRemaining(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 64, height: 64,
-                  decoration: BoxDecoration(
-                    color: ext.errorBg, shape: BoxShape.circle,
+    return CustomScrollView(
+      slivers: [
+        const _ChatAppBar(),
+        SliverFillRemaining(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      color: ext.errorBg,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.wifi_off_outlined,
+                      size: 28,
+                      color: ext.errorFg,
+                    ),
                   ),
-                  child: Icon(Icons.wifi_off_outlined, size: 28, color: ext.errorFg),
-                ),
-                const SizedBox(height: 16),
-                Text('Не удалось загрузить чаты',
-                    textAlign: TextAlign.center, style: tt.titleMedium),
-                const SizedBox(height: 6),
-                Text('Проверь подключение и попробуй снова',
+                  const SizedBox(height: 16),
+                  Text(
+                    'Не удалось загрузить чаты',
                     textAlign: TextAlign.center,
-                    style: tt.bodyMedium?.copyWith(color: ext.textSecondary)),
-              ],
+                    style: tt.titleMedium,
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Проверь подключение и попробуй снова',
+                    textAlign: TextAlign.center,
+                    style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
 
@@ -101,25 +115,32 @@ class _EmptyView extends StatelessWidget {
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt = Theme.of(context).textTheme;
 
-    return CustomScrollView(slivers: [
-      const _ChatAppBar(),
-      SliverFillRemaining(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.chat_bubble_outline, size: 48, color: ext.textTertiary),
-              const SizedBox(height: 12),
-              Text('Чатов пока нет',
-                  style: tt.bodyMedium?.copyWith(color: ext.textSecondary)),
-            ],
+    return CustomScrollView(
+      slivers: [
+        const _ChatAppBar(),
+        SliverFillRemaining(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.chat_bubble_outline,
+                  size: 48,
+                  color: ext.textTertiary,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Чатов пока нет',
+                  style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
-
 
 class _ChatAppBar extends StatelessWidget {
   const _ChatAppBar();
@@ -152,14 +173,17 @@ class _ChatAppBar extends StatelessWidget {
                   children: [
                     Text('Чаты', style: tt.displaySmall),
                     const SizedBox(height: 2),
-                    Text('Кафедра, группы, преподаватели',
-                        style: tt.labelLarge?.copyWith(color: ext.textSecondary)),
+                    Text(
+                      'Кафедра, группы, преподаватели',
+                      style: tt.labelLarge?.copyWith(color: ext.textSecondary),
+                    ),
                   ],
                 ),
               ),
               const SizedBox(width: 10),
               Container(
-                width: 48, height: 48,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
                   color: cs.primary,
                   borderRadius: BorderRadius.circular(AppTheme.radiusMd),
@@ -175,7 +199,6 @@ class _ChatAppBar extends StatelessWidget {
   }
 }
 
-
 class _ChatBody extends StatefulWidget {
   const _ChatBody({required this.chats});
   final List<Chat> chats;
@@ -190,8 +213,8 @@ class _ChatBodyState extends State<_ChatBody> {
   List<Chat> get _filtered => _query.isEmpty
       ? widget.chats
       : widget.chats
-          .where((c) => c.title.toLowerCase().contains(_query.toLowerCase()))
-          .toList();
+            .where((c) => c.title.toLowerCase().contains(_query.toLowerCase()))
+            .toList();
 
   Future<void> _onRefresh() async {
     context.read<ChatBloc>().add(ChatEvent.loadData());
@@ -220,7 +243,11 @@ class _ChatBodyState extends State<_ChatBody> {
                 child: TextField(
                   onChanged: (v) => setState(() => _query = v),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search, color: ext.textTertiary, size: 20),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: ext.textTertiary,
+                      size: 20,
+                    ),
                     hintText: 'Поиск чатов и сообщений',
                     hintStyle: tt.bodyMedium?.copyWith(color: ext.textTertiary),
                   ),
@@ -231,23 +258,20 @@ class _ChatBodyState extends State<_ChatBody> {
             _filtered.isEmpty
                 ? SliverFillRemaining(
                     child: Center(
-                      child: Text('Ничего не найдено',
-                          style: tt.bodyMedium?.copyWith(color: ext.textSecondary)),
+                      child: Text(
+                        'Ничего не найдено',
+                        style: tt.bodyMedium?.copyWith(
+                          color: ext.textSecondary,
+                        ),
+                      ),
                     ),
                   )
                 : SliverList.separated(
-                    separatorBuilder: (_, __) => Divider(
-                      height: 1,
-                      indent: 72,
-                      color: ext.divider,
-                    ),
+                    separatorBuilder: (_, __) =>
+                        Divider(height: 1, indent: 72, color: ext.divider),
                     itemCount: _filtered.length,
-                    itemBuilder: (_, i) => _ChatRow(
-                      chat: _filtered[i],
-                      cs: cs,
-                      ext: ext,
-                      tt: tt,
-                    ),
+                    itemBuilder: (_, i) =>
+                        _ChatRow(chat: _filtered[i], cs: cs, ext: ext, tt: tt),
                   ),
 
             SliverPadding(
@@ -261,7 +285,6 @@ class _ChatBodyState extends State<_ChatBody> {
     );
   }
 }
-
 
 class _ChatRow extends StatelessWidget {
   const _ChatRow({
@@ -286,13 +309,16 @@ class _ChatRow extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     final now = DateTime.now();
-    if (date.year == now.year && date.month == now.month && date.day == now.day) {
+    if (date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day) {
       return DateFormat('HH:mm').format(date);
     }
     final yesterday = now.subtract(const Duration(days: 1));
     if (date.year == yesterday.year &&
         date.month == yesterday.month &&
-        date.day == yesterday.day) return 'Вчера';
+        date.day == yesterday.day)
+      return 'Вчера';
     return DateFormat('dd.MM').format(date);
   }
 
@@ -302,13 +328,19 @@ class _ChatRow extends StatelessWidget {
   }
 
   static const _hues = [
-    Color(0xFFFF9900), Color(0xFFFFB84D), Color(0xFFE68A00),
-    Color(0xFFCC7A00), Color(0xFFFFA726), Color(0xFFFB8C00),
+    Color(0xFFFF9900),
+    Color(0xFFFFB84D),
+    Color(0xFFE68A00),
+    Color(0xFFCC7A00),
+    Color(0xFFFFA726),
+    Color(0xFFFB8C00),
   ];
 
   Color _avatarColor(String title) {
     int h = 0;
-    for (final c in title.codeUnits) { h = (h * 31 + c) & 0x7FFFFFFF; }
+    for (final c in title.codeUnits) {
+      h = (h * 31 + c) & 0x7FFFFFFF;
+    }
     return _hues[h % _hues.length];
   }
 
@@ -331,7 +363,8 @@ class _ChatRow extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  width: 48, height: 48,
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _avatarColor(chat.title),
@@ -347,8 +380,10 @@ class _ChatRow extends StatelessWidget {
                       ? Text(
                           _initials(chat.title),
                           style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600,
-                            color: Colors.white, height: 1,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            height: 1,
                           ),
                         )
                       : null,
@@ -356,9 +391,11 @@ class _ChatRow extends StatelessWidget {
                 // Индикатор онлайн
                 if (chat.type == ChatType.private)
                   Positioned(
-                    bottom: 1, right: 1,
+                    bottom: 1,
+                    right: 1,
                     child: Container(
-                      width: 12, height: 12,
+                      width: 12,
+                      height: 12,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _isOnline(chat) ? ext.success : ext.textTertiary,
@@ -411,7 +448,9 @@ class _ChatRow extends StatelessWidget {
                               : chat.lastMessage.text,
                           style: tt.bodyMedium?.copyWith(
                             fontSize: 13,
-                            color: hasUnread ? ext.textPrimary : ext.textSecondary,
+                            color: hasUnread
+                                ? ext.textPrimary
+                                : ext.textSecondary,
                             fontWeight: hasUnread
                                 ? FontWeight.w500
                                 : FontWeight.w400,

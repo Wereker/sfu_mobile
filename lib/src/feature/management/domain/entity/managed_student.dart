@@ -10,7 +10,7 @@ abstract class ManagedStudent with _$ManagedStudent {
     required String groupId,
     required String groupName,
     required String stream,
-    required bool   isHeadman,
+    required bool isHeadman,
     String? phone,
     String? telegram,
     String? email,

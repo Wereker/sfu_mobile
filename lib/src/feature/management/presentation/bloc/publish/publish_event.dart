@@ -18,7 +18,7 @@ abstract class PublishEvent with _$PublishEvent {
     required String date,
     required String time,
     required String location,
-    required int    totalSeats,
+    required int totalSeats,
     required String audience,
     String? stream,
     String? groupId,

@@ -16,7 +16,7 @@ import '../feature/profile/presentation/bloc/profile_bloc.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
-  
+
   static final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
@@ -24,16 +24,13 @@ class App extends StatelessWidget {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         state.maybeWhen(
-          unauthorized: () =>
-              navigatorKey.currentState?.pushNamedAndRemoveUntil(
-                '/signIn',
-                    (route) => false,
-              ),
+          unauthorized: () => navigatorKey.currentState
+              ?.pushNamedAndRemoveUntil('/signIn', (route) => false),
           authorized: () {
             context.read<ProfileBloc>().add(ProfileEvent.loadData());
             navigatorKey.currentState?.pushNamedAndRemoveUntil(
               '/home',
-                  (route) => false,
+              (route) => false,
             );
           },
           orElse: () {},
@@ -45,28 +42,28 @@ class App extends StatelessWidget {
             success: (settings) => _getLocaleFromCode(settings.locale),
             orElse: () => const Locale('ru'),
           );
-      
+
           final themeMode = state.maybeWhen(
             success: (settings) => _parseThemeMode(settings.themeMode),
             orElse: () => ThemeMode.system,
           );
-      
+
           return MaterialApp(
             navigatorKey: App.navigatorKey,
-            
+
             locale: locale,
             localeResolutionCallback: (locale, supportedLocales) => locale,
-      
+
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
             themeMode: themeMode,
-      
+
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-      
+
             debugShowCheckedModeBanner: false,
             routes: _buildRoutes(),
-      
+
             home: state.maybeWhen(
               success: (settings) => const AuthWrapper(),
               error: (message) => _ErrorScreen(message: message),
@@ -80,9 +77,7 @@ class App extends StatelessWidget {
 
   Locale _getLocaleFromCode(String localeCode) {
     final parts = localeCode.split('_');
-    return parts.length > 1
-        ? Locale(parts[0], parts[1])
-        : Locale(localeCode);
+    return parts.length > 1 ? Locale(parts[0], parts[1]) : Locale(localeCode);
   }
 
   ThemeMode _parseThemeMode(String themeMode) {

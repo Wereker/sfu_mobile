@@ -15,9 +15,9 @@ class AttendanceRepositoryMock implements AttendanceRepository {
 
   @override
   Future<AttendanceSession> createSession(
-      String lessonId, {
-        int ttlSeconds = 300,
-      }) async {
+    String lessonId, {
+    int ttlSeconds = 300,
+  }) async {
     return ExceptionHandler.handle(() async {
       final dto = await _remote.createSession(lessonId, ttlSeconds);
       return AttendanceMapper.sessionFromDTO(dto);
@@ -31,17 +31,21 @@ class AttendanceRepositoryMock implements AttendanceRepository {
   @override
   Future<List<AttendanceStudent>> getSessionStudents(String sessionId) async {
     return ExceptionHandler.handle(() async {
-      final List<AttendanceStudentDTO> dtos = await _remote.getSessionStudents(sessionId);
-      return dtos.map<AttendanceStudent>(AttendanceMapper.studentFromDTO).toList();
+      final List<AttendanceStudentDTO> dtos = await _remote.getSessionStudents(
+        sessionId,
+      );
+      return dtos
+          .map<AttendanceStudent>(AttendanceMapper.studentFromDTO)
+          .toList();
     });
   }
 
   @override
   Future<AttendanceStudent> updateStudentStatus(
-      String sessionId,
-      String studentId,
-      AttendanceStatus status,
-      ) async {
+    String sessionId,
+    String studentId,
+    AttendanceStatus status,
+  ) async {
     return ExceptionHandler.handle(() async {
       final dto = await _remote.updateStudentStatus(
         sessionId,
@@ -63,8 +67,11 @@ class AttendanceRepositoryMock implements AttendanceRepository {
   @override
   Future<List<AttendanceRecord>> getAttendanceHistory() async {
     return ExceptionHandler.handle(() async {
-      final List<AttendanceRecordDTO> dtos = await _remote.getAttendanceHistory();
-      return dtos.map<AttendanceRecord>(AttendanceMapper.recordFromDTO).toList();
+      final List<AttendanceRecordDTO> dtos = await _remote
+          .getAttendanceHistory();
+      return dtos
+          .map<AttendanceRecord>(AttendanceMapper.recordFromDTO)
+          .toList();
     });
   }
 }

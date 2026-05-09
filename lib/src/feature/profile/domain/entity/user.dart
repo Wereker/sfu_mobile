@@ -11,10 +11,10 @@ abstract class User with _$User {
     required String lastName,
     String? fatherName,
     DateTime? birthdate,
-    String?   sex,
-    String?   phone,
-    required String role,  // 'student' | 'teacher'
-    String?   avatarUrl,
+    String? sex,
+    String? phone,
+    required String role, // 'student' | 'teacher'
+    String? avatarUrl,
 
     // Только для студента
     String? institute,
@@ -34,4 +34,3 @@ abstract class User with _$User {
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
-

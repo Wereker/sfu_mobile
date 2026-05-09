@@ -12,7 +12,7 @@ class EventsRemoteDataSourceMock implements EventsRemoteDataSource {
   Future<List<EventDTO>> getEvents() async {
     await MockDelay.apply();
 
-    final raw  = await rootBundle.loadString('lib/src/core/mock/events.json');
+    final raw = await rootBundle.loadString('lib/src/core/mock/events.json');
     final json = jsonDecode(raw) as Map<String, dynamic>;
 
     return (json['data'] as List).map((item) {

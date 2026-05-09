@@ -10,8 +10,8 @@ class UpdateStudentStatusUseCaseImpl implements UpdateStudentStatusUseCase {
 
   @override
   Future<AttendanceStudent> call({
-    required String          sessionId,
-    required String          studentId,
+    required String sessionId,
+    required String studentId,
     required AttendanceStatus status,
   }) async {
     if (sessionId.trim().isEmpty) {
@@ -22,7 +22,7 @@ class UpdateStudentStatusUseCaseImpl implements UpdateStudentStatusUseCase {
     }
 
     return ExceptionHandler.handle(
-          () => _repo.updateStudentStatus(sessionId, studentId, status),
+      () => _repo.updateStudentStatus(sessionId, studentId, status),
     );
   }
 }

@@ -11,9 +11,7 @@ import 'package:sfu/src/feature/settings/presentation/bloc/settings_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await dotenv.load(fileName: '.env');
   await di.init();
 
@@ -27,9 +25,7 @@ void main() async {
           create: (_) =>
               di.sl<SettingsBloc>()..add(SettingsEvent.getAppSettings()),
         ),
-        BlocProvider(
-          create: (_) => di.sl<ProfileBloc>(),
-        ),
+        BlocProvider(create: (_) => di.sl<ProfileBloc>()),
       ],
       child: const App(),
     ),

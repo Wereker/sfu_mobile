@@ -12,7 +12,7 @@ abstract class AnnouncementDTO with _$AnnouncementDTO {
     @Default('') String source,
     @JsonKey(name: 'author_id') @Default('') String authorId,
     @Default('') String author,
-    required String date,       // 'YYYY-MM-DD'
+    required String date, // 'YYYY-MM-DD'
     required String title,
     @Default('') String preview,
     required String body,

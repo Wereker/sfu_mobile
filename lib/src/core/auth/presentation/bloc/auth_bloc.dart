@@ -45,7 +45,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       resetPassword: (newPassword, confirmPassword) async {
         emit(AuthState.loading());
         try {
-          await resetPasswordUseCase.call(newPassword: newPassword, confirmPassword: confirmPassword);
+          await resetPasswordUseCase.call(
+            newPassword: newPassword,
+            confirmPassword: confirmPassword,
+          );
           emit(AuthState.unauthorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));

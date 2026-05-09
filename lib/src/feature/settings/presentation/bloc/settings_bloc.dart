@@ -11,25 +11,25 @@ part 'settings_state.dart';
 part 'settings_bloc.freezed.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  final GetAppSettingsUseCase        _getAppSettingsUseCase;
-  final UpdateAppThemeModeUseCase    _updateAppThemeModeUseCase;
+  final GetAppSettingsUseCase _getAppSettingsUseCase;
+  final UpdateAppThemeModeUseCase _updateAppThemeModeUseCase;
   final UpdateAppLocalizationUseCase _updateAppLocalizationUseCase;
 
   SettingsBloc({
-    required GetAppSettingsUseCase        getAppSettingsUseCase,
-    required UpdateAppThemeModeUseCase    updateAppThemeModeUseCase,
+    required GetAppSettingsUseCase getAppSettingsUseCase,
+    required UpdateAppThemeModeUseCase updateAppThemeModeUseCase,
     required UpdateAppLocalizationUseCase updateAppLocalizationUseCase,
-  })  : _getAppSettingsUseCase        = getAppSettingsUseCase,
-        _updateAppThemeModeUseCase    = updateAppThemeModeUseCase,
-        _updateAppLocalizationUseCase = updateAppLocalizationUseCase,
-        super(SettingsState.initial()) {
+  }) : _getAppSettingsUseCase = getAppSettingsUseCase,
+       _updateAppThemeModeUseCase = updateAppThemeModeUseCase,
+       _updateAppLocalizationUseCase = updateAppLocalizationUseCase,
+       super(SettingsState.initial()) {
     on<SettingsEvent>(_onEvent);
   }
 
   Future<void> _onEvent(
-      SettingsEvent event,
-      Emitter<SettingsState> emit,
-      ) async {
+    SettingsEvent event,
+    Emitter<SettingsState> emit,
+  ) async {
     await event.when(
       getAppSettings: () async {
         try {

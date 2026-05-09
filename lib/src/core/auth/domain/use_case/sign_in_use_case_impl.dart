@@ -8,11 +8,8 @@ class SignInUseCaseImpl implements SignInUseCase {
   const SignInUseCaseImpl(this._repo);
 
   @override
-  Future<void> call({
-    required String email,
-    required String password,
-  }) async {
-    final trimmedEmail    = email.trim();
+  Future<void> call({required String email, required String password}) async {
+    final trimmedEmail = email.trim();
     final trimmedPassword = password.trim();
 
     if (trimmedEmail.isEmpty || trimmedPassword.isEmpty) {
@@ -28,7 +25,7 @@ class SignInUseCaseImpl implements SignInUseCase {
     }
 
     return ExceptionHandler.handle(
-          () => _repo.signIn(trimmedEmail, trimmedPassword),
+      () => _repo.signIn(trimmedEmail, trimmedPassword),
     );
   }
 

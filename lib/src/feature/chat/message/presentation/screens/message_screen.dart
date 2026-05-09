@@ -8,13 +8,8 @@ import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 import 'package:sfu/src/feature/chat/message/domain/entity/message.dart';
 import 'package:sfu/src/feature/chat/message/presentation/bloc/message_bloc.dart';
 
-
 class MessageScreen extends StatelessWidget {
-  const MessageScreen({
-    super.key,
-    required this.chatId,
-    this.chatTitle = '',
-  });
+  const MessageScreen({super.key, required this.chatId, this.chatTitle = ''});
 
   final String chatId;
   final String chatTitle;
@@ -28,7 +23,6 @@ class MessageScreen extends StatelessWidget {
     );
   }
 }
-
 
 class _MessageScaffold extends StatefulWidget {
   const _MessageScaffold({required this.chatTitle});
@@ -78,7 +72,11 @@ class _MessageScaffoldState extends State<_MessageScaffold> {
         title: Row(
           children: [
             // Аватар-заглушка в AppBar
-            _InitialsAvatar(name: widget.chatTitle, size: 36, primary: cs.primary),
+            _InitialsAvatar(
+              name: widget.chatTitle,
+              size: 36,
+              primary: cs.primary,
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -93,7 +91,10 @@ class _MessageScaffoldState extends State<_MessageScaffold> {
                   ),
                   Text(
                     'в сети',
-                    style: tt.labelSmall?.copyWith(color: ext.success, height: 1.2),
+                    style: tt.labelSmall?.copyWith(
+                      color: ext.success,
+                      height: 1.2,
+                    ),
                   ),
                 ],
               ),
@@ -127,7 +128,8 @@ class _MessageScaffoldState extends State<_MessageScaffold> {
         child: BlocBuilder<MessageBloc, MessageState>(
           builder: (context, state) => state.maybeWhen(
             loading: () => const Center(child: LoadingIndicatorWidget()),
-            success: (messages) => _MessageList(messages: messages, cs: cs, ext: ext, tt: tt),
+            success: (messages) =>
+                _MessageList(messages: messages, cs: cs, ext: ext, tt: tt),
             error: (_) => _ErrorBody(ext: ext, tt: tt),
             orElse: () => const SizedBox.shrink(),
           ),
@@ -170,15 +172,19 @@ class _MessageList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (messages.isEmpty) {
       return Center(
-        child: Text('Сообщений пока нет',
-            style: tt.bodyMedium?.copyWith(color: ext.textSecondary)),
+        child: Text(
+          'Сообщений пока нет',
+          style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+        ),
       );
     }
 
     return ListView.builder(
       reverse: true,
       padding: EdgeInsets.only(
-        left: 12, right: 12, top: 12,
+        left: 12,
+        right: 12,
+        top: 12,
         bottom: MediaQuery.of(context).viewInsets.bottom + 12,
       ),
       itemCount: messages.length,
@@ -242,12 +248,15 @@ class _MessageBubble extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.only(
-        top: 2, bottom: 2,
+        top: 2,
+        bottom: 2,
         left: isOut ? 56 : 0,
         right: isOut ? 0 : 56,
       ),
       child: Row(
-        mainAxisAlignment: isOut ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isOut
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           // Аватар входящего
@@ -295,14 +304,20 @@ class _MessageBubble extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (message.isEdited) ...[
-                          Text('изм. ',
-                              style: tt.labelSmall?.copyWith(
-                                  color: ext.textTertiary, fontSize: 10)),
+                          Text(
+                            'изм. ',
+                            style: tt.labelSmall?.copyWith(
+                              color: ext.textTertiary,
+                              fontSize: 10,
+                            ),
+                          ),
                         ],
                         Text(
                           DateFormat('HH:mm').format(message.sentAt),
                           style: tt.labelSmall?.copyWith(
-                              color: ext.textTertiary, fontSize: 10),
+                            color: ext.textTertiary,
+                            fontSize: 10,
+                          ),
                         ),
                         if (isOut) ...[
                           const SizedBox(width: 4),
@@ -322,9 +337,9 @@ class _MessageBubble extends StatelessWidget {
 
   void _copyText(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Скопировано')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Скопировано')));
   }
 }
 
@@ -360,13 +375,16 @@ class _DateDivider extends StatelessWidget {
 
   String _label() {
     final now = DateTime.now();
-    if (date.year == now.year && date.month == now.month && date.day == now.day) {
+    if (date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day) {
       return 'Сегодня';
     }
     final yesterday = now.subtract(const Duration(days: 1));
     if (date.year == yesterday.year &&
         date.month == yesterday.month &&
-        date.day == yesterday.day) return 'Вчера';
+        date.day == yesterday.day)
+      return 'Вчера';
     return DateFormat('d MMMM', 'ru').format(date);
   }
 
@@ -432,7 +450,8 @@ class _InputBarState extends State<_InputBar> {
 
   @override
   Widget build(BuildContext context) {
-    final bottom = MediaQuery.of(context).viewInsets.bottom +
+    final bottom =
+        MediaQuery.of(context).viewInsets.bottom +
         MediaQuery.of(context).padding.bottom;
 
     return Container(
@@ -463,12 +482,15 @@ class _InputBarState extends State<_InputBar> {
                 decoration: InputDecoration(
                   hintText: 'Сообщение…',
                   hintStyle: widget.tt.bodyMedium?.copyWith(
-                      color: widget.ext.textTertiary),
+                    color: widget.ext.textTertiary,
+                  ),
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 14, vertical: 10),
+                    horizontal: 14,
+                    vertical: 10,
+                  ),
                   isDense: true,
                 ),
               ),
@@ -517,17 +539,26 @@ class _ErrorBody extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 64, height: 64,
-            decoration: BoxDecoration(color: ext.errorBg, shape: BoxShape.circle),
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              color: ext.errorBg,
+              shape: BoxShape.circle,
+            ),
             child: Icon(Icons.wifi_off_outlined, size: 28, color: ext.errorFg),
           ),
           const SizedBox(height: 16),
-          Text('Не удалось загрузить сообщения',
-              textAlign: TextAlign.center, style: tt.titleMedium),
+          Text(
+            'Не удалось загрузить сообщения',
+            textAlign: TextAlign.center,
+            style: tt.titleMedium,
+          ),
           const SizedBox(height: 6),
-          Text('Потяни вниз, чтобы обновить',
-              textAlign: TextAlign.center,
-              style: tt.bodyMedium?.copyWith(color: ext.textSecondary)),
+          Text(
+            'Потяни вниз, чтобы обновить',
+            textAlign: TextAlign.center,
+            style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+          ),
         ],
       ),
     );
@@ -549,13 +580,19 @@ class _InitialsAvatar extends StatelessWidget {
   final Color primary;
 
   static const _hues = [
-    Color(0xFFFF9900), Color(0xFFFFB84D), Color(0xFFE68A00),
-    Color(0xFFCC7A00), Color(0xFFFFA726), Color(0xFFFB8C00),
+    Color(0xFFFF9900),
+    Color(0xFFFFB84D),
+    Color(0xFFE68A00),
+    Color(0xFFCC7A00),
+    Color(0xFFFFA726),
+    Color(0xFFFB8C00),
   ];
 
   Color get _bg {
     int h = 0;
-    for (final c in name.codeUnits) { h = (h * 31 + c) & 0x7FFFFFFF; }
+    for (final c in name.codeUnits) {
+      h = (h * 31 + c) & 0x7FFFFFFF;
+    }
     return _hues[h % _hues.length];
   }
 
@@ -570,7 +607,8 @@ class _InitialsAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: size, height: size,
+      width: size,
+      height: size,
       decoration: BoxDecoration(shape: BoxShape.circle, color: _bg),
       alignment: Alignment.center,
       child: Text(

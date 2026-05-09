@@ -30,5 +30,4 @@ class SettingsRepositoryImpl implements SettingsRepository {
     final theme = await local.getTheme();
     return theme ?? _defaultThemeMode;
   }
-
 }

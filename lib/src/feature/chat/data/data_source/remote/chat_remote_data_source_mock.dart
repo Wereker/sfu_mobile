@@ -9,7 +9,7 @@ class ChatRemoteDataSourceMock implements ChatRemoteDataSource {
   Future<List<ChatDTO>> loadChatForUser() async {
     await MockDelay.apply();
 
-    final raw  = await rootBundle.loadString('lib/src/core/mock/chats.json');
+    final raw = await rootBundle.loadString('lib/src/core/mock/chats.json');
     final json = jsonDecode(raw) as Map<String, dynamic>;
 
     return (json['data'] as List)

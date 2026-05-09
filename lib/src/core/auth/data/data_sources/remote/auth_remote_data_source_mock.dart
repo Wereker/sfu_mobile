@@ -26,9 +26,9 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
   _UserMock? _currentUser;
 
   static const _mockToken = TokenDTO(
-    access:  'mock_access_token_sfu',
+    access: 'mock_access_token_sfu',
     refresh: 'mock_refresh_token_sfu',
-    type:    'Bearer',
+    type: 'Bearer',
     expires: 3600,
   );
 
@@ -37,7 +37,7 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
     await Future.delayed(const Duration(milliseconds: 900));
 
     final user = _items.firstWhere(
-          (u) => u.login == login && u.password == password,
+      (u) => u.login == login && u.password == password,
       orElse: () => throw Exception('Неверный логин или пароль'),
     );
     _currentUser = user;
@@ -46,22 +46,22 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
 
   @override
   Future<TokenDTO> signUp(
-      String login,
-      String password,
-      String name,
-      String group,
-      String subgroup,
-      String role,
-      ) async {
+    String login,
+    String password,
+    String name,
+    String group,
+    String subgroup,
+    String role,
+  ) async {
     await Future.delayed(const Duration(milliseconds: 900));
 
     final newUser = _UserMock(
-      name:      name,
-      login:     login,
-      password:  password,
+      name: name,
+      login: login,
+      password: password,
       groupName: group,
-      subgroup:  subgroup,
-      role:      role,
+      subgroup: subgroup,
+      role: role,
     );
     _items.add(newUser);
     _currentUser = newUser;
@@ -85,9 +85,9 @@ class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
     final user = _currentUser;
     if (user == null) throw Exception('Пользователь не найден');
     return AuthMetadataDTO(
-      name:     user.name,
-      group:    user.groupName,
-      role:     user.role,
+      name: user.name,
+      group: user.groupName,
+      role: user.role,
       subgroup: user.subgroup,
     );
   }

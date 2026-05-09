@@ -6,9 +6,9 @@ part 'timetable.freezed.dart';
 @freezed
 abstract class Timetable with _$Timetable {
   const factory Timetable({
-    required String     target,
-    required String     type,
-    required String     institute,
+    required String target,
+    required String type,
+    required String institute,
     required List<Week> weeks,
   }) = _Timetable;
 }

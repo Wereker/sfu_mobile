@@ -9,7 +9,7 @@ class GetTimetableUseCaseImpl implements GetTimetableUseCase {
 
   @override
   Future<Timetable> call({String? target}) => ExceptionHandler.handle(
-        () => target != null
+    () => target != null
         ? _repo.getTimetableForTarget(target)
         : _repo.getTimetable(),
   );

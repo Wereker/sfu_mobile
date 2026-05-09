@@ -12,12 +12,7 @@ class GetStudentsUseCaseImpl implements GetStudentsUseCase {
     String? stream,
     String? groupId,
     String? search,
-  }) =>
-      ExceptionHandler.handle(
-            () => _repo.getStudents(
-          stream:  stream,
-          groupId: groupId,
-          search:  search,
-        ),
-      );
+  }) => ExceptionHandler.handle(
+    () => _repo.getStudents(stream: stream, groupId: groupId, search: search),
+  );
 }

@@ -3,7 +3,6 @@ import 'package:sfu/src/core/theme/app_theme.dart';
 
 import '../../core/widgets/detail_sheet.dart';
 
-
 class DepartmentEvent {
   final String id;
   final String day;
@@ -34,16 +33,19 @@ class DepartmentEvent {
   });
 
   int get freeSeats => totalSeats - takenSeats;
-  bool get isFull   => freeSeats <= 0;
+  bool get isFull => freeSeats <= 0;
 }
 
 const sampleEvents = [
   DepartmentEvent(
     id: 'ev_1',
-    day: '07', month: 'МАЯ',
+    day: '07',
+    month: 'МАЯ',
     title: 'Хакатон по компьютерному зрению',
-    preview: 'Команды до 4 человек. Призовой фонд 150 000 ₽. Задача — детекция объектов на спутниковых снимках.',
-    body: 'Кафедра САИ совместно с «Ростелеком» проводит хакатон по компьютерному зрению.\n\n'
+    preview:
+        'Команды до 4 человек. Призовой фонд 150 000 ₽. Задача — детекция объектов на спутниковых снимках.',
+    body:
+        'Кафедра САИ совместно с «Ростелеком» проводит хакатон по компьютерному зрению.\n\n'
         'Задача: разработать систему детекции объектов инфраструктуры на спутниковых снимках '
         'с точностью mAP ≥ 0.75. Данные и бейзлайн будут выданы на старте.\n\n'
         'Формат:\n'
@@ -65,10 +67,13 @@ const sampleEvents = [
   ),
   DepartmentEvent(
     id: 'ev_2',
-    day: '12', month: 'МАЯ',
+    day: '12',
+    month: 'МАЯ',
     title: 'Лекция: GenAI в индустрии',
-    preview: 'Открытая встреча с инженерами Yandex. Разберём как LLM внедряются в production-системы.',
-    body: 'Открытая лекция от инженеров Yandex Cloud AI.\n\n'
+    preview:
+        'Открытая встреча с инженерами Yandex. Разберём как LLM внедряются в production-системы.',
+    body:
+        'Открытая лекция от инженеров Yandex Cloud AI.\n\n'
         'Темы:\n'
         '• Архитектура современных LLM: от трансформера до MoE\n'
         '• Fine-tuning vs RAG — когда что применять\n'
@@ -88,10 +93,13 @@ const sampleEvents = [
   ),
   DepartmentEvent(
     id: 'ev_3',
-    day: '18', month: 'МАЯ',
+    day: '18',
+    month: 'МАЯ',
     title: 'Защита курсовых работ',
-    preview: 'Поток БИ22, расписание по подгруппам. Каждая презентация — 10 мин + 5 мин вопросы.',
-    body: 'Защита курсовых работ студентов потока БИ22.\n\n'
+    preview:
+        'Поток БИ22, расписание по подгруппам. Каждая презентация — 10 мин + 5 мин вопросы.',
+    body:
+        'Защита курсовых работ студентов потока БИ22.\n\n'
         'Расписание по подгруппам:\n'
         '• 1 подгруппа (гр. БИ22-01, БИ22-02) — 09:00–12:00, ауд. Л4-12\n'
         '• 2 подгруппа (гр. БИ22-03, БИ22-04) — 13:00–16:00, ауд. Л4-21\n\n'
@@ -110,16 +118,15 @@ const sampleEvents = [
   ),
 ];
 
-
 class EventCard extends StatelessWidget {
   const EventCard({super.key, required this.event});
   final DepartmentEvent event;
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: () => showDetailSheet(
@@ -146,39 +153,53 @@ class EventCard extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Text(event.day,
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: ext.textOnTinted,
-                          height: 1)),
+                  Text(
+                    event.day,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: ext.textOnTinted,
+                      height: 1,
+                    ),
+                  ),
                   const SizedBox(height: 2),
-                  Text(event.month,
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          color: ext.textOnTinted,
-                          letterSpacing: 0.5,
-                          height: 1)),
+                  Text(
+                    event.month,
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                      color: ext.textOnTinted,
+                      letterSpacing: 0.5,
+                      height: 1,
+                    ),
+                  ),
                 ],
               ),
             ),
             const SizedBox(height: 10),
 
             // Заголовок
-            Text(event.title,
-                style: tt.labelLarge?.copyWith(
-                    fontSize: 13, fontWeight: FontWeight.w600),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis),
+            Text(
+              event.title,
+              style: tt.labelLarge?.copyWith(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
             const SizedBox(height: 5),
 
             // Превью
-            Text(event.preview,
-                style: tt.bodyMedium?.copyWith(
-                    fontSize: 12, color: ext.textSecondary),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis),
+            Text(
+              event.preview,
+              style: tt.bodyMedium?.copyWith(
+                fontSize: 12,
+                color: ext.textSecondary,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
 
             const Spacer(),
 
@@ -198,7 +219,9 @@ class EventCard extends StatelessWidget {
 class _EventDetail extends StatelessWidget {
   const _EventDetail({
     required this.event,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
 
   final DepartmentEvent event;
@@ -220,26 +243,35 @@ class _EventDetail extends StatelessWidget {
                 color: ext.surfaceTinted,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Text('${event.day} ${event.month}',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: ext.textOnTinted,
-                      height: 1)),
+              child: Text(
+                '${event.day} ${event.month}',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: ext.textOnTinted,
+                  height: 1,
+                ),
+              ),
             ),
             const SizedBox(width: 8),
             if (event.tags.isNotEmpty)
-              ...event.tags.take(2).map((t) => Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: _Tag(label: t, ext: ext),
-                  )),
+              ...event.tags
+                  .take(2)
+                  .map(
+                    (t) => Padding(
+                      padding: const EdgeInsets.only(right: 6),
+                      child: _Tag(label: t, ext: ext),
+                    ),
+                  ),
           ],
         ),
         const SizedBox(height: 12),
 
         // Заголовок
-        Text(event.title,
-            style: tt.titleLarge?.copyWith(fontWeight: FontWeight.w700)),
+        Text(
+          event.title,
+          style: tt.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+        ),
         const SizedBox(height: 14),
 
         // Мета-блок
@@ -253,19 +285,25 @@ class _EventDetail extends StatelessWidget {
           child: Column(
             children: [
               _MetaRow(
-                  icon: Icons.access_time_outlined,
-                  label: event.time,
-                  ext: ext, tt: tt),
+                icon: Icons.access_time_outlined,
+                label: event.time,
+                ext: ext,
+                tt: tt,
+              ),
               const SizedBox(height: 8),
               _MetaRow(
-                  icon: Icons.location_on_outlined,
-                  label: event.location,
-                  ext: ext, tt: tt),
+                icon: Icons.location_on_outlined,
+                label: event.location,
+                ext: ext,
+                tt: tt,
+              ),
               const SizedBox(height: 8),
               _MetaRow(
-                  icon: Icons.person_outline,
-                  label: 'Организатор: ${event.organizer}',
-                  ext: ext, tt: tt),
+                icon: Icons.person_outline,
+                label: 'Организатор: ${event.organizer}',
+                ext: ext,
+                tt: tt,
+              ),
             ],
           ),
         ),
@@ -277,9 +315,14 @@ class _EventDetail extends StatelessWidget {
         Divider(color: ext.divider, height: 24),
 
         // Описание
-        Text(event.body,
-            style: tt.bodyLarge?.copyWith(
-                fontSize: 15, height: 1.6, color: ext.textPrimary)),
+        Text(
+          event.body,
+          style: tt.bodyLarge?.copyWith(
+            fontSize: 15,
+            height: 1.6,
+            color: ext.textPrimary,
+          ),
+        ),
 
         const SizedBox(height: 24),
 
@@ -303,7 +346,9 @@ class _EventDetail extends StatelessWidget {
 class _SeatsIndicator extends StatelessWidget {
   const _SeatsIndicator({
     required this.event,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
 
   final DepartmentEvent event;
@@ -333,12 +378,18 @@ class _SeatsIndicator extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(seatText,
-                style: tt.labelSmall?.copyWith(
-                    color: barColor, fontWeight: FontWeight.w500)),
+            Text(
+              seatText,
+              style: tt.labelSmall?.copyWith(
+                color: barColor,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             const Spacer(),
-            Text('${event.takenSeats}/${event.totalSeats}',
-                style: tt.labelSmall?.copyWith(color: ext.textTertiary)),
+            Text(
+              '${event.takenSeats}/${event.totalSeats}',
+              style: tt.labelSmall?.copyWith(color: ext.textTertiary),
+            ),
           ],
         ),
         const SizedBox(height: 5),
@@ -361,8 +412,10 @@ class _SeatsIndicator extends StatelessWidget {
 // ════════════════════════════════════════════════════════════
 class _MetaRow extends StatelessWidget {
   const _MetaRow({
-    required this.icon, required this.label,
-    required this.ext, required this.tt,
+    required this.icon,
+    required this.label,
+    required this.ext,
+    required this.tt,
   });
 
   final IconData icon;
@@ -372,17 +425,21 @@ class _MetaRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, size: 15, color: ext.textTertiary),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(label,
-                style: tt.labelLarge?.copyWith(
-                    color: ext.textSecondary, fontWeight: FontWeight.w400)),
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Icon(icon, size: 15, color: ext.textTertiary),
+      const SizedBox(width: 8),
+      Expanded(
+        child: Text(
+          label,
+          style: tt.labelLarge?.copyWith(
+            color: ext.textSecondary,
+            fontWeight: FontWeight.w400,
           ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 }
 
 class _Tag extends StatelessWidget {
@@ -392,16 +449,19 @@ class _Tag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
-        decoration: BoxDecoration(
-          color: ext.surfaceTinted,
-          borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-        ),
-        child: Text(label,
-            style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-                color: ext.textOnTinted,
-                height: 1)),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+    decoration: BoxDecoration(
+      color: ext.surfaceTinted,
+      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+    ),
+    child: Text(
+      label,
+      style: TextStyle(
+        fontSize: 11,
+        fontWeight: FontWeight.w500,
+        color: ext.textOnTinted,
+        height: 1,
+      ),
+    ),
+  );
 }

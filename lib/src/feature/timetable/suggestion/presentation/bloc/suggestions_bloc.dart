@@ -11,14 +11,14 @@ class SuggestionsBloc extends Bloc<SuggestionEvent, SuggestionState> {
   final GetSuggestionsUseCase _getSuggestionsUseCase;
 
   SuggestionsBloc(this._getSuggestionsUseCase)
-      : super(SuggestionState.initial()) {
+    : super(SuggestionState.initial()) {
     on<SuggestionEvent>(_onEvent);
   }
 
   Future<void> _onEvent(
-      SuggestionEvent event,
-      Emitter<SuggestionState> emit,
-      ) async {
+    SuggestionEvent event,
+    Emitter<SuggestionState> emit,
+  ) async {
     await event.when(
       loadData: () async {
         emit(SuggestionState.success(suggestions: []));

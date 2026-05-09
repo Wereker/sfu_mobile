@@ -10,5 +10,4 @@ class LoadingIndicatorWidget extends StatelessWidget {
     final indicator = di.sl<LoadingIndicator>();
     return indicator.build(context);
   }
-
 }

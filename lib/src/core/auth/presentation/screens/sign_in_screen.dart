@@ -95,7 +95,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               color: ext.textTertiary,
                             ),
                             labelText: 'Почта',
-                            hintText: 'aaaaaa@sfu-kras.ru'
+                            hintText: 'aaaaaa@sfu-kras.ru',
                           ),
                         ),
 

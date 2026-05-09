@@ -28,7 +28,7 @@ class TimetableSearchBar extends StatelessWidget {
 
               return state.maybeWhen(
                 success: (suggestions) => suggestions.where(
-                      (item) => item.toLowerCase().contains(
+                  (item) => item.toLowerCase().contains(
                     textEditingValue.text.toLowerCase(),
                   ),
                 ),
@@ -42,22 +42,25 @@ class TimetableSearchBar extends StatelessWidget {
               );
             },
 
-            fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
-              return TextField(
-                controller: controller,
-                focusNode: focusNode,
-                onSubmitted: (_) => onFieldSubmitted(),
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: ext.textTertiary,
-                    size: 20,
-                  ),
-                  hintText: 'Поиск группы или преподавателя',
-                  hintStyle: tt.bodyMedium?.copyWith(color: ext.textTertiary),
-                ),
-              );
-            },
+            fieldViewBuilder:
+                (context, controller, focusNode, onFieldSubmitted) {
+                  return TextField(
+                    controller: controller,
+                    focusNode: focusNode,
+                    onSubmitted: (_) => onFieldSubmitted(),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: ext.textTertiary,
+                        size: 20,
+                      ),
+                      hintText: 'Поиск группы или преподавателя',
+                      hintStyle: tt.bodyMedium?.copyWith(
+                        color: ext.textTertiary,
+                      ),
+                    ),
+                  );
+                },
 
             optionsViewBuilder: (context, onSelected, options) {
               return BlocBuilder<SuggestionsBloc, SuggestionState>(
@@ -72,10 +75,14 @@ class TimetableSearchBar extends StatelessWidget {
                         constraints: const BoxConstraints(maxHeight: 220),
                         decoration: BoxDecoration(
                           border: Border.all(color: ext.border),
-                          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                          borderRadius: BorderRadius.circular(
+                            AppTheme.radiusLg,
+                          ),
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                          borderRadius: BorderRadius.circular(
+                            AppTheme.radiusLg,
+                          ),
                           child: state.maybeWhen(
                             loading: () => const SizedBox(
                               height: 56,
@@ -85,10 +92,8 @@ class TimetableSearchBar extends StatelessWidget {
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               itemCount: options.length,
-                              separatorBuilder: (_, __) => Divider(
-                                height: 1,
-                                color: ext.divider,
-                              ),
+                              separatorBuilder: (_, __) =>
+                                  Divider(height: 1, color: ext.divider),
                               itemBuilder: (context, index) {
                                 final item = options.elementAt(index);
                                 return ListTile(
@@ -98,10 +103,7 @@ class TimetableSearchBar extends StatelessWidget {
                                     size: 16,
                                     color: ext.textTertiary,
                                   ),
-                                  title: Text(
-                                    item,
-                                    style: tt.labelLarge,
-                                  ),
+                                  title: Text(item, style: tt.labelLarge),
                                   onTap: () => onSelected(item),
                                 );
                               },

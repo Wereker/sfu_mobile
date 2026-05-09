@@ -16,10 +16,14 @@ class CreateThesisUseCaseImpl implements CreateThesisUseCase {
       throw const ValidationException('Введите название темы');
     }
     if (trimmed.length < 10) {
-      throw const ValidationException('Название слишком короткое (минимум 10 символов)');
+      throw const ValidationException(
+        'Название слишком короткое (минимум 10 символов)',
+      );
     }
     if (trimmed.length > 500) {
-      throw const ValidationException('Название слишком длинное (максимум 500 символов)');
+      throw const ValidationException(
+        'Название слишком длинное (максимум 500 символов)',
+      );
     }
 
     return ExceptionHandler.handle(() => _repo.createThesis(trimmed));

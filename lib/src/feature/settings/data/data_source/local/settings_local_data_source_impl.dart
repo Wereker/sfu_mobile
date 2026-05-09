@@ -29,5 +29,4 @@ class SettingsLocalDataSourceImpl implements SettingsLocalDataSource {
   Future<void> setTheme(String theme) async {
     await _pref.setString(_keyThemeMode, theme);
   }
-
 }

@@ -13,8 +13,6 @@ class GetSessionStudentsUseCaseImpl implements GetSessionStudentsUseCase {
     if (sessionId.trim().isEmpty) {
       throw const ValidationException('Не указан идентификатор сессии');
     }
-    return ExceptionHandler.handle(
-          () => _repo.getSessionStudents(sessionId),
-    );
+    return ExceptionHandler.handle(() => _repo.getSessionStudents(sessionId));
   }
 }

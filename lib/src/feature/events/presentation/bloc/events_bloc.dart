@@ -11,25 +11,22 @@ part 'events_state.dart';
 part 'events_bloc.freezed.dart';
 
 class EventsBloc extends Bloc<EventsEvent, EventsState> {
-  final GetEventsUseCase    _getEventsUseCase;
-  final EnrollEventUseCase  _enrollEventUseCase;
+  final GetEventsUseCase _getEventsUseCase;
+  final EnrollEventUseCase _enrollEventUseCase;
   final UnenrollEventUseCase _unenrollEventUseCase;
 
   EventsBloc({
-    required GetEventsUseCase    getEventsUseCase,
-    required EnrollEventUseCase  enrollEventUseCase,
+    required GetEventsUseCase getEventsUseCase,
+    required EnrollEventUseCase enrollEventUseCase,
     required UnenrollEventUseCase unenrollEventUseCase,
-  })  : _getEventsUseCase     = getEventsUseCase,
-        _enrollEventUseCase   = enrollEventUseCase,
-        _unenrollEventUseCase = unenrollEventUseCase,
-        super(EventsState.initial()) {
+  }) : _getEventsUseCase = getEventsUseCase,
+       _enrollEventUseCase = enrollEventUseCase,
+       _unenrollEventUseCase = unenrollEventUseCase,
+       super(EventsState.initial()) {
     on<EventsEvent>(_onEvent);
   }
 
-  Future<void> _onEvent(
-      EventsEvent event,
-      Emitter<EventsState> emit,
-      ) async {
+  Future<void> _onEvent(EventsEvent event, Emitter<EventsState> emit) async {
     await event.when(
       load: () async {
         emit(EventsState.loading());

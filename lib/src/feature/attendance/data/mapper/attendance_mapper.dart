@@ -9,31 +9,31 @@ abstract class AttendanceMapper {
   static AttendanceSession sessionFromDTO(AttendanceSessionDTO dto) =>
       AttendanceSession(
         sessionId: dto.sessionId,
-        token:     dto.token,
+        token: dto.token,
         expiresAt: DateTime.parse(dto.expiresAt),
       );
 
   static AttendanceStudent studentFromDTO(AttendanceStudentDTO dto) =>
       AttendanceStudent(
-        id:        dto.id,
-        name:      dto.name,
+        id: dto.id,
+        name: dto.name,
         isHeadman: dto.isHeadman,
-        status:    AttendanceStatus.values
-            .firstWhere((e) => e.name == dto.status,
-            orElse: () => AttendanceStatus.absent),
-        markedAt:  dto.markedAt != null
-            ? DateTime.parse(dto.markedAt!)
-            : null,
+        status: AttendanceStatus.values.firstWhere(
+          (e) => e.name == dto.status,
+          orElse: () => AttendanceStatus.absent,
+        ),
+        markedAt: dto.markedAt != null ? DateTime.parse(dto.markedAt!) : null,
       );
 
   static AttendanceRecord recordFromDTO(AttendanceRecordDTO dto) =>
       AttendanceRecord(
-        id:       dto.id,
-        lesson:   dto.lesson,
-        date:     DateTime.parse(dto.date),
-        status:   AttendanceStatus.values
-            .firstWhere((e) => e.name == dto.status,
-            orElse: () => AttendanceStatus.absent),
+        id: dto.id,
+        lesson: dto.lesson,
+        date: DateTime.parse(dto.date),
+        status: AttendanceStatus.values.firstWhere(
+          (e) => e.name == dto.status,
+          orElse: () => AttendanceStatus.absent,
+        ),
         markedAt: DateTime.parse(dto.markedAt),
       );
 }

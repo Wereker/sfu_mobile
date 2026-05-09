@@ -10,7 +10,9 @@ class AnnouncementsRemoteDataSourceMock
   Future<List<AnnouncementDTO>> getAnnouncements() async {
     await MockDelay.apply();
 
-    final raw  = await rootBundle.loadString('lib/src/core/mock/announcements.json');
+    final raw = await rootBundle.loadString(
+      'lib/src/core/mock/announcements.json',
+    );
     final json = jsonDecode(raw) as Map<String, dynamic>;
 
     return (json['data'] as List)

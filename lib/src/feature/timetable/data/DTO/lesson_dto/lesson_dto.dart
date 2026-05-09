@@ -10,7 +10,7 @@ abstract class LessonDTO with _$LessonDTO {
     required String id,
     required String day,
     @JsonKey(name: 'time_start') required String timeStart,
-    @JsonKey(name: 'time_end')   required String timeEnd,
+    @JsonKey(name: 'time_end') required String timeEnd,
     required String subject,
     @JsonKey(name: 'lesson_type') @Default('') String type,
     @Default('') String place,

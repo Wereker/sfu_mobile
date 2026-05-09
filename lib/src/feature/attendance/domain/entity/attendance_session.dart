@@ -5,8 +5,8 @@ part 'attendance_session.freezed.dart';
 @freezed
 abstract class AttendanceSession with _$AttendanceSession {
   const factory AttendanceSession({
-    required String   sessionId,
-    required String   token,
+    required String sessionId,
+    required String token,
     required DateTime expiresAt,
   }) = _AttendanceSession;
 

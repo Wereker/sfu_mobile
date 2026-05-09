@@ -16,9 +16,9 @@ class DepartmentBloc extends Bloc<DepartmentEvent, DepartmentState> {
   }
 
   Future<void> _onEvent(
-      DepartmentEvent event,
-      Emitter<DepartmentState> emit,
-      ) async {
+    DepartmentEvent event,
+    Emitter<DepartmentState> emit,
+  ) async {
     await event.when(
       load: () async {
         emit(DepartmentState.loading());

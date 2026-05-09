@@ -5,13 +5,13 @@ import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _remote;
-  final AuthLocalDataSource  _local;
+  final AuthLocalDataSource _local;
 
   const AuthRepositoryImpl({
-    required AuthLocalDataSource  local,
+    required AuthLocalDataSource local,
     required AuthRemoteDataSource remote,
-  })  : _local  = local,
-        _remote = remote;
+  }) : _local = local,
+       _remote = remote;
 
   @override
   Future<void> signIn(String login, String password) async {
@@ -30,7 +30,12 @@ class AuthRepositoryImpl implements AuthRepository {
     required String role,
   }) async {
     final TokenDTO token = await _remote.signUp(
-      email, password, name, group, subgroup, role,
+      email,
+      password,
+      name,
+      group,
+      subgroup,
+      role,
     );
     await _local.cacheAccessToken(token.access);
     await _local.cacheRefreshToken(token.refresh);

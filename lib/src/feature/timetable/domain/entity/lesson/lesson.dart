@@ -9,7 +9,7 @@ abstract class Lesson with _$Lesson {
     required String day,
     required String time,
     required String teacher,
-    String?   teacherId,
+    String? teacherId,
     required String subject,
     required String type,
     required String place,

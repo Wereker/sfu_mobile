@@ -6,12 +6,12 @@ part 'chat.freezed.dart';
 @freezed
 abstract class Chat with _$Chat {
   const factory Chat({
-    required String   id,
+    required String id,
     required ChatType type,
-    required String   title,
+    required String title,
     String? avatarUrl,
     required List<String> participantIds,
-    Message?  lastMessage,      // nullable
+    Message? lastMessage, // nullable
     DateTime? lastMessageAt,
     @Default(0) int unreadCount,
     required DateTime createdAt,

@@ -13,25 +13,30 @@ class AttendanceRemoteDataSourceMock implements AttendanceRemoteDataSource {
 
   @override
   Future<AttendanceSessionDTO> createSession(
-      String lessonId,
-      int ttlSeconds,
-      ) async {
+    String lessonId,
+    int ttlSeconds,
+  ) async {
     await MockDelay.apply();
 
     final sessionId = 'session_${Random().nextInt(99999)}';
-    final token     = 'mock_qr_${lessonId}_${DateTime.now().millisecondsSinceEpoch}';
+    final token =
+        'mock_qr_${lessonId}_${DateTime.now().millisecondsSinceEpoch}';
     final expiresAt = DateTime.now().add(Duration(seconds: ttlSeconds));
 
     // Загружаем студентов для этой сессии
-    final raw  = await rootBundle.loadString('lib/src/core/mock/attendance_students.json');
+    final raw = await rootBundle.loadString(
+      'lib/src/core/mock/attendance_students.json',
+    );
     final json = jsonDecode(raw) as Map<String, dynamic>;
     _sessions[sessionId] = (json['data'] as List)
-        .map((item) => AttendanceStudentDTO.fromJson(item as Map<String, dynamic>))
+        .map(
+          (item) => AttendanceStudentDTO.fromJson(item as Map<String, dynamic>),
+        )
         .toList();
 
     return AttendanceSessionDTO(
       sessionId: sessionId,
-      token:     token,
+      token: token,
       expiresAt: expiresAt.toIso8601String(),
     );
   }
@@ -44,18 +49,18 @@ class AttendanceRemoteDataSourceMock implements AttendanceRemoteDataSource {
 
   @override
   Future<List<AttendanceStudentDTO>> getSessionStudents(
-      String sessionId,
-      ) async {
+    String sessionId,
+  ) async {
     await MockDelay.apply();
     return _sessions[sessionId] ?? [];
   }
 
   @override
   Future<AttendanceStudentDTO> updateStudentStatus(
-      String sessionId,
-      String studentId,
-      String status,
-      ) async {
+    String sessionId,
+    String studentId,
+    String status,
+  ) async {
     await MockDelay.apply();
 
     final students = _sessions[sessionId];
@@ -65,11 +70,11 @@ class AttendanceRemoteDataSourceMock implements AttendanceRemoteDataSource {
     if (idx == -1) throw Exception('Студент $studentId не найден');
 
     final updated = AttendanceStudentDTO(
-      id:        students[idx].id,
-      name:      students[idx].name,
+      id: students[idx].id,
+      name: students[idx].name,
       isHeadman: students[idx].isHeadman,
-      status:    status,
-      markedAt:  DateTime.now().toIso8601String(),
+      status: status,
+      markedAt: DateTime.now().toIso8601String(),
     );
     students[idx] = updated;
     return updated;
@@ -81,10 +86,10 @@ class AttendanceRemoteDataSourceMock implements AttendanceRemoteDataSource {
 
     // Просто имитируем успешную отметку
     return AttendanceRecordDTO(
-      id:       'ar_${Random().nextInt(99999)}',
-      lesson:   'Машинное обучение',
-      date:     DateTime.now().toIso8601String().substring(0, 10),
-      status:   'present',
+      id: 'ar_${Random().nextInt(99999)}',
+      lesson: 'Машинное обучение',
+      date: DateTime.now().toIso8601String().substring(0, 10),
+      status: 'present',
       markedAt: DateTime.now().toIso8601String(),
     );
   }
@@ -93,13 +98,15 @@ class AttendanceRemoteDataSourceMock implements AttendanceRemoteDataSource {
   Future<List<AttendanceRecordDTO>> getAttendanceHistory() async {
     await MockDelay.apply();
 
-    final raw  = await rootBundle.loadString(
-        'lib/src/core/mock/attendance_records.json');
+    final raw = await rootBundle.loadString(
+      'lib/src/core/mock/attendance_records.json',
+    );
     final json = jsonDecode(raw) as Map<String, dynamic>;
 
     return (json['data'] as List)
-        .map((item) =>
-        AttendanceRecordDTO.fromJson(item as Map<String, dynamic>))
+        .map(
+          (item) => AttendanceRecordDTO.fromJson(item as Map<String, dynamic>),
+        )
         .toList();
   }
 }

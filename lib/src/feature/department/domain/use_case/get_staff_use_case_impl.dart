@@ -8,6 +8,5 @@ class GetStaffUseCaseImpl implements GetStaffUseCase {
   const GetStaffUseCaseImpl(this._repo);
 
   @override
-  Future<List<StaffMember>> call() =>
-      ExceptionHandler.handle(_repo.getStaff);
+  Future<List<StaffMember>> call() => ExceptionHandler.handle(_repo.getStaff);
 }

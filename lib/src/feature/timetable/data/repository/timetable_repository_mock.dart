@@ -8,7 +8,7 @@ class TimetableRepositoryMock implements TimetableRepository {
   final TimetableRemoteDataSource _remote;
 
   const TimetableRepositoryMock({required TimetableRemoteDataSource remote})
-      : _remote = remote;
+    : _remote = remote;
 
   @override
   Future<Timetable> getTimetable() async {

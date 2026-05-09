@@ -11,16 +11,16 @@ class PublishEventUseCaseImpl implements PublishEventUseCase {
 
   @override
   Future<void> call({
-    required String  title,
-    required String  body,
-    required String  date,
-    required String  time,
-    required String  location,
-    required int     totalSeats,
-    required String  audience,
-    String?          stream,
-    String?          groupId,
-    List<String>     tags = const [],
+    required String title,
+    required String body,
+    required String date,
+    required String time,
+    required String location,
+    required int totalSeats,
+    required String audience,
+    String? stream,
+    String? groupId,
+    List<String> tags = const [],
   }) async {
     if (title.trim().isEmpty) {
       throw const ValidationException('Введите название события');
@@ -60,17 +60,17 @@ class PublishEventUseCaseImpl implements PublishEventUseCase {
     }
 
     return ExceptionHandler.handle(
-          () => _repo.createEvent(
-        title:      title.trim(),
-        body:       body.trim(),
-        date:       date,
-        time:       time,
-        location:   location.trim(),
+      () => _repo.createEvent(
+        title: title.trim(),
+        body: body.trim(),
+        date: date,
+        time: time,
+        location: location.trim(),
         totalSeats: totalSeats,
-        audience:   audience,
-        stream:     stream,
-        groupId:    groupId,
-        tags:       tags,
+        audience: audience,
+        stream: stream,
+        groupId: groupId,
+        tags: tags,
       ),
     );
   }

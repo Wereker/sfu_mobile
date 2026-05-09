@@ -18,11 +18,13 @@ class CreateAttendanceSessionUseCaseImpl
       throw const ValidationException('Не указан идентификатор пары');
     }
     if (ttlSeconds < 60 || ttlSeconds > 1800) {
-      throw const ValidationException('Время жизни QR должно быть от 1 до 30 минут');
+      throw const ValidationException(
+        'Время жизни QR должно быть от 1 до 30 минут',
+      );
     }
 
     return ExceptionHandler.handle(
-          () => _repo.createSession(lessonId, ttlSeconds: ttlSeconds),
+      () => _repo.createSession(lessonId, ttlSeconds: ttlSeconds),
     );
   }
 }

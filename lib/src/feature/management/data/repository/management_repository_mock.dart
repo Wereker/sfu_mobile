@@ -20,9 +20,9 @@ class ManagementRepositoryMock implements ManagementRepository {
   }) async {
     return ExceptionHandler.handle(() async {
       final dtos = await _remote.getStudents(
-        stream:  stream,
+        stream: stream,
         groupId: groupId,
-        search:  search,
+        search: search,
       );
       return dtos.map(ManagementMapper.studentFromDTO).toList();
     });
@@ -54,40 +54,52 @@ class ManagementRepositoryMock implements ManagementRepository {
 
   @override
   Future<void> createAnnouncement({
-    required String  title,
-    required String  body,
-    required String  audience,
-    bool             isPinned = false,
-    String?          stream,
-    String?          groupId,
-    List<String>     tags = const [],
+    required String title,
+    required String body,
+    required String audience,
+    bool isPinned = false,
+    String? stream,
+    String? groupId,
+    List<String> tags = const [],
   }) {
     return ExceptionHandler.handle(() async {
       _remote.createAnnouncement(
-        title: title, body: body, audience: audience,
-        isPinned: isPinned, stream: stream, groupId: groupId, tags: tags,
+        title: title,
+        body: body,
+        audience: audience,
+        isPinned: isPinned,
+        stream: stream,
+        groupId: groupId,
+        tags: tags,
       );
     });
   }
 
   @override
   Future<void> createEvent({
-    required String  title,
-    required String  body,
-    required String  date,
-    required String  time,
-    required String  location,
-    required int     totalSeats,
-    required String  audience,
-    String?          stream,
-    String?          groupId,
-    List<String>     tags = const [],
+    required String title,
+    required String body,
+    required String date,
+    required String time,
+    required String location,
+    required int totalSeats,
+    required String audience,
+    String? stream,
+    String? groupId,
+    List<String> tags = const [],
   }) {
     return ExceptionHandler.handle(() async {
       _remote.createEvent(
-        title: title, body: body, date: date, time: time,
-        location: location, totalSeats: totalSeats, audience: audience,
-        stream: stream, groupId: groupId, tags: tags,
+        title: title,
+        body: body,
+        date: date,
+        time: time,
+        location: location,
+        totalSeats: totalSeats,
+        audience: audience,
+        stream: stream,
+        groupId: groupId,
+        tags: tags,
       );
     });
   }

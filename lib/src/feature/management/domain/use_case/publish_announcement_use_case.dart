@@ -3,7 +3,7 @@ abstract class PublishAnnouncementUseCase {
     required String title,
     required String body,
     required String audience,
-    bool    isPinned,
+    bool isPinned,
     String? stream,
     String? groupId,
     List<String> tags,

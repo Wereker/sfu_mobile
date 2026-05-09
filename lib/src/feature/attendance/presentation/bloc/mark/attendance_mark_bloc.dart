@@ -11,22 +11,22 @@ part 'attendance_mark_bloc.freezed.dart';
 
 class AttendanceMarkBloc
     extends Bloc<AttendanceMarkEvent, AttendanceMarkState> {
-  final MarkAttendanceUseCase         _markAttendanceUseCase;
-  final GetAttendanceHistoryUseCase   _getHistoryUseCase;
+  final MarkAttendanceUseCase _markAttendanceUseCase;
+  final GetAttendanceHistoryUseCase _getHistoryUseCase;
 
   AttendanceMarkBloc({
-    required MarkAttendanceUseCase       markAttendanceUseCase,
+    required MarkAttendanceUseCase markAttendanceUseCase,
     required GetAttendanceHistoryUseCase getHistoryUseCase,
-  })  : _markAttendanceUseCase = markAttendanceUseCase,
-        _getHistoryUseCase     = getHistoryUseCase,
-        super(AttendanceMarkState.initial()) {
+  }) : _markAttendanceUseCase = markAttendanceUseCase,
+       _getHistoryUseCase = getHistoryUseCase,
+       super(AttendanceMarkState.initial()) {
     on<AttendanceMarkEvent>(_onEvent);
   }
 
   Future<void> _onEvent(
-      AttendanceMarkEvent event,
-      Emitter<AttendanceMarkState> emit,
-      ) async {
+    AttendanceMarkEvent event,
+    Emitter<AttendanceMarkState> emit,
+  ) async {
     await event.when(
       mark: (String token) async {
         emit(AttendanceMarkState.marking());

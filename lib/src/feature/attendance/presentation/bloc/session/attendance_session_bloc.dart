@@ -15,33 +15,33 @@ part 'attendance_session_bloc.freezed.dart';
 class AttendanceSessionBloc
     extends Bloc<AttendanceSessionEvent, AttendanceSessionState> {
   final CreateAttendanceSessionUseCase _createSessionUseCase;
-  final CloseAttendanceSessionUseCase  _closeSessionUseCase;
-  final GetSessionStudentsUseCase      _getSessionStudentsUseCase;
-  final UpdateStudentStatusUseCase     _updateStudentStatusUseCase;
+  final CloseAttendanceSessionUseCase _closeSessionUseCase;
+  final GetSessionStudentsUseCase _getSessionStudentsUseCase;
+  final UpdateStudentStatusUseCase _updateStudentStatusUseCase;
 
   AttendanceSessionBloc({
     required CreateAttendanceSessionUseCase createSessionUseCase,
-    required CloseAttendanceSessionUseCase  closeSessionUseCase,
-    required GetSessionStudentsUseCase      getSessionStudentsUseCase,
-    required UpdateStudentStatusUseCase     updateStudentStatusUseCase,
-  })  : _createSessionUseCase      = createSessionUseCase,
-        _closeSessionUseCase       = closeSessionUseCase,
-        _getSessionStudentsUseCase = getSessionStudentsUseCase,
-        _updateStudentStatusUseCase = updateStudentStatusUseCase,
-        super(AttendanceSessionState.initial()) {
+    required CloseAttendanceSessionUseCase closeSessionUseCase,
+    required GetSessionStudentsUseCase getSessionStudentsUseCase,
+    required UpdateStudentStatusUseCase updateStudentStatusUseCase,
+  }) : _createSessionUseCase = createSessionUseCase,
+       _closeSessionUseCase = closeSessionUseCase,
+       _getSessionStudentsUseCase = getSessionStudentsUseCase,
+       _updateStudentStatusUseCase = updateStudentStatusUseCase,
+       super(AttendanceSessionState.initial()) {
     on<AttendanceSessionEvent>(_onEvent);
   }
 
   Future<void> _onEvent(
-      AttendanceSessionEvent event,
-      Emitter<AttendanceSessionState> emit,
-      ) async {
+    AttendanceSessionEvent event,
+    Emitter<AttendanceSessionState> emit,
+  ) async {
     await event.when(
       createSession: (String lessonId, int ttlSeconds) async {
         emit(AttendanceSessionState.sessionLoading());
         try {
           final session = await _createSessionUseCase.call(
-            lessonId:   lessonId,
+            lessonId: lessonId,
             ttlSeconds: ttlSeconds,
           );
           emit(AttendanceSessionState.sessionReady(session));
@@ -69,29 +69,28 @@ class AttendanceSessionBloc
         } on AppException catch (e) {
           emit(AttendanceSessionState.error(e.message));
         } catch (_) {
-          emit(AttendanceSessionState.error('Ошибка загрузки списка студентов'));
-        }
-      },
-      updateStatus: (
-          String sessionId,
-          String studentId,
-          AttendanceStatus status,
-          ) async {
-        try {
-          final updated = await _updateStudentStatusUseCase.call(
-            sessionId: sessionId,
-            studentId: studentId,
-            status:    status,
+          emit(
+            AttendanceSessionState.error('Ошибка загрузки списка студентов'),
           );
-          // Перезагружаем список после изменения статуса
-          final students = await _getSessionStudentsUseCase.call(sessionId);
-          emit(AttendanceSessionState.studentsSuccess(students));
-        } on AppException catch (e) {
-          emit(AttendanceSessionState.error(e.message));
-        } catch (_) {
-          emit(AttendanceSessionState.error('Ошибка обновления статуса'));
         }
       },
+      updateStatus:
+          (String sessionId, String studentId, AttendanceStatus status) async {
+            try {
+              final updated = await _updateStudentStatusUseCase.call(
+                sessionId: sessionId,
+                studentId: studentId,
+                status: status,
+              );
+              // Перезагружаем список после изменения статуса
+              final students = await _getSessionStudentsUseCase.call(sessionId);
+              emit(AttendanceSessionState.studentsSuccess(students));
+            } on AppException catch (e) {
+              emit(AttendanceSessionState.error(e.message));
+            } catch (_) {
+              emit(AttendanceSessionState.error('Ошибка обновления статуса'));
+            }
+          },
     );
   }
 }

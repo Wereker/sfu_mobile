@@ -28,15 +28,18 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   void _submit(BuildContext context) {
     FocusScope.of(context).unfocus();
     context.read<AuthBloc>().add(
-      AuthEvent.resetPassword(newPassword: _pass2Ctrl.text),
+      AuthEvent.resetPassword(
+        newPassword: _pass1Ctrl.text,
+        confirmPassword: _pass2Ctrl.text,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -52,8 +55,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   Icon(Icons.error_outline, color: ext.errorFg, size: 18),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(msg,
-                        style: TextStyle(color: ext.errorFg)),
+                    child: Text(msg, style: TextStyle(color: ext.errorFg)),
                   ),
                 ],
               ),
@@ -86,8 +88,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       SvgPicture.asset(
                         'assets/images/logo.svg',
                         height: 72,
-                        colorFilter:
-                            ColorFilter.mode(cs.primary, BlendMode.srcIn),
+                        colorFilter: ColorFilter.mode(
+                          cs.primary,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ],
                   ),
@@ -97,12 +101,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Новый пароль',
-                          style: tt.headlineSmall,
-                          textAlign: TextAlign.center),
+                      Text(
+                        'Новый пароль',
+                        style: tt.headlineSmall,
+                        textAlign: TextAlign.center,
+                      ),
                       const SizedBox(width: 10),
-                      Icon(Icons.lock_reset_outlined,
-                          size: 28, color: cs.primary),
+                      Icon(
+                        Icons.lock_reset_outlined,
+                        size: 28,
+                        color: cs.primary,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 8),
@@ -119,8 +128,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     obscureText: _obscure1,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock_outline,
-                          size: 20, color: ext.textTertiary),
+                      prefixIcon: Icon(
+                        Icons.lock_outline,
+                        size: 20,
+                        color: ext.textTertiary,
+                      ),
                       labelText: 'Новый пароль',
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -130,8 +142,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           size: 20,
                           color: ext.textTertiary,
                         ),
-                        onPressed: () =>
-                            setState(() => _obscure1 = !_obscure1),
+                        onPressed: () => setState(() => _obscure1 = !_obscure1),
                       ),
                     ),
                   ),
@@ -144,8 +155,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     textInputAction: TextInputAction.done,
                     onSubmitted: (_) => _submit(context),
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.lock_outline,
-                          size: 20, color: ext.textTertiary),
+                      prefixIcon: Icon(
+                        Icons.lock_outline,
+                        size: 20,
+                        color: ext.textTertiary,
+                      ),
                       labelText: 'Повторите пароль',
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -155,8 +169,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           size: 20,
                           color: ext.textTertiary,
                         ),
-                        onPressed: () =>
-                            setState(() => _obscure2 = !_obscure2),
+                        onPressed: () => setState(() => _obscure2 = !_obscure2),
                       ),
                     ),
                   ),
@@ -169,7 +182,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       child: ElevatedButton(
                         onPressed: state.maybeWhen(
                           loading: () => null,
-                          orElse: () => () => _submit(context),
+                          orElse: () =>
+                              () => _submit(context),
                         ),
                         child: state.maybeWhen(
                           loading: () => const LoadingIndicatorWidget(),
@@ -186,8 +200,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       onPressed: () => Navigator.pop(context),
                       child: Text(
                         'Вернуться ко входу',
-                        style: tt.labelLarge
-                            ?.copyWith(color: ext.textSecondary),
+                        style: tt.labelLarge?.copyWith(
+                          color: ext.textSecondary,
+                        ),
                       ),
                     ),
                   ),

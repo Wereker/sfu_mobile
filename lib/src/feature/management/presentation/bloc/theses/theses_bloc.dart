@@ -11,25 +11,22 @@ part 'theses_state.dart';
 part 'theses_bloc.freezed.dart';
 
 class ThesesBloc extends Bloc<ThesesEvent, ThesesState> {
-  final GetMyThesesUseCase  _getMyThesesUseCase;
+  final GetMyThesesUseCase _getMyThesesUseCase;
   final CreateThesisUseCase _createThesisUseCase;
   final UpdateThesisUseCase _updateThesisUseCase;
 
   ThesesBloc({
-    required GetMyThesesUseCase  getMyThesesUseCase,
+    required GetMyThesesUseCase getMyThesesUseCase,
     required CreateThesisUseCase createThesisUseCase,
     required UpdateThesisUseCase updateThesisUseCase,
-  })  : _getMyThesesUseCase  = getMyThesesUseCase,
-        _createThesisUseCase = createThesisUseCase,
-        _updateThesisUseCase = updateThesisUseCase,
-        super(ThesesState.initial()) {
+  }) : _getMyThesesUseCase = getMyThesesUseCase,
+       _createThesisUseCase = createThesisUseCase,
+       _updateThesisUseCase = updateThesisUseCase,
+       super(ThesesState.initial()) {
     on<ThesesEvent>(_onEvent);
   }
 
-  Future<void> _onEvent(
-      ThesesEvent event,
-      Emitter<ThesesState> emit,
-      ) async {
+  Future<void> _onEvent(ThesesEvent event, Emitter<ThesesState> emit) async {
     await event.when(
       load: () async {
         emit(ThesesState.loading());

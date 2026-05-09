@@ -11,19 +11,21 @@ class PublishAnnouncementUseCaseImpl implements PublishAnnouncementUseCase {
 
   @override
   Future<void> call({
-    required String  title,
-    required String  body,
-    required String  audience,
-    bool             isPinned = false,
-    String?          stream,
-    String?          groupId,
-    List<String>     tags = const [],
+    required String title,
+    required String body,
+    required String audience,
+    bool isPinned = false,
+    String? stream,
+    String? groupId,
+    List<String> tags = const [],
   }) async {
     if (title.trim().isEmpty) {
       throw const ValidationException('Введите заголовок объявления');
     }
     if (title.trim().length > 200) {
-      throw const ValidationException('Заголовок слишком длинный (максимум 200 символов)');
+      throw const ValidationException(
+        'Заголовок слишком длинный (максимум 200 символов)',
+      );
     }
     if (body.trim().isEmpty) {
       throw const ValidationException('Введите текст объявления');
@@ -39,14 +41,14 @@ class PublishAnnouncementUseCaseImpl implements PublishAnnouncementUseCase {
     }
 
     return ExceptionHandler.handle(
-          () => _repo.createAnnouncement(
-        title:    title.trim(),
-        body:     body.trim(),
+      () => _repo.createAnnouncement(
+        title: title.trim(),
+        body: body.trim(),
         audience: audience,
         isPinned: isPinned,
-        stream:   stream,
-        groupId:  groupId,
-        tags:     tags,
+        stream: stream,
+        groupId: groupId,
+        tags: tags,
       ),
     );
   }

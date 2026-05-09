@@ -18,13 +18,19 @@ class SettingsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            Text(t!.settingsLanguage, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            Text(
+              t!.settingsLanguage,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
 
             _buildLanguageSelector(),
 
             const SizedBox(height: 32),
-            Text(t.settingsTheme, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            Text(
+              t.settingsTheme,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
 
             _buildThemeSelector(context),
@@ -61,7 +67,10 @@ class SettingsScreen extends StatelessWidget {
           },
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
           ),
         );
       },
@@ -85,8 +94,18 @@ class SettingsScreen extends StatelessWidget {
           spacing: 16,
           runSpacing: 8,
           children: [
-            _buildThemeOption(context, themeMode, 'system', t!.settingsThemeSystem),
-            _buildThemeOption(context, themeMode, 'light', t.settingsThemeLight),
+            _buildThemeOption(
+              context,
+              themeMode,
+              'system',
+              t!.settingsThemeSystem,
+            ),
+            _buildThemeOption(
+              context,
+              themeMode,
+              'light',
+              t.settingsThemeLight,
+            ),
             _buildThemeOption(context, themeMode, 'dark', t.settingsThemeDark),
           ],
         );
@@ -95,11 +114,11 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _buildThemeOption(
-      BuildContext context,
-      String currentThemeMode,
-      String value,
-      String label,
-      ) {
+    BuildContext context,
+    String currentThemeMode,
+    String value,
+    String label,
+  ) {
     final isSelected = currentThemeMode == value;
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
@@ -111,10 +130,10 @@ class SettingsScreen extends StatelessWidget {
       selectedColor: isDark
           ? Colors.grey.withValues(alpha: 0.3)
           : Colors.orange.withValues(alpha: 0.2),
-      checkmarkColor: isDark
-          ? Colors.white
-          : Colors.black,
-      labelStyle: isDark ? TextStyle(color: Colors.white) : TextStyle(color: Colors.black),
+      checkmarkColor: isDark ? Colors.white : Colors.black,
+      labelStyle: isDark
+          ? TextStyle(color: Colors.white)
+          : TextStyle(color: Colors.black),
       onSelected: (selected) {
         if (selected && !isSelected) {
           context.read<SettingsBloc>().add(

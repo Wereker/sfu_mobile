@@ -17,7 +17,7 @@ class SignUpUseCaseImpl implements SignUpUseCase {
     required String group,
   }) async {
     final trimmedEmail = email.trim();
-    final trimmedName  = name.trim();
+    final trimmedName = name.trim();
 
     if (trimmedEmail.isEmpty) {
       throw const ValidationException('Введите email');
@@ -45,21 +45,21 @@ class SignUpUseCaseImpl implements SignUpUseCase {
 
     // Разбираем 'БИ22-01 (1 подгруппа)' → group + subgroup
     String shortGroup = group;
-    String subgroup   = '';
+    String subgroup = '';
     if (group.contains('(')) {
       final parts = group.split('(');
-      shortGroup  = parts[0].trim();
-      subgroup    = parts[1].replaceAll(')', '').trim();
+      shortGroup = parts[0].trim();
+      subgroup = parts[1].replaceAll(')', '').trim();
     }
 
     return ExceptionHandler.handle(
-          () => _repo.signUp(
-        email:    trimmedEmail,
+      () => _repo.signUp(
+        email: trimmedEmail,
         password: password1,
-        name:     trimmedName,
-        group:    shortGroup,
+        name: trimmedName,
+        group: shortGroup,
         subgroup: subgroup,
-        role:     role,
+        role: role,
       ),
     );
   }

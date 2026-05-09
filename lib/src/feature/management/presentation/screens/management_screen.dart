@@ -50,30 +50,135 @@ const _streams = ['БИ22', 'БИ23', 'МА23'];
 
 final _students = <ManagedStudent>[
   // БИ22 — группа 01
-  const ManagedStudent(id: 's1',  name: 'Волков Кирилл Павлович',         group: 'БИ22-01', stream: 'БИ22', isHeadman: true,  phone: '+7 913 111 22 33', telegram: '@volkov_k'),
-  const ManagedStudent(id: 's2',  name: 'Алексеев Дмитрий Сергеевич',     group: 'БИ22-01', stream: 'БИ22', phone: '+7 913 222 33 44'),
-  const ManagedStudent(id: 's3',  name: 'Борисова Анна Игоревна',          group: 'БИ22-01', stream: 'БИ22', telegram: '@borisova_a'),
-  const ManagedStudent(id: 's4',  name: 'Гришина Мария Александровна',     group: 'БИ22-01', stream: 'БИ22'),
-  const ManagedStudent(id: 's5',  name: 'Данилов Артём Олегович',          group: 'БИ22-01', stream: 'БИ22', phone: '+7 913 333 44 55'),
+  const ManagedStudent(
+    id: 's1',
+    name: 'Волков Кирилл Павлович',
+    group: 'БИ22-01',
+    stream: 'БИ22',
+    isHeadman: true,
+    phone: '+7 913 111 22 33',
+    telegram: '@volkov_k',
+  ),
+  const ManagedStudent(
+    id: 's2',
+    name: 'Алексеев Дмитрий Сергеевич',
+    group: 'БИ22-01',
+    stream: 'БИ22',
+    phone: '+7 913 222 33 44',
+  ),
+  const ManagedStudent(
+    id: 's3',
+    name: 'Борисова Анна Игоревна',
+    group: 'БИ22-01',
+    stream: 'БИ22',
+    telegram: '@borisova_a',
+  ),
+  const ManagedStudent(
+    id: 's4',
+    name: 'Гришина Мария Александровна',
+    group: 'БИ22-01',
+    stream: 'БИ22',
+  ),
+  const ManagedStudent(
+    id: 's5',
+    name: 'Данилов Артём Олегович',
+    group: 'БИ22-01',
+    stream: 'БИ22',
+    phone: '+7 913 333 44 55',
+  ),
   // БИ22 — группа 02
-  const ManagedStudent(id: 's6',  name: 'Громова Ирина Петровна',          group: 'БИ22-02', stream: 'БИ22', isHeadman: true,  telegram: '@gromova_i', email: 'gromova@sfu-kras.ru'),
-  const ManagedStudent(id: 's7',  name: 'Белов Роман Андреевич',           group: 'БИ22-02', stream: 'БИ22'),
-  const ManagedStudent(id: 's8',  name: 'Дроздов Евгений Михайлович',      group: 'БИ22-02', stream: 'БИ22', phone: '+7 913 444 55 66'),
-  const ManagedStudent(id: 's9',  name: 'Елисеева Татьяна Сергеевна',      group: 'БИ22-02', stream: 'БИ22'),
+  const ManagedStudent(
+    id: 's6',
+    name: 'Громова Ирина Петровна',
+    group: 'БИ22-02',
+    stream: 'БИ22',
+    isHeadman: true,
+    telegram: '@gromova_i',
+    email: 'gromova@sfu-kras.ru',
+  ),
+  const ManagedStudent(
+    id: 's7',
+    name: 'Белов Роман Андреевич',
+    group: 'БИ22-02',
+    stream: 'БИ22',
+  ),
+  const ManagedStudent(
+    id: 's8',
+    name: 'Дроздов Евгений Михайлович',
+    group: 'БИ22-02',
+    stream: 'БИ22',
+    phone: '+7 913 444 55 66',
+  ),
+  const ManagedStudent(
+    id: 's9',
+    name: 'Елисеева Татьяна Сергеевна',
+    group: 'БИ22-02',
+    stream: 'БИ22',
+  ),
   // БИ23 — группа 01
-  const ManagedStudent(id: 's10', name: 'Зайцев Александр Иванович',       group: 'БИ23-01', stream: 'БИ23', isHeadman: true,  phone: '+7 913 555 66 77', telegram: '@zaitsev_a'),
-  const ManagedStudent(id: 's11', name: 'Кириллова Юлия Дмитриевна',       group: 'БИ23-01', stream: 'БИ23'),
-  const ManagedStudent(id: 's12', name: 'Лазарев Павел Олегович',          group: 'БИ23-01', stream: 'БИ23', telegram: '@lazarev_p'),
+  const ManagedStudent(
+    id: 's10',
+    name: 'Зайцев Александр Иванович',
+    group: 'БИ23-01',
+    stream: 'БИ23',
+    isHeadman: true,
+    phone: '+7 913 555 66 77',
+    telegram: '@zaitsev_a',
+  ),
+  const ManagedStudent(
+    id: 's11',
+    name: 'Кириллова Юлия Дмитриевна',
+    group: 'БИ23-01',
+    stream: 'БИ23',
+  ),
+  const ManagedStudent(
+    id: 's12',
+    name: 'Лазарев Павел Олегович',
+    group: 'БИ23-01',
+    stream: 'БИ23',
+    telegram: '@lazarev_p',
+  ),
   // МА23
-  const ManagedStudent(id: 's13', name: 'Макарова Надежда Викторовна',     group: 'МА23-01', stream: 'МА23', isHeadman: true,  email: 'makarova@sfu-kras.ru'),
-  const ManagedStudent(id: 's14', name: 'Никитин Сергей Романович',        group: 'МА23-01', stream: 'МА23', phone: '+7 913 666 77 88'),
+  const ManagedStudent(
+    id: 's13',
+    name: 'Макарова Надежда Викторовна',
+    group: 'МА23-01',
+    stream: 'МА23',
+    isHeadman: true,
+    email: 'makarova@sfu-kras.ru',
+  ),
+  const ManagedStudent(
+    id: 's14',
+    name: 'Никитин Сергей Романович',
+    group: 'МА23-01',
+    stream: 'МА23',
+    phone: '+7 913 666 77 88',
+  ),
 ];
 
 final _myTheses = <ManagedThesis>[
-  const ManagedThesis(id: 't1', title: 'Сегментация медицинских снимков с помощью U-Net',      isFree: true),
-  const ManagedThesis(id: 't2', title: 'RAG-система для документации СФУ',                      isFree: false, takenBy: 'Борисова А. И.'),
-  const ManagedThesis(id: 't3', title: 'Детекция аномалий во временных рядах методами LSTM',   isFree: true),
-  const ManagedThesis(id: 't4', title: 'Автоматическая генерация субтитров на основе Whisper',  isFree: false, takenBy: 'Данилов А. О.'),
+  const ManagedThesis(
+    id: 't1',
+    title: 'Сегментация медицинских снимков с помощью U-Net',
+    isFree: true,
+  ),
+  const ManagedThesis(
+    id: 't2',
+    title: 'RAG-система для документации СФУ',
+    isFree: false,
+    takenBy: 'Борисова А. И.',
+  ),
+  const ManagedThesis(
+    id: 't3',
+    title: 'Детекция аномалий во временных рядах методами LSTM',
+    isFree: true,
+  ),
+  const ManagedThesis(
+    id: 't4',
+    title: 'Автоматическая генерация субтитров на основе Whisper',
+    isFree: false,
+    takenBy: 'Данилов А. О.',
+  ),
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -93,9 +198,9 @@ class _ManagementScreenState extends State<ManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return Scaffold(
       body: CustomScrollView(
@@ -123,17 +228,21 @@ class _ManagementScreenState extends State<ManagementScreen> {
                         children: [
                           Text('Управление', style: tt.displaySmall),
                           const SizedBox(height: 2),
-                          Text('Студенты, публикации, темы ВКР',
-                              style: tt.labelLarge
-                                  ?.copyWith(color: ext.textSecondary),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis),
+                          Text(
+                            'Студенты, публикации, темы ВКР',
+                            style: tt.labelLarge?.copyWith(
+                              color: ext.textSecondary,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                     ),
                     const SizedBox(width: 10),
                     Container(
-                      width: 48, height: 48,
+                      width: 48,
+                      height: 48,
                       decoration: BoxDecoration(
                         color: cs.primary,
                         borderRadius: BorderRadius.circular(AppTheme.radiusMd),
@@ -155,7 +264,9 @@ class _ManagementScreenState extends State<ManagementScreen> {
                 tabs: _tabs,
                 selected: _tabIndex,
                 onChanged: (i) => setState(() => _tabIndex = i),
-                cs: cs, ext: ext, tt: tt,
+                cs: cs,
+                ext: ext,
+                tt: tt,
               ),
             ),
           ),
@@ -165,20 +276,24 @@ class _ManagementScreenState extends State<ManagementScreen> {
             0 => _StudentsTab(cs: cs, ext: ext, tt: tt),
             1 => _PublishTab(cs: cs, ext: ext, tt: tt),
             _ => _ThesesTab(
-                theses: _myTheses,
-                onChanged: (updated) => setState(() {
-                  final idx = _myTheses.indexWhere((t) => t.id == updated.id);
-                  if (idx != -1) _myTheses[idx] = updated;
-                }),
-                onAdd: (title) => setState(() {
-                  _myTheses.add(ManagedThesis(
+              theses: _myTheses,
+              onChanged: (updated) => setState(() {
+                final idx = _myTheses.indexWhere((t) => t.id == updated.id);
+                if (idx != -1) _myTheses[idx] = updated;
+              }),
+              onAdd: (title) => setState(() {
+                _myTheses.add(
+                  ManagedThesis(
                     id: 't${_myTheses.length + 1}',
                     title: title,
                     isFree: true,
-                  ));
-                }),
-                cs: cs, ext: ext, tt: tt,
-              ),
+                  ),
+                );
+              }),
+              cs: cs,
+              ext: ext,
+              tt: tt,
+            ),
           },
         ],
       ),
@@ -201,15 +316,16 @@ class _StudentsTab extends StatefulWidget {
 
 class _StudentsTabState extends State<_StudentsTab> {
   String _selectedStream = _streams.first;
-  String _selectedGroup  = '';
-  String _query          = '';
+  String _selectedGroup = '';
+  String _query = '';
 
-  List<String> get _groups => _students
-      .where((s) => s.stream == _selectedStream)
-      .map((s) => s.group)
-      .toSet()
-      .toList()
-    ..sort();
+  List<String> get _groups =>
+      _students
+          .where((s) => s.stream == _selectedStream)
+          .map((s) => s.group)
+          .toSet()
+          .toList()
+        ..sort();
 
   List<ManagedStudent> get _filtered {
     var list = _students
@@ -218,9 +334,11 @@ class _StudentsTabState extends State<_StudentsTab> {
         .toList();
     if (_query.isNotEmpty) {
       list = list
-          .where((s) =>
-              s.name.toLowerCase().contains(_query.toLowerCase()) ||
-              s.group.toLowerCase().contains(_query.toLowerCase()))
+          .where(
+            (s) =>
+                s.name.toLowerCase().contains(_query.toLowerCase()) ||
+                s.group.toLowerCase().contains(_query.toLowerCase()),
+          )
           .toList();
     }
     // Старосты — наверх
@@ -240,9 +358,9 @@ class _StudentsTabState extends State<_StudentsTab> {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = widget.cs;
+    final cs = widget.cs;
     final ext = widget.ext;
-    final tt  = widget.tt;
+    final tt = widget.tt;
 
     return SliverMainAxisGroup(
       slivers: [
@@ -266,10 +384,13 @@ class _StudentsTabState extends State<_StudentsTab> {
                           isActive: isActive,
                           onTap: () => setState(() {
                             _selectedStream = stream;
-                            _selectedGroup =
-                                _groups.isNotEmpty ? _groups.first : '';
+                            _selectedGroup = _groups.isNotEmpty
+                                ? _groups.first
+                                : '';
                           }),
-                          cs: cs, ext: ext, tt: tt,
+                          cs: cs,
+                          ext: ext,
+                          tt: tt,
                         ),
                       );
                     }).toList(),
@@ -289,19 +410,24 @@ class _StudentsTabState extends State<_StudentsTab> {
                           label: 'Все группы',
                           isActive: _selectedGroup.isEmpty,
                           onTap: () => setState(() => _selectedGroup = ''),
-                          cs: cs, ext: ext, tt: tt,
+                          cs: cs,
+                          ext: ext,
+                          tt: tt,
                         ),
                       ),
-                      ..._groups.map((g) => Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: _FilterChip(
-                              label: g,
-                              isActive: _selectedGroup == g,
-                              onTap: () =>
-                                  setState(() => _selectedGroup = g),
-                              cs: cs, ext: ext, tt: tt,
-                            ),
-                          )),
+                      ..._groups.map(
+                        (g) => Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: _FilterChip(
+                            label: g,
+                            isActive: _selectedGroup == g,
+                            onTap: () => setState(() => _selectedGroup = g),
+                            cs: cs,
+                            ext: ext,
+                            tt: tt,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -312,11 +438,13 @@ class _StudentsTabState extends State<_StudentsTab> {
                 TextField(
                   onChanged: (v) => setState(() => _query = v),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search,
-                        color: ext.textTertiary, size: 20),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: ext.textTertiary,
+                      size: 20,
+                    ),
                     hintText: 'Поиск студента или группы',
-                    hintStyle:
-                        tt.bodyMedium?.copyWith(color: ext.textTertiary),
+                    hintStyle: tt.bodyMedium?.copyWith(color: ext.textTertiary),
                   ),
                 ),
 
@@ -339,9 +467,10 @@ class _StudentsTabState extends State<_StudentsTab> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 48),
                   child: Center(
-                    child: Text('Ничего не найдено',
-                        style: tt.bodyMedium
-                            ?.copyWith(color: ext.textSecondary)),
+                    child: Text(
+                      'Ничего не найдено',
+                      style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+                    ),
                   ),
                 ),
               )
@@ -351,7 +480,9 @@ class _StudentsTabState extends State<_StudentsTab> {
                 itemCount: _filtered.length,
                 itemBuilder: (_, i) => _StudentRow(
                   student: _filtered[i],
-                  cs: cs, ext: ext, tt: tt,
+                  cs: cs,
+                  ext: ext,
+                  tt: tt,
                 ),
               ),
 
@@ -365,7 +496,9 @@ class _StudentsTabState extends State<_StudentsTab> {
 class _StudentRow extends StatelessWidget {
   const _StudentRow({
     required this.student,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
 
   final ManagedStudent student;
@@ -378,15 +511,13 @@ class _StudentRow extends StatelessWidget {
     return InkWell(
       onTap: () => showDetailSheet(
         context: context,
-        child: _StudentDetail(
-            student: student, cs: cs, ext: ext, tt: tt),
+        child: _StudentDetail(student: student, cs: cs, ext: ext, tt: tt),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Row(
           children: [
-            _InitialsAvatar(
-                name: student.name, size: 44, primary: cs.primary),
+            _InitialsAvatar(name: student.name, size: 44, primary: cs.primary),
             const SizedBox(width: 12),
 
             Expanded(
@@ -399,24 +530,23 @@ class _StudentRow extends StatelessWidget {
                         child: Text(
                           _short(student.name),
                           style: tt.labelLarge?.copyWith(
-                              fontWeight: FontWeight.w600),
+                            fontWeight: FontWeight.w600,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       if (student.isHeadman) ...[
                         const SizedBox(width: 6),
-                        _Badge(
-                            label: 'Ст.',
-                            bg: ext.infoBg,
-                            fg: ext.infoFg),
+                        _Badge(label: 'Ст.', bg: ext.infoBg, fg: ext.infoFg),
                       ],
                     ],
                   ),
                   const SizedBox(height: 2),
-                  Text(student.group,
-                      style: tt.labelSmall
-                          ?.copyWith(color: ext.textSecondary)),
+                  Text(
+                    student.group,
+                    style: tt.labelSmall?.copyWith(color: ext.textSecondary),
+                  ),
                 ],
               ),
             ),
@@ -457,7 +587,9 @@ class _StudentRow extends StatelessWidget {
 class _StudentDetail extends StatelessWidget {
   const _StudentDetail({
     required this.student,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
 
   final ManagedStudent student;
@@ -473,28 +605,34 @@ class _StudentDetail extends StatelessWidget {
         // Шапка
         Row(
           children: [
-            _InitialsAvatar(
-                name: student.name, size: 56, primary: cs.primary),
+            _InitialsAvatar(name: student.name, size: 56, primary: cs.primary),
             const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(student.name,
-                      style: tt.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.w700)),
+                  Text(
+                    student.name,
+                    style: tt.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Text(student.group,
-                          style: tt.labelSmall
-                              ?.copyWith(color: ext.textSecondary)),
+                      Text(
+                        student.group,
+                        style: tt.labelSmall?.copyWith(
+                          color: ext.textSecondary,
+                        ),
+                      ),
                       if (student.isHeadman) ...[
                         const SizedBox(width: 8),
                         _Badge(
-                            label: 'Староста',
-                            bg: ext.infoBg,
-                            fg: ext.infoFg),
+                          label: 'Староста',
+                          bg: ext.infoBg,
+                          fg: ext.infoFg,
+                        ),
                       ],
                     ],
                   ),
@@ -509,32 +647,40 @@ class _StudentDetail extends StatelessWidget {
         // Контакты
         if (student.phone != null)
           _ContactRow(
-              icon: Icons.phone_outlined,
-              label: 'Телефон',
-              value: student.phone!,
-              ext: ext, tt: tt),
+            icon: Icons.phone_outlined,
+            label: 'Телефон',
+            value: student.phone!,
+            ext: ext,
+            tt: tt,
+          ),
         if (student.telegram != null) ...[
           const SizedBox(height: 10),
           _ContactRow(
-              icon: Icons.telegram,
-              label: 'Telegram',
-              value: student.telegram!,
-              ext: ext, tt: tt),
+            icon: Icons.telegram,
+            label: 'Telegram',
+            value: student.telegram!,
+            ext: ext,
+            tt: tt,
+          ),
         ],
         if (student.email != null) ...[
           const SizedBox(height: 10),
           _ContactRow(
-              icon: Icons.mail_outline,
-              label: 'Почта',
-              value: student.email!,
-              ext: ext, tt: tt),
+            icon: Icons.mail_outline,
+            label: 'Почта',
+            value: student.email!,
+            ext: ext,
+            tt: tt,
+          ),
         ],
 
         if (student.phone == null &&
             student.telegram == null &&
             student.email == null) ...[
-          Text('Контакты не указаны',
-              style: tt.bodyMedium?.copyWith(color: ext.textSecondary)),
+          Text(
+            'Контакты не указаны',
+            style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+          ),
         ],
 
         const SizedBox(height: 24),
@@ -554,7 +700,6 @@ class _StudentDetail extends StatelessWidget {
   }
 }
 
-
 // ════════════════════════════════════════════════════════════
 // Вкладка Публикация
 // ════════════════════════════════════════════════════════════
@@ -569,24 +714,26 @@ class _PublishTab extends StatefulWidget {
 }
 
 class _PublishTabState extends State<_PublishTab> {
-  String _type     = 'announcement'; // announcement | event
-  String _audience = 'all';          // all | stream | group
-  bool   _isPinned = false;
+  String _type = 'announcement'; // announcement | event
+  String _audience = 'all'; // all | stream | group
+  bool _isPinned = false;
 
   // Выбранное значение для stream / group
   String? _selectedStream;
   String? _selectedGroup;
 
   final _titleCtrl = TextEditingController();
-  final _bodyCtrl  = TextEditingController();
-  final _dateCtrl  = TextEditingController();
+  final _bodyCtrl = TextEditingController();
+  final _dateCtrl = TextEditingController();
   final _placeCtrl = TextEditingController();
 
   // Синтетические данные — заменить на данные из API
   static const _allStreams = ['БИ22', 'БИ23', 'МА23'];
-  static const _allGroups  = [
-    'БИ22-01', 'БИ22-02',
-    'БИ23-01', 'БИ23-02',
+  static const _allGroups = [
+    'БИ22-01',
+    'БИ22-02',
+    'БИ23-01',
+    'БИ23-02',
     'МА23-01',
   ];
 
@@ -617,16 +764,16 @@ class _PublishTabState extends State<_PublishTab> {
     _dateCtrl.clear();
     _placeCtrl.clear();
     setState(() {
-      _isPinned       = false;
-      _audience       = 'all';
+      _isPinned = false;
+      _audience = 'all';
       _selectedStream = null;
-      _selectedGroup  = null;
+      _selectedGroup = null;
     });
   }
 
   // Открыть шторку-поиск
   Future<void> _openPicker({required bool isStream}) async {
-    final items   = isStream ? _allStreams : _allGroups;
+    final items = isStream ? _allStreams : _allGroups;
     final current = isStream ? _selectedStream : _selectedGroup;
 
     final result = await showModalBottomSheet<String>(
@@ -656,9 +803,9 @@ class _PublishTabState extends State<_PublishTab> {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = widget.cs;
+    final cs = widget.cs;
     final ext = widget.ext;
-    final tt  = widget.tt;
+    final tt = widget.tt;
 
     return SliverToBoxAdapter(
       child: Padding(
@@ -666,7 +813,6 @@ class _PublishTabState extends State<_PublishTab> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // ── Тип: Объявление / Событие ──────────────────
             Container(
               decoration: BoxDecoration(
@@ -682,7 +828,9 @@ class _PublishTabState extends State<_PublishTab> {
                     value: 'announcement',
                     selected: _type,
                     onTap: () => setState(() => _type = 'announcement'),
-                    cs: cs, ext: ext, tt: tt,
+                    cs: cs,
+                    ext: ext,
+                    tt: tt,
                   ),
                   _TypeSegment(
                     icon: Icons.event_outlined,
@@ -690,7 +838,9 @@ class _PublishTabState extends State<_PublishTab> {
                     value: 'event',
                     selected: _type,
                     onTap: () => setState(() => _type = 'event'),
-                    cs: cs, ext: ext, tt: tt,
+                    cs: cs,
+                    ext: ext,
+                    tt: tt,
                   ),
                 ],
               ),
@@ -707,8 +857,11 @@ class _PublishTabState extends State<_PublishTab> {
                 hintText: _type == 'announcement'
                     ? 'Запись на элективы открыта'
                     : 'Хакатон по компьютерному зрению',
-                prefixIcon:
-                Icon(Icons.title, size: 20, color: ext.textTertiary),
+                prefixIcon: Icon(
+                  Icons.title,
+                  size: 20,
+                  color: ext.textTertiary,
+                ),
               ),
             ),
 
@@ -741,19 +894,20 @@ class _PublishTabState extends State<_PublishTab> {
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime.now(),
-                    lastDate:
-                    DateTime.now().add(const Duration(days: 365)),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
                   );
                   if (date != null) {
-                    _dateCtrl.text =
-                    '${date.day}.${date.month}.${date.year}';
+                    _dateCtrl.text = '${date.day}.${date.month}.${date.year}';
                   }
                 },
                 decoration: InputDecoration(
                   labelText: 'Дата проведения',
                   hintText: 'Выберите дату',
-                  prefixIcon: Icon(Icons.calendar_today_outlined,
-                      size: 20, color: ext.textTertiary),
+                  prefixIcon: Icon(
+                    Icons.calendar_today_outlined,
+                    size: 20,
+                    color: ext.textTertiary,
+                  ),
                 ),
               ),
               const SizedBox(height: 14),
@@ -762,8 +916,11 @@ class _PublishTabState extends State<_PublishTab> {
                 decoration: InputDecoration(
                   labelText: 'Место проведения',
                   hintText: 'Корпус Л4, ауд. 21',
-                  prefixIcon: Icon(Icons.location_on_outlined,
-                      size: 20, color: ext.textTertiary),
+                  prefixIcon: Icon(
+                    Icons.location_on_outlined,
+                    size: 20,
+                    color: ext.textTertiary,
+                  ),
                 ),
               ),
             ],
@@ -782,11 +939,13 @@ class _PublishTabState extends State<_PublishTab> {
                   label: 'Все',
                   isActive: _audience == 'all',
                   onTap: () => setState(() {
-                    _audience       = 'all';
+                    _audience = 'all';
                     _selectedStream = null;
-                    _selectedGroup  = null;
+                    _selectedGroup = null;
                   }),
-                  cs: cs, ext: ext, tt: tt,
+                  cs: cs,
+                  ext: ext,
+                  tt: tt,
                 ),
                 const SizedBox(width: 8),
                 _AudienceChip(
@@ -794,10 +953,12 @@ class _PublishTabState extends State<_PublishTab> {
                   label: 'Поток',
                   isActive: _audience == 'stream',
                   onTap: () => setState(() {
-                    _audience      = 'stream';
+                    _audience = 'stream';
                     _selectedGroup = null;
                   }),
-                  cs: cs, ext: ext, tt: tt,
+                  cs: cs,
+                  ext: ext,
+                  tt: tt,
                 ),
                 const SizedBox(width: 8),
                 _AudienceChip(
@@ -805,10 +966,12 @@ class _PublishTabState extends State<_PublishTab> {
                   label: 'Группа',
                   isActive: _audience == 'group',
                   onTap: () => setState(() {
-                    _audience       = 'group';
+                    _audience = 'group';
                     _selectedStream = null;
                   }),
-                  cs: cs, ext: ext, tt: tt,
+                  cs: cs,
+                  ext: ext,
+                  tt: tt,
                 ),
               ],
             ),
@@ -822,7 +985,9 @@ class _PublishTabState extends State<_PublishTab> {
                     ? _selectedStream
                     : _selectedGroup,
                 onTap: () => _openPicker(isStream: _audience == 'stream'),
-                cs: cs, ext: ext, tt: tt,
+                cs: cs,
+                ext: ext,
+                tt: tt,
               ),
             ],
 
@@ -838,9 +1003,10 @@ class _PublishTabState extends State<_PublishTab> {
                 child: SwitchListTile(
                   dense: true,
                   title: Text('Закрепить объявление', style: tt.labelLarge),
-                  subtitle: Text('Будет отображаться вверху списка',
-                      style: tt.labelSmall
-                          ?.copyWith(color: ext.textSecondary)),
+                  subtitle: Text(
+                    'Будет отображаться вверху списка',
+                    style: tt.labelSmall?.copyWith(color: ext.textSecondary),
+                  ),
                   value: _isPinned,
                   activeThumbColor: cs.primary,
                   onChanged: (v) => setState(() => _isPinned = v),
@@ -862,9 +1028,11 @@ class _PublishTabState extends State<_PublishTab> {
                       : Icons.event_available_outlined,
                   size: 18,
                 ),
-                label: Text(_type == 'announcement'
-                    ? 'Опубликовать объявление'
-                    : 'Создать событие'),
+                label: Text(
+                  _type == 'announcement'
+                      ? 'Опубликовать объявление'
+                      : 'Создать событие',
+                ),
               ),
             ),
           ],
@@ -910,17 +1078,21 @@ class _AudienceChip extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Icon(icon,
-                  size: 18,
-                  color: isActive ? cs.onPrimary : ext.textOnTinted),
+              Icon(
+                icon,
+                size: 18,
+                color: isActive ? cs.onPrimary : ext.textOnTinted,
+              ),
               const SizedBox(height: 4),
-              Text(label,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: isActive ? cs.onPrimary : ext.textOnTinted,
-                    height: 1,
-                  )),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: isActive ? cs.onPrimary : ext.textOnTinted,
+                  height: 1,
+                ),
+              ),
             ],
           ),
         ),
@@ -968,9 +1140,7 @@ class _StreamGroupPicker extends StatelessWidget {
         child: Row(
           children: [
             Icon(
-              isStream
-                  ? Icons.account_tree_outlined
-                  : Icons.groups_outlined,
+              isStream ? Icons.account_tree_outlined : Icons.groups_outlined,
               size: 18,
               color: hasValue ? cs.primary : ext.textTertiary,
             ),
@@ -979,9 +1149,7 @@ class _StreamGroupPicker extends StatelessWidget {
               child: Text(
                 hasValue
                     ? selected!
-                    : (isStream
-                    ? 'Выберите поток...'
-                    : 'Выберите группу...'),
+                    : (isStream ? 'Выберите поток...' : 'Выберите группу...'),
                 style: tt.bodyLarge?.copyWith(
                   fontSize: 15,
                   color: hasValue ? ext.textPrimary : ext.textTertiary,
@@ -1031,9 +1199,8 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
   List<String> get _filtered => _query.isEmpty
       ? widget.items
       : widget.items
-      .where((item) =>
-      item.toLowerCase().contains(_query.toLowerCase()))
-      .toList();
+            .where((item) => item.toLowerCase().contains(_query.toLowerCase()))
+            .toList();
 
   @override
   void dispose() {
@@ -1043,9 +1210,9 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = widget.cs;
+    final cs = widget.cs;
     final ext = widget.ext;
-    final tt  = widget.tt;
+    final tt = widget.tt;
     final screenH = MediaQuery.of(context).size.height;
 
     return Container(
@@ -1053,7 +1220,8 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
       decoration: BoxDecoration(
         color: cs.surface,
         borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(AppTheme.radiusLg)),
+          top: Radius.circular(AppTheme.radiusLg),
+        ),
       ),
       child: Column(
         children: [
@@ -1061,9 +1229,12 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 4),
             child: Container(
-              width: 36, height: 4,
+              width: 36,
+              height: 4,
               decoration: BoxDecoration(
-                  color: ext.border, borderRadius: BorderRadius.circular(2)),
+                color: ext.border,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
 
@@ -1090,8 +1261,11 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
               autofocus: true,
               onChanged: (v) => setState(() => _query = v),
               decoration: InputDecoration(
-                prefixIcon:
-                Icon(Icons.search, size: 20, color: ext.textTertiary),
+                prefixIcon: Icon(
+                  Icons.search,
+                  size: 20,
+                  color: ext.textTertiary,
+                ),
                 hintText: 'Поиск...',
                 hintStyle: tt.bodyMedium?.copyWith(color: ext.textTertiary),
               ),
@@ -1104,45 +1278,49 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
           Expanded(
             child: _filtered.isEmpty
                 ? Center(
-              child: Text('Ничего не найдено',
-                  style: tt.bodyMedium
-                      ?.copyWith(color: ext.textSecondary)),
-            )
+                    child: Text(
+                      'Ничего не найдено',
+                      style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+                    ),
+                  )
                 : ListView.separated(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom + 16),
-              separatorBuilder: (_, __) =>
-                  Divider(height: 1, color: ext.divider, indent: 16),
-              itemCount: _filtered.length,
-              itemBuilder: (_, i) {
-                final item = _filtered[i];
-                final isSelected = item == widget.selected;
-                return ListTile(
-                  dense: true,
-                  title: Text(item,
-                      style: tt.labelLarge?.copyWith(
-                        fontWeight: isSelected
-                            ? FontWeight.w700
-                            : FontWeight.w400,
-                        color: isSelected
-                            ? cs.primary
-                            : ext.textPrimary,
-                      )),
-                  trailing: isSelected
-                      ? Icon(Icons.check_circle,
-                      color: cs.primary, size: 20)
-                      : null,
-                  onTap: () => Navigator.pop(context, item),
-                );
-              },
-            ),
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).padding.bottom + 16,
+                    ),
+                    separatorBuilder: (_, __) =>
+                        Divider(height: 1, color: ext.divider, indent: 16),
+                    itemCount: _filtered.length,
+                    itemBuilder: (_, i) {
+                      final item = _filtered[i];
+                      final isSelected = item == widget.selected;
+                      return ListTile(
+                        dense: true,
+                        title: Text(
+                          item,
+                          style: tt.labelLarge?.copyWith(
+                            fontWeight: isSelected
+                                ? FontWeight.w700
+                                : FontWeight.w400,
+                            color: isSelected ? cs.primary : ext.textPrimary,
+                          ),
+                        ),
+                        trailing: isSelected
+                            ? Icon(
+                                Icons.check_circle,
+                                color: cs.primary,
+                                size: 20,
+                              )
+                            : null,
+                        onTap: () => Navigator.pop(context, item),
+                      );
+                    },
+                  ),
           ),
         ],
       ),
     );
   }
 }
-
 
 // ── Сегмент типа публикации ──────────────────────────────────
 class _TypeSegment extends StatelessWidget {
@@ -1152,7 +1330,9 @@ class _TypeSegment extends StatelessWidget {
     required this.value,
     required this.selected,
     required this.onTap,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
   final IconData icon;
   final String label, value, selected;
@@ -1177,18 +1357,19 @@ class _TypeSegment extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon,
-                  size: 16,
-                  color: isSelected ? cs.primary : ext.textSecondary),
+              Icon(
+                icon,
+                size: 16,
+                color: isSelected ? cs.primary : ext.textSecondary,
+              ),
               const SizedBox(width: 6),
-              Text(label,
-                  style: tt.labelLarge?.copyWith(
-                    fontWeight:
-                        isSelected ? FontWeight.w600 : FontWeight.w500,
-                    color: isSelected
-                        ? ext.textPrimary
-                        : ext.textSecondary,
-                  )),
+              Text(
+                label,
+                style: tt.labelLarge?.copyWith(
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected ? ext.textPrimary : ext.textSecondary,
+                ),
+              ),
             ],
           ),
         ),
@@ -1196,7 +1377,6 @@ class _TypeSegment extends StatelessWidget {
     );
   }
 }
-
 
 // ════════════════════════════════════════════════════════════
 // Вкладка 3 — Темы ВКР преподавателя
@@ -1206,7 +1386,9 @@ class _ThesesTab extends StatelessWidget {
     required this.theses,
     required this.onChanged,
     required this.onAdd,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
 
   final List<ManagedThesis> theses;
@@ -1224,11 +1406,14 @@ class _ThesesTab extends StatelessWidget {
       backgroundColor: cs.surface,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-            top: Radius.circular(AppTheme.radiusLg)),
+          top: Radius.circular(AppTheme.radiusLg),
+        ),
       ),
       builder: (_) => Padding(
         padding: EdgeInsets.fromLTRB(
-          16, 20, 16,
+          16,
+          20,
+          16,
           MediaQuery.of(context).viewInsets.bottom + 24,
         ),
         child: Column(
@@ -1237,11 +1422,13 @@ class _ThesesTab extends StatelessWidget {
           children: [
             Center(
               child: Container(
-                width: 36, height: 4,
+                width: 36,
+                height: 4,
                 margin: const EdgeInsets.only(bottom: 16),
                 decoration: BoxDecoration(
-                    color: ext.border,
-                    borderRadius: BorderRadius.circular(2)),
+                  color: ext.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
             ),
             Text('Новая тема ВКР', style: tt.titleMedium),
@@ -1290,31 +1477,33 @@ class _ThesesTab extends StatelessWidget {
                   child: Text(
                     '${theses.length} тем · '
                     '${theses.where((t) => t.isFree).length} свободных',
-                    style: tt.labelSmall
-                        ?.copyWith(color: ext.textSecondary),
+                    style: tt.labelSmall?.copyWith(color: ext.textSecondary),
                   ),
                 ),
                 GestureDetector(
                   onTap: () => _showAddDialog(context),
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 7),
+                      horizontal: 12,
+                      vertical: 7,
+                    ),
                     decoration: BoxDecoration(
                       color: cs.primary.withValues(alpha: .1),
-                      borderRadius:
-                          BorderRadius.circular(AppTheme.radiusSm),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                     ),
                     child: Row(
                       children: [
                         Icon(Icons.add, size: 16, color: cs.primary),
                         const SizedBox(width: 4),
-                        Text('Добавить',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: cs.primary,
-                              height: 1,
-                            )),
+                        Text(
+                          'Добавить',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: cs.primary,
+                            height: 1,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -1332,13 +1521,17 @@ class _ThesesTab extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: _ThesisManageCard(
               thesis: theses[i],
-              onToggleFree: () => onChanged(ManagedThesis(
-                id: theses[i].id,
-                title: theses[i].title,
-                isFree: !theses[i].isFree,
-                takenBy: theses[i].takenBy,
-              )),
-              cs: cs, ext: ext, tt: tt,
+              onToggleFree: () => onChanged(
+                ManagedThesis(
+                  id: theses[i].id,
+                  title: theses[i].title,
+                  isFree: !theses[i].isFree,
+                  takenBy: theses[i].takenBy,
+                ),
+              ),
+              cs: cs,
+              ext: ext,
+              tt: tt,
             ),
           ),
         ),
@@ -1353,7 +1546,9 @@ class _ThesisManageCard extends StatelessWidget {
   const _ThesisManageCard({
     required this.thesis,
     required this.onToggleFree,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
 
   final ManagedThesis thesis;
@@ -1378,18 +1573,20 @@ class _ThesisManageCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Text(thesis.title,
-                    style: tt.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w600, fontSize: 14)),
+                child: Text(
+                  thesis.title,
+                  style: tt.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
               ),
               const SizedBox(width: 10),
               Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 9, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
                 decoration: BoxDecoration(
                   color: thesis.isFree ? ext.successBg : ext.errorBg,
-                  borderRadius:
-                      BorderRadius.circular(AppTheme.radiusSm),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                 ),
                 child: Text(
                   thesis.isFree ? 'Свободна' : 'Занята',
@@ -1408,12 +1605,12 @@ class _ThesisManageCard extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                Icon(Icons.person_outline,
-                    size: 13, color: ext.textTertiary),
+                Icon(Icons.person_outline, size: 13, color: ext.textTertiary),
                 const SizedBox(width: 4),
-                Text(thesis.takenBy!,
-                    style: tt.labelSmall
-                        ?.copyWith(color: ext.textSecondary)),
+                Text(
+                  thesis.takenBy!,
+                  style: tt.labelSmall?.copyWith(color: ext.textSecondary),
+                ),
               ],
             ),
           ],
@@ -1446,7 +1643,9 @@ class _SegmentedControl extends StatelessWidget {
     required this.tabs,
     required this.selected,
     required this.onChanged,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
 
   final List<String> tabs;
@@ -1477,20 +1676,17 @@ class _SegmentedControl extends StatelessWidget {
                   color: isSelected
                       ? cs.surface
                       : cs.surface.withValues(alpha: 0),
-                  borderRadius:
-                      BorderRadius.circular(AppTheme.radiusSm),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                 ),
                 alignment: Alignment.center,
-                child: Text(tabs[i],
-                    style: tt.labelLarge?.copyWith(
-                      fontSize: 13,
-                      fontWeight: isSelected
-                          ? FontWeight.w600
-                          : FontWeight.w500,
-                      color: isSelected
-                          ? ext.textPrimary
-                          : ext.textSecondary,
-                    )),
+                child: Text(
+                  tabs[i],
+                  style: tt.labelLarge?.copyWith(
+                    fontSize: 13,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                    color: isSelected ? ext.textPrimary : ext.textSecondary,
+                  ),
+                ),
               ),
             ),
           );
@@ -1505,7 +1701,9 @@ class _FilterChip extends StatelessWidget {
     required this.label,
     required this.isActive,
     required this.onTap,
-    required this.cs, required this.ext, required this.tt,
+    required this.cs,
+    required this.ext,
+    required this.tt,
   });
   final String label;
   final bool isActive;
@@ -1516,23 +1714,25 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          decoration: BoxDecoration(
-            color: isActive ? cs.primary : ext.surfaceTinted,
-            borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-          ),
-          child: Text(label,
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: isActive ? cs.onPrimary : ext.textOnTinted,
-                height: 1,
-              )),
+    onTap: onTap,
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(
+        color: isActive ? cs.primary : ext.surfaceTinted,
+        borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          color: isActive ? cs.onPrimary : ext.textOnTinted,
+          height: 1,
         ),
-      );
+      ),
+    ),
+  );
 }
 
 class _Badge extends StatelessWidget {
@@ -1542,19 +1742,21 @@ class _Badge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding:
-            const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Text(label,
-            style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-                color: fg,
-                height: 1)),
-      );
+    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+    decoration: BoxDecoration(
+      color: bg,
+      borderRadius: BorderRadius.circular(4),
+    ),
+    child: Text(
+      label,
+      style: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w700,
+        color: fg,
+        height: 1,
+      ),
+    ),
+  );
 }
 
 class _ContactRow extends StatelessWidget {
@@ -1572,20 +1774,18 @@ class _ContactRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
+    children: [
+      Icon(icon, size: 16, color: ext.textTertiary),
+      const SizedBox(width: 10),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 16, color: ext.textTertiary),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label,
-                  style: tt.labelSmall
-                      ?.copyWith(color: ext.textSecondary)),
-              Text(value, style: tt.labelLarge),
-            ],
-          ),
+          Text(label, style: tt.labelSmall?.copyWith(color: ext.textSecondary)),
+          Text(value, style: tt.labelLarge),
         ],
-      );
+      ),
+    ],
+  );
 }
 
 class _ContactIcon extends StatelessWidget {
@@ -1600,12 +1800,12 @@ class _ContactIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
-          child: Icon(icon, size: 18, color: color),
-        ),
-      );
+    onTap: onTap,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: Icon(icon, size: 18, color: color),
+    ),
+  );
 }
 
 class _InitialsAvatar extends StatelessWidget {
@@ -1619,13 +1819,19 @@ class _InitialsAvatar extends StatelessWidget {
   final Color primary;
 
   static const _hues = [
-    Color(0xFFFF9900), Color(0xFFFFB84D), Color(0xFFE68A00),
-    Color(0xFFCC7A00), Color(0xFFFFA726), Color(0xFFFB8C00),
+    Color(0xFFFF9900),
+    Color(0xFFFFB84D),
+    Color(0xFFE68A00),
+    Color(0xFFCC7A00),
+    Color(0xFFFFA726),
+    Color(0xFFFB8C00),
   ];
 
   Color get _bg {
     int h = 0;
-    for (final c in name.codeUnits) { h = (h * 31 + c) & 0x7FFFFFFF; }
+    for (final c in name.codeUnits) {
+      h = (h * 31 + c) & 0x7FFFFFFF;
+    }
     return _hues[h % _hues.length];
   }
 
@@ -1639,15 +1845,18 @@ class _InitialsAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        width: size, height: size,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: _bg),
-        alignment: Alignment.center,
-        child: Text(_initials,
-            style: TextStyle(
-              fontSize: size * 0.34,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              height: 1,
-            )),
-      );
+    width: size,
+    height: size,
+    decoration: BoxDecoration(shape: BoxShape.circle, color: _bg),
+    alignment: Alignment.center,
+    child: Text(
+      _initials,
+      style: TextStyle(
+        fontSize: size * 0.34,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+        height: 1,
+      ),
+    ),
+  );
 }

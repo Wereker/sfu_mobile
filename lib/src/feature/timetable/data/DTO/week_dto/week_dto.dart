@@ -9,10 +9,7 @@ part 'week_dto.g.dart';
 abstract class WeekDTO with _$WeekDTO {
   const factory WeekDTO({
     required String week,
-    @JsonKey(
-      fromJson: _lessonListFromJson,
-      toJson:   _lessonListToJson,
-    )
+    @JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson)
     required List<LessonDTO> lessons,
   }) = _WeekDTO;
 

@@ -8,7 +8,11 @@ class _StaffMember {
   final String name;
   final String title;
   final List<String> tags;
-  const _StaffMember({required this.name, required this.title, required this.tags});
+  const _StaffMember({
+    required this.name,
+    required this.title,
+    required this.tags,
+  });
 }
 
 class _Thesis {
@@ -34,7 +38,6 @@ class _Discipline {
     required this.credits,
   });
 }
-
 
 const _staff = [
   _StaffMember(
@@ -84,15 +87,35 @@ const _theses = [
 ];
 
 const _bachelor = [
-  _Discipline(name: 'Глубокое обучение',     professor: 'Соколова Е. В.', credits: 4),
-  _Discipline(name: 'Компьютерное зрение',   professor: 'Кузнецова А. П.', credits: 3),
-  _Discipline(name: 'Анализ данных',         professor: 'Петров С. И.',    credits: 3),
+  _Discipline(
+    name: 'Глубокое обучение',
+    professor: 'Соколова Е. В.',
+    credits: 4,
+  ),
+  _Discipline(
+    name: 'Компьютерное зрение',
+    professor: 'Кузнецова А. П.',
+    credits: 3,
+  ),
+  _Discipline(name: 'Анализ данных', professor: 'Петров С. И.', credits: 3),
 ];
 
 const _master = [
-  _Discipline(name: 'Обучение с подкреплением',  professor: 'Иванов А. М.',    credits: 5),
-  _Discipline(name: 'Большие языковые модели',   professor: 'Соколова Е. В.',  credits: 4),
-  _Discipline(name: 'Генеративные модели',       professor: 'Кузнецова А. П.', credits: 3),
+  _Discipline(
+    name: 'Обучение с подкреплением',
+    professor: 'Иванов А. М.',
+    credits: 5,
+  ),
+  _Discipline(
+    name: 'Большие языковые модели',
+    professor: 'Соколова Е. В.',
+    credits: 4,
+  ),
+  _Discipline(
+    name: 'Генеративные модели',
+    professor: 'Кузнецова А. П.',
+    credits: 3,
+  ),
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -159,7 +182,11 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
 // AppBar
 // ════════════════════════════════════════════════════════════
 class _DepartmentAppBar extends StatelessWidget {
-  const _DepartmentAppBar({required this.cs, required this.ext, required this.tt});
+  const _DepartmentAppBar({
+    required this.cs,
+    required this.ext,
+    required this.tt,
+  });
   final ColorScheme cs;
   final AppColors ext;
   final TextTheme tt;
@@ -254,7 +281,9 @@ class _SegmentedControl extends StatelessWidget {
                 duration: const Duration(milliseconds: 150),
                 padding: const EdgeInsets.symmetric(vertical: 9),
                 decoration: BoxDecoration(
-                  color: isSelected ? cs.surface : cs.surface.withValues(alpha: 0),
+                  color: isSelected
+                      ? cs.surface
+                      : cs.surface.withValues(alpha: 0),
                   borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                 ),
                 alignment: Alignment.center,
@@ -289,7 +318,7 @@ class _StaffTab extends StatelessWidget {
     return SliverList.separated(
       separatorBuilder: (_, __) => const SizedBox(height: 10),
       itemCount: _staff.length,
-      itemBuilder: (_, i) => StaffCard(member: sampleStaff[i])
+      itemBuilder: (_, i) => StaffCard(member: sampleStaff[i]),
     );
   }
 }
@@ -366,12 +395,8 @@ class _ThesisTabState extends State<_ThesisTab> {
         SliverList.separated(
           separatorBuilder: (_, __) => const SizedBox(height: 10),
           itemCount: _filtered.length,
-          itemBuilder: (_, i) => _ThesisCard(
-            thesis: _filtered[i],
-            cs: cs,
-            ext: ext,
-            tt: tt,
-          ),
+          itemBuilder: (_, i) =>
+              _ThesisCard(thesis: _filtered[i], cs: cs, ext: ext, tt: tt),
         ),
       ],
     );
@@ -431,7 +456,11 @@ class _ThesisCard extends StatelessWidget {
           // Преподаватель
           Row(
             children: [
-              _InitialsAvatar(name: thesis.professor, size: 36, primary: cs.primary),
+              _InitialsAvatar(
+                name: thesis.professor,
+                size: 36,
+                primary: cs.primary,
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -468,7 +497,11 @@ class _ThesisCard extends StatelessWidget {
 // Вкладка 3 — Дисциплины
 // ════════════════════════════════════════════════════════════
 class _DisciplinesTab extends StatelessWidget {
-  const _DisciplinesTab({required this.cs, required this.ext, required this.tt});
+  const _DisciplinesTab({
+    required this.cs,
+    required this.ext,
+    required this.tt,
+  });
   final ColorScheme cs;
   final AppColors ext;
   final TextTheme tt;
@@ -502,12 +535,8 @@ class _DisciplinesTab extends StatelessWidget {
         SliverList.separated(
           separatorBuilder: (_, __) => const SizedBox(height: 10),
           itemCount: _master.length,
-          itemBuilder: (_, i) => _DisciplineCard(
-            discipline: _master[i],
-            cs: cs,
-            ext: ext,
-            tt: tt,
-          ),
+          itemBuilder: (_, i) =>
+              _DisciplineCard(discipline: _master[i], cs: cs, ext: ext, tt: tt),
         ),
       ],
     );
@@ -574,8 +603,12 @@ class _DisciplineCard extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).extension<AppColors>()!.surfaceTinted,
-                foregroundColor: Theme.of(context).extension<AppColors>()!.textOnTinted,
+                backgroundColor: Theme.of(
+                  context,
+                ).extension<AppColors>()!.surfaceTinted,
+                foregroundColor: Theme.of(
+                  context,
+                ).extension<AppColors>()!.textOnTinted,
                 elevation: 0,
                 side: BorderSide.none,
               ),
@@ -593,7 +626,11 @@ class _DisciplineCard extends StatelessWidget {
 // ════════════════════════════════════════════════════════════
 
 class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({required this.title, required this.ext, required this.tt});
+  const _SectionHeader({
+    required this.title,
+    required this.ext,
+    required this.tt,
+  });
   final String title;
   final AppColors ext;
   final TextTheme tt;
@@ -719,13 +756,19 @@ class _InitialsAvatar extends StatelessWidget {
   final Color primary;
 
   static const _hues = [
-    Color(0xFFFF9900), Color(0xFFFFB84D), Color(0xFFE68A00),
-    Color(0xFFCC7A00), Color(0xFFFFA726), Color(0xFFFB8C00),
+    Color(0xFFFF9900),
+    Color(0xFFFFB84D),
+    Color(0xFFE68A00),
+    Color(0xFFCC7A00),
+    Color(0xFFFFA726),
+    Color(0xFFFB8C00),
   ];
 
   Color get _bg {
     int h = 0;
-    for (final c in name.codeUnits) { h = (h * 31 + c) & 0x7FFFFFFF; }
+    for (final c in name.codeUnits) {
+      h = (h * 31 + c) & 0x7FFFFFFF;
+    }
     return _hues[h % _hues.length];
   }
 

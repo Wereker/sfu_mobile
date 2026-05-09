@@ -24,26 +24,29 @@ class AuthRemoteDataSourceFirebaseImpl implements AuthRemoteDataSource {
 
   @override
   Future<TokenDTO> signUp(
-      String email,
-      String password,
-      String name,
-      String group,
-      String subgroup,
-      String role,
-      ) async {
+    String email,
+    String password,
+    String name,
+    String group,
+    String subgroup,
+    String role,
+  ) async {
     final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
 
-    await _firebaseFirestore.collection('users').doc(userCredential.user!.uid).set({
-      'name': name,
-      'email': email,
-      'group': group,
-      'subgroup': subgroup,
-      'role': role,
-      'createdAt': FieldValue.serverTimestamp(),
-    });
+    await _firebaseFirestore
+        .collection('users')
+        .doc(userCredential.user!.uid)
+        .set({
+          'name': name,
+          'email': email,
+          'group': group,
+          'subgroup': subgroup,
+          'role': role,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
 
     return TokenDTO(
       access: userCredential.user!.uid,

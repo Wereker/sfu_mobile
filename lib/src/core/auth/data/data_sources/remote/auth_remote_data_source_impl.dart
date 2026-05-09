@@ -23,9 +23,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<TokenDTO> resetPassword(
-    String newPassword,
-  ) {
+  Future<TokenDTO> resetPassword(String newPassword) {
     // TODO: implement resetPassword
     throw UnimplementedError();
   }

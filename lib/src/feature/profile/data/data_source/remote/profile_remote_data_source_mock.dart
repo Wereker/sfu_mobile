@@ -9,17 +9,17 @@ class ProfileRemoteDataSourceMock implements ProfileRemoteDataSource {
 
     // Студент
     return const UserDTO(
-      id:               'user_current',
-      firstName:        'Тарас',
-      lastName:         'Бубля',
-      fatherName:       'Олегович',
-      phone:            '+7 913 345 18 25',
-      role:             'student',
-      institute:        'ИКИТ',
-      groupId:          'g1',
-      groupName:        'КИ22-13Б',
-      stream:           'КИ22',
-      subgroup:         '1',
+      id: 'user_current',
+      firstName: 'Тарас',
+      lastName: 'Бубля',
+      fatherName: 'Олегович',
+      phone: '+7 913 345 18 25',
+      role: 'student',
+      institute: 'ИКИТ',
+      groupId: 'g1',
+      groupName: 'КИ22-13Б',
+      stream: 'КИ22',
+      subgroup: '1',
       recordBookNumber: '032049803',
     );
 

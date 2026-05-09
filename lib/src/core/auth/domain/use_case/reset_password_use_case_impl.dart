@@ -20,8 +20,6 @@ class ResetPasswordUseCaseImpl implements ResetPasswordUseCase {
       throw const ValidationException('Пароли не совпадают');
     }
 
-    return ExceptionHandler.handle(
-          () => _repo.resetPassword(newPassword),
-    );
+    return ExceptionHandler.handle(() => _repo.resetPassword(newPassword));
   }
 }

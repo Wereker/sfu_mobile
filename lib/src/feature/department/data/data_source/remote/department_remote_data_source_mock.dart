@@ -9,7 +9,7 @@ class DepartmentRemoteDataSourceMock implements DepartmentRemoteDataSource {
   Future<List<StaffMemberDTO>> getStaff() async {
     await MockDelay.apply();
 
-    final raw  = await rootBundle.loadString('lib/src/core/mock/staff.json');
+    final raw = await rootBundle.loadString('lib/src/core/mock/staff.json');
     final json = jsonDecode(raw) as Map<String, dynamic>;
 
     return (json['data'] as List)
@@ -23,7 +23,7 @@ class DepartmentRemoteDataSourceMock implements DepartmentRemoteDataSource {
 
     final all = await getStaff();
     return all.firstWhere(
-          (s) => s.id == id,
+      (s) => s.id == id,
       orElse: () => throw Exception('Преподаватель $id не найден'),
     );
   }

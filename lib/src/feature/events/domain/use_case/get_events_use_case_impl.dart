@@ -8,6 +8,5 @@ class GetEventsUseCaseImpl implements GetEventsUseCase {
   const GetEventsUseCaseImpl(this._repo);
 
   @override
-  Future<List<Event>> call() =>
-      ExceptionHandler.handle(_repo.getEvents);
+  Future<List<Event>> call() => ExceptionHandler.handle(_repo.getEvents);
 }

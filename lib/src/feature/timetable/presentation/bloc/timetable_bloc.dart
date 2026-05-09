@@ -16,9 +16,9 @@ class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {
   }
 
   Future<void> _onEvent(
-      TimetableEvent event,
-      Emitter<TimetableState> emit,
-      ) async {
+    TimetableEvent event,
+    Emitter<TimetableState> emit,
+  ) async {
     await event.when(
       loadData: () async {
         emit(TimetableState.loading());

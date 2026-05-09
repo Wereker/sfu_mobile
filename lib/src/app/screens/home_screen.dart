@@ -32,9 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
           orElse: () => false,
         );
 
-        final pages = isTeacher
-            ? _teacherPages()
-            : _studentPages();
+        final pages = isTeacher ? _teacherPages() : _studentPages();
 
         final destinations = isTeacher
             ? _teacherDestinations()
@@ -44,8 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
           body: IndexedStack(index: _currentIndex, children: pages),
           bottomNavigationBar: NavigationBar(
             selectedIndex: _currentIndex,
-            onDestinationSelected: (i) =>
-                setState(() => _currentIndex = i),
+            onDestinationSelected: (i) => setState(() => _currentIndex = i),
             destinations: destinations,
           ),
         );
@@ -70,19 +67,59 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   List<NavigationDestination> _studentDestinations() => const [
-    NavigationDestination(icon: Icon(Icons.home_outlined),             selectedIcon: Icon(Icons.home),              label: 'Главная'),
-    NavigationDestination(icon: Icon(Icons.calendar_month_outlined),   selectedIcon: Icon(Icons.calendar_month),    label: 'Расписание'),
-    NavigationDestination(icon: Icon(Icons.qr_code_scanner_outlined),  selectedIcon: Icon(Icons.qr_code_scanner),   label: 'QR'),
-    NavigationDestination(icon: Icon(Icons.chat_bubble_outline),       selectedIcon: Icon(Icons.chat_bubble),       label: 'Чат'),
-    NavigationDestination(icon: Icon(Icons.school_outlined),           selectedIcon: Icon(Icons.school),            label: 'Кафедра'),
+    NavigationDestination(
+      icon: Icon(Icons.home_outlined),
+      selectedIcon: Icon(Icons.home),
+      label: 'Главная',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.calendar_month_outlined),
+      selectedIcon: Icon(Icons.calendar_month),
+      label: 'Расписание',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.qr_code_scanner_outlined),
+      selectedIcon: Icon(Icons.qr_code_scanner),
+      label: 'QR',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.chat_bubble_outline),
+      selectedIcon: Icon(Icons.chat_bubble),
+      label: 'Чат',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.school_outlined),
+      selectedIcon: Icon(Icons.school),
+      label: 'Кафедра',
+    ),
   ];
 
   List<NavigationDestination> _teacherDestinations() => const [
-    NavigationDestination(icon: Icon(Icons.home_outlined),             selectedIcon: Icon(Icons.home),              label: 'Главная'),
-    NavigationDestination(icon: Icon(Icons.calendar_month_outlined),   selectedIcon: Icon(Icons.calendar_month),    label: 'Расписание'),
-    NavigationDestination(icon: Icon(Icons.fact_check_outlined),       selectedIcon: Icon(Icons.fact_check),        label: 'Журнал'),
-    NavigationDestination(icon: Icon(Icons.chat_bubble_outline),       selectedIcon: Icon(Icons.chat_bubble),       label: 'Чат'),
-    NavigationDestination(icon: Icon(Icons.admin_panel_settings_outlined), selectedIcon: Icon(Icons.admin_panel_settings), label: 'Управление'),
+    NavigationDestination(
+      icon: Icon(Icons.home_outlined),
+      selectedIcon: Icon(Icons.home),
+      label: 'Главная',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.calendar_month_outlined),
+      selectedIcon: Icon(Icons.calendar_month),
+      label: 'Расписание',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.fact_check_outlined),
+      selectedIcon: Icon(Icons.fact_check),
+      label: 'Журнал',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.chat_bubble_outline),
+      selectedIcon: Icon(Icons.chat_bubble),
+      label: 'Чат',
+    ),
+    NavigationDestination(
+      icon: Icon(Icons.admin_panel_settings_outlined),
+      selectedIcon: Icon(Icons.admin_panel_settings),
+      label: 'Управление',
+    ),
   ];
 }
 
@@ -93,7 +130,9 @@ class _PlaceholderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text(label, style: Theme.of(context).textTheme.titleLarge));
+    return Center(
+      child: Text(label, style: Theme.of(context).textTheme.titleLarge),
+    );
   }
 }
 

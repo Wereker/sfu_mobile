@@ -8,6 +8,5 @@ class GetMyThesesUseCaseImpl implements GetMyThesesUseCase {
   const GetMyThesesUseCaseImpl(this._repo);
 
   @override
-  Future<List<Thesis>> call() =>
-      ExceptionHandler.handle(_repo.getMyTheses);
+  Future<List<Thesis>> call() => ExceptionHandler.handle(_repo.getMyTheses);
 }

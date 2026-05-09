@@ -13,8 +13,6 @@ class GetMessagesUseCaseImpl implements GetMessagesUseCase {
     if (chatId.trim().isEmpty) {
       throw const ValidationException('Не указан идентификатор чата');
     }
-    return ExceptionHandler.handle(
-          () => _repo.getMessagesForChat(chatId),
-    );
+    return ExceptionHandler.handle(() => _repo.getMessagesForChat(chatId));
   }
 }

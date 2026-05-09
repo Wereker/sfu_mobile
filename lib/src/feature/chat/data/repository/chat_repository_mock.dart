@@ -6,8 +6,8 @@ import 'package:sfu/src/feature/chat/domain/entity/chat.dart';
 import 'package:sfu/src/feature/chat/domain/repository/chat_repository.dart';
 
 class ChatRepositoryMock implements ChatRepository {
-  final ChatRemoteDataSource  _remote;
-  final ChatLocaleDataSource  _local;
+  final ChatRemoteDataSource _remote;
+  final ChatLocaleDataSource _local;
 
   const ChatRepositoryMock(this._remote, this._local);
 

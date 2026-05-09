@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/utils/qr_scanner.dart';
 
-
 class QrScreen extends StatefulWidget {
   const QrScreen({super.key});
 
@@ -17,9 +16,9 @@ class _QrScreenState extends State<QrScreen> {
   // Заглушка истории — заменить на реальный источник данных
   // когда появится фича attendance history
   final List<_AttendanceRecord> _history = const [
-    _AttendanceRecord(subject: 'Машинное обучение',  time: 'Сегодня · 10:32'),
-    _AttendanceRecord(subject: 'Базы данных',         time: 'Вчера · 13:02'),
-    _AttendanceRecord(subject: 'Линейная алгебра',    time: '3 мая · 08:35'),
+    _AttendanceRecord(subject: 'Машинное обучение', time: 'Сегодня · 10:32'),
+    _AttendanceRecord(subject: 'Базы данных', time: 'Вчера · 13:02'),
+    _AttendanceRecord(subject: 'Линейная алгебра', time: '3 мая · 08:35'),
   ];
 
   Future<void> _onScan() async {
@@ -63,7 +62,6 @@ class _QrScreenState extends State<QrScreen> {
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-
                 if (_feedback != null) ...[
                   _FeedbackBanner(feedback: _feedback!, ext: ext, tt: tt),
                   const SizedBox(height: 12),
@@ -80,7 +78,6 @@ class _QrScreenState extends State<QrScreen> {
                     child: _HistoryCard(record: r, cs: cs, ext: ext, tt: tt),
                   ),
                 ),
-
               ]),
             ),
           ),
@@ -204,7 +201,6 @@ class _ScannerCard extends StatelessWidget {
   }
 }
 
-
 class _QrViewfinder extends StatelessWidget {
   const _QrViewfinder({required this.primary});
   final Color primary;
@@ -224,11 +220,7 @@ class _QrViewfinder extends StatelessWidget {
       child: CustomPaint(
         painter: _ViewfinderPainter(primary: primary),
         child: Center(
-          child: Icon(
-            Icons.qr_code_rounded,
-            size: 80,
-            color: ext.textTertiary,
-          ),
+          child: Icon(Icons.qr_code_rounded, size: 80, color: ext.textTertiary),
         ),
       ),
     );
@@ -269,7 +261,8 @@ class _ViewfinderPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _ViewfinderPainter old) => old.primary != primary;
+  bool shouldRepaint(covariant _ViewfinderPainter old) =>
+      old.primary != primary;
 }
 
 class _FeedbackBanner extends StatelessWidget {
@@ -292,17 +285,20 @@ class _FeedbackBanner extends StatelessWidget {
 
     switch (feedback.type) {
       case _FeedbackType.success:
-        bg = ext.successBg; fg = ext.successFg;
+        bg = ext.successBg;
+        fg = ext.successFg;
         icon = Icons.check_circle_outline;
         text = 'Отметка принята';
         break;
       case _FeedbackType.permissionDenied:
-        bg = ext.warningBg; fg = ext.warningFg;
+        bg = ext.warningBg;
+        fg = ext.warningFg;
         icon = Icons.no_photography_outlined;
         text = 'Нет доступа к камере — разреши в настройках';
         break;
       case _FeedbackType.error:
-        bg = ext.errorBg; fg = ext.errorFg;
+        bg = ext.errorBg;
+        fg = ext.errorFg;
         icon = Icons.error_outline;
         text = 'Не удалось отсканировать. Попробуй ещё раз';
         break;
@@ -321,7 +317,10 @@ class _FeedbackBanner extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: tt.labelLarge?.copyWith(color: fg, fontWeight: FontWeight.w500),
+              style: tt.labelLarge?.copyWith(
+                color: fg,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
@@ -392,7 +391,11 @@ class _HistoryCard extends StatelessWidget {
 }
 
 class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({required this.title, required this.ext, required this.tt});
+  const _SectionHeader({
+    required this.title,
+    required this.ext,
+    required this.tt,
+  });
   final String title;
   final AppColors ext;
   final TextTheme tt;
@@ -417,9 +420,7 @@ class _ScanFeedback {
 
   const _ScanFeedback.success(this.value) : type = _FeedbackType.success;
   const _ScanFeedback.permissionDenied()
-      : type = _FeedbackType.permissionDenied,
-        value = null;
-  const _ScanFeedback.error()
-      : type = _FeedbackType.error,
-        value = null;
+    : type = _FeedbackType.permissionDenied,
+      value = null;
+  const _ScanFeedback.error() : type = _FeedbackType.error, value = null;
 }

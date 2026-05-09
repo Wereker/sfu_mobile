@@ -14,14 +14,16 @@ class UpdateThesisUseCaseImpl implements UpdateThesisUseCase {
       throw const ValidationException('Не указан идентификатор темы');
     }
     if (title != null && title.trim().length < 10) {
-      throw const ValidationException('Название слишком короткое (минимум 10 символов)');
+      throw const ValidationException(
+        'Название слишком короткое (минимум 10 символов)',
+      );
     }
     if (title == null && isFree == null) {
       throw const ValidationException('Не указаны поля для обновления');
     }
 
     return ExceptionHandler.handle(
-          () => _repo.updateThesis(id, title: title?.trim(), isFree: isFree),
+      () => _repo.updateThesis(id, title: title?.trim(), isFree: isFree),
     );
   }
 }

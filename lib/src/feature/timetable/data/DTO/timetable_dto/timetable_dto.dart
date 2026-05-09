@@ -11,10 +11,7 @@ abstract class TimetableDTO with _$TimetableDTO {
     required String target,
     required String type,
     String? institute,
-    @JsonKey(
-      fromJson: _weekListFromJson,
-      toJson:   _weekListToJson,
-    )
+    @JsonKey(fromJson: _weekListFromJson, toJson: _weekListToJson)
     required List<WeekDTO> weeks,
   }) = _TimetableDTO;
 

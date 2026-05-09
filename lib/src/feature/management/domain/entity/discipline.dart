@@ -9,11 +9,11 @@ abstract class Discipline with _$Discipline {
     required String name,
     required String teacherId,
     required String teacherName,
-    required int    credits,
+    required int credits,
     required String level,
-    required int    totalSeats,
-    required int    takenSeats,
-    required bool   isEnrolled,
+    required int totalSeats,
+    required int takenSeats,
+    required bool isEnrolled,
   }) = _Discipline;
 
   // bool get isFull => takenSeats >= totalSeats;

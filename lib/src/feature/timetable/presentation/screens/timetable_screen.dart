@@ -23,12 +23,11 @@ class TimetableScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) =>
-          di.sl<TimetableBloc>()..add(TimetableEvent.loadData()),
+          create: (_) => di.sl<TimetableBloc>()..add(TimetableEvent.loadData()),
         ),
         BlocProvider(
           create: (_) =>
-          di.sl<SuggestionsBloc>()..add(SuggestionEvent.loadData()),
+              di.sl<SuggestionsBloc>()..add(SuggestionEvent.loadData()),
         ),
       ],
       child: const Scaffold(body: _TimetableContent()),
@@ -62,12 +61,14 @@ class _LoadingView extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () => FocusScope.of(context).unfocus(),
-      child: CustomScrollView(slivers: [
-        _TimetableAppBar(target: ''),
-        const SliverFillRemaining(
-          child: Center(child: LoadingIndicatorWidget()),
-        ),
-      ]),
+      child: CustomScrollView(
+        slivers: [
+          _TimetableAppBar(target: ''),
+          const SliverFillRemaining(
+            child: Center(child: LoadingIndicatorWidget()),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -83,39 +84,48 @@ class _ErrorView extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () => FocusScope.of(context).unfocus(),
-      child: CustomScrollView(slivers: [
-        _TimetableAppBar(target: ''),
-        SliverFillRemaining(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(32),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 64,
-                    height: 64,
-                    decoration: BoxDecoration(
-                      color: ext.errorBg,
-                      shape: BoxShape.circle,
+      child: CustomScrollView(
+        slivers: [
+          _TimetableAppBar(target: ''),
+          SliverFillRemaining(
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 64,
+                      height: 64,
+                      decoration: BoxDecoration(
+                        color: ext.errorBg,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.wifi_off_outlined,
+                        size: 28,
+                        color: ext.errorFg,
+                      ),
                     ),
-                    child: Icon(Icons.wifi_off_outlined,
-                        size: 28, color: ext.errorFg),
-                  ),
-                  const SizedBox(height: 16),
-                  Text('Не удалось загрузить расписание',
-                      textAlign: TextAlign.center, style: tt.titleMedium),
-                  const SizedBox(height: 6),
-                  Text('Проверь подключение и попробуй снова',
+                    const SizedBox(height: 16),
+                    Text(
+                      'Не удалось загрузить расписание',
                       textAlign: TextAlign.center,
-                      style:
-                      tt.bodyMedium?.copyWith(color: ext.textSecondary)),
-                ],
+                      style: tt.titleMedium,
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Проверь подключение и попробуй снова',
+                      textAlign: TextAlign.center,
+                      style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -131,15 +141,19 @@ class _EmptyView extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () => FocusScope.of(context).unfocus(),
-      child: CustomScrollView(slivers: [
-        _TimetableAppBar(target: ''),
-        SliverFillRemaining(
-          child: Center(
-            child: Text('Расписание не найдено',
-                style: tt.bodyMedium?.copyWith(color: ext.textSecondary)),
+      child: CustomScrollView(
+        slivers: [
+          _TimetableAppBar(target: ''),
+          SliverFillRemaining(
+            child: Center(
+              child: Text(
+                'Расписание не найдено',
+                style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+              ),
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -215,7 +229,7 @@ class _TimetableBody extends StatefulWidget {
 
 class _TimetableBodyState extends State<_TimetableBody> {
   late String _selectedWeek;
-  late int _selectedDay;           // 1 = пн … 6 = сб
+  late int _selectedDay; // 1 = пн … 6 = сб
   DateTime _now = DateTime.now();
   Timer? _timer;
 
@@ -230,8 +244,10 @@ class _TimetableBodyState extends State<_TimetableBody> {
     final wd = _now.weekday;
     _selectedDay = (wd >= 1 && wd <= 6) ? wd : 1;
 
-    _dayScrollController =
-        PageController(viewportFraction: 1 / 7, initialPage: _selectedDay - 1);
+    _dayScrollController = PageController(
+      viewportFraction: 1 / 7,
+      initialPage: _selectedDay - 1,
+    );
 
     _timer = Timer.periodic(const Duration(seconds: 30), (_) {
       if (mounted) setState(() => _now = DateTime.now());
@@ -273,15 +289,15 @@ class _TimetableBodyState extends State<_TimetableBody> {
     final tt = Theme.of(context).textTheme;
 
     final week = widget.timetable.weeks.firstWhere(
-          (w) => w.week == _selectedWeek,
+      (w) => w.week == _selectedWeek,
       orElse: () => widget.timetable.weeks.first,
     );
     final byDay = _groupByDay(week.lessons);
     final dayLessons = byDay[_selectedDay] ?? [];
 
-    final actualWeekNum =
-    TimetableUtils.getWeekNumberFromAcademicStart(_now);
-    final isCurrentWeek = (_selectedWeek == '1' && actualWeekNum.isOdd) ||
+    final actualWeekNum = TimetableUtils.getWeekNumberFromAcademicStart(_now);
+    final isCurrentWeek =
+        (_selectedWeek == '1' && actualWeekNum.isOdd) ||
         (_selectedWeek == '2' && actualWeekNum.isEven);
     final isToday = isCurrentWeek && (_selectedDay == _now.weekday);
 
@@ -322,7 +338,8 @@ class _TimetableBodyState extends State<_TimetableBody> {
                         final wd = i + 1;
                         final date = _dateForWeekday(wd);
                         final isActive = wd == _selectedDay;
-                        final isCurrentDay = isCurrentWeek && wd == _now.weekday;
+                        final isCurrentDay =
+                            isCurrentWeek && wd == _now.weekday;
                         return Expanded(
                           child: Padding(
                             padding: EdgeInsets.only(right: 6),
@@ -352,22 +369,21 @@ class _TimetableBodyState extends State<_TimetableBody> {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
               sliver: dayLessons.isEmpty
                   ? SliverToBoxAdapter(
-                child: _EmptyDay(ext: ext, tt: tt),
-              )
+                      child: _EmptyDay(ext: ext, tt: tt),
+                    )
                   : SliverList.separated(
-                separatorBuilder: (_, __) =>
-                const SizedBox(height: 10),
-                itemCount: dayLessons.length,
-                itemBuilder: (_, i) => _LessonCard(
-                  lesson: dayLessons[i],
-                  index: i + 1,
-                  isToday: isToday,
-                  now: _now,
-                  cs: cs,
-                  ext: ext,
-                  tt: tt,
-                ),
-              ),
+                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      itemCount: dayLessons.length,
+                      itemBuilder: (_, i) => _LessonCard(
+                        lesson: dayLessons[i],
+                        index: i + 1,
+                        isToday: isToday,
+                        now: _now,
+                        cs: cs,
+                        ext: ext,
+                        tt: tt,
+                      ),
+                    ),
             ),
           ],
         ),
@@ -538,8 +554,8 @@ class _DayChip extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: hasClasses
                     ? (isActive
-                    ? cs.onPrimary.withValues(alpha: .7)
-                    : cs.primary)
+                          ? cs.onPrimary.withValues(alpha: .7)
+                          : cs.primary)
                     : Colors.transparent,
               ),
             ),
@@ -594,7 +610,7 @@ class _LessonCard extends StatelessWidget {
 
   String _lessonIndex(String time) {
     const map = {
-      '8:30-10:05':  '1',
+      '8:30-10:05': '1',
       '10:15-11:50': '2',
       '12:00-13:35': '3',
       '14:10-15:45': '4',
@@ -606,42 +622,50 @@ class _LessonCard extends StatelessWidget {
 
   Color _typeBg(AppColors e) {
     switch (lesson.type) {
-      case 'лекция':      return e.infoBg;
-      case 'пр. занятие': return e.successBg;
-      case 'лаб. работа': return e.warningBg;
-      default:            return e.divider;
+      case 'лекция':
+        return e.infoBg;
+      case 'пр. занятие':
+        return e.successBg;
+      case 'лаб. работа':
+        return e.warningBg;
+      default:
+        return e.divider;
     }
   }
 
   Color _typeFg(AppColors e) {
     switch (lesson.type) {
-      case 'лекция':      return e.infoFg;
-      case 'пр. занятие': return e.successFg;
-      case 'лаб. работа': return e.warningFg;
-      default:            return e.textSecondary;
+      case 'лекция':
+        return e.infoFg;
+      case 'пр. занятие':
+        return e.successFg;
+      case 'лаб. работа':
+        return e.warningFg;
+      default:
+        return e.textSecondary;
     }
   }
 
   Color _statusBg(LessonStatus s, AppColors e) => s.maybeWhen(
-    inProgress:  (_) => e.successBg,
-    willEndIn:   (_) => e.warningBg,
+    inProgress: (_) => e.successBg,
+    willEndIn: (_) => e.warningBg,
     willStartIn: (_) => e.infoBg,
-    orElse:      ()  => e.divider,
+    orElse: () => e.divider,
   );
 
   Color _statusFg(LessonStatus s, AppColors e) => s.maybeWhen(
-    inProgress:  (_) => e.successFg,
-    willEndIn:   (_) => e.warningFg,
+    inProgress: (_) => e.successFg,
+    willEndIn: (_) => e.warningFg,
     willStartIn: (_) => e.infoFg,
-    orElse:      ()  => e.textSecondary,
+    orElse: () => e.textSecondary,
   );
 
   bool _showStatus(LessonStatus s, bool isFirst) => s.when(
-    notToday:    ()  => false,
-    finished:    ()  => false,
+    notToday: () => false,
+    finished: () => false,
     willStartIn: (_) => isFirst,
-    inProgress:  (_) => true,
-    willEndIn:   (_) => true,
+    inProgress: (_) => true,
+    willEndIn: (_) => true,
   );
 
   @override
@@ -657,7 +681,7 @@ class _LessonCard extends StatelessWidget {
 
     final isInProgress = status.maybeWhen(
       inProgress: (_) => true,
-      orElse:     ()  => false,
+      orElse: () => false,
     );
 
     return ClipRRect(
@@ -700,7 +724,9 @@ class _LessonCard extends StatelessWidget {
                     if (lesson.type.isNotEmpty)
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 7, vertical: 3),
+                          horizontal: 7,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           color: _typeBg(ext),
                           borderRadius: BorderRadius.circular(4),
@@ -744,11 +770,12 @@ class _LessonCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 9, vertical: 4),
+                      horizontal: 9,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: sBg,
-                      borderRadius:
-                      BorderRadius.circular(AppTheme.radiusSm),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                     ),
                     child: Text(
                       statusText,
@@ -774,19 +801,19 @@ class _LessonCard extends StatelessWidget {
                       Expanded(
                         child: lesson.teacher.isNotEmpty
                             ? _MetaRow(
-                          icon: Icons.person_outline,
-                          label: lesson.teacher,
-                          ext: ext,
-                          tt: tt,
-                        )
+                                icon: Icons.person_outline,
+                                label: lesson.teacher,
+                                ext: ext,
+                                tt: tt,
+                              )
                             : _MetaRow(
-                          icon: Icons.groups_outlined,
-                          label: lesson.groups
-                              .where((g) => g.isNotEmpty)
-                              .join(', '),
-                          ext: ext,
-                          tt: tt,
-                        ),
+                                icon: Icons.groups_outlined,
+                                label: lesson.groups
+                                    .where((g) => g.isNotEmpty)
+                                    .join(', '),
+                                ext: ext,
+                                tt: tt,
+                              ),
                       ),
                       if (lesson.place.isNotEmpty) ...[
                         const SizedBox(width: 8),
