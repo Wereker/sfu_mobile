@@ -2,5 +2,5 @@ part of 'chat_bloc.dart';
 
 @freezed
 class ChatEvent with _$ChatEvent {
-  const factory ChatEvent.loadData() = _ChatLoadData;
+  const factory ChatEvent.loadData() = _LoadData;
 }

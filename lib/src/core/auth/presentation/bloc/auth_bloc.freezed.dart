@@ -131,11 +131,11 @@ return checkAuthStatus(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password)?  signIn,TResult Function( String newPassword)?  resetPassword,TResult Function( String email,  String password1,  String password2,  String name,  String role,  String group)?  signUp,TResult Function()?  logout,TResult Function()?  checkAuthStatus,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password)?  signIn,TResult Function( String newPassword,  String confirmPassword)?  resetPassword,TResult Function( String email,  String password1,  String password2,  String name,  String role,  String group)?  signUp,TResult Function()?  logout,TResult Function()?  checkAuthStatus,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
 return signIn(_that.email,_that.password);case _AuthResetPassword() when resetPassword != null:
-return resetPassword(_that.newPassword);case _AuthSignUp() when signUp != null:
+return resetPassword(_that.newPassword,_that.confirmPassword);case _AuthSignUp() when signUp != null:
 return signUp(_that.email,_that.password1,_that.password2,_that.name,_that.role,_that.group);case _AuthLogout() when logout != null:
 return logout();case _AuthCheckAuthStatus() when checkAuthStatus != null:
 return checkAuthStatus();case _:
@@ -156,11 +156,11 @@ return checkAuthStatus();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password)  signIn,required TResult Function( String newPassword)  resetPassword,required TResult Function( String email,  String password1,  String password2,  String name,  String role,  String group)  signUp,required TResult Function()  logout,required TResult Function()  checkAuthStatus,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password)  signIn,required TResult Function( String newPassword,  String confirmPassword)  resetPassword,required TResult Function( String email,  String password1,  String password2,  String name,  String role,  String group)  signUp,required TResult Function()  logout,required TResult Function()  checkAuthStatus,}) {final _that = this;
 switch (_that) {
 case _AuthSignIn():
 return signIn(_that.email,_that.password);case _AuthResetPassword():
-return resetPassword(_that.newPassword);case _AuthSignUp():
+return resetPassword(_that.newPassword,_that.confirmPassword);case _AuthSignUp():
 return signUp(_that.email,_that.password1,_that.password2,_that.name,_that.role,_that.group);case _AuthLogout():
 return logout();case _AuthCheckAuthStatus():
 return checkAuthStatus();case _:
@@ -180,11 +180,11 @@ return checkAuthStatus();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password)?  signIn,TResult? Function( String newPassword)?  resetPassword,TResult? Function( String email,  String password1,  String password2,  String name,  String role,  String group)?  signUp,TResult? Function()?  logout,TResult? Function()?  checkAuthStatus,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password)?  signIn,TResult? Function( String newPassword,  String confirmPassword)?  resetPassword,TResult? Function( String email,  String password1,  String password2,  String name,  String role,  String group)?  signUp,TResult? Function()?  logout,TResult? Function()?  checkAuthStatus,}) {final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
 return signIn(_that.email,_that.password);case _AuthResetPassword() when resetPassword != null:
-return resetPassword(_that.newPassword);case _AuthSignUp() when signUp != null:
+return resetPassword(_that.newPassword,_that.confirmPassword);case _AuthSignUp() when signUp != null:
 return signUp(_that.email,_that.password1,_that.password2,_that.name,_that.role,_that.group);case _AuthLogout() when logout != null:
 return logout();case _AuthCheckAuthStatus() when checkAuthStatus != null:
 return checkAuthStatus();case _:
@@ -267,10 +267,11 @@ as String,
 
 
 class _AuthResetPassword implements AuthEvent {
-  const _AuthResetPassword({required this.newPassword});
+  const _AuthResetPassword({required this.newPassword, required this.confirmPassword});
   
 
  final  String newPassword;
+ final  String confirmPassword;
 
 /// Create a copy of AuthEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -282,16 +283,16 @@ _$AuthResetPasswordCopyWith<_AuthResetPassword> get copyWith => __$AuthResetPass
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResetPassword&&(identical(other.newPassword, newPassword) || other.newPassword == newPassword));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthResetPassword&&(identical(other.newPassword, newPassword) || other.newPassword == newPassword)&&(identical(other.confirmPassword, confirmPassword) || other.confirmPassword == confirmPassword));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,newPassword);
+int get hashCode => Object.hash(runtimeType,newPassword,confirmPassword);
 
 @override
 String toString() {
-  return 'AuthEvent.resetPassword(newPassword: $newPassword)';
+  return 'AuthEvent.resetPassword(newPassword: $newPassword, confirmPassword: $confirmPassword)';
 }
 
 
@@ -302,7 +303,7 @@ abstract mixin class _$AuthResetPasswordCopyWith<$Res> implements $AuthEventCopy
   factory _$AuthResetPasswordCopyWith(_AuthResetPassword value, $Res Function(_AuthResetPassword) _then) = __$AuthResetPasswordCopyWithImpl;
 @useResult
 $Res call({
- String newPassword
+ String newPassword, String confirmPassword
 });
 
 
@@ -319,9 +320,10 @@ class __$AuthResetPasswordCopyWithImpl<$Res>
 
 /// Create a copy of AuthEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? newPassword = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? newPassword = null,Object? confirmPassword = null,}) {
   return _then(_AuthResetPassword(
 newPassword: null == newPassword ? _self.newPassword : newPassword // ignore: cast_nullable_to_non_nullable
+as String,confirmPassword: null == confirmPassword ? _self.confirmPassword : confirmPassword // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

@@ -1,5 +1,13 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sfu/src/feature/announcements/presentation/bloc/announcements_bloc.dart';
+import 'package:sfu/src/feature/attendance/presentation/bloc/mark/attendance_mark_bloc.dart';
+import 'package:sfu/src/feature/attendance/presentation/bloc/session/attendance_session_bloc.dart';
+import 'package:sfu/src/feature/department/presentation/bloc/department_bloc.dart';
+import 'package:sfu/src/feature/events/presentation/bloc/events_bloc.dart';
+import 'package:sfu/src/feature/management/presentation/bloc/publish/publish_bloc.dart';
+import 'package:sfu/src/feature/management/presentation/bloc/students/students_bloc.dart';
+import 'package:sfu/src/feature/management/presentation/bloc/theses/theses_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
@@ -32,7 +40,6 @@ import 'package:sfu/src/feature/announcements/domain/use_case/get_announcements_
 import 'package:sfu/src/feature/attendance/data/data_source/remote/attendance_remote_data_source.dart';
 import 'package:sfu/src/feature/attendance/data/data_source/remote/attendance_remote_data_source_mock.dart';
 import 'package:sfu/src/feature/attendance/data/repository/attendance_repository_mock.dart';
-import 'package:sfu/src/feature/attendance/domain/entity/attendance_student.dart';
 import 'package:sfu/src/feature/attendance/domain/repository/attendance_repository.dart';
 import 'package:sfu/src/feature/attendance/domain/use_case/close_attendance_session_use_case.dart';
 import 'package:sfu/src/feature/attendance/domain/use_case/close_attendance_session_use_case_impl.dart';
@@ -143,7 +150,7 @@ import 'package:sfu/src/feature/timetable/suggestion/presentation/bloc/suggestio
 final sl = GetIt.instance;
 
 Future<void> init() async {
-  final prefs        = await SharedPreferences.getInstance();
+  final prefs = await SharedPreferences.getInstance();
   final secureStorage = const FlutterSecureStorage();
 
   _initLocalStorage(prefs, secureStorage);
@@ -154,13 +161,11 @@ Future<void> init() async {
   _initWidgets();
 }
 
-
 // Local storage
 void _initLocalStorage(SharedPreferences prefs, FlutterSecureStorage storage) {
   sl.registerSingleton<SharedPreferences>(prefs);
   sl.registerSingleton<FlutterSecureStorage>(storage);
 }
-
 
 // Data sources
 void _initDataSources() {
@@ -171,9 +176,7 @@ void _initDataSources() {
       sl<SharedPreferences>(),
     ),
   );
-  sl.registerSingleton<AuthRemoteDataSource>(
-    AuthRemoteDataSourceMock(),
-  );
+  sl.registerSingleton<AuthRemoteDataSource>(AuthRemoteDataSourceMock());
 
   // Settings
   sl.registerSingleton<SettingsLocalDataSource>(
@@ -197,9 +200,7 @@ void _initDataSources() {
   sl.registerSingleton<MessageRemoteDataSource>(MessageRemoteDataSourceMock());
 
   // Profile
-  sl.registerSingleton<ProfileRemoteDataSource>(
-    ProfileRemoteDataSourceMock(),
-  );
+  sl.registerSingleton<ProfileRemoteDataSource>(ProfileRemoteDataSourceMock());
 
   // Announcements
   sl.registerSingleton<AnnouncementsRemoteDataSource>(
@@ -227,9 +228,7 @@ void _initDataSources() {
 
 // Repositories
 void _initRepositories() {
-  sl.registerSingleton<AuthRepository>(
-    AuthRepositoryMock(),
-  );
+  sl.registerSingleton<AuthRepository>(AuthRepositoryMock());
 
   sl.registerSingleton<ProfileRepository>(
     ProfileRepositoryMock(sl<ProfileRemoteDataSource>()),
@@ -248,10 +247,7 @@ void _initRepositories() {
   );
 
   sl.registerSingleton<ChatRepository>(
-    ChatRepositoryMock(
-      sl<ChatRemoteDataSource>(),
-      sl<ChatLocaleDataSource>(),
-    ),
+    ChatRepositoryMock(sl<ChatRemoteDataSource>(), sl<ChatLocaleDataSource>()),
   );
 
   sl.registerSingleton<MessageRepository>(
@@ -283,161 +279,200 @@ void _initRepositories() {
 void _initUseCases() {
   // Auth
   sl.registerFactory<SignInUseCase>(
-        () => SignInUseCaseImpl(sl<AuthRepository>()),
+    () => SignInUseCaseImpl(sl<AuthRepository>()),
   );
   sl.registerFactory<SignUpUseCase>(
-        () => SignUpUseCaseImpl(sl<AuthRepository>()),
+    () => SignUpUseCaseImpl(sl<AuthRepository>()),
   );
   sl.registerFactory<LogoutUseCase>(
-        () => LogoutUseCaseImpl(sl<AuthRepository>()),
+    () => LogoutUseCaseImpl(sl<AuthRepository>()),
   );
   sl.registerFactory<ResetPasswordUseCase>(
-        () => ResetPasswordUseCaseImpl(sl<AuthRepository>()),
+    () => ResetPasswordUseCaseImpl(sl<AuthRepository>()),
   );
   sl.registerFactory<CheckAuthStatusUseCase>(
-        () => CheckAuthStatusUseCaseImpl(sl<AuthRepository>()),
+    () => CheckAuthStatusUseCaseImpl(sl<AuthRepository>()),
   );
 
   // Profile
   sl.registerFactory<GetProfileUseCase>(
-        () => GetProfileUseCaseImpl(sl<ProfileRepository>()),
+    () => GetProfileUseCaseImpl(sl<ProfileRepository>()),
   );
 
   // Settings
   sl.registerFactory<GetAppSettingsUseCase>(
-        () => GetAppSettingsUseCaseImpl(sl<SettingsRepository>()),
+    () => GetAppSettingsUseCaseImpl(sl<SettingsRepository>()),
   );
   sl.registerFactory<UpdateAppLocalizationUseCase>(
-        () => UpdateAppLocalizationUseCaseImpl(sl<SettingsRepository>()),
+    () => UpdateAppLocalizationUseCaseImpl(sl<SettingsRepository>()),
   );
   sl.registerFactory<UpdateAppThemeModeUseCase>(
-        () => UpdateAppThemeModeUseCaseImpl(sl<SettingsRepository>()),
+    () => UpdateAppThemeModeUseCaseImpl(sl<SettingsRepository>()),
   );
 
   // Timetable
   sl.registerFactory<GetTimetableUseCase>(
-        () => GetTimetableUseCaseImpl(sl<TimetableRepository>()),
+    () => GetTimetableUseCaseImpl(sl<TimetableRepository>()),
   );
   sl.registerFactory<GetSuggestionsUseCase>(
-        () => GetSuggestionsUseCaseImpl(sl<SuggestionRepository>()),
+    () => GetSuggestionsUseCaseImpl(sl<SuggestionRepository>()),
   );
 
   // Chat
   sl.registerFactory<GetChatsUseCase>(
-        () => GetChatsUseCaseImpl(sl<ChatRepository>()),
+    () => GetChatsUseCaseImpl(sl<ChatRepository>()),
   );
   sl.registerFactory<GetMessagesUseCase>(
-        () => GetMessagesUseCaseImpl(sl<MessageRepository>()),
+    () => GetMessagesUseCaseImpl(sl<MessageRepository>()),
   );
 
   // Announcements
   sl.registerFactory<GetAnnouncementsUseCase>(
-        () => GetAnnouncementsUseCaseImpl(sl<AnnouncementsRepository>()),
+    () => GetAnnouncementsUseCaseImpl(sl<AnnouncementsRepository>()),
   );
 
   // Events
   sl.registerFactory<GetEventsUseCase>(
-        () => GetEventsUseCaseImpl(sl<EventsRepository>()),
+    () => GetEventsUseCaseImpl(sl<EventsRepository>()),
   );
   sl.registerFactory<EnrollEventUseCase>(
-        () => EnrollEventUseCaseImpl(sl<EventsRepository>()),
+    () => EnrollEventUseCaseImpl(sl<EventsRepository>()),
   );
   sl.registerFactory<UnenrollEventUseCase>(
-        () => UnenrollEventUseCaseImpl(sl<EventsRepository>()),
+    () => UnenrollEventUseCaseImpl(sl<EventsRepository>()),
   );
 
   // Department
   sl.registerFactory<GetStaffUseCase>(
-        () => GetStaffUseCaseImpl(sl<DepartmentRepository>()),
+    () => GetStaffUseCaseImpl(sl<DepartmentRepository>()),
   );
   sl.registerFactory<GetStaffMemberUseCase>(
-        () => GetStaffMemberUseCaseImpl(sl<DepartmentRepository>()),
+    () => GetStaffMemberUseCaseImpl(sl<DepartmentRepository>()),
   );
 
   // Management
   sl.registerFactory<GetStudentsUseCase>(
-        () => GetStudentsUseCaseImpl(sl<ManagementRepository>()),
+    () => GetStudentsUseCaseImpl(sl<ManagementRepository>()),
   );
   sl.registerFactory<GetMyThesesUseCase>(
-        () => GetMyThesesUseCaseImpl(sl<ManagementRepository>()),
+    () => GetMyThesesUseCaseImpl(sl<ManagementRepository>()),
   );
   sl.registerFactory<CreateThesisUseCase>(
-        () => CreateThesisUseCaseImpl(sl<ManagementRepository>()),
+    () => CreateThesisUseCaseImpl(sl<ManagementRepository>()),
   );
   sl.registerFactory<UpdateThesisUseCase>(
-        () => UpdateThesisUseCaseImpl(sl<ManagementRepository>()),
+    () => UpdateThesisUseCaseImpl(sl<ManagementRepository>()),
   );
   sl.registerFactory<PublishAnnouncementUseCase>(
-        () => PublishAnnouncementUseCaseImpl(sl<ManagementRepository>()),
+    () => PublishAnnouncementUseCaseImpl(sl<ManagementRepository>()),
   );
   sl.registerFactory<PublishEventUseCase>(
-        () => PublishEventUseCaseImpl(sl<ManagementRepository>()),
+    () => PublishEventUseCaseImpl(sl<ManagementRepository>()),
   );
 
   // Attendance
   sl.registerFactory<CreateAttendanceSessionUseCase>(
-        () => CreateAttendanceSessionUseCaseImpl(sl<AttendanceRepository>()),
+    () => CreateAttendanceSessionUseCaseImpl(sl<AttendanceRepository>()),
   );
   sl.registerFactory<CloseAttendanceSessionUseCase>(
-        () => CloseAttendanceSessionUseCaseImpl(sl<AttendanceRepository>()),
+    () => CloseAttendanceSessionUseCaseImpl(sl<AttendanceRepository>()),
   );
   sl.registerFactory<GetSessionStudentsUseCase>(
-        () => GetSessionStudentsUseCaseImpl(sl<AttendanceRepository>()),
+    () => GetSessionStudentsUseCaseImpl(sl<AttendanceRepository>()),
   );
   sl.registerFactory<UpdateStudentStatusUseCase>(
-        () => UpdateStudentStatusUseCaseImpl(sl<AttendanceRepository>()),
+    () => UpdateStudentStatusUseCaseImpl(sl<AttendanceRepository>()),
   );
   sl.registerFactory<MarkAttendanceUseCase>(
-        () => MarkAttendanceUseCaseImpl(sl<AttendanceRepository>()),
+    () => MarkAttendanceUseCaseImpl(sl<AttendanceRepository>()),
   );
   sl.registerFactory<GetAttendanceHistoryUseCase>(
-        () => GetAttendanceHistoryUseCaseImpl(sl<AttendanceRepository>()),
+    () => GetAttendanceHistoryUseCaseImpl(sl<AttendanceRepository>()),
   );
 }
 
 // BLoC
 void _initBloc() {
   sl.registerFactory<AuthBloc>(
-        () => AuthBloc(
-      signInUseCase:         sl<SignInUseCase>(),
-      signUpUseCase:         sl<SignUpUseCase>(),
-      logoutUseCase:         sl<LogoutUseCase>(),
-      resetPasswordUseCase:  sl<ResetPasswordUseCase>(),
+    () => AuthBloc(
+      signInUseCase: sl<SignInUseCase>(),
+      signUpUseCase: sl<SignUpUseCase>(),
+      logoutUseCase: sl<LogoutUseCase>(),
+      resetPasswordUseCase: sl<ResetPasswordUseCase>(),
       checkAuthStatusUseCase: sl<CheckAuthStatusUseCase>(),
     ),
   );
 
-  sl.registerFactory<ProfileBloc>(
-        () => ProfileBloc(sl<GetProfileUseCase>()),
-  );
+  sl.registerFactory<ProfileBloc>(() => ProfileBloc(sl<GetProfileUseCase>()));
 
   sl.registerFactory<SettingsBloc>(
-        () => SettingsBloc(
-      getAppSettingsUseCase:       sl<GetAppSettingsUseCase>(),
-      updateAppThemeModeUseCase:   sl<UpdateAppThemeModeUseCase>(),
+    () => SettingsBloc(
+      getAppSettingsUseCase: sl<GetAppSettingsUseCase>(),
+      updateAppThemeModeUseCase: sl<UpdateAppThemeModeUseCase>(),
       updateAppLocalizationUseCase: sl<UpdateAppLocalizationUseCase>(),
     ),
   );
 
   sl.registerFactory<TimetableBloc>(
-        () => TimetableBloc(
-            getTimetableUseCase: sl<GetTimetableUseCase>()
-        ),
+    () => TimetableBloc(sl<GetTimetableUseCase>()),
   );
 
   sl.registerFactory<SuggestionsBloc>(
-        () => SuggestionsBloc(sl<GetSuggestionsUseCase>()),
+    () => SuggestionsBloc(sl<GetSuggestionsUseCase>()),
   );
 
-  sl.registerFactory<ChatBloc>(
-        () => ChatBloc(sl<GetChatsUseCase>()),
+  sl.registerFactory<ChatBloc>(() => ChatBloc(sl<GetChatsUseCase>()));
+
+  sl.registerFactory<MessageBloc>(() => MessageBloc(sl<GetMessagesUseCase>()));
+
+  sl.registerFactory<AnnouncementsBloc>(
+    () => AnnouncementsBloc(sl<GetAnnouncementsUseCase>()),
   );
 
-  sl.registerFactory<MessageBloc>(
-        () => MessageBloc(sl<GetMessagesUseCase>()),
+  sl.registerFactory<EventsBloc>(
+    () => EventsBloc(
+      getEventsUseCase: sl<GetEventsUseCase>(),
+      enrollEventUseCase: sl<EnrollEventUseCase>(),
+      unenrollEventUseCase: sl<UnenrollEventUseCase>(),
+    ),
+  );
+
+  sl.registerFactory<DepartmentBloc>(
+    () => DepartmentBloc(sl<GetStaffUseCase>()),
+  );
+
+  sl.registerFactory<StudentsBloc>(
+    () => StudentsBloc(sl<GetStudentsUseCase>()),
+  );
+  sl.registerFactory<ThesesBloc>(
+    () => ThesesBloc(
+      getMyThesesUseCase: sl<GetMyThesesUseCase>(),
+      createThesisUseCase: sl<CreateThesisUseCase>(),
+      updateThesisUseCase: sl<UpdateThesisUseCase>(),
+    ),
+  );
+  sl.registerFactory<PublishBloc>(
+    () => PublishBloc(
+      publishAnnouncementUseCase: sl<PublishAnnouncementUseCase>(),
+      publishEventUseCase: sl<PublishEventUseCase>(),
+    ),
+  );
+
+  sl.registerFactory<AttendanceSessionBloc>(
+    () => AttendanceSessionBloc(
+      createSessionUseCase: sl<CreateAttendanceSessionUseCase>(),
+      closeSessionUseCase: sl<CloseAttendanceSessionUseCase>(),
+      getSessionStudentsUseCase: sl<GetSessionStudentsUseCase>(),
+      updateStudentStatusUseCase: sl<UpdateStudentStatusUseCase>(),
+    ),
+  );
+  sl.registerFactory<AttendanceMarkBloc>(
+    () => AttendanceMarkBloc(
+      markAttendanceUseCase: sl<MarkAttendanceUseCase>(),
+      getHistoryUseCase: sl<GetAttendanceHistoryUseCase>(),
+    ),
   );
 }
-
 
 // Widgets
 void _initWidgets() {

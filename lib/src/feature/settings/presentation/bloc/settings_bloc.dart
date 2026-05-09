@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sfu/src/core/error/app_exception.dart';
 import 'package:sfu/src/feature/settings/domain/entity/app_settings.dart';
 import 'package:sfu/src/feature/settings/domain/use_case/get_app_settings_use_case.dart';
 import 'package:sfu/src/feature/settings/domain/use_case/update_app_localization_use_case.dart';
@@ -10,48 +11,54 @@ part 'settings_state.dart';
 part 'settings_bloc.freezed.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  final UpdateAppThemeModeUseCase updateAppThemeModeUseCase;
-  final UpdateAppLocalizationUseCase updateAppLocalizationUseCase;
-  final GetAppSettingsUseCase getAppSettingsUseCase;
+  final GetAppSettingsUseCase        _getAppSettingsUseCase;
+  final UpdateAppThemeModeUseCase    _updateAppThemeModeUseCase;
+  final UpdateAppLocalizationUseCase _updateAppLocalizationUseCase;
 
   SettingsBloc({
-    required this.updateAppThemeModeUseCase,
-    required this.updateAppLocalizationUseCase,
-    required this.getAppSettingsUseCase,
-  }) : super(SettingsState.initial()) {
+    required GetAppSettingsUseCase        getAppSettingsUseCase,
+    required UpdateAppThemeModeUseCase    updateAppThemeModeUseCase,
+    required UpdateAppLocalizationUseCase updateAppLocalizationUseCase,
+  })  : _getAppSettingsUseCase        = getAppSettingsUseCase,
+        _updateAppThemeModeUseCase    = updateAppThemeModeUseCase,
+        _updateAppLocalizationUseCase = updateAppLocalizationUseCase,
+        super(SettingsState.initial()) {
     on<SettingsEvent>(_onEvent);
   }
 
   Future<void> _onEvent(
-    SettingsEvent event,
-    Emitter<SettingsState> emit,
-  ) async {
+      SettingsEvent event,
+      Emitter<SettingsState> emit,
+      ) async {
     await event.when(
       getAppSettings: () async {
         try {
-          final settings = await getAppSettingsUseCase.call();
+          final settings = await _getAppSettingsUseCase.call();
           emit(SettingsState.success(settings));
+        } on AppException catch (e) {
+          emit(SettingsState.error(e.message));
         } catch (_) {
-          emit(
-            SettingsState.error('Ошибка в получении пользовательских настроек'),
-          );
+          emit(SettingsState.error('Ошибка загрузки настроек'));
         }
       },
-      updateAppThemeMode: (theme) async {
+      updateAppThemeMode: (String themeMode) async {
         try {
-          await updateAppThemeModeUseCase.call(theme);
-          final settings = await getAppSettingsUseCase.call();
+          await _updateAppThemeModeUseCase.call(themeMode);
+          final settings = await _getAppSettingsUseCase.call();
           emit(SettingsState.success(settings));
+        } on AppException catch (e) {
+          emit(SettingsState.error(e.message));
         } catch (_) {
           emit(SettingsState.error('Ошибка сохранения темы'));
         }
-
       },
-      updateAppLocalization: (locale) async {
+      updateAppLocalization: (String locale) async {
         try {
-          await updateAppLocalizationUseCase.call(locale);
-          final settings = await getAppSettingsUseCase.call();
+          await _updateAppLocalizationUseCase.call(locale);
+          final settings = await _getAppSettingsUseCase.call();
           emit(SettingsState.success(settings));
+        } on AppException catch (e) {
+          emit(SettingsState.error(e.message));
         } catch (_) {
           emit(SettingsState.error('Ошибка сохранения локализации'));
         }

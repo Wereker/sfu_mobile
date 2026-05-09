@@ -55,11 +55,11 @@ extension SuggestionEventPatterns on SuggestionEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _SuggestionLoadData value)?  loadData,TResult Function( _SuggestionLoadDataForTarget value)?  loadSuggestions,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _LoadData value)?  loadData,TResult Function( _LoadSuggestions value)?  loadSuggestions,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _SuggestionLoadData() when loadData != null:
-return loadData(_that);case _SuggestionLoadDataForTarget() when loadSuggestions != null:
+case _LoadData() when loadData != null:
+return loadData(_that);case _LoadSuggestions() when loadSuggestions != null:
 return loadSuggestions(_that);case _:
   return orElse();
 
@@ -78,11 +78,11 @@ return loadSuggestions(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _SuggestionLoadData value)  loadData,required TResult Function( _SuggestionLoadDataForTarget value)  loadSuggestions,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _LoadData value)  loadData,required TResult Function( _LoadSuggestions value)  loadSuggestions,}){
 final _that = this;
 switch (_that) {
-case _SuggestionLoadData():
-return loadData(_that);case _SuggestionLoadDataForTarget():
+case _LoadData():
+return loadData(_that);case _LoadSuggestions():
 return loadSuggestions(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -100,11 +100,11 @@ return loadSuggestions(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _SuggestionLoadData value)?  loadData,TResult? Function( _SuggestionLoadDataForTarget value)?  loadSuggestions,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _LoadData value)?  loadData,TResult? Function( _LoadSuggestions value)?  loadSuggestions,}){
 final _that = this;
 switch (_that) {
-case _SuggestionLoadData() when loadData != null:
-return loadData(_that);case _SuggestionLoadDataForTarget() when loadSuggestions != null:
+case _LoadData() when loadData != null:
+return loadData(_that);case _LoadSuggestions() when loadSuggestions != null:
 return loadSuggestions(_that);case _:
   return null;
 
@@ -124,8 +124,8 @@ return loadSuggestions(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadData,TResult Function( String query)?  loadSuggestions,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _SuggestionLoadData() when loadData != null:
-return loadData();case _SuggestionLoadDataForTarget() when loadSuggestions != null:
+case _LoadData() when loadData != null:
+return loadData();case _LoadSuggestions() when loadSuggestions != null:
 return loadSuggestions(_that.query);case _:
   return orElse();
 
@@ -146,8 +146,8 @@ return loadSuggestions(_that.query);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadData,required TResult Function( String query)  loadSuggestions,}) {final _that = this;
 switch (_that) {
-case _SuggestionLoadData():
-return loadData();case _SuggestionLoadDataForTarget():
+case _LoadData():
+return loadData();case _LoadSuggestions():
 return loadSuggestions(_that.query);case _:
   throw StateError('Unexpected subclass');
 
@@ -167,8 +167,8 @@ return loadSuggestions(_that.query);case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadData,TResult? Function( String query)?  loadSuggestions,}) {final _that = this;
 switch (_that) {
-case _SuggestionLoadData() when loadData != null:
-return loadData();case _SuggestionLoadDataForTarget() when loadSuggestions != null:
+case _LoadData() when loadData != null:
+return loadData();case _LoadSuggestions() when loadSuggestions != null:
 return loadSuggestions(_that.query);case _:
   return null;
 
@@ -180,8 +180,8 @@ return loadSuggestions(_that.query);case _:
 /// @nodoc
 
 
-class _SuggestionLoadData implements SuggestionEvent {
-  const _SuggestionLoadData();
+class _LoadData implements SuggestionEvent {
+  const _LoadData();
   
 
 
@@ -191,7 +191,7 @@ class _SuggestionLoadData implements SuggestionEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SuggestionLoadData);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadData);
 }
 
 
@@ -212,8 +212,8 @@ String toString() {
 /// @nodoc
 
 
-class _SuggestionLoadDataForTarget implements SuggestionEvent {
-  const _SuggestionLoadDataForTarget(this.query);
+class _LoadSuggestions implements SuggestionEvent {
+  const _LoadSuggestions(this.query);
   
 
  final  String query;
@@ -222,13 +222,13 @@ class _SuggestionLoadDataForTarget implements SuggestionEvent {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$SuggestionLoadDataForTargetCopyWith<_SuggestionLoadDataForTarget> get copyWith => __$SuggestionLoadDataForTargetCopyWithImpl<_SuggestionLoadDataForTarget>(this, _$identity);
+_$LoadSuggestionsCopyWith<_LoadSuggestions> get copyWith => __$LoadSuggestionsCopyWithImpl<_LoadSuggestions>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SuggestionLoadDataForTarget&&(identical(other.query, query) || other.query == query));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadSuggestions&&(identical(other.query, query) || other.query == query));
 }
 
 
@@ -244,8 +244,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$SuggestionLoadDataForTargetCopyWith<$Res> implements $SuggestionEventCopyWith<$Res> {
-  factory _$SuggestionLoadDataForTargetCopyWith(_SuggestionLoadDataForTarget value, $Res Function(_SuggestionLoadDataForTarget) _then) = __$SuggestionLoadDataForTargetCopyWithImpl;
+abstract mixin class _$LoadSuggestionsCopyWith<$Res> implements $SuggestionEventCopyWith<$Res> {
+  factory _$LoadSuggestionsCopyWith(_LoadSuggestions value, $Res Function(_LoadSuggestions) _then) = __$LoadSuggestionsCopyWithImpl;
 @useResult
 $Res call({
  String query
@@ -256,17 +256,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$SuggestionLoadDataForTargetCopyWithImpl<$Res>
-    implements _$SuggestionLoadDataForTargetCopyWith<$Res> {
-  __$SuggestionLoadDataForTargetCopyWithImpl(this._self, this._then);
+class __$LoadSuggestionsCopyWithImpl<$Res>
+    implements _$LoadSuggestionsCopyWith<$Res> {
+  __$LoadSuggestionsCopyWithImpl(this._self, this._then);
 
-  final _SuggestionLoadDataForTarget _self;
-  final $Res Function(_SuggestionLoadDataForTarget) _then;
+  final _LoadSuggestions _self;
+  final $Res Function(_LoadSuggestions) _then;
 
 /// Create a copy of SuggestionEvent
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? query = null,}) {
-  return _then(_SuggestionLoadDataForTarget(
+  return _then(_LoadSuggestions(
 null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
 as String,
   ));

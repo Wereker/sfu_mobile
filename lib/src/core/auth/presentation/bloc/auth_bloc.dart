@@ -34,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthState.loading());
 
         try {
-          await signInUseCase.call(login, password);
+          await signInUseCase.call(email: login, password: password);
           emit(AuthState.authorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));
@@ -42,10 +42,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },
-      resetPassword: (newPassword) async {
+      resetPassword: (newPassword, confirmPassword) async {
         emit(AuthState.loading());
         try {
-          await resetPasswordUseCase.call(newPassword);
+          await resetPasswordUseCase.call(newPassword: newPassword, confirmPassword: confirmPassword);
           emit(AuthState.unauthorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));

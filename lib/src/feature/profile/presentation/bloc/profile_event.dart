@@ -2,5 +2,5 @@ part of 'profile_bloc.dart';
 
 @freezed
 class ProfileEvent with _$ProfileEvent {
-  const factory ProfileEvent.loadData() = _ProfileLoadData;
+  const factory ProfileEvent.loadData() = _LoadData;
 }

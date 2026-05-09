@@ -1,16 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sfu/src/core/error/app_exception.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
-import 'package:sfu/src/feature/profile/domain/use_case/profile_load_data_use_case.dart';
+import 'package:sfu/src/feature/profile/domain/use_case/get_profile_use_case.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
 part 'profile_bloc.freezed.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final ProfileLoadDataUseCase loadDataUseCase;
+  final GetProfileUseCase _getProfileUseCase;
 
-  ProfileBloc(this.loadDataUseCase) : super(ProfileState.initial()) {
+  ProfileBloc(this._getProfileUseCase) : super(ProfileState.initial()) {
     on<ProfileEvent>(_onEvent);
   }
 
@@ -18,12 +19,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     await event.when(
       loadData: () async {
         emit(ProfileState.loading());
-
         try {
-          final user = await loadDataUseCase.call();
+          final user = await _getProfileUseCase.call();
           emit(ProfileState.success(user));
+        } on AppException catch (e) {
+          emit(ProfileState.error(error: e.message));
         } catch (_) {
-          emit(ProfileState.error(error: "Ошибка загрузки профиля"));
+          emit(ProfileState.error(error: 'Ошибка загрузки профиля'));
         }
       },
     );

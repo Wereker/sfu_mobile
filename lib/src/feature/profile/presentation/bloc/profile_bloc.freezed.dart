@@ -55,10 +55,10 @@ extension ProfileEventPatterns on ProfileEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _ProfileLoadData value)?  loadData,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _LoadData value)?  loadData,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _ProfileLoadData() when loadData != null:
+case _LoadData() when loadData != null:
 return loadData(_that);case _:
   return orElse();
 
@@ -77,10 +77,10 @@ return loadData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _ProfileLoadData value)  loadData,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _LoadData value)  loadData,}){
 final _that = this;
 switch (_that) {
-case _ProfileLoadData():
+case _LoadData():
 return loadData(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -98,10 +98,10 @@ return loadData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _ProfileLoadData value)?  loadData,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _LoadData value)?  loadData,}){
 final _that = this;
 switch (_that) {
-case _ProfileLoadData() when loadData != null:
+case _LoadData() when loadData != null:
 return loadData(_that);case _:
   return null;
 
@@ -121,7 +121,7 @@ return loadData(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadData,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _ProfileLoadData() when loadData != null:
+case _LoadData() when loadData != null:
 return loadData();case _:
   return orElse();
 
@@ -142,7 +142,7 @@ return loadData();case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadData,}) {final _that = this;
 switch (_that) {
-case _ProfileLoadData():
+case _LoadData():
 return loadData();case _:
   throw StateError('Unexpected subclass');
 
@@ -162,7 +162,7 @@ return loadData();case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadData,}) {final _that = this;
 switch (_that) {
-case _ProfileLoadData() when loadData != null:
+case _LoadData() when loadData != null:
 return loadData();case _:
   return null;
 
@@ -174,8 +174,8 @@ return loadData();case _:
 /// @nodoc
 
 
-class _ProfileLoadData implements ProfileEvent {
-  const _ProfileLoadData();
+class _LoadData implements ProfileEvent {
+  const _LoadData();
   
 
 
@@ -185,7 +185,7 @@ class _ProfileLoadData implements ProfileEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileLoadData);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadData);
 }
 
 
@@ -247,12 +247,12 @@ extension ProfileStatePatterns on ProfileState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _ProfileInitial value)?  initial,TResult Function( _ProfileLoading value)?  loading,TResult Function( _ProfileSucces value)?  success,TResult Function( _ProfileError value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _ProfileInitial value)?  initial,TResult Function( _ProfileLoading value)?  loading,TResult Function( _ProfileSuccess value)?  success,TResult Function( _ProfileError value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _ProfileInitial() when initial != null:
 return initial(_that);case _ProfileLoading() when loading != null:
-return loading(_that);case _ProfileSucces() when success != null:
+return loading(_that);case _ProfileSuccess() when success != null:
 return success(_that);case _ProfileError() when error != null:
 return error(_that);case _:
   return orElse();
@@ -272,12 +272,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _ProfileInitial value)  initial,required TResult Function( _ProfileLoading value)  loading,required TResult Function( _ProfileSucces value)  success,required TResult Function( _ProfileError value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _ProfileInitial value)  initial,required TResult Function( _ProfileLoading value)  loading,required TResult Function( _ProfileSuccess value)  success,required TResult Function( _ProfileError value)  error,}){
 final _that = this;
 switch (_that) {
 case _ProfileInitial():
 return initial(_that);case _ProfileLoading():
-return loading(_that);case _ProfileSucces():
+return loading(_that);case _ProfileSuccess():
 return success(_that);case _ProfileError():
 return error(_that);case _:
   throw StateError('Unexpected subclass');
@@ -296,12 +296,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _ProfileInitial value)?  initial,TResult? Function( _ProfileLoading value)?  loading,TResult? Function( _ProfileSucces value)?  success,TResult? Function( _ProfileError value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _ProfileInitial value)?  initial,TResult? Function( _ProfileLoading value)?  loading,TResult? Function( _ProfileSuccess value)?  success,TResult? Function( _ProfileError value)?  error,}){
 final _that = this;
 switch (_that) {
 case _ProfileInitial() when initial != null:
 return initial(_that);case _ProfileLoading() when loading != null:
-return loading(_that);case _ProfileSucces() when success != null:
+return loading(_that);case _ProfileSuccess() when success != null:
 return success(_that);case _ProfileError() when error != null:
 return error(_that);case _:
   return null;
@@ -324,7 +324,7 @@ return error(_that);case _:
 switch (_that) {
 case _ProfileInitial() when initial != null:
 return initial();case _ProfileLoading() when loading != null:
-return loading();case _ProfileSucces() when success != null:
+return loading();case _ProfileSuccess() when success != null:
 return success(_that.user);case _ProfileError() when error != null:
 return error(_that.error);case _:
   return orElse();
@@ -348,7 +348,7 @@ return error(_that.error);case _:
 switch (_that) {
 case _ProfileInitial():
 return initial();case _ProfileLoading():
-return loading();case _ProfileSucces():
+return loading();case _ProfileSuccess():
 return success(_that.user);case _ProfileError():
 return error(_that.error);case _:
   throw StateError('Unexpected subclass');
@@ -371,7 +371,7 @@ return error(_that.error);case _:
 switch (_that) {
 case _ProfileInitial() when initial != null:
 return initial();case _ProfileLoading() when loading != null:
-return loading();case _ProfileSucces() when success != null:
+return loading();case _ProfileSuccess() when success != null:
 return success(_that.user);case _ProfileError() when error != null:
 return error(_that.error);case _:
   return null;
@@ -448,8 +448,8 @@ String toString() {
 /// @nodoc
 
 
-class _ProfileSucces implements ProfileState {
-  const _ProfileSucces(this.user);
+class _ProfileSuccess implements ProfileState {
+  const _ProfileSuccess(this.user);
   
 
  final  User user;
@@ -458,13 +458,13 @@ class _ProfileSucces implements ProfileState {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$ProfileSuccesCopyWith<_ProfileSucces> get copyWith => __$ProfileSuccesCopyWithImpl<_ProfileSucces>(this, _$identity);
+_$ProfileSuccessCopyWith<_ProfileSuccess> get copyWith => __$ProfileSuccessCopyWithImpl<_ProfileSuccess>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileSucces&&(identical(other.user, user) || other.user == user));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileSuccess&&(identical(other.user, user) || other.user == user));
 }
 
 
@@ -480,8 +480,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$ProfileSuccesCopyWith<$Res> implements $ProfileStateCopyWith<$Res> {
-  factory _$ProfileSuccesCopyWith(_ProfileSucces value, $Res Function(_ProfileSucces) _then) = __$ProfileSuccesCopyWithImpl;
+abstract mixin class _$ProfileSuccessCopyWith<$Res> implements $ProfileStateCopyWith<$Res> {
+  factory _$ProfileSuccessCopyWith(_ProfileSuccess value, $Res Function(_ProfileSuccess) _then) = __$ProfileSuccessCopyWithImpl;
 @useResult
 $Res call({
  User user
@@ -492,17 +492,17 @@ $UserCopyWith<$Res> get user;
 
 }
 /// @nodoc
-class __$ProfileSuccesCopyWithImpl<$Res>
-    implements _$ProfileSuccesCopyWith<$Res> {
-  __$ProfileSuccesCopyWithImpl(this._self, this._then);
+class __$ProfileSuccessCopyWithImpl<$Res>
+    implements _$ProfileSuccessCopyWith<$Res> {
+  __$ProfileSuccessCopyWithImpl(this._self, this._then);
 
-  final _ProfileSucces _self;
-  final $Res Function(_ProfileSucces) _then;
+  final _ProfileSuccess _self;
+  final $Res Function(_ProfileSuccess) _then;
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? user = null,}) {
-  return _then(_ProfileSucces(
+  return _then(_ProfileSuccess(
 null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User,
   ));

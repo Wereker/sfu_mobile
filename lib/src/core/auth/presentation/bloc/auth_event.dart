@@ -9,6 +9,7 @@ class AuthEvent with _$AuthEvent {
 
   const factory AuthEvent.resetPassword({
     required String newPassword,
+    required String confirmPassword,
   }) = _AuthResetPassword;
 
   const factory AuthEvent.signUp({

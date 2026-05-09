@@ -55,12 +55,12 @@ extension SettingsEventPatterns on SettingsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _SettingsGetAppSettings value)?  getAppSettings,TResult Function( _SettingsUpdateThemeMode value)?  updateAppThemeMode,TResult Function( _SettingsUpdateAppLocalization value)?  updateAppLocalization,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _GetAppSettings value)?  getAppSettings,TResult Function( _UpdateThemeMode value)?  updateAppThemeMode,TResult Function( _UpdateLocalization value)?  updateAppLocalization,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _SettingsGetAppSettings() when getAppSettings != null:
-return getAppSettings(_that);case _SettingsUpdateThemeMode() when updateAppThemeMode != null:
-return updateAppThemeMode(_that);case _SettingsUpdateAppLocalization() when updateAppLocalization != null:
+case _GetAppSettings() when getAppSettings != null:
+return getAppSettings(_that);case _UpdateThemeMode() when updateAppThemeMode != null:
+return updateAppThemeMode(_that);case _UpdateLocalization() when updateAppLocalization != null:
 return updateAppLocalization(_that);case _:
   return orElse();
 
@@ -79,12 +79,12 @@ return updateAppLocalization(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _SettingsGetAppSettings value)  getAppSettings,required TResult Function( _SettingsUpdateThemeMode value)  updateAppThemeMode,required TResult Function( _SettingsUpdateAppLocalization value)  updateAppLocalization,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _GetAppSettings value)  getAppSettings,required TResult Function( _UpdateThemeMode value)  updateAppThemeMode,required TResult Function( _UpdateLocalization value)  updateAppLocalization,}){
 final _that = this;
 switch (_that) {
-case _SettingsGetAppSettings():
-return getAppSettings(_that);case _SettingsUpdateThemeMode():
-return updateAppThemeMode(_that);case _SettingsUpdateAppLocalization():
+case _GetAppSettings():
+return getAppSettings(_that);case _UpdateThemeMode():
+return updateAppThemeMode(_that);case _UpdateLocalization():
 return updateAppLocalization(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -102,12 +102,12 @@ return updateAppLocalization(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _SettingsGetAppSettings value)?  getAppSettings,TResult? Function( _SettingsUpdateThemeMode value)?  updateAppThemeMode,TResult? Function( _SettingsUpdateAppLocalization value)?  updateAppLocalization,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _GetAppSettings value)?  getAppSettings,TResult? Function( _UpdateThemeMode value)?  updateAppThemeMode,TResult? Function( _UpdateLocalization value)?  updateAppLocalization,}){
 final _that = this;
 switch (_that) {
-case _SettingsGetAppSettings() when getAppSettings != null:
-return getAppSettings(_that);case _SettingsUpdateThemeMode() when updateAppThemeMode != null:
-return updateAppThemeMode(_that);case _SettingsUpdateAppLocalization() when updateAppLocalization != null:
+case _GetAppSettings() when getAppSettings != null:
+return getAppSettings(_that);case _UpdateThemeMode() when updateAppThemeMode != null:
+return updateAppThemeMode(_that);case _UpdateLocalization() when updateAppLocalization != null:
 return updateAppLocalization(_that);case _:
   return null;
 
@@ -127,9 +127,9 @@ return updateAppLocalization(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  getAppSettings,TResult Function( String themeMode)?  updateAppThemeMode,TResult Function( String locale)?  updateAppLocalization,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _SettingsGetAppSettings() when getAppSettings != null:
-return getAppSettings();case _SettingsUpdateThemeMode() when updateAppThemeMode != null:
-return updateAppThemeMode(_that.themeMode);case _SettingsUpdateAppLocalization() when updateAppLocalization != null:
+case _GetAppSettings() when getAppSettings != null:
+return getAppSettings();case _UpdateThemeMode() when updateAppThemeMode != null:
+return updateAppThemeMode(_that.themeMode);case _UpdateLocalization() when updateAppLocalization != null:
 return updateAppLocalization(_that.locale);case _:
   return orElse();
 
@@ -150,9 +150,9 @@ return updateAppLocalization(_that.locale);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  getAppSettings,required TResult Function( String themeMode)  updateAppThemeMode,required TResult Function( String locale)  updateAppLocalization,}) {final _that = this;
 switch (_that) {
-case _SettingsGetAppSettings():
-return getAppSettings();case _SettingsUpdateThemeMode():
-return updateAppThemeMode(_that.themeMode);case _SettingsUpdateAppLocalization():
+case _GetAppSettings():
+return getAppSettings();case _UpdateThemeMode():
+return updateAppThemeMode(_that.themeMode);case _UpdateLocalization():
 return updateAppLocalization(_that.locale);case _:
   throw StateError('Unexpected subclass');
 
@@ -172,9 +172,9 @@ return updateAppLocalization(_that.locale);case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  getAppSettings,TResult? Function( String themeMode)?  updateAppThemeMode,TResult? Function( String locale)?  updateAppLocalization,}) {final _that = this;
 switch (_that) {
-case _SettingsGetAppSettings() when getAppSettings != null:
-return getAppSettings();case _SettingsUpdateThemeMode() when updateAppThemeMode != null:
-return updateAppThemeMode(_that.themeMode);case _SettingsUpdateAppLocalization() when updateAppLocalization != null:
+case _GetAppSettings() when getAppSettings != null:
+return getAppSettings();case _UpdateThemeMode() when updateAppThemeMode != null:
+return updateAppThemeMode(_that.themeMode);case _UpdateLocalization() when updateAppLocalization != null:
 return updateAppLocalization(_that.locale);case _:
   return null;
 
@@ -186,8 +186,8 @@ return updateAppLocalization(_that.locale);case _:
 /// @nodoc
 
 
-class _SettingsGetAppSettings implements SettingsEvent {
-  const _SettingsGetAppSettings();
+class _GetAppSettings implements SettingsEvent {
+  const _GetAppSettings();
   
 
 
@@ -197,7 +197,7 @@ class _SettingsGetAppSettings implements SettingsEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsGetAppSettings);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetAppSettings);
 }
 
 
@@ -218,8 +218,8 @@ String toString() {
 /// @nodoc
 
 
-class _SettingsUpdateThemeMode implements SettingsEvent {
-  const _SettingsUpdateThemeMode({required this.themeMode});
+class _UpdateThemeMode implements SettingsEvent {
+  const _UpdateThemeMode({required this.themeMode});
   
 
  final  String themeMode;
@@ -228,13 +228,13 @@ class _SettingsUpdateThemeMode implements SettingsEvent {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$SettingsUpdateThemeModeCopyWith<_SettingsUpdateThemeMode> get copyWith => __$SettingsUpdateThemeModeCopyWithImpl<_SettingsUpdateThemeMode>(this, _$identity);
+_$UpdateThemeModeCopyWith<_UpdateThemeMode> get copyWith => __$UpdateThemeModeCopyWithImpl<_UpdateThemeMode>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsUpdateThemeMode&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateThemeMode&&(identical(other.themeMode, themeMode) || other.themeMode == themeMode));
 }
 
 
@@ -250,8 +250,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$SettingsUpdateThemeModeCopyWith<$Res> implements $SettingsEventCopyWith<$Res> {
-  factory _$SettingsUpdateThemeModeCopyWith(_SettingsUpdateThemeMode value, $Res Function(_SettingsUpdateThemeMode) _then) = __$SettingsUpdateThemeModeCopyWithImpl;
+abstract mixin class _$UpdateThemeModeCopyWith<$Res> implements $SettingsEventCopyWith<$Res> {
+  factory _$UpdateThemeModeCopyWith(_UpdateThemeMode value, $Res Function(_UpdateThemeMode) _then) = __$UpdateThemeModeCopyWithImpl;
 @useResult
 $Res call({
  String themeMode
@@ -262,17 +262,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$SettingsUpdateThemeModeCopyWithImpl<$Res>
-    implements _$SettingsUpdateThemeModeCopyWith<$Res> {
-  __$SettingsUpdateThemeModeCopyWithImpl(this._self, this._then);
+class __$UpdateThemeModeCopyWithImpl<$Res>
+    implements _$UpdateThemeModeCopyWith<$Res> {
+  __$UpdateThemeModeCopyWithImpl(this._self, this._then);
 
-  final _SettingsUpdateThemeMode _self;
-  final $Res Function(_SettingsUpdateThemeMode) _then;
+  final _UpdateThemeMode _self;
+  final $Res Function(_UpdateThemeMode) _then;
 
 /// Create a copy of SettingsEvent
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? themeMode = null,}) {
-  return _then(_SettingsUpdateThemeMode(
+  return _then(_UpdateThemeMode(
 themeMode: null == themeMode ? _self.themeMode : themeMode // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -284,8 +284,8 @@ as String,
 /// @nodoc
 
 
-class _SettingsUpdateAppLocalization implements SettingsEvent {
-  const _SettingsUpdateAppLocalization({required this.locale});
+class _UpdateLocalization implements SettingsEvent {
+  const _UpdateLocalization({required this.locale});
   
 
  final  String locale;
@@ -294,13 +294,13 @@ class _SettingsUpdateAppLocalization implements SettingsEvent {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$SettingsUpdateAppLocalizationCopyWith<_SettingsUpdateAppLocalization> get copyWith => __$SettingsUpdateAppLocalizationCopyWithImpl<_SettingsUpdateAppLocalization>(this, _$identity);
+_$UpdateLocalizationCopyWith<_UpdateLocalization> get copyWith => __$UpdateLocalizationCopyWithImpl<_UpdateLocalization>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SettingsUpdateAppLocalization&&(identical(other.locale, locale) || other.locale == locale));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateLocalization&&(identical(other.locale, locale) || other.locale == locale));
 }
 
 
@@ -316,8 +316,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$SettingsUpdateAppLocalizationCopyWith<$Res> implements $SettingsEventCopyWith<$Res> {
-  factory _$SettingsUpdateAppLocalizationCopyWith(_SettingsUpdateAppLocalization value, $Res Function(_SettingsUpdateAppLocalization) _then) = __$SettingsUpdateAppLocalizationCopyWithImpl;
+abstract mixin class _$UpdateLocalizationCopyWith<$Res> implements $SettingsEventCopyWith<$Res> {
+  factory _$UpdateLocalizationCopyWith(_UpdateLocalization value, $Res Function(_UpdateLocalization) _then) = __$UpdateLocalizationCopyWithImpl;
 @useResult
 $Res call({
  String locale
@@ -328,17 +328,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$SettingsUpdateAppLocalizationCopyWithImpl<$Res>
-    implements _$SettingsUpdateAppLocalizationCopyWith<$Res> {
-  __$SettingsUpdateAppLocalizationCopyWithImpl(this._self, this._then);
+class __$UpdateLocalizationCopyWithImpl<$Res>
+    implements _$UpdateLocalizationCopyWith<$Res> {
+  __$UpdateLocalizationCopyWithImpl(this._self, this._then);
 
-  final _SettingsUpdateAppLocalization _self;
-  final $Res Function(_SettingsUpdateAppLocalization) _then;
+  final _UpdateLocalization _self;
+  final $Res Function(_UpdateLocalization) _then;
 
 /// Create a copy of SettingsEvent
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? locale = null,}) {
-  return _then(_SettingsUpdateAppLocalization(
+  return _then(_UpdateLocalization(
 locale: null == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
 as String,
   ));
