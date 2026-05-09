@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/timetable/timetable.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/get_timetable_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_for_target_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/timetable_load_data_use_case.dart';
 
@@ -9,13 +10,11 @@ part 'timetable_state.dart';
 part 'timetable_bloc.freezed.dart';
 
 class TimetableBloc extends Bloc<TimetableEvent, TimetableState> {
-  final TimetableLoadDataUseCase timetableLoadDataUseCase;
-  final TimetableLoadDataForTargetUseCase timetableLoadDataForTargetUseCase;
+  final GetTimetableUseCase getTimetableUseCase;
 
 
   TimetableBloc({
-    required this.timetableLoadDataUseCase,
-    required this.timetableLoadDataForTargetUseCase,
+    required this.getTimetableUseCase,
   }) : super(TimetableState.initial()) {
     on<TimetableEvent>(_onEvent);
   }

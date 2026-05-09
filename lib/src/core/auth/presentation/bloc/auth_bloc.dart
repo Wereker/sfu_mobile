@@ -38,7 +38,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.authorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));
-        } on Exception catch (e) {
+        } on Exception catch (_) {
           emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },
@@ -49,7 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.unauthorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));
-        } on Exception catch (e) {
+        } on Exception catch (_) {
           emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },
@@ -60,7 +60,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.unauthorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));
-        } on Exception catch (e) {
+        } on Exception catch (_) {
           emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },
@@ -86,7 +86,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(AuthState.authorized());
             } on AppException catch (e) {
               emit(AuthState.error(error: e.message));
-            } on Exception catch (e) {
+            } on Exception catch (_) {
               emit(AuthState.error(error: 'Что-то пошло не так'));
             }
           },
@@ -98,7 +98,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.authorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));
-        } on Exception catch (e) {
+        } on Exception catch (_) {
           emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },

@@ -1,3 +1,6 @@
 abstract class ResetPasswordUseCase {
-  Future<void> call(String newPassword);
+  Future<void> call({
+    required String newPassword,
+    required String confirmPassword,
+  });
 }

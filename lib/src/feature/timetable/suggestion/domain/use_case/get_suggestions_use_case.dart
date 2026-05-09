@@ -1,3 +1,3 @@
-abstract class SuggestionsLoadUseCase {
+abstract class GetSuggestionsUseCase {
   Future<List<String>> call(String query);
 }

@@ -23,3 +23,7 @@ class CacheException extends AppException {
   const CacheException()
       : super('Нет сохранённых данных');
 }
+
+class ValidationException extends AppException {
+  const ValidationException(super.message);
+}

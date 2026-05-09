@@ -1,5 +1,5 @@
 import 'package:sfu/src/feature/chat/domain/entity/chat.dart';
 
-abstract class ChatLoadDataUseCase {
+abstract class GetChatsUseCase {
   Future<List<Chat>> call();
 }
