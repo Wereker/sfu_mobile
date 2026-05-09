@@ -1,3 +1,4 @@
+import 'package:sfu/src/core/error/exception_handler.dart';
 import 'package:sfu/src/feature/management/data/data_source/remote/management_remote_data_source.dart';
 import 'package:sfu/src/feature/management/data/mapper/management_mapper.dart';
 import 'package:sfu/src/feature/management/domain/entity/managed_student.dart';
@@ -17,30 +18,38 @@ class ManagementRepositoryMock implements ManagementRepository {
     String? groupId,
     String? search,
   }) async {
-    final dtos = await _remote.getStudents(
-      stream:  stream,
-      groupId: groupId,
-      search:  search,
-    );
-    return dtos.map(ManagementMapper.studentFromDTO).toList();
+    return ExceptionHandler.handle(() async {
+      final dtos = await _remote.getStudents(
+        stream:  stream,
+        groupId: groupId,
+        search:  search,
+      );
+      return dtos.map(ManagementMapper.studentFromDTO).toList();
+    });
   }
 
   @override
   Future<List<Thesis>> getMyTheses() async {
-    final List<ThesisDTO> dtos = await _remote.getMyTheses();
-    return dtos.map<Thesis>(ManagementMapper.thesisFromDTO).toList();
+    return ExceptionHandler.handle(() async {
+      final List<ThesisDTO> dtos = await _remote.getMyTheses();
+      return dtos.map<Thesis>(ManagementMapper.thesisFromDTO).toList();
+    });
   }
 
   @override
   Future<Thesis> createThesis(String title) async {
-    final dto = await _remote.createThesis(title);
-    return ManagementMapper.thesisFromDTO(dto);
+    return ExceptionHandler.handle(() async {
+      final dto = await _remote.createThesis(title);
+      return ManagementMapper.thesisFromDTO(dto);
+    });
   }
 
   @override
   Future<Thesis> updateThesis(String id, {String? title, bool? isFree}) async {
-    final dto = await _remote.updateThesis(id, title: title, isFree: isFree);
-    return ManagementMapper.thesisFromDTO(dto);
+    return ExceptionHandler.handle(() async {
+      final dto = await _remote.updateThesis(id, title: title, isFree: isFree);
+      return ManagementMapper.thesisFromDTO(dto);
+    });
   }
 
   @override
@@ -52,10 +61,14 @@ class ManagementRepositoryMock implements ManagementRepository {
     String?          stream,
     String?          groupId,
     List<String>     tags = const [],
-  }) => _remote.createAnnouncement(
-    title: title, body: body, audience: audience,
-    isPinned: isPinned, stream: stream, groupId: groupId, tags: tags,
-  );
+  }) {
+    return ExceptionHandler.handle(() async {
+      _remote.createAnnouncement(
+        title: title, body: body, audience: audience,
+        isPinned: isPinned, stream: stream, groupId: groupId, tags: tags,
+      );
+    });
+  }
 
   @override
   Future<void> createEvent({
@@ -69,9 +82,13 @@ class ManagementRepositoryMock implements ManagementRepository {
     String?          stream,
     String?          groupId,
     List<String>     tags = const [],
-  }) => _remote.createEvent(
-    title: title, body: body, date: date, time: time,
-    location: location, totalSeats: totalSeats, audience: audience,
-    stream: stream, groupId: groupId, tags: tags,
-  );
+  }) {
+    return ExceptionHandler.handle(() async {
+      _remote.createEvent(
+        title: title, body: body, date: date, time: time,
+        location: location, totalSeats: totalSeats, audience: audience,
+        stream: stream, groupId: groupId, tags: tags,
+      );
+    });
+  }
 }

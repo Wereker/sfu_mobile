@@ -1,3 +1,4 @@
+import 'package:sfu/src/core/error/exception_handler.dart';
 import 'package:sfu/src/feature/chat/data/data_source/local/chat_locale_data_source.dart';
 import 'package:sfu/src/feature/chat/data/data_source/remote/chat_remote_data_source.dart';
 import 'package:sfu/src/feature/chat/data/mapper/chat_mapper.dart';
@@ -12,7 +13,9 @@ class ChatRepositoryMock implements ChatRepository {
 
   @override
   Future<List<Chat>> loadData() async {
-    final dtos = await _remote.loadChatForUser();
-    return dtos.map(ChatMapper.fromDTO).toList();
+    return ExceptionHandler.handle(() async {
+      final dtos = await _remote.loadChatForUser();
+      return dtos.map(ChatMapper.fromDTO).toList();
+    });
   }
 }

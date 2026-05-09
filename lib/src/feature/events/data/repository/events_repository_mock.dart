@@ -1,3 +1,4 @@
+import 'package:sfu/src/core/error/exception_handler.dart';
 import 'package:sfu/src/feature/events/data/dto/event_dto.dart';
 import 'package:sfu/src/feature/events/data/data_source/remote/events_remote_data_source.dart';
 import 'package:sfu/src/feature/events/data/mapper/event_mapper.dart';
@@ -11,8 +12,10 @@ class EventsRepositoryMock implements EventsRepository {
 
   @override
   Future<List<Event>> getEvents() async {
-    final List<EventDTO> dtos = await _remote.getEvents();
-    return dtos.map<Event>(EventMapper.fromDTO).toList();
+    return ExceptionHandler.handle(() async {
+      final List<EventDTO> dtos = await _remote.getEvents();
+      return dtos.map<Event>(EventMapper.fromDTO).toList();
+    });
   }
 
   @override

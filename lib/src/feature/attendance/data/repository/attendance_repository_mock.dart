@@ -1,3 +1,4 @@
+import 'package:sfu/src/core/error/exception_handler.dart';
 import 'package:sfu/src/feature/attendance/data/dto/attendance_record_dto.dart';
 import 'package:sfu/src/feature/attendance/data/dto/attendance_student_dto.dart';
 import 'package:sfu/src/feature/attendance/data/data_source/remote/attendance_remote_data_source.dart';
@@ -17,8 +18,10 @@ class AttendanceRepositoryMock implements AttendanceRepository {
       String lessonId, {
         int ttlSeconds = 300,
       }) async {
-    final dto = await _remote.createSession(lessonId, ttlSeconds);
-    return AttendanceMapper.sessionFromDTO(dto);
+    return ExceptionHandler.handle(() async {
+      final dto = await _remote.createSession(lessonId, ttlSeconds);
+      return AttendanceMapper.sessionFromDTO(dto);
+    });
   }
 
   @override
@@ -27,8 +30,10 @@ class AttendanceRepositoryMock implements AttendanceRepository {
 
   @override
   Future<List<AttendanceStudent>> getSessionStudents(String sessionId) async {
-    final List<AttendanceStudentDTO> dtos = await _remote.getSessionStudents(sessionId);
-    return dtos.map<AttendanceStudent>(AttendanceMapper.studentFromDTO).toList();
+    return ExceptionHandler.handle(() async {
+      final List<AttendanceStudentDTO> dtos = await _remote.getSessionStudents(sessionId);
+      return dtos.map<AttendanceStudent>(AttendanceMapper.studentFromDTO).toList();
+    });
   }
 
   @override
@@ -37,23 +42,29 @@ class AttendanceRepositoryMock implements AttendanceRepository {
       String studentId,
       AttendanceStatus status,
       ) async {
-    final dto = await _remote.updateStudentStatus(
-      sessionId,
-      studentId,
-      status.name,
-    );
-    return AttendanceMapper.studentFromDTO(dto);
+    return ExceptionHandler.handle(() async {
+      final dto = await _remote.updateStudentStatus(
+        sessionId,
+        studentId,
+        status.name,
+      );
+      return AttendanceMapper.studentFromDTO(dto);
+    });
   }
 
   @override
   Future<AttendanceRecord> markAttendance(String token) async {
-    final dto = await _remote.markAttendance(token);
-    return AttendanceMapper.recordFromDTO(dto);
+    return ExceptionHandler.handle(() async {
+      final dto = await _remote.markAttendance(token);
+      return AttendanceMapper.recordFromDTO(dto);
+    });
   }
 
   @override
   Future<List<AttendanceRecord>> getAttendanceHistory() async {
-    final List<AttendanceRecordDTO> dtos = await _remote.getAttendanceHistory();
-    return dtos.map<AttendanceRecord>(AttendanceMapper.recordFromDTO).toList();
+    return ExceptionHandler.handle(() async {
+      final List<AttendanceRecordDTO> dtos = await _remote.getAttendanceHistory();
+      return dtos.map<AttendanceRecord>(AttendanceMapper.recordFromDTO).toList();
+    });
   }
 }

@@ -392,7 +392,7 @@ class _ChatRow extends StatelessWidget {
                   // Превью последнего сообщения
                   Row(
                     children: [
-                      if (chat.lastMessage.isOutgoing) ...[
+                      if (chat.lastMessage!.isOutgoing) ...[
                         Icon(
                           chat.lastMessage.status == MessageStatus.read
                               ? Icons.done_all

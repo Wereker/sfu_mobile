@@ -1,3 +1,4 @@
+import 'package:sfu/src/core/error/exception_handler.dart';
 import 'package:sfu/src/feature/profile/data/data_source/remote/profile_remote_data_source.dart';
 import 'package:sfu/src/feature/profile/data/mapper/user_mapper.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
@@ -10,7 +11,9 @@ class ProfileRepositoryMock implements ProfileRepository {
 
   @override
   Future<User> loadData() async {
-    final dto = await _remote.getProfile();
-    return UserMapper.fromDTO(dto);
+    return ExceptionHandler.handle(() async {
+      final dto = await _remote.getProfile();
+      return UserMapper.fromDTO(dto);
+    });
   }
 }

@@ -1,13 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sfu/src/core/auth/domain/exception/invalid_credentials_error.dart';
-import 'package:sfu/src/core/auth/domain/exception/network_error.dart';
-import 'package:sfu/src/core/auth/domain/exception/password_error.dart';
 import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/logout_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/reset_password_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/sign_in_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case.dart';
+import 'package:sfu/src/core/error/app_exception.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -38,12 +36,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           await signInUseCase.call(login, password);
           emit(AuthState.authorized());
-        } on InvalidCredentialsError {
-          emit(AuthState.error(error: "Неверный логин или пароль"));
-        } on NetworkError {
-          emit(AuthState.error(error: "Не подключения к интернету"));
-        } catch (_) {
-          emit(AuthState.error(error: "Ошибка авторизации"));
+        } on AppException catch (e) {
+          emit(AuthState.error(error: e.message));
+        } on Exception catch (e) {
+          emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },
       resetPassword: (newPassword) async {
@@ -51,12 +47,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           await resetPasswordUseCase.call(newPassword);
           emit(AuthState.unauthorized());
-        } on NetworkError {
-          emit(AuthState.error(error: "Ошибка подключения к интернету"));
-        } on PasswordMatchError {
-          emit(AuthState.error(error: "Пароли не совпадают"));
-        } catch (_) {
-          emit(AuthState.error(error: "Ошибка авторизации"));
+        } on AppException catch (e) {
+          emit(AuthState.error(error: e.message));
+        } on Exception catch (e) {
+          emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },
       logout: () async {
@@ -64,10 +58,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.loading());
           await logoutUseCase.call();
           emit(AuthState.unauthorized());
-        } on NetworkError {
-          emit(AuthState.error(error: "Ошибка подключения к интернету"));
-        } catch (_) {
-          emit(AuthState.error(error: "Ошибка авторизации"));
+        } on AppException catch (e) {
+          emit(AuthState.error(error: e.message));
+        } on Exception catch (e) {
+          emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },
       signUp:
@@ -90,12 +84,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 group: group,
               );
               emit(AuthState.authorized());
-            } on InvalidCredentialsError {
-              emit(AuthState.error(error: "Неккоректно введены данные"));
-            } on NetworkError {
-              emit(AuthState.error(error: "Ошибка подключения к интернету"));
-            } catch (e) {
-              emit(AuthState.error(error: e.toString()));
+            } on AppException catch (e) {
+              emit(AuthState.error(error: e.message));
+            } on Exception catch (e) {
+              emit(AuthState.error(error: 'Что-то пошло не так'));
             }
           },
       checkAuthStatus: () async {
@@ -104,8 +96,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           await checkAuthStatusUseCase.call();
           emit(AuthState.authorized());
-        } catch (_) {
-          emit(AuthState.unauthorized());
+        } on AppException catch (e) {
+          emit(AuthState.error(error: e.message));
+        } on Exception catch (e) {
+          emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },
     );
