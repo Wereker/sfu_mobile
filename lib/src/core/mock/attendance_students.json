@@ -1,0 +1,12 @@
+{
+  "data": [
+    { "id": "s1",  "name": "Волков Кирилл Павлович",      "is_headman": true,  "status": "present", "marked_at": "2026-05-07T10:18:00.000" },
+    { "id": "s2",  "name": "Алексеев Дмитрий Сергеевич",  "is_headman": false, "status": "absent",  "marked_at": null },
+    { "id": "s3",  "name": "Борисова Анна Игоревна",       "is_headman": false, "status": "late",    "marked_at": "2026-05-07T10:25:00.000" },
+    { "id": "s4",  "name": "Гришина Мария Александровна",  "is_headman": false, "status": "present", "marked_at": "2026-05-07T10:17:00.000" },
+    { "id": "s5",  "name": "Данилов Артём Олегович",       "is_headman": false, "status": "excused", "marked_at": null },
+    { "id": "s6",  "name": "Егорова Полина Вячеславовна",  "is_headman": false, "status": "absent",  "marked_at": null },
+    { "id": "s7",  "name": "Жуков Никита Романович",       "is_headman": false, "status": "present", "marked_at": "2026-05-07T10:16:00.000" },
+    { "id": "s8",  "name": "Захарова Виктория Андреевна",  "is_headman": false, "status": "present", "marked_at": "2026-05-07T10:19:00.000" }
+  ]
+}

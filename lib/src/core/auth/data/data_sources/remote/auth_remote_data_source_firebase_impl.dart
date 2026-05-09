@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sfu/src/core/auth/data/DTO/auth_user_data.dart';
-import 'package:sfu/src/core/auth/data/DTO/token_dto.dart';
+import 'package:sfu/src/core/auth/data/dto/auth_user_data.dart';
+import 'package:sfu/src/core/auth/data/dto/token_dto.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -18,7 +18,7 @@ class AuthRemoteDataSourceFirebaseImpl implements AuthRemoteDataSource {
       access: userCredential.user!.uid,
       refresh: '',
       type: 'Firebase',
-      expires: '3600',
+      expires: 3600,
     );
   }
 
@@ -49,7 +49,7 @@ class AuthRemoteDataSourceFirebaseImpl implements AuthRemoteDataSource {
       access: userCredential.user!.uid,
       refresh: '',
       type: 'Firebase',
-      expires: '3600',
+      expires: 3600,
     );
   }
 
@@ -66,14 +66,14 @@ class AuthRemoteDataSourceFirebaseImpl implements AuthRemoteDataSource {
       access: user.uid,
       refresh: '',
       type: 'Firebase',
-      expires: '3600',
+      expires: 3600,
     );
   }
 
   @override
-  Future<AuthMetadata> getUserData(String uid) async {
+  Future<AuthMetadataDTO> getUserData(String uid) async {
     final doc = await _firebaseFirestore.collection('users').doc(uid).get();
-    return AuthMetadata(
+    return AuthMetadataDTO(
       name: doc.get('name'),
       group: doc.get('group'),
       role: doc.get('role'),

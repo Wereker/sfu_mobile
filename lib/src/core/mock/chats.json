@@ -1,0 +1,104 @@
+{
+  "data": [
+    {
+      "id": "chat_1",
+      "type": "private",
+      "title": "Кушнаренко А. В.",
+      "avatar_url": null,
+      "participant_ids": ["user_current", "teacher_kushnarenko"],
+      "last_message": {
+        "id": "msg_101",
+        "chat_id": "chat_1",
+        "sender_id": "teacher_kushnarenko",
+        "sender_name": "Кушнаренко А. В.",
+        "text": "Завтра в 10:00 состоится консультация по математическому анализу в ауд. 305.",
+        "sent_at": "2026-03-04T09:23:15.000",
+        "status": "read",
+        "delivered_at": "2026-03-04T09:23:17.000",
+        "read_at": "2026-03-04T09:25:42.000",
+        "is_outgoing": false,
+        "is_edited": false,
+        "created_at": "2026-03-04T09:23:15.000"
+      },
+      "last_message_at": "2026-03-04T09:23:15.000",
+      "unread_count": 0,
+      "created_at": "2026-02-10T14:30:00.000",
+      "updated_at": "2026-03-04T09:23:15.000"
+    },
+    {
+      "id": "chat_2",
+      "type": "private",
+      "title": "Иван Петров",
+      "avatar_url": null,
+      "participant_ids": ["user_current", "student_ivan"],
+      "last_message": {
+        "id": "msg_205",
+        "chat_id": "chat_2",
+        "sender_id": "user_current",
+        "sender_name": "Вы",
+        "text": "Давай сегодня вечером обсудим проект по мобильной разработке?",
+        "sent_at": "2026-03-04T12:45:22.000",
+        "status": "delivered",
+        "delivered_at": "2026-03-04T12:45:24.000",
+        "read_at": null,
+        "is_outgoing": true,
+        "is_edited": false,
+        "created_at": "2026-03-04T12:45:22.000"
+      },
+      "last_message_at": "2026-03-04T12:45:22.000",
+      "unread_count": 0,
+      "created_at": "2026-01-25T11:20:00.000",
+      "updated_at": "2026-03-04T12:45:22.000"
+    },
+    {
+      "id": "chat_3",
+      "type": "group",
+      "title": "КИ22-13Б",
+      "avatar_url": null,
+      "participant_ids": ["user_current", "student_1", "student_2", "student_3"],
+      "last_message": {
+        "id": "msg_310",
+        "chat_id": "chat_3",
+        "sender_id": "student_3",
+        "sender_name": "Волков К.",
+        "text": "Ребята, кто сдаст завтра лабу по алгоритмам? Нужна помощь с 3 заданием",
+        "sent_at": "2026-03-04T13:10:05.000",
+        "status": "sent",
+        "delivered_at": null,
+        "read_at": null,
+        "is_outgoing": false,
+        "is_edited": false,
+        "created_at": "2026-03-04T13:10:05.000"
+      },
+      "last_message_at": "2026-03-04T13:10:05.000",
+      "unread_count": 3,
+      "created_at": "2025-09-01T08:00:00.000",
+      "updated_at": "2026-03-04T13:10:05.000"
+    },
+    {
+      "id": "chat_4",
+      "type": "group",
+      "title": "Кафедра ИВТ",
+      "avatar_url": null,
+      "participant_ids": ["user_current", "teacher_kushnarenko", "dean_ivt"],
+      "last_message": {
+        "id": "msg_422",
+        "chat_id": "chat_4",
+        "sender_id": "dean_ivt",
+        "sender_name": "Декан ИВТ",
+        "text": "15 марта состоится общее собрание кафедры в 14:00 в конференц-зале.",
+        "sent_at": "2026-03-03T16:45:30.000",
+        "status": "read",
+        "delivered_at": "2026-03-03T16:45:33.000",
+        "read_at": "2026-03-04T08:15:20.000",
+        "is_outgoing": false,
+        "is_edited": true,
+        "created_at": "2026-03-03T16:45:30.000"
+      },
+      "last_message_at": "2026-03-03T16:45:30.000",
+      "unread_count": 0,
+      "created_at": "2025-10-15T10:30:00.000",
+      "updated_at": "2026-03-03T16:45:30.000"
+    }
+  ]
+}

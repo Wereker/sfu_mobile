@@ -1,4 +1,4 @@
-import 'package:sfu/src/feature/chat/message/data/DTO/message_dto.dart';
+import 'package:sfu/src/feature/chat/message/data/dto/message_dto.dart';
 import 'package:sfu/src/feature/chat/message/domain/entity/message.dart';
 
 abstract class MessageMapper {

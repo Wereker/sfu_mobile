@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$WeekDTO {
 
- String get week; List<LessonDTO> get lessons;
+ String get week;@JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson) List<LessonDTO> get lessons;
 /// Create a copy of WeekDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $WeekDTOCopyWith<$Res>  {
   factory $WeekDTOCopyWith(WeekDTO value, $Res Function(WeekDTO) _then) = _$WeekDTOCopyWithImpl;
 @useResult
 $Res call({
- String week, List<LessonDTO> lessons
+ String week,@JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson) List<LessonDTO> lessons
 });
 
 
@@ -154,7 +154,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String week,  List<LessonDTO> lessons)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String week, @JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson)  List<LessonDTO> lessons)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _WeekDTO() when $default != null:
 return $default(_that.week,_that.lessons);case _:
@@ -175,7 +175,7 @@ return $default(_that.week,_that.lessons);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String week,  List<LessonDTO> lessons)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String week, @JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson)  List<LessonDTO> lessons)  $default,) {final _that = this;
 switch (_that) {
 case _WeekDTO():
 return $default(_that.week,_that.lessons);case _:
@@ -195,7 +195,7 @@ return $default(_that.week,_that.lessons);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String week,  List<LessonDTO> lessons)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String week, @JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson)  List<LessonDTO> lessons)?  $default,) {final _that = this;
 switch (_that) {
 case _WeekDTO() when $default != null:
 return $default(_that.week,_that.lessons);case _:
@@ -210,12 +210,12 @@ return $default(_that.week,_that.lessons);case _:
 @JsonSerializable()
 
 class _WeekDTO implements WeekDTO {
-  const _WeekDTO({required this.week, required final  List<LessonDTO> lessons}): _lessons = lessons;
+  const _WeekDTO({required this.week, @JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson) required final  List<LessonDTO> lessons}): _lessons = lessons;
   factory _WeekDTO.fromJson(Map<String, dynamic> json) => _$WeekDTOFromJson(json);
 
 @override final  String week;
  final  List<LessonDTO> _lessons;
-@override List<LessonDTO> get lessons {
+@override@JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson) List<LessonDTO> get lessons {
   if (_lessons is EqualUnmodifiableListView) return _lessons;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_lessons);
@@ -255,7 +255,7 @@ abstract mixin class _$WeekDTOCopyWith<$Res> implements $WeekDTOCopyWith<$Res> {
   factory _$WeekDTOCopyWith(_WeekDTO value, $Res Function(_WeekDTO) _then) = __$WeekDTOCopyWithImpl;
 @override @useResult
 $Res call({
- String week, List<LessonDTO> lessons
+ String week,@JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson) List<LessonDTO> lessons
 });
 
 

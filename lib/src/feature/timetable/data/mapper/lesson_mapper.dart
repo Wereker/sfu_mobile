@@ -1,5 +1,9 @@
-import 'package:sfu/src/feature/timetable/data/DTO/lesson_dto/lesson_dto.dart';
+import 'package:sfu/src/feature/timetable/data/dto/lesson_dto/lesson_dto.dart';
+import 'package:sfu/src/feature/timetable/data/dto/timetable_dto/timetable_dto.dart';
+import 'package:sfu/src/feature/timetable/data/dto/week_dto/week_dto.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/lesson/lesson.dart';
+import 'package:sfu/src/feature/timetable/domain/entity/timetable/timetable.dart';
+import 'package:sfu/src/feature/timetable/domain/entity/week/week.dart';
 
 abstract class LessonMapper {
   static Lesson fromDTO(LessonDTO dto) => Lesson(
@@ -14,5 +18,21 @@ abstract class LessonMapper {
     building:  dto.building,
     groups:    dto.groups,
     sync:      dto.sync,
+  );
+}
+
+abstract class WeekMapper {
+  static Week fromDTO(WeekDTO dto) => Week(
+    week:    dto.week,
+    lessons: dto.lessons.map(LessonMapper.fromDTO).toList(),
+  );
+}
+
+abstract class TimetableMapper {
+  static Timetable fromDTO(TimetableDTO dto) => Timetable(
+    target:    dto.target,
+    type:      dto.type,
+    institute: dto.institute ?? '',
+    weeks:     dto.weeks.map(WeekMapper.fromDTO).toList(),
   );
 }

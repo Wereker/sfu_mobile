@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:sfu/src/core/auth/data/DTO/auth_user_data.dart';
+import 'package:sfu/src/core/auth/data/dto/auth_user_data.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -77,8 +77,8 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }
 
   @override
-  Future<AuthMetadata> getUserData(String uid) async {
-    return AuthMetadata(
+  Future<AuthMetadataDTO> getUserData(String uid) async {
+    return AuthMetadataDTO(
       name: _pref.getString('user.$uid.name'),
       group: _pref.getString('user.$uid.group'),
       role: _pref.getString('user.$uid.role'),

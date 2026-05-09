@@ -58,3 +58,4 @@ flutter:
     - assets/images/list.svg
     - assets/images/recordBook.svg
     - .env
+    - lib/src/core/mock/

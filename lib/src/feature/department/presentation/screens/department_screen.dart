@@ -294,66 +294,6 @@ class _StaffTab extends StatelessWidget {
   }
 }
 
-class _StaffCard extends StatelessWidget {
-  const _StaffCard({
-    required this.member,
-    required this.cs,
-    required this.ext,
-    required this.tt,
-  });
-
-  final _StaffMember member;
-  final ColorScheme cs;
-  final AppColors ext;
-  final TextTheme tt;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: ext.border),
-      ),
-      padding: const EdgeInsets.all(14),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Аватар
-          _InitialsAvatar(name: member.name, size: 48, primary: cs.primary),
-          const SizedBox(width: 12),
-
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  member.name,
-                  style: tt.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  member.title,
-                  style: tt.labelSmall?.copyWith(color: ext.textSecondary),
-                ),
-                const SizedBox(height: 10),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: member.tags.map((tag) => _Tag(label: tag, ext: ext, tt: tt)).toList(),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 // ════════════════════════════════════════════════════════════
 // Вкладка 2 — Темы ВКР
 // ════════════════════════════════════════════════════════════

@@ -1,5 +1,5 @@
 import 'package:sfu/src/feature/events/data/dto/event_dto.dart';
-import 'package:sfu/src/feature/events/domain/entity/event/event.dart';
+import 'package:sfu/src/feature/events/domain/entity/event.dart';
 
 abstract class EventMapper {
   static Event fromDTO(EventDTO dto) => Event(

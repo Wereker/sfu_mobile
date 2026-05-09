@@ -11,9 +11,7 @@ _TimetableDTO _$TimetableDTOFromJson(Map<String, dynamic> json) =>
       target: json['target'] as String,
       type: json['type'] as String,
       institute: json['institute'] as String?,
-      weeks: (json['weeks'] as List<dynamic>)
-          .map((e) => WeekDTO.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      weeks: _weekListFromJson(json['weeks'] as List),
     );
 
 Map<String, dynamic> _$TimetableDTOToJson(_TimetableDTO instance) =>
@@ -21,5 +19,5 @@ Map<String, dynamic> _$TimetableDTOToJson(_TimetableDTO instance) =>
       'target': instance.target,
       'type': instance.type,
       'institute': instance.institute,
-      'weeks': instance.weeks,
+      'weeks': _weekListToJson(instance.weeks),
     };

@@ -1,0 +1,9 @@
+{
+  "data": [
+    { "id": "t1", "title": "Сегментация медицинских снимков с помощью U-Net",     "teacher_id": "teacher_1", "teacher_name": "Соколова Е. В.", "is_free": true,  "taken_by": null,           "taken_by_id": null },
+    { "id": "t2", "title": "RAG-система для документации СФУ",                     "teacher_id": "teacher_1", "teacher_name": "Соколова Е. В.", "is_free": false, "taken_by": "Борисова А. И.","taken_by_id": "s3" },
+    { "id": "t3", "title": "Детекция аномалий во временных рядах методами LSTM",  "teacher_id": "teacher_2", "teacher_name": "Петров С. И.",   "is_free": true,  "taken_by": null,           "taken_by_id": null },
+    { "id": "t4", "title": "Автоматическая генерация субтитров на основе Whisper", "teacher_id": "teacher_2", "teacher_name": "Петров С. И.",   "is_free": false, "taken_by": "Данилов А. О.", "taken_by_id": "s5" },
+    { "id": "t5", "title": "Обнаружение объектов на спутниковых снимках YOLO",     "teacher_id": "teacher_4", "teacher_name": "Кузнецова А. П.","is_free": true,  "taken_by": null,           "taken_by_id": null }
+  ]
+}

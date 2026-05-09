@@ -1,21 +1,16 @@
+import 'package:sfu/src/feature/profile/data/data_source/remote/profile_remote_data_source.dart';
+import 'package:sfu/src/feature/profile/data/mapper/user_mapper.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
 import 'package:sfu/src/feature/profile/domain/repository/profile_repository.dart';
 
 class ProfileRepositoryMock implements ProfileRepository {
-  const ProfileRepositoryMock();
+  final ProfileRemoteDataSource _remote;
+
+  const ProfileRepositoryMock(this._remote);
 
   @override
   Future<User> loadData() async {
-    return User(
-      id: '1',
-      firstName: 'Тарас',
-      lastName: 'Бубля',
-      phone: '89133451825',
-      role: 'student',
-      institute: 'ИКИТ',
-      group: 'КИ22-13Б',
-      subgroup: '1 подгруппа',
-      recordBookNumber: '032049803',
-    );
+    final dto = await _remote.getProfile();
+    return UserMapper.fromDTO(dto);
   }
 }

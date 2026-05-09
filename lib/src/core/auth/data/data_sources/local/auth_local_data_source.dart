@@ -1,4 +1,4 @@
-import 'package:sfu/src/core/auth/data/DTO/auth_user_data.dart';
+import 'package:sfu/src/core/auth/data/dto/auth_user_data.dart';
 
 abstract class AuthLocalDataSource {
   Future<void> cacheAccessToken(String token);
@@ -24,7 +24,7 @@ abstract class AuthLocalDataSource {
     String? role,
     String? subgroup,
   });
-  Future<AuthMetadata> getUserData(String uid);
+  Future<AuthMetadataDTO> getUserData(String uid);
 
   Future<void> clear();
 }

@@ -1,4 +1,4 @@
-import 'package:sfu/src/feature/announcements/data/DTO/announcement_dto.dart';
+import 'package:sfu/src/feature/announcements/data/dto/announcement_dto.dart';
 import 'package:sfu/src/feature/announcements/domain/entity/announcement.dart';
 
 abstract class AnnouncementMapper {

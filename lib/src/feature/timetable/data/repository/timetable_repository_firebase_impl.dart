@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
-import 'package:sfu/src/feature/timetable/data/DTO/timetable_dto/timetable_dto.dart';
+import 'package:sfu/src/feature/timetable/data/dto/timetable_dto/timetable_dto.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/timetable/timetable.dart';
 import 'package:sfu/src/feature/timetable/domain/repository/timetable_repository.dart';
+import 'package:sfu/src/feature/timetable/data/mapper/lesson_mapper.dart';
 
 class TimetableRepositoryFirebaseImpl implements TimetableRepository {
   final AuthLocalDataSource _locale;
@@ -34,12 +35,12 @@ class TimetableRepositoryFirebaseImpl implements TimetableRepository {
       final teacher = await _locale.getUserName(user.uid) ?? "Кушнаренко А. В.";
       timetableDTO = await _remote.getTimetableForTarget(teacher);
     }
-    return Timetable.fromDTO(timetableDTO);
+    return TimetableMapper.fromDTO(timetableDTO);
   }
 
   @override
   Future<Timetable> getTimetableForTarget(String target) async {
     final TimetableDTO timetableDTO = await _remote.getTimetableForTarget(target);
-    return Timetable.fromDTO(timetableDTO);
+    return TimetableMapper.fromDTO(timetableDTO);
   }
 }

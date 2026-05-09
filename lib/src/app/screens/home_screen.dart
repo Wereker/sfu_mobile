@@ -415,27 +415,6 @@ class _EventsRow extends StatelessWidget {
   final AppColors ext;
   final TextTheme tt;
 
-  static const _events = [
-    (
-      day: '07',
-      month: 'МАЯ',
-      title: 'Хакатон по компьютерному зрению',
-      desc: 'Команды до 4 человек, призовой фонд 150 000 ₽',
-    ),
-    (
-      day: '12',
-      month: 'МАЯ',
-      title: 'Лекция: GenAI в индустрии',
-      desc: 'Открытая встреча с инженерами Yandex',
-    ),
-    (
-      day: '18',
-      month: 'МАЯ',
-      title: 'Защита курсовых работ',
-      desc: 'Поток БИ22, расписание по группам',
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -480,135 +459,6 @@ class _AnnouncementsList extends StatelessWidget {
               ),
             )
             .toList(),
-      ),
-    );
-  }
-}
-
-class _PinnedAnnouncement extends StatelessWidget {
-  const _PinnedAnnouncement({
-    required this.cs,
-    required this.ext,
-    required this.tt,
-  });
-  final ColorScheme cs;
-  final AppColors ext;
-  final TextTheme tt;
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-      child: Stack(
-        children: [
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: cs.surface,
-              border: Border.all(color: ext.border),
-              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-            ),
-            padding: const EdgeInsets.fromLTRB(19, 16, 16, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.push_pin_outlined, size: 14, color: cs.primary),
-                    const SizedBox(width: 6),
-                    Text(
-                      'ЗАКРЕПЛЕНО',
-                      style: tt.labelSmall?.copyWith(
-                        color: cs.primary,
-                        letterSpacing: 0.8,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Запись на элективы открыта до 15 мая',
-                  style: tt.titleMedium?.copyWith(fontSize: 15),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Проверьте список во вкладке «Кафедра → Дисциплины».',
-                  style: tt.bodyMedium?.copyWith(
-                    fontSize: 13,
-                    color: ext.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            left: 0,
-            top: 0,
-            bottom: 0,
-            child: Container(width: 3, color: cs.primary),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PlainAnnouncement extends StatelessWidget {
-  const _PlainAnnouncement({
-    required this.cs,
-    required this.ext,
-    required this.tt,
-  });
-  final ColorScheme cs;
-  final AppColors ext;
-  final TextTheme tt;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: cs.surface,
-        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-        border: Border.all(color: ext.border),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                'Кафедра',
-                style: tt.labelSmall?.copyWith(
-                  color: ext.textSecondary,
-                  letterSpacing: 0.5,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                '3 мая',
-                style: tt.labelSmall?.copyWith(color: ext.textTertiary),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(
-            'Обновлён список тем ВКР на 2024/25 учебный год',
-            style: tt.labelLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Добавлено 12 новых тем по направлению NLP и компьютерное зрение.',
-            style: tt.bodyMedium?.copyWith(
-              fontSize: 13,
-              color: ext.textSecondary,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -692,38 +542,6 @@ class _StatusBadge extends StatelessWidget {
           fontWeight: FontWeight.w500,
           color: fg,
           height: 1,
-        ),
-      ),
-    );
-  }
-}
-
-class _CircleIconButton extends StatelessWidget {
-  const _CircleIconButton({
-    required this.icon,
-    required this.cs,
-    required this.ext,
-  });
-  final IconData icon;
-  final ColorScheme cs;
-  final AppColors ext;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: cs.surface,
-      shape: const CircleBorder(),
-      child: InkWell(
-        customBorder: const CircleBorder(),
-        onTap: () {},
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: ext.border),
-          ),
-          child: Icon(icon, size: 20, color: ext.textSecondary),
         ),
       ),
     );

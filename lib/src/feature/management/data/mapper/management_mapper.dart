@@ -1,4 +1,4 @@
-import 'package:sfu/src/feature/management/data/DTO/managed_student_dto.dart';
+import 'package:sfu/src/feature/management/data/dto/managed_student_dto.dart';
 import 'package:sfu/src/feature/management/data/dto/thesis_dto.dart';
 import 'package:sfu/src/feature/management/data/dto/discipline_dto.dart';
 import 'package:sfu/src/feature/management/domain/entity/managed_student.dart';

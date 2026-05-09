@@ -1,132 +1,94 @@
-import 'package:sfu/src/core/auth/data/DTO/auth_user_data.dart';
-import 'package:sfu/src/core/auth/data/DTO/token_dto.dart';
+import 'package:sfu/src/core/auth/data/dto/auth_user_data.dart';
+import 'package:sfu/src/core/auth/data/dto/token_dto.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
 
 class AuthRemoteDataSourceMock implements AuthRemoteDataSource {
+  // Тестовые пользователи
   final List<_UserMock> _items = [
     _UserMock(
-      name: 'matvey',
+      name: 'Тарас',
       login: 'user',
       password: '1234',
-      group: 'КИ22-13Б',
+      groupName: 'КИ22-13Б',
       subgroup: '1 подгруппа',
       role: 'student',
-      token: TokenDTO(
-        access: "i0L7CtovHpaCCDlsY22ObO4qACz57Khr",
-        refresh: "dyqcelydolMLJQbT68x2EB9VqvvgMQmT",
-        type: "Bearer",
-        expires: "3600",
-      ),
+    ),
+    _UserMock(
+      name: 'Соколова',
+      login: 'teacher',
+      password: '1234',
+      groupName: 'Кафедра САИ',
+      subgroup: '',
+      role: 'teacher',
     ),
   ];
 
-  _UserMock _currentUser = _UserMock(
-    name: 'matvey',
-    login: 'user',
-    password: '1234',
-    group: 'КИ22-13Б',
-    subgroup: '1 подгруппа',
-    role: 'student',
-    token: TokenDTO(
-      access: "i0L7CtovHpaCCDlsY22ObO4qACz57Khr",
-      refresh: "dyqcelydolMLJQbT68x2EB9VqvvgMQmT",
-      type: "Bearer",
-      expires: "3600",
+  _UserMock? _currentUser;
 
-    ),
+  static const _mockToken = TokenDTO(
+    access:  'mock_access_token_sfu',
+    refresh: 'mock_refresh_token_sfu',
+    type:    'Bearer',
+    expires: 3600,
   );
 
   @override
   Future<TokenDTO> signIn(String login, String password) async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 900));
 
-    final _UserMock? user = _items
-        .where((item) => item.password == password && item.login == login)
-        .firstOrNull;
-
-    if (user != null) {
-      _currentUser = user;
-      return user.token;
-    }
-
-    throw Exception();
+    final user = _items.firstWhere(
+          (u) => u.login == login && u.password == password,
+      orElse: () => throw Exception('Неверный логин или пароль'),
+    );
+    _currentUser = user;
+    return _mockToken;
   }
 
   @override
   Future<TokenDTO> signUp(
-    String login,
-    String password,
-    String name,
-    String group,
-    String subgroup,
-    String role,
-  ) async {
-    await Future.delayed(const Duration(seconds: 1));
+      String login,
+      String password,
+      String name,
+      String group,
+      String subgroup,
+      String role,
+      ) async {
+    await Future.delayed(const Duration(milliseconds: 900));
 
-    final _UserMock newUser = _UserMock(
-      name: 'matvey',
-      login: 'user',
-      password: '1234',
-      group: group,
-      subgroup: subgroup,
-      role: 'student',
-      token: TokenDTO(
-        access: "i0L7CtovHpaCCDlsY22ObO4qACz57Khr",
-        refresh: "dyqcelydolMLJQbT68x2EB9VqvvgMQmT",
-        type: "Bearer",
-        expires: "3600",
-      ),
+    final newUser = _UserMock(
+      name:      name,
+      login:     login,
+      password:  password,
+      groupName: group,
+      subgroup:  subgroup,
+      role:      role,
     );
     _items.add(newUser);
-    return newUser.token;
+    _currentUser = newUser;
+    return _mockToken;
   }
 
   @override
-  Future<TokenDTO> resetPassword(String newPassword) async {
-    await Future.delayed(const Duration(seconds: 1));
-
-    _UserMock? user = _items
-        .where((item) => item.password == newPassword)
-        .firstOrNull;
-
-    if (user != null) {
-      final index = _items.indexOf(user);
-      _items[index] = _UserMock(
-        name: user.name,
-        login: user.login,
-        password: newPassword,
-        token: user.token,
-        group: user.group,
-        subgroup: user.subgroup,
-        role: user.role,
-      );
-
-      _currentUser = _items[index];
-      return _items[index].token;
-    }
-
-    throw Exception();
+  Future<void> resetPassword(String newPassword) async {
+    await Future.delayed(const Duration(milliseconds: 900));
   }
 
   @override
   Future<TokenDTO> refreshToken(String token) async {
-    await Future.delayed(const Duration(seconds: 1));
-    return TokenDTO(
-      access: "i0L7CtovHpaCCDlsY22ObO4qACz57Khr",
-      refresh: "dyqcelydolMLJQbT68x2EB9VqvvgMQmT",
-      type: "Bearer",
-      expires: "3600",
-    );
+    await Future.delayed(const Duration(milliseconds: 600));
+    return _mockToken;
   }
 
   @override
-  Future<AuthMetadata> getUserData(String uid) async {
-    await Future.delayed(const Duration(seconds: 1));
-    return AuthMetadata(
-      name: _currentUser.name,
-      group: _currentUser.group,
-      role: _currentUser.role,
-      subgroup: _currentUser.subgroup,
+  Future<AuthMetadataDTO> getUserData(String uid) async {
+    await Future.delayed(const Duration(milliseconds: 600));
+    final user = _currentUser;
+    if (user == null) throw Exception('Пользователь не найден');
+    return AuthMetadataDTO(
+      name:     user.name,
+      group:    user.groupName,
+      role:     user.role,
+      subgroup: user.subgroup,
     );
   }
 }
@@ -135,17 +97,15 @@ class _UserMock {
   final String name;
   final String login;
   final String password;
-  final String group;
+  final String groupName;
   final String subgroup;
   final String role;
-  final TokenDTO token;
 
   const _UserMock({
     required this.name,
     required this.login,
     required this.password,
-    required this.token,
-    required this.group,
+    required this.groupName,
     required this.subgroup,
     required this.role,
   });

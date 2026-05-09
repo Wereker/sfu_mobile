@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:sfu/src/feature/timetable/data/DTO/lesson_dto/lesson_dto.dart';
-import 'package:sfu/src/feature/timetable/data/DTO/timetable_dto/timetable_dto.dart';
-import 'package:sfu/src/feature/timetable/data/DTO/week_dto/week_dto.dart';
+import 'package:sfu/src/feature/timetable/data/dto/lesson_dto/lesson_dto.dart';
+import 'package:sfu/src/feature/timetable/data/dto/timetable_dto/timetable_dto.dart';
+import 'package:sfu/src/feature/timetable/data/dto/week_dto/week_dto.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
 
 class TimetableRemoteDataSourceImpl implements TimetableRemoteDataSource {

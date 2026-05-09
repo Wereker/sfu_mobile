@@ -21,7 +21,6 @@ class ProfileRepositoryFirebaseImpl implements ProfileRepository {
       phone: '89133451825',
       role: await _locale.getUserRole(user.uid) ?? 'student',
       institute: 'ИКИТ',
-      group: await _locale.getUserGroup(user.uid) ?? 'КИ22-13Б',
       subgroup: await _locale.getUserSubgroup(user.uid) ??'1 подгруппа',
       recordBookNumber: '032049803',
     );

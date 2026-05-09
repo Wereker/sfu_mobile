@@ -1,5 +1,5 @@
-import 'package:sfu/src/core/auth/data/DTO/auth_user_data.dart';
-import 'package:sfu/src/core/auth/data/DTO/token_dto.dart';
+import 'package:sfu/src/core/auth/data/dto/auth_user_data.dart';
+import 'package:sfu/src/core/auth/data/dto/token_dto.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -37,7 +37,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<AuthMetadata> getUserData(String uid) {
+  Future<AuthMetadataDTO> getUserData(String uid) {
     // TODO: implement getUserData
     throw UnimplementedError();
   }

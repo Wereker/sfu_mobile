@@ -1,0 +1,16 @@
+{
+  "data": [
+    { "id": "s1", "name": "Волков Кирилл Павлович",       "group_id": "g1", "group_name": "БИ22-01", "stream": "БИ22", "is_headman": true,  "phone": "+7 913 111 22 33", "telegram": "@volkov_k",   "email": null },
+    { "id": "s2", "name": "Алексеев Дмитрий Сергеевич",   "group_id": "g1", "group_name": "БИ22-01", "stream": "БИ22", "is_headman": false, "phone": "+7 913 222 33 44", "telegram": null,          "email": null },
+    { "id": "s3", "name": "Борисова Анна Игоревна",        "group_id": "g1", "group_name": "БИ22-01", "stream": "БИ22", "is_headman": false, "phone": null,               "telegram": "@borisova_a", "email": null },
+    { "id": "s4", "name": "Гришина Мария Александровна",   "group_id": "g1", "group_name": "БИ22-01", "stream": "БИ22", "is_headman": false, "phone": null,               "telegram": null,          "email": null },
+    { "id": "s5", "name": "Данилов Артём Олегович",        "group_id": "g1", "group_name": "БИ22-01", "stream": "БИ22", "is_headman": false, "phone": "+7 913 333 44 55", "telegram": null,          "email": null },
+    { "id": "s6", "name": "Громова Ирина Петровна",        "group_id": "g2", "group_name": "БИ22-02", "stream": "БИ22", "is_headman": true,  "phone": null,               "telegram": "@gromova_i",  "email": "gromova@sfu-kras.ru" },
+    { "id": "s7", "name": "Белов Роман Андреевич",         "group_id": "g2", "group_name": "БИ22-02", "stream": "БИ22", "is_headman": false, "phone": null,               "telegram": null,          "email": null },
+    { "id": "s8", "name": "Дроздов Евгений Михайлович",    "group_id": "g2", "group_name": "БИ22-02", "stream": "БИ22", "is_headman": false, "phone": "+7 913 444 55 66", "telegram": null,          "email": null },
+    { "id": "s9", "name": "Зайцев Александр Иванович",     "group_id": "g3", "group_name": "БИ23-01", "stream": "БИ23", "is_headman": true,  "phone": "+7 913 555 66 77", "telegram": "@zaitsev_a",  "email": null },
+    { "id": "s10","name": "Кириллова Юлия Дмитриевна",     "group_id": "g3", "group_name": "БИ23-01", "stream": "БИ23", "is_headman": false, "phone": null,               "telegram": null,          "email": null },
+    { "id": "s11","name": "Макарова Надежда Викторовна",    "group_id": "g4", "group_name": "МА23-01", "stream": "МА23", "is_headman": true,  "phone": null,               "telegram": null,          "email": "makarova@sfu-kras.ru" },
+    { "id": "s12","name": "Никитин Сергей Романович",       "group_id": "g4", "group_name": "МА23-01", "stream": "МА23", "is_headman": false, "phone": "+7 913 666 77 88", "telegram": null,          "email": null }
+  ]
+}
