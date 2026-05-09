@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
@@ -14,7 +12,7 @@ class ManagedStudent {
   final String id;
   final String name;
   final String group;
-  final String stream;   // поток — «БИ22»
+  final String stream;
   final bool isHeadman;
   final String? phone;
   final String? telegram;
@@ -556,8 +554,9 @@ class _StudentDetail extends StatelessWidget {
   }
 }
 
+
 // ════════════════════════════════════════════════════════════
-// Вкладка 2 — Публикация (объявление или событие)
+// Вкладка Публикация
 // ════════════════════════════════════════════════════════════
 class _PublishTab extends StatefulWidget {
   const _PublishTab({required this.cs, required this.ext, required this.tt});
@@ -570,14 +569,26 @@ class _PublishTab extends StatefulWidget {
 }
 
 class _PublishTabState extends State<_PublishTab> {
-  String _type     = 'announcement'; // announcement / event
-  String _audience = 'all';          // all / stream / group
+  String _type     = 'announcement'; // announcement | event
+  String _audience = 'all';          // all | stream | group
   bool   _isPinned = false;
+
+  // Выбранное значение для stream / group
+  String? _selectedStream;
+  String? _selectedGroup;
 
   final _titleCtrl = TextEditingController();
   final _bodyCtrl  = TextEditingController();
   final _dateCtrl  = TextEditingController();
   final _placeCtrl = TextEditingController();
+
+  // Синтетические данные — заменить на данные из API
+  static const _allStreams = ['БИ22', 'БИ23', 'МА23'];
+  static const _allGroups  = [
+    'БИ22-01', 'БИ22-02',
+    'БИ23-01', 'БИ23-02',
+    'МА23-01',
+  ];
 
   @override
   void dispose() {
@@ -589,13 +600,16 @@ class _PublishTabState extends State<_PublishTab> {
   }
 
   void _publish(BuildContext context) {
-    // TODO: вызвать PostBloc.add(CreatePost(...))
+    // TODO: PostBloc.add(CreatePost(...))
+    final ext = widget.ext;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(_type == 'announcement'
-            ? 'Объявление опубликовано'
-            : 'Событие создано'),
-        backgroundColor: widget.ext.successBg,
+        content: Text(
+          _type == 'announcement'
+              ? 'Объявление опубликовано'
+              : 'Событие создано',
+        ),
+        backgroundColor: ext.successBg,
       ),
     );
     _titleCtrl.clear();
@@ -603,9 +617,41 @@ class _PublishTabState extends State<_PublishTab> {
     _dateCtrl.clear();
     _placeCtrl.clear();
     setState(() {
-      _isPinned = false;
-      _audience = 'all';
+      _isPinned       = false;
+      _audience       = 'all';
+      _selectedStream = null;
+      _selectedGroup  = null;
     });
+  }
+
+  // Открыть шторку-поиск
+  Future<void> _openPicker({required bool isStream}) async {
+    final items   = isStream ? _allStreams : _allGroups;
+    final current = isStream ? _selectedStream : _selectedGroup;
+
+    final result = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _SearchBottomSheet(
+        title: isStream ? 'Выберите поток' : 'Выберите группу',
+        items: items,
+        selected: current,
+        cs: widget.cs,
+        ext: widget.ext,
+        tt: widget.tt,
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        if (isStream) {
+          _selectedStream = result;
+        } else {
+          _selectedGroup = result;
+        }
+      });
+    }
   }
 
   @override
@@ -620,7 +666,8 @@ class _PublishTabState extends State<_PublishTab> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Тип публикации
+
+            // ── Тип: Объявление / Событие ──────────────────
             Container(
               decoration: BoxDecoration(
                 color: ext.surfaceTinted,
@@ -651,7 +698,7 @@ class _PublishTabState extends State<_PublishTab> {
 
             const SizedBox(height: 20),
 
-            // Заголовок
+            // ── Заголовок ──────────────────────────────────
             TextField(
               controller: _titleCtrl,
               textCapitalization: TextCapitalization.sentences,
@@ -660,13 +707,14 @@ class _PublishTabState extends State<_PublishTab> {
                 hintText: _type == 'announcement'
                     ? 'Запись на элективы открыта'
                     : 'Хакатон по компьютерному зрению',
-                prefixIcon: Icon(Icons.title, size: 20, color: ext.textTertiary),
+                prefixIcon:
+                Icon(Icons.title, size: 20, color: ext.textTertiary),
               ),
             ),
 
             const SizedBox(height: 14),
 
-            // Текст
+            // ── Текст ──────────────────────────────────────
             TextField(
               controller: _bodyCtrl,
               maxLines: 5,
@@ -682,7 +730,7 @@ class _PublishTabState extends State<_PublishTab> {
               ),
             ),
 
-            // Поля только для события
+            // ── Дата и место (только событие) ──────────────
             if (_type == 'event') ...[
               const SizedBox(height: 14),
               TextField(
@@ -693,15 +741,12 @@ class _PublishTabState extends State<_PublishTab> {
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(const Duration(days: 365)),
-                    builder: (_, child) => Theme(
-                      data: Theme.of(context),
-                      child: child!,
-                    ),
+                    lastDate:
+                    DateTime.now().add(const Duration(days: 365)),
                   );
                   if (date != null) {
                     _dateCtrl.text =
-                        '${date.day}.${date.month}.${date.year}';
+                    '${date.day}.${date.month}.${date.year}';
                   }
                 },
                 decoration: InputDecoration(
@@ -725,16 +770,63 @@ class _PublishTabState extends State<_PublishTab> {
 
             const SizedBox(height: 20),
 
-            // Аудитория
+            // ── Аудитория ──────────────────────────────────
             Text('Аудитория', style: tt.labelLarge),
-            const SizedBox(height: 8),
-            _AudienceSelector(
-              selected: _audience,
-              onChanged: (v) => setState(() => _audience = v),
-              cs: cs, ext: ext, tt: tt,
+            const SizedBox(height: 10),
+
+            // Три кнопки: Все / Поток / Группа
+            Row(
+              children: [
+                _AudienceChip(
+                  icon: Icons.public_outlined,
+                  label: 'Все',
+                  isActive: _audience == 'all',
+                  onTap: () => setState(() {
+                    _audience       = 'all';
+                    _selectedStream = null;
+                    _selectedGroup  = null;
+                  }),
+                  cs: cs, ext: ext, tt: tt,
+                ),
+                const SizedBox(width: 8),
+                _AudienceChip(
+                  icon: Icons.account_tree_outlined,
+                  label: 'Поток',
+                  isActive: _audience == 'stream',
+                  onTap: () => setState(() {
+                    _audience      = 'stream';
+                    _selectedGroup = null;
+                  }),
+                  cs: cs, ext: ext, tt: tt,
+                ),
+                const SizedBox(width: 8),
+                _AudienceChip(
+                  icon: Icons.groups_outlined,
+                  label: 'Группа',
+                  isActive: _audience == 'group',
+                  onTap: () => setState(() {
+                    _audience       = 'group';
+                    _selectedStream = null;
+                  }),
+                  cs: cs, ext: ext, tt: tt,
+                ),
+              ],
             ),
 
-            // Закрепить (только объявление)
+            // ── Пикер потока / группы ──────────────────────
+            if (_audience == 'stream' || _audience == 'group') ...[
+              const SizedBox(height: 12),
+              _StreamGroupPicker(
+                isStream: _audience == 'stream',
+                selected: _audience == 'stream'
+                    ? _selectedStream
+                    : _selectedGroup,
+                onTap: () => _openPicker(isStream: _audience == 'stream'),
+                cs: cs, ext: ext, tt: tt,
+              ),
+            ],
+
+            // ── Закрепить (только объявление) ──────────────
             if (_type == 'announcement') ...[
               const SizedBox(height: 16),
               Container(
@@ -750,7 +842,7 @@ class _PublishTabState extends State<_PublishTab> {
                       style: tt.labelSmall
                           ?.copyWith(color: ext.textSecondary)),
                   value: _isPinned,
-                  activeColor: cs.primary,
+                  activeThumbColor: cs.primary,
                   onChanged: (v) => setState(() => _isPinned = v),
                 ),
               ),
@@ -758,7 +850,7 @@ class _PublishTabState extends State<_PublishTab> {
 
             const SizedBox(height: 28),
 
-            // Кнопка
+            // ── Кнопка публикации ──────────────────────────
             SizedBox(
               width: double.infinity,
               height: 52,
@@ -781,6 +873,276 @@ class _PublishTabState extends State<_PublishTab> {
     );
   }
 }
+
+// ════════════════════════════════════════════════════════════
+// Чип аудитории (Все / Поток / Группа)
+// ════════════════════════════════════════════════════════════
+class _AudienceChip extends StatelessWidget {
+  const _AudienceChip({
+    required this.icon,
+    required this.label,
+    required this.isActive,
+    required this.onTap,
+    required this.cs,
+    required this.ext,
+    required this.tt,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool isActive;
+  final VoidCallback onTap;
+  final ColorScheme cs;
+  final AppColors ext;
+  final TextTheme tt;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: isActive ? cs.primary : ext.surfaceTinted,
+            borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+          ),
+          child: Column(
+            children: [
+              Icon(icon,
+                  size: 18,
+                  color: isActive ? cs.onPrimary : ext.textOnTinted),
+              const SizedBox(height: 4),
+              Text(label,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: isActive ? cs.onPrimary : ext.textOnTinted,
+                    height: 1,
+                  )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// Кнопка-пикер выбранного потока / группы
+// ════════════════════════════════════════════════════════════
+class _StreamGroupPicker extends StatelessWidget {
+  const _StreamGroupPicker({
+    required this.isStream,
+    required this.selected,
+    required this.onTap,
+    required this.cs,
+    required this.ext,
+    required this.tt,
+  });
+
+  final bool isStream;
+  final String? selected;
+  final VoidCallback onTap;
+  final ColorScheme cs;
+  final AppColors ext;
+  final TextTheme tt;
+
+  @override
+  Widget build(BuildContext context) {
+    final hasValue = selected != null && selected!.isNotEmpty;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: cs.surface,
+          borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+          border: Border.all(
+            color: hasValue ? cs.primary : ext.border,
+            width: hasValue ? 1.5 : 1,
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+        child: Row(
+          children: [
+            Icon(
+              isStream
+                  ? Icons.account_tree_outlined
+                  : Icons.groups_outlined,
+              size: 18,
+              color: hasValue ? cs.primary : ext.textTertiary,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                hasValue
+                    ? selected!
+                    : (isStream
+                    ? 'Выберите поток...'
+                    : 'Выберите группу...'),
+                style: tt.bodyLarge?.copyWith(
+                  fontSize: 15,
+                  color: hasValue ? ext.textPrimary : ext.textTertiary,
+                ),
+              ),
+            ),
+            Icon(
+              Icons.search,
+              size: 18,
+              color: hasValue ? cs.primary : ext.textTertiary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// Шторка с поиском по потокам / группам
+// ════════════════════════════════════════════════════════════
+class _SearchBottomSheet extends StatefulWidget {
+  const _SearchBottomSheet({
+    required this.title,
+    required this.items,
+    required this.selected,
+    required this.cs,
+    required this.ext,
+    required this.tt,
+  });
+
+  final String title;
+  final List<String> items;
+  final String? selected;
+  final ColorScheme cs;
+  final AppColors ext;
+  final TextTheme tt;
+
+  @override
+  State<_SearchBottomSheet> createState() => _SearchBottomSheetState();
+}
+
+class _SearchBottomSheetState extends State<_SearchBottomSheet> {
+  final _searchCtrl = TextEditingController();
+  String _query = '';
+
+  List<String> get _filtered => _query.isEmpty
+      ? widget.items
+      : widget.items
+      .where((item) =>
+      item.toLowerCase().contains(_query.toLowerCase()))
+      .toList();
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cs  = widget.cs;
+    final ext = widget.ext;
+    final tt  = widget.tt;
+    final screenH = MediaQuery.of(context).size.height;
+
+    return Container(
+      height: screenH * 0.6,
+      decoration: BoxDecoration(
+        color: cs.surface,
+        borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(AppTheme.radiusLg)),
+      ),
+      child: Column(
+        children: [
+          // Ручка
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 4),
+            child: Container(
+              width: 36, height: 4,
+              decoration: BoxDecoration(
+                  color: ext.border, borderRadius: BorderRadius.circular(2)),
+            ),
+          ),
+
+          // Заголовок
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              children: [
+                Text(widget.title, style: tt.titleMedium),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Icon(Icons.close, size: 20, color: ext.textSecondary),
+                ),
+              ],
+            ),
+          ),
+
+          // Поле поиска
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+            child: TextField(
+              controller: _searchCtrl,
+              autofocus: true,
+              onChanged: (v) => setState(() => _query = v),
+              decoration: InputDecoration(
+                prefixIcon:
+                Icon(Icons.search, size: 20, color: ext.textTertiary),
+                hintText: 'Поиск...',
+                hintStyle: tt.bodyMedium?.copyWith(color: ext.textTertiary),
+              ),
+            ),
+          ),
+
+          Divider(height: 1, color: ext.divider),
+
+          // Список
+          Expanded(
+            child: _filtered.isEmpty
+                ? Center(
+              child: Text('Ничего не найдено',
+                  style: tt.bodyMedium
+                      ?.copyWith(color: ext.textSecondary)),
+            )
+                : ListView.separated(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom + 16),
+              separatorBuilder: (_, __) =>
+                  Divider(height: 1, color: ext.divider, indent: 16),
+              itemCount: _filtered.length,
+              itemBuilder: (_, i) {
+                final item = _filtered[i];
+                final isSelected = item == widget.selected;
+                return ListTile(
+                  dense: true,
+                  title: Text(item,
+                      style: tt.labelLarge?.copyWith(
+                        fontWeight: isSelected
+                            ? FontWeight.w700
+                            : FontWeight.w400,
+                        color: isSelected
+                            ? cs.primary
+                            : ext.textPrimary,
+                      )),
+                  trailing: isSelected
+                      ? Icon(Icons.check_circle,
+                      color: cs.primary, size: 20)
+                      : null,
+                  onTap: () => Navigator.pop(context, item),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 
 // ── Сегмент типа публикации ──────────────────────────────────
 class _TypeSegment extends StatelessWidget {
@@ -835,71 +1197,6 @@ class _TypeSegment extends StatelessWidget {
   }
 }
 
-// ── Выбор аудитории ──────────────────────────────────────────
-class _AudienceSelector extends StatelessWidget {
-  const _AudienceSelector({
-    required this.selected,
-    required this.onChanged,
-    required this.cs, required this.ext, required this.tt,
-  });
-  final String selected;
-  final ValueChanged<String> onChanged;
-  final ColorScheme cs;
-  final AppColors ext;
-  final TextTheme tt;
-
-  static const _options = [
-    (value: 'all',    label: 'Все',      icon: Icons.public_outlined),
-    (value: 'stream', label: 'Поток',    icon: Icons.account_tree_outlined),
-    (value: 'group',  label: 'Группа',   icon: Icons.groups_outlined),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: _options.map((o) {
-        final isActive = o.value == selected;
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-                right: o == _options.last ? 0 : 8),
-            child: GestureDetector(
-              onTap: () => onChanged(o.value),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 150),
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  color: isActive ? cs.primary : ext.surfaceTinted,
-                  borderRadius:
-                      BorderRadius.circular(AppTheme.radiusMd),
-                ),
-                child: Column(
-                  children: [
-                    Icon(o.icon,
-                        size: 18,
-                        color: isActive
-                            ? cs.onPrimary
-                            : ext.textOnTinted),
-                    const SizedBox(height: 4),
-                    Text(o.label,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: isActive
-                              ? cs.onPrimary
-                              : ext.textOnTinted,
-                          height: 1,
-                        )),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-}
 
 // ════════════════════════════════════════════════════════════
 // Вкладка 3 — Темы ВКР преподавателя

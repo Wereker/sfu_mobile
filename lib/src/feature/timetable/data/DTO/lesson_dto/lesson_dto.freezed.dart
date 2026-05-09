@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LessonDTO {
 
- String get day; String get time; String get subject; String get type; String get place; String get building; String get sync; String get teacher; List<String> get groups;
+ String get id; String get day;@JsonKey(name: 'time_start') String get timeStart;@JsonKey(name: 'time_end') String get timeEnd; String get subject;@JsonKey(name: 'lesson_type') String get type; String get place; String get building; String get room; String get teacher;@JsonKey(name: 'teacher_id') String? get teacherId; List<String> get groups; String get sync;
 /// Create a copy of LessonDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $LessonDTOCopyWith<LessonDTO> get copyWith => _$LessonDTOCopyWithImpl<LessonDTO>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LessonDTO&&(identical(other.day, day) || other.day == day)&&(identical(other.time, time) || other.time == time)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.type, type) || other.type == type)&&(identical(other.place, place) || other.place == place)&&(identical(other.building, building) || other.building == building)&&(identical(other.sync, sync) || other.sync == sync)&&(identical(other.teacher, teacher) || other.teacher == teacher)&&const DeepCollectionEquality().equals(other.groups, groups));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LessonDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.day, day) || other.day == day)&&(identical(other.timeStart, timeStart) || other.timeStart == timeStart)&&(identical(other.timeEnd, timeEnd) || other.timeEnd == timeEnd)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.type, type) || other.type == type)&&(identical(other.place, place) || other.place == place)&&(identical(other.building, building) || other.building == building)&&(identical(other.room, room) || other.room == room)&&(identical(other.teacher, teacher) || other.teacher == teacher)&&(identical(other.teacherId, teacherId) || other.teacherId == teacherId)&&const DeepCollectionEquality().equals(other.groups, groups)&&(identical(other.sync, sync) || other.sync == sync));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,day,time,subject,type,place,building,sync,teacher,const DeepCollectionEquality().hash(groups));
+int get hashCode => Object.hash(runtimeType,id,day,timeStart,timeEnd,subject,type,place,building,room,teacher,teacherId,const DeepCollectionEquality().hash(groups),sync);
 
 @override
 String toString() {
-  return 'LessonDTO(day: $day, time: $time, subject: $subject, type: $type, place: $place, building: $building, sync: $sync, teacher: $teacher, groups: $groups)';
+  return 'LessonDTO(id: $id, day: $day, timeStart: $timeStart, timeEnd: $timeEnd, subject: $subject, type: $type, place: $place, building: $building, room: $room, teacher: $teacher, teacherId: $teacherId, groups: $groups, sync: $sync)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $LessonDTOCopyWith<$Res>  {
   factory $LessonDTOCopyWith(LessonDTO value, $Res Function(LessonDTO) _then) = _$LessonDTOCopyWithImpl;
 @useResult
 $Res call({
- String day, String time, String subject, String type, String place, String building, String sync, String teacher, List<String> groups
+ String id, String day,@JsonKey(name: 'time_start') String timeStart,@JsonKey(name: 'time_end') String timeEnd, String subject,@JsonKey(name: 'lesson_type') String type, String place, String building, String room, String teacher,@JsonKey(name: 'teacher_id') String? teacherId, List<String> groups, String sync
 });
 
 
@@ -65,18 +65,22 @@ class _$LessonDTOCopyWithImpl<$Res>
 
 /// Create a copy of LessonDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? day = null,Object? time = null,Object? subject = null,Object? type = null,Object? place = null,Object? building = null,Object? sync = null,Object? teacher = null,Object? groups = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? day = null,Object? timeStart = null,Object? timeEnd = null,Object? subject = null,Object? type = null,Object? place = null,Object? building = null,Object? room = null,Object? teacher = null,Object? teacherId = freezed,Object? groups = null,Object? sync = null,}) {
   return _then(_self.copyWith(
-day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
-as String,time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
+as String,timeStart: null == timeStart ? _self.timeStart : timeStart // ignore: cast_nullable_to_non_nullable
+as String,timeEnd: null == timeEnd ? _self.timeEnd : timeEnd // ignore: cast_nullable_to_non_nullable
 as String,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,place: null == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
 as String,building: null == building ? _self.building : building // ignore: cast_nullable_to_non_nullable
-as String,sync: null == sync ? _self.sync : sync // ignore: cast_nullable_to_non_nullable
+as String,room: null == room ? _self.room : room // ignore: cast_nullable_to_non_nullable
 as String,teacher: null == teacher ? _self.teacher : teacher // ignore: cast_nullable_to_non_nullable
-as String,groups: null == groups ? _self.groups : groups // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as String,teacherId: freezed == teacherId ? _self.teacherId : teacherId // ignore: cast_nullable_to_non_nullable
+as String?,groups: null == groups ? _self.groups : groups // ignore: cast_nullable_to_non_nullable
+as List<String>,sync: null == sync ? _self.sync : sync // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -161,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String day,  String time,  String subject,  String type,  String place,  String building,  String sync,  String teacher,  List<String> groups)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String day, @JsonKey(name: 'time_start')  String timeStart, @JsonKey(name: 'time_end')  String timeEnd,  String subject, @JsonKey(name: 'lesson_type')  String type,  String place,  String building,  String room,  String teacher, @JsonKey(name: 'teacher_id')  String? teacherId,  List<String> groups,  String sync)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LessonDTO() when $default != null:
-return $default(_that.day,_that.time,_that.subject,_that.type,_that.place,_that.building,_that.sync,_that.teacher,_that.groups);case _:
+return $default(_that.id,_that.day,_that.timeStart,_that.timeEnd,_that.subject,_that.type,_that.place,_that.building,_that.room,_that.teacher,_that.teacherId,_that.groups,_that.sync);case _:
   return orElse();
 
 }
@@ -182,10 +186,10 @@ return $default(_that.day,_that.time,_that.subject,_that.type,_that.place,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String day,  String time,  String subject,  String type,  String place,  String building,  String sync,  String teacher,  List<String> groups)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String day, @JsonKey(name: 'time_start')  String timeStart, @JsonKey(name: 'time_end')  String timeEnd,  String subject, @JsonKey(name: 'lesson_type')  String type,  String place,  String building,  String room,  String teacher, @JsonKey(name: 'teacher_id')  String? teacherId,  List<String> groups,  String sync)  $default,) {final _that = this;
 switch (_that) {
 case _LessonDTO():
-return $default(_that.day,_that.time,_that.subject,_that.type,_that.place,_that.building,_that.sync,_that.teacher,_that.groups);case _:
+return $default(_that.id,_that.day,_that.timeStart,_that.timeEnd,_that.subject,_that.type,_that.place,_that.building,_that.room,_that.teacher,_that.teacherId,_that.groups,_that.sync);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +206,10 @@ return $default(_that.day,_that.time,_that.subject,_that.type,_that.place,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String day,  String time,  String subject,  String type,  String place,  String building,  String sync,  String teacher,  List<String> groups)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String day, @JsonKey(name: 'time_start')  String timeStart, @JsonKey(name: 'time_end')  String timeEnd,  String subject, @JsonKey(name: 'lesson_type')  String type,  String place,  String building,  String room,  String teacher, @JsonKey(name: 'teacher_id')  String? teacherId,  List<String> groups,  String sync)?  $default,) {final _that = this;
 switch (_that) {
 case _LessonDTO() when $default != null:
-return $default(_that.day,_that.time,_that.subject,_that.type,_that.place,_that.building,_that.sync,_that.teacher,_that.groups);case _:
+return $default(_that.id,_that.day,_that.timeStart,_that.timeEnd,_that.subject,_that.type,_that.place,_that.building,_that.room,_that.teacher,_that.teacherId,_that.groups,_that.sync);case _:
   return null;
 
 }
@@ -217,17 +221,20 @@ return $default(_that.day,_that.time,_that.subject,_that.type,_that.place,_that.
 @JsonSerializable()
 
 class _LessonDTO implements LessonDTO {
-  const _LessonDTO({required this.day, required this.time, required this.subject, required this.type, required this.place, required this.building, required this.sync, this.teacher = '', final  List<String> groups = const []}): _groups = groups;
+  const _LessonDTO({required this.id, required this.day, @JsonKey(name: 'time_start') required this.timeStart, @JsonKey(name: 'time_end') required this.timeEnd, required this.subject, @JsonKey(name: 'lesson_type') this.type = '', this.place = '', this.building = '', this.room = '', this.teacher = '', @JsonKey(name: 'teacher_id') this.teacherId, final  List<String> groups = const [], this.sync = ''}): _groups = groups;
   factory _LessonDTO.fromJson(Map<String, dynamic> json) => _$LessonDTOFromJson(json);
 
+@override final  String id;
 @override final  String day;
-@override final  String time;
+@override@JsonKey(name: 'time_start') final  String timeStart;
+@override@JsonKey(name: 'time_end') final  String timeEnd;
 @override final  String subject;
-@override final  String type;
-@override final  String place;
-@override final  String building;
-@override final  String sync;
+@override@JsonKey(name: 'lesson_type') final  String type;
+@override@JsonKey() final  String place;
+@override@JsonKey() final  String building;
+@override@JsonKey() final  String room;
 @override@JsonKey() final  String teacher;
+@override@JsonKey(name: 'teacher_id') final  String? teacherId;
  final  List<String> _groups;
 @override@JsonKey() List<String> get groups {
   if (_groups is EqualUnmodifiableListView) return _groups;
@@ -235,6 +242,7 @@ class _LessonDTO implements LessonDTO {
   return EqualUnmodifiableListView(_groups);
 }
 
+@override@JsonKey() final  String sync;
 
 /// Create a copy of LessonDTO
 /// with the given fields replaced by the non-null parameter values.
@@ -249,16 +257,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LessonDTO&&(identical(other.day, day) || other.day == day)&&(identical(other.time, time) || other.time == time)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.type, type) || other.type == type)&&(identical(other.place, place) || other.place == place)&&(identical(other.building, building) || other.building == building)&&(identical(other.sync, sync) || other.sync == sync)&&(identical(other.teacher, teacher) || other.teacher == teacher)&&const DeepCollectionEquality().equals(other._groups, _groups));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LessonDTO&&(identical(other.id, id) || other.id == id)&&(identical(other.day, day) || other.day == day)&&(identical(other.timeStart, timeStart) || other.timeStart == timeStart)&&(identical(other.timeEnd, timeEnd) || other.timeEnd == timeEnd)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.type, type) || other.type == type)&&(identical(other.place, place) || other.place == place)&&(identical(other.building, building) || other.building == building)&&(identical(other.room, room) || other.room == room)&&(identical(other.teacher, teacher) || other.teacher == teacher)&&(identical(other.teacherId, teacherId) || other.teacherId == teacherId)&&const DeepCollectionEquality().equals(other._groups, _groups)&&(identical(other.sync, sync) || other.sync == sync));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,day,time,subject,type,place,building,sync,teacher,const DeepCollectionEquality().hash(_groups));
+int get hashCode => Object.hash(runtimeType,id,day,timeStart,timeEnd,subject,type,place,building,room,teacher,teacherId,const DeepCollectionEquality().hash(_groups),sync);
 
 @override
 String toString() {
-  return 'LessonDTO(day: $day, time: $time, subject: $subject, type: $type, place: $place, building: $building, sync: $sync, teacher: $teacher, groups: $groups)';
+  return 'LessonDTO(id: $id, day: $day, timeStart: $timeStart, timeEnd: $timeEnd, subject: $subject, type: $type, place: $place, building: $building, room: $room, teacher: $teacher, teacherId: $teacherId, groups: $groups, sync: $sync)';
 }
 
 
@@ -269,7 +277,7 @@ abstract mixin class _$LessonDTOCopyWith<$Res> implements $LessonDTOCopyWith<$Re
   factory _$LessonDTOCopyWith(_LessonDTO value, $Res Function(_LessonDTO) _then) = __$LessonDTOCopyWithImpl;
 @override @useResult
 $Res call({
- String day, String time, String subject, String type, String place, String building, String sync, String teacher, List<String> groups
+ String id, String day,@JsonKey(name: 'time_start') String timeStart,@JsonKey(name: 'time_end') String timeEnd, String subject,@JsonKey(name: 'lesson_type') String type, String place, String building, String room, String teacher,@JsonKey(name: 'teacher_id') String? teacherId, List<String> groups, String sync
 });
 
 
@@ -286,18 +294,22 @@ class __$LessonDTOCopyWithImpl<$Res>
 
 /// Create a copy of LessonDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? day = null,Object? time = null,Object? subject = null,Object? type = null,Object? place = null,Object? building = null,Object? sync = null,Object? teacher = null,Object? groups = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? day = null,Object? timeStart = null,Object? timeEnd = null,Object? subject = null,Object? type = null,Object? place = null,Object? building = null,Object? room = null,Object? teacher = null,Object? teacherId = freezed,Object? groups = null,Object? sync = null,}) {
   return _then(_LessonDTO(
-day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
-as String,time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
+as String,timeStart: null == timeStart ? _self.timeStart : timeStart // ignore: cast_nullable_to_non_nullable
+as String,timeEnd: null == timeEnd ? _self.timeEnd : timeEnd // ignore: cast_nullable_to_non_nullable
 as String,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,place: null == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
 as String,building: null == building ? _self.building : building // ignore: cast_nullable_to_non_nullable
-as String,sync: null == sync ? _self.sync : sync // ignore: cast_nullable_to_non_nullable
+as String,room: null == room ? _self.room : room // ignore: cast_nullable_to_non_nullable
 as String,teacher: null == teacher ? _self.teacher : teacher // ignore: cast_nullable_to_non_nullable
-as String,groups: null == groups ? _self._groups : groups // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as String,teacherId: freezed == teacherId ? _self.teacherId : teacherId // ignore: cast_nullable_to_non_nullable
+as String?,groups: null == groups ? _self._groups : groups // ignore: cast_nullable_to_non_nullable
+as List<String>,sync: null == sync ? _self.sync : sync // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

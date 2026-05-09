@@ -10,7 +10,7 @@ _TokenDTO _$TokenDTOFromJson(Map<String, dynamic> json) => _TokenDTO(
   access: json['access_token'] as String,
   refresh: json['refresh_token'] as String,
   type: json['token_type'] as String,
-  expires: json['expires_in'] as String,
+  expires: (json['expires_in'] as num).toInt(),
 );
 
 Map<String, dynamic> _$TokenDTOToJson(_TokenDTO instance) => <String, dynamic>{

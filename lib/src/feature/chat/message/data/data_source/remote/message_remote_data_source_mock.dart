@@ -175,7 +175,6 @@ class MessageRemoteDataSourceMock implements MessageRemoteDataSource {
     for (final item in chat) {
       result.add(MessageDTO.fromJson(item));
     }
-    print(result);
     return result;
   }
 }

@@ -6,11 +6,12 @@ part 'token_dto.g.dart';
 @freezed
 abstract class TokenDTO with _$TokenDTO {
   const factory TokenDTO({
-    @JsonKey(name: "access_token") required String access,
-    @JsonKey(name: "refresh_token") required String refresh,
-    @JsonKey(name: "token_type") required String type,
-    @JsonKey(name: "expires_in") required String expires,
+    @JsonKey(name: 'access_token')  required String access,
+    @JsonKey(name: 'refresh_token') required String refresh,
+    @JsonKey(name: 'token_type')    required String type,
+    @JsonKey(name: 'expires_in')    required int    expires,
   }) = _TokenDTO;
 
-  factory TokenDTO.fromJson(Map<String, dynamic> json) => _$TokenDTOFromJson(json);
+  factory TokenDTO.fromJson(Map<String, dynamic> json) =>
+      _$TokenDTOFromJson(json);
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sfu/src/app/dependency_injection/injection.dart' as di;
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
@@ -9,6 +8,13 @@ import 'package:sfu/src/feature/profile/domain/entity/user.dart';
 import 'package:sfu/src/feature/profile/presentation/bloc/profile_bloc.dart';
 import 'package:sfu/src/feature/settings/presentation/bloc/settings_bloc.dart';
 
+// ============================================================
+// ProfileScreen — экран профиля
+//
+// Отображает разные данные в зависимости от роли:
+//   student → группа, подгруппа, зачётка, пол
+//   teacher → должность, кафедра, кабинет + редактируемое «О себе»
+// ============================================================
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -28,14 +34,15 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
+// ════════════════════════════════════════════════════════════
+// Loading / Error
+// ════════════════════════════════════════════════════════════
 class _LoadingView extends StatelessWidget {
   const _LoadingView();
   @override
   Widget build(BuildContext context) => CustomScrollView(slivers: [
         const _ProfileAppBar(),
-        const SliverFillRemaining(
-          child: Center(child: LoadingIndicatorWidget()),
-        ),
+        const SliverFillRemaining(child: Center(child: LoadingIndicatorWidget())),
       ]);
 }
 
@@ -44,7 +51,7 @@ class _ErrorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt = Theme.of(context).textTheme;
+    final tt  = Theme.of(context).textTheme;
     return CustomScrollView(slivers: [
       const _ProfileAppBar(),
       SliverFillRemaining(
@@ -68,14 +75,17 @@ class _ErrorView extends StatelessWidget {
   }
 }
 
+// ════════════════════════════════════════════════════════════
+// AppBar
+// ════════════════════════════════════════════════════════════
 class _ProfileAppBar extends StatelessWidget {
   const _ProfileAppBar();
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt = Theme.of(context).textTheme;
+    final tt  = Theme.of(context).textTheme;
 
     return SliverAppBar(
       pinned: true,
@@ -125,6 +135,9 @@ class _ProfileAppBar extends StatelessWidget {
   }
 }
 
+// ════════════════════════════════════════════════════════════
+// Основное тело
+// ════════════════════════════════════════════════════════════
 class _ProfileBody extends StatefulWidget {
   const _ProfileBody({required this.user});
   final User user;
@@ -134,24 +147,32 @@ class _ProfileBody extends StatefulWidget {
 }
 
 class _ProfileBodyState extends State<_ProfileBody> {
+  // ── Контактные поля ───────────────────────────────────────
   late final TextEditingController _phoneCtrl;
   late final TextEditingController _emailCtrl;
   late final TextEditingController _tgCtrl;
+  // Только для преподавателя
+  late final TextEditingController _bioCtrl;
 
   bool _editingPhone = false;
   bool _editingEmail = false;
   bool _editingTg    = false;
+  bool _editingBio   = false;
 
-  bool _notifyChats    = true;
-  bool _notifyNews     = true;
-  bool _notifyEvents   = false;
+  // ── Уведомления ───────────────────────────────────────────
+  bool _notifyChats  = true;
+  bool _notifyNews   = true;
+  bool _notifyEvents = false;
+
+  bool get _isTeacher => widget.user.role == 'teacher';
 
   @override
   void initState() {
     super.initState();
     _phoneCtrl = TextEditingController(text: widget.user.phone);
-    _emailCtrl = TextEditingController(text: '');   // нет в модели — заглушка
-    _tgCtrl    = TextEditingController(text: '');   // нет в модели — заглушка
+    _emailCtrl = TextEditingController(text: '');
+    _tgCtrl    = TextEditingController(text: '');
+    _bioCtrl   = TextEditingController(text: '');
   }
 
   @override
@@ -159,6 +180,7 @@ class _ProfileBodyState extends State<_ProfileBody> {
     _phoneCtrl.dispose();
     _emailCtrl.dispose();
     _tgCtrl.dispose();
+    _bioCtrl.dispose();
     super.dispose();
   }
 
@@ -166,88 +188,94 @@ class _ProfileBodyState extends State<_ProfileBody> {
       '${widget.user.lastName} ${widget.user.firstName}'
       '${widget.user.fatherName != null ? ' ${widget.user.fatherName}' : ''}';
 
-  String get _roleLabel =>
-      widget.user.role == 'teacher' ? 'Преподаватель' : 'Студент';
+  String get _roleLabel => _isTeacher ? 'Преподаватель' : 'Студент';
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt = Theme.of(context).textTheme;
+    final tt  = Theme.of(context).textTheme;
 
     return CustomScrollView(
       slivers: [
         const _ProfileAppBar(),
-
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
           sliver: SliverList(
             delegate: SliverChildListDelegate([
 
+              // ── Шапка: аватар + имя + роль + мета ──────────
               _ProfileHeader(
-                fullName: _fullName,
+                fullName:  _fullName,
                 roleLabel: _roleLabel,
-                group: widget.user.group,
-                subgroup: widget.user.subgroup,
-                sex: widget.user.sex,
-                recordBook: widget.user.recordBookNumber,
-                cs: cs,
-                ext: ext,
-                tt: tt,
+                isTeacher: _isTeacher,
+                user:      widget.user,
+                cs: cs, ext: ext, tt: tt,
               ),
 
               const SizedBox(height: 24),
 
+              // ── «О себе» — только для преподавателя ─────────
+              if (_isTeacher) ...[
+                _SectionLabel(label: 'О себе', ext: ext, tt: tt),
+                const SizedBox(height: 8),
+                _BioCard(
+                  controller: _bioCtrl,
+                  isEditing: _editingBio,
+                  onToggle: () => setState(() => _editingBio = !_editingBio),
+                  cs: cs, ext: ext, tt: tt,
+                ),
+                const SizedBox(height: 24),
+              ],
+
+              // ── Контакты ─────────────────────────────────────
               _SectionLabel(label: 'Контакты', ext: ext, tt: tt),
               const SizedBox(height: 8),
               _ContactCard(
-                phoneCtrl: _phoneCtrl,
-                emailCtrl: _emailCtrl,
-                tgCtrl: _tgCtrl,
+                phoneCtrl:    _phoneCtrl,
+                emailCtrl:    _emailCtrl,
+                tgCtrl:       _tgCtrl,
                 editingPhone: _editingPhone,
                 editingEmail: _editingEmail,
-                editingTg: _editingTg,
+                editingTg:    _editingTg,
                 onTogglePhone: () => setState(() => _editingPhone = !_editingPhone),
                 onToggleEmail: () => setState(() => _editingEmail = !_editingEmail),
                 onToggleTg:    () => setState(() => _editingTg    = !_editingTg),
-                cs: cs,
-                ext: ext,
-                tt: tt,
+                cs: cs, ext: ext, tt: tt,
               ),
 
               const SizedBox(height: 24),
 
+              // ── Настройки приложения ─────────────────────────
               _SectionLabel(label: 'Настройки', ext: ext, tt: tt),
               const SizedBox(height: 8),
               _AppSettingsCard(cs: cs, ext: ext, tt: tt),
 
               const SizedBox(height: 24),
 
+              // ── Уведомления ──────────────────────────────────
               _SectionLabel(label: 'Уведомления', ext: ext, tt: tt),
               const SizedBox(height: 8),
               _NotificationsCard(
-                notifyChats: _notifyChats,
-                notifyNews: _notifyNews,
+                notifyChats:  _notifyChats,
+                notifyNews:   _notifyNews,
                 notifyEvents: _notifyEvents,
                 onChats:  (v) => setState(() => _notifyChats  = v),
                 onNews:   (v) => setState(() => _notifyNews   = v),
                 onEvents: (v) => setState(() => _notifyEvents = v),
-                cs: cs,
-                ext: ext,
-                tt: tt,
+                cs: cs, ext: ext, tt: tt,
               ),
 
               const SizedBox(height: 32),
 
+              // ── Выход ────────────────────────────────────────
               _LogoutButton(cs: cs, ext: ext, tt: tt),
 
               const SizedBox(height: 16),
 
               Center(
-                child: Text(
-                  'Версия 1.1.0',
-                  style: tt.labelSmall?.copyWith(color: ext.textTertiary),
-                ),
+                child: Text('Версия 1.1.0',
+                    style: tt.labelSmall?.copyWith(color: ext.textTertiary)),
               ),
 
               SizedBox(height: MediaQuery.of(context).padding.bottom),
@@ -259,21 +287,23 @@ class _ProfileBodyState extends State<_ProfileBody> {
   }
 }
 
+// ════════════════════════════════════════════════════════════
+// Шапка профиля — разный контент для студента и преподавателя
+// ════════════════════════════════════════════════════════════
 class _ProfileHeader extends StatelessWidget {
   const _ProfileHeader({
     required this.fullName,
     required this.roleLabel,
-    required this.group,
-    required this.subgroup,
-    required this.sex,
-    required this.recordBook,
+    required this.isTeacher,
+    required this.user,
     required this.cs,
     required this.ext,
     required this.tt,
   });
 
-  final String fullName, roleLabel, group, subgroup, recordBook;
-  final String? sex;
+  final String fullName, roleLabel;
+  final bool isTeacher;
+  final User user;
   final ColorScheme cs;
   final AppColors ext;
   final TextTheme tt;
@@ -313,17 +343,12 @@ class _ProfileHeader extends StatelessWidget {
           Container(
             width: 64, height: 64,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _avatarColor(fullName),
-            ),
+                shape: BoxShape.circle, color: _avatarColor(fullName)),
             alignment: Alignment.center,
-            child: Text(
-              _initials(fullName),
-              style: const TextStyle(
-                fontSize: 22, fontWeight: FontWeight.w700,
-                color: Colors.white, height: 1,
-              ),
-            ),
+            child: Text(_initials(fullName),
+                style: const TextStyle(
+                    fontSize: 22, fontWeight: FontWeight.w700,
+                    color: Colors.white, height: 1)),
           ),
           const SizedBox(width: 14),
 
@@ -334,33 +359,54 @@ class _ProfileHeader extends StatelessWidget {
                 Text(fullName, style: tt.titleMedium),
                 const SizedBox(height: 4),
 
+                // Бейдж роли
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
                   decoration: BoxDecoration(
-                    color: ext.infoBg,
+                    color: isTeacher ? ext.warningBg : ext.infoBg,
                     borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                   ),
                   child: Text(
                     roleLabel,
                     style: TextStyle(
                       fontSize: 11, fontWeight: FontWeight.w600,
-                      color: ext.infoFg, height: 1,
+                      color: isTeacher ? ext.warningFg : ext.infoFg, height: 1,
                     ),
                   ),
                 ),
 
                 const SizedBox(height: 10),
 
-                _MetaLine(icon: Icons.groups_outlined,
-                    label: '$group · $subgroup подгруппа', ext: ext, tt: tt),
-                if (sex != null && sex!.isNotEmpty) ...[
+                // ── Студент ────────────────────────────────────
+                if (!isTeacher) ...[
+                  _MetaLine(icon: Icons.groups_outlined,
+                      label: '${user.group} · ${user.subgroup} подгруппа',
+                      ext: ext, tt: tt),
+                  if (user.sex != null && user.sex!.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    _MetaLine(icon: Icons.person_outline,
+                        label: user.sex!, ext: ext, tt: tt),
+                  ],
                   const SizedBox(height: 4),
-                  _MetaLine(icon: Icons.person_outline,
-                      label: sex!, ext: ext, tt: tt),
+                  _MetaLine(icon: Icons.badge_outlined,
+                      label: 'Зачётная книжка №${user.recordBookNumber}',
+                      ext: ext, tt: tt),
+                  const SizedBox(height: 4),
+                  _MetaLine(icon: Icons.account_balance_outlined,
+                      label: user.institute, ext: ext, tt: tt),
                 ],
-                const SizedBox(height: 4),
-                _MetaLine(icon: Icons.badge_outlined,
-                    label: 'Зачётная книжка №$recordBook', ext: ext, tt: tt),
+
+                // ── Преподаватель ──────────────────────────────
+                if (isTeacher) ...[
+                  _MetaLine(icon: Icons.account_balance_outlined,
+                      label: user.institute, ext: ext, tt: tt),
+                  // Группа в модели преподавателя хранит кафедру/должность
+                  if (user.group.isNotEmpty) ...[
+                    const SizedBox(height: 4),
+                    _MetaLine(icon: Icons.work_outline,
+                        label: user.group, ext: ext, tt: tt),
+                  ],
+                ],
               ],
             ),
           ),
@@ -370,6 +416,102 @@ class _ProfileHeader extends StatelessWidget {
   }
 }
 
+// ════════════════════════════════════════════════════════════
+// «О себе» — только для преподавателя
+// ════════════════════════════════════════════════════════════
+class _BioCard extends StatelessWidget {
+  const _BioCard({
+    required this.controller,
+    required this.isEditing,
+    required this.onToggle,
+    required this.cs,
+    required this.ext,
+    required this.tt,
+  });
+
+  final TextEditingController controller;
+  final bool isEditing;
+  final VoidCallback onToggle;
+  final ColorScheme cs;
+  final AppColors ext;
+  final TextTheme tt;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: cs.surface,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+        border: Border.all(color: ext.border),
+      ),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.person_outline, size: 16, color: ext.textTertiary),
+              const SizedBox(width: 8),
+              Text('Краткая биография',
+                  style: tt.labelSmall?.copyWith(color: ext.textSecondary)),
+              const Spacer(),
+              GestureDetector(
+                onTap: onToggle,
+                child: Container(
+                  width: 32, height: 32,
+                  decoration: BoxDecoration(
+                    color: isEditing ? cs.primary : ext.surfaceTinted,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    isEditing ? Icons.check : Icons.edit_outlined,
+                    size: 15,
+                    color: isEditing ? cs.onPrimary : ext.textOnTinted,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          isEditing
+              ? TextField(
+                  controller: controller,
+                  autofocus: true,
+                  maxLines: 5,
+                  minLines: 3,
+                  textCapitalization: TextCapitalization.sentences,
+                  style: tt.bodyLarge?.copyWith(fontSize: 15, height: 1.5),
+                  decoration: InputDecoration(
+                    hintText:
+                        'Расскажите о своей научной деятельности, дисциплинах и интересах...',
+                    hintStyle: tt.bodyMedium?.copyWith(color: ext.textTertiary),
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
+                )
+              : controller.text.isEmpty
+                  ? Text(
+                      'Нажмите редактировать чтобы добавить информацию о себе',
+                      style: tt.bodyMedium?.copyWith(
+                          color: ext.textTertiary, height: 1.5),
+                    )
+                  : Text(
+                      controller.text,
+                      style: tt.bodyLarge?.copyWith(
+                          fontSize: 15, height: 1.5, color: ext.textPrimary),
+                    ),
+        ],
+      ),
+    );
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// Карточка контактов
+// ════════════════════════════════════════════════════════════
 class _ContactCard extends StatelessWidget {
   const _ContactCard({
     required this.phoneCtrl,
@@ -472,7 +614,6 @@ class _EditableContactRow extends StatelessWidget {
         children: [
           Icon(icon, size: 18, color: ext.textTertiary),
           const SizedBox(width: 12),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -487,8 +628,8 @@ class _EditableContactRow extends StatelessWidget {
                         style: tt.bodyLarge?.copyWith(fontSize: 15),
                         decoration: InputDecoration(
                           hintText: hint,
-                          hintStyle: tt.bodyMedium
-                              ?.copyWith(color: ext.textTertiary),
+                          hintStyle:
+                              tt.bodyMedium?.copyWith(color: ext.textTertiary),
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
@@ -508,9 +649,7 @@ class _EditableContactRow extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(width: 8),
-
           GestureDetector(
             onTap: onToggle,
             child: Container(
@@ -532,6 +671,9 @@ class _EditableContactRow extends StatelessWidget {
   }
 }
 
+// ════════════════════════════════════════════════════════════
+// Настройки + уведомления + выход (без изменений)
+// ════════════════════════════════════════════════════════════
 class _AppSettingsCard extends StatelessWidget {
   const _AppSettingsCard({required this.cs, required this.ext, required this.tt});
   final ColorScheme cs;
@@ -542,11 +684,7 @@ class _AppSettingsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
-        final settings = state.maybeWhen(
-          success: (s) => s,
-          orElse: () => null,
-        );
-
+        final settings = state.maybeWhen(success: (s) => s, orElse: () => null);
         final isDark = settings?.themeMode == 'dark';
         final isRu   = (settings?.locale ?? 'ru') == 'ru';
 
@@ -563,24 +701,19 @@ class _AppSettingsCard extends StatelessWidget {
                 label: 'Тёмная тема',
                 value: isDark,
                 onChanged: (v) => context.read<SettingsBloc>().add(
-                  SettingsEvent.updateAppThemeMode(
-                    themeMode: v ? 'dark' : 'light',
-                  ),
-                ),
+                      SettingsEvent.updateAppThemeMode(
+                          themeMode: v ? 'dark' : 'light')),
                 isLast: false,
                 ext: ext, tt: tt,
               ),
               Divider(height: 1, color: ext.divider, indent: 16),
-
               _SettingsToggleRow(
                 icon: Icons.language_outlined,
                 label: 'Русский язык',
                 value: isRu,
                 onChanged: (v) => context.read<SettingsBloc>().add(
-                  SettingsEvent.updateAppLocalization(
-                    locale: v ? 'ru' : 'en',
-                  ),
-                ),
+                      SettingsEvent.updateAppLocalization(
+                          locale: v ? 'ru' : 'en')),
                 isLast: true,
                 ext: ext, tt: tt,
               ),
@@ -674,16 +807,13 @@ class _SettingsToggleRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
       child: Row(
         children: [
           Icon(icon, size: 18, color: ext.textTertiary),
           const SizedBox(width: 12),
-          Expanded(
-            child: Text(label, style: tt.labelLarge),
-          ),
+          Expanded(child: Text(label, style: tt.labelLarge)),
           Switch(
             value: value,
             onChanged: onChanged,
@@ -717,8 +847,7 @@ class _LogoutButton extends StatelessWidget {
           elevation: 0,
           side: BorderSide(color: ext.errorFg.withValues(alpha: .3)),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-          ),
+              borderRadius: BorderRadius.circular(AppTheme.radiusMd)),
         ),
       ),
     );
@@ -726,38 +855,31 @@ class _LogoutButton extends StatelessWidget {
 
   void _confirmLogout(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt = Theme.of(context).textTheme;
-    final cs = Theme.of(context).colorScheme;
+    final tt  = Theme.of(context).textTheme;
+    final cs  = Theme.of(context).colorScheme;
 
     showModalBottomSheet(
       context: context,
       backgroundColor: cs.surface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppTheme.radiusLg),
-        ),
-      ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(AppTheme.radiusLg))),
       builder: (_) => Padding(
-        padding: EdgeInsets.fromLTRB(16, 20, 16, MediaQuery.of(context).padding.bottom + 32),
+        padding: EdgeInsets.fromLTRB(
+            16, 20, 16, MediaQuery.of(context).padding.bottom + 32),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Ручка
             Container(
               width: 36, height: 4,
               margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
-                color: ext.border,
-                borderRadius: BorderRadius.circular(2),
-              ),
+                  color: ext.border, borderRadius: BorderRadius.circular(2)),
             ),
             Text('Выйти из аккаунта?', style: tt.titleMedium),
             const SizedBox(height: 8),
-            Text(
-              'Все локальные данные будут удалены.',
-              style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
-              textAlign: TextAlign.center,
-            ),
+            Text('Все локальные данные будут удалены.',
+                style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+                textAlign: TextAlign.center),
             const SizedBox(height: 24),
             Row(
               children: [
@@ -765,9 +887,8 @@ class _LogoutButton extends StatelessWidget {
                   child: SizedBox(
                     height: 48,
                     child: OutlinedButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Отмена'),
-                    ),
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Отмена')),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -780,10 +901,9 @@ class _LogoutButton extends StatelessWidget {
                         context.read<AuthBloc>().add(AuthEvent.logout());
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: ext.errorBg,
-                        foregroundColor: ext.errorFg,
-                        elevation: 0,
-                      ),
+                          backgroundColor: ext.errorBg,
+                          foregroundColor: ext.errorFg,
+                          elevation: 0),
                       child: const Text('Выйти'),
                     ),
                   ),
@@ -798,7 +918,7 @@ class _LogoutButton extends StatelessWidget {
 }
 
 // ════════════════════════════════════════════════════════════
-// Вспомогательные виджеты
+// Мелкие утилиты
 // ════════════════════════════════════════════════════════════
 class _SectionLabel extends StatelessWidget {
   const _SectionLabel({required this.label, required this.ext, required this.tt});
@@ -807,12 +927,8 @@ class _SectionLabel extends StatelessWidget {
   final TextTheme tt;
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      label,
-      style: tt.titleMedium,
-    );
-  }
+  Widget build(BuildContext context) =>
+      Text(label, style: tt.titleMedium);
 }
 
 class _MetaLine extends StatelessWidget {
@@ -834,12 +950,10 @@ class _MetaLine extends StatelessWidget {
         Icon(icon, size: 14, color: ext.textTertiary),
         const SizedBox(width: 5),
         Expanded(
-          child: Text(
-            label,
-            style: tt.labelSmall?.copyWith(color: ext.textSecondary),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+          child: Text(label,
+              style: tt.labelSmall?.copyWith(color: ext.textSecondary),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis),
         ),
       ],
     );

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Lesson {
 
- String get day; String get time; String get teacher; String get subject; String get type; String get place; String get building; List<String> get groups; String get sync;
+ String get id; String get day; String get time; String get teacher; String? get teacherId; String get subject; String get type; String get place; String get building; List<String> get groups; String get sync;
 /// Create a copy of Lesson
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $LessonCopyWith<Lesson> get copyWith => _$LessonCopyWithImpl<Lesson>(this as Les
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Lesson&&(identical(other.day, day) || other.day == day)&&(identical(other.time, time) || other.time == time)&&(identical(other.teacher, teacher) || other.teacher == teacher)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.type, type) || other.type == type)&&(identical(other.place, place) || other.place == place)&&(identical(other.building, building) || other.building == building)&&const DeepCollectionEquality().equals(other.groups, groups)&&(identical(other.sync, sync) || other.sync == sync));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Lesson&&(identical(other.id, id) || other.id == id)&&(identical(other.day, day) || other.day == day)&&(identical(other.time, time) || other.time == time)&&(identical(other.teacher, teacher) || other.teacher == teacher)&&(identical(other.teacherId, teacherId) || other.teacherId == teacherId)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.type, type) || other.type == type)&&(identical(other.place, place) || other.place == place)&&(identical(other.building, building) || other.building == building)&&const DeepCollectionEquality().equals(other.groups, groups)&&(identical(other.sync, sync) || other.sync == sync));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,day,time,teacher,subject,type,place,building,const DeepCollectionEquality().hash(groups),sync);
+int get hashCode => Object.hash(runtimeType,id,day,time,teacher,teacherId,subject,type,place,building,const DeepCollectionEquality().hash(groups),sync);
 
 @override
 String toString() {
-  return 'Lesson(day: $day, time: $time, teacher: $teacher, subject: $subject, type: $type, place: $place, building: $building, groups: $groups, sync: $sync)';
+  return 'Lesson(id: $id, day: $day, time: $time, teacher: $teacher, teacherId: $teacherId, subject: $subject, type: $type, place: $place, building: $building, groups: $groups, sync: $sync)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $LessonCopyWith<$Res>  {
   factory $LessonCopyWith(Lesson value, $Res Function(Lesson) _then) = _$LessonCopyWithImpl;
 @useResult
 $Res call({
- String day, String time, String teacher, String subject, String type, String place, String building, List<String> groups, String sync
+ String id, String day, String time, String teacher, String? teacherId, String subject, String type, String place, String building, List<String> groups, String sync
 });
 
 
@@ -62,12 +62,14 @@ class _$LessonCopyWithImpl<$Res>
 
 /// Create a copy of Lesson
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? day = null,Object? time = null,Object? teacher = null,Object? subject = null,Object? type = null,Object? place = null,Object? building = null,Object? groups = null,Object? sync = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? day = null,Object? time = null,Object? teacher = null,Object? teacherId = freezed,Object? subject = null,Object? type = null,Object? place = null,Object? building = null,Object? groups = null,Object? sync = null,}) {
   return _then(_self.copyWith(
-day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
 as String,time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as String,teacher: null == teacher ? _self.teacher : teacher // ignore: cast_nullable_to_non_nullable
-as String,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
+as String,teacherId: freezed == teacherId ? _self.teacherId : teacherId // ignore: cast_nullable_to_non_nullable
+as String?,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,place: null == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
 as String,building: null == building ? _self.building : building // ignore: cast_nullable_to_non_nullable
@@ -158,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String day,  String time,  String teacher,  String subject,  String type,  String place,  String building,  List<String> groups,  String sync)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String day,  String time,  String teacher,  String? teacherId,  String subject,  String type,  String place,  String building,  List<String> groups,  String sync)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Lesson() when $default != null:
-return $default(_that.day,_that.time,_that.teacher,_that.subject,_that.type,_that.place,_that.building,_that.groups,_that.sync);case _:
+return $default(_that.id,_that.day,_that.time,_that.teacher,_that.teacherId,_that.subject,_that.type,_that.place,_that.building,_that.groups,_that.sync);case _:
   return orElse();
 
 }
@@ -179,10 +181,10 @@ return $default(_that.day,_that.time,_that.teacher,_that.subject,_that.type,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String day,  String time,  String teacher,  String subject,  String type,  String place,  String building,  List<String> groups,  String sync)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String day,  String time,  String teacher,  String? teacherId,  String subject,  String type,  String place,  String building,  List<String> groups,  String sync)  $default,) {final _that = this;
 switch (_that) {
 case _Lesson():
-return $default(_that.day,_that.time,_that.teacher,_that.subject,_that.type,_that.place,_that.building,_that.groups,_that.sync);case _:
+return $default(_that.id,_that.day,_that.time,_that.teacher,_that.teacherId,_that.subject,_that.type,_that.place,_that.building,_that.groups,_that.sync);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +201,10 @@ return $default(_that.day,_that.time,_that.teacher,_that.subject,_that.type,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String day,  String time,  String teacher,  String subject,  String type,  String place,  String building,  List<String> groups,  String sync)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String day,  String time,  String teacher,  String? teacherId,  String subject,  String type,  String place,  String building,  List<String> groups,  String sync)?  $default,) {final _that = this;
 switch (_that) {
 case _Lesson() when $default != null:
-return $default(_that.day,_that.time,_that.teacher,_that.subject,_that.type,_that.place,_that.building,_that.groups,_that.sync);case _:
+return $default(_that.id,_that.day,_that.time,_that.teacher,_that.teacherId,_that.subject,_that.type,_that.place,_that.building,_that.groups,_that.sync);case _:
   return null;
 
 }
@@ -214,12 +216,14 @@ return $default(_that.day,_that.time,_that.teacher,_that.subject,_that.type,_tha
 
 
 class _Lesson implements Lesson {
-  const _Lesson({required this.day, required this.time, required this.teacher, required this.subject, required this.type, required this.place, required this.building, required final  List<String> groups, required this.sync}): _groups = groups;
+  const _Lesson({required this.id, required this.day, required this.time, required this.teacher, this.teacherId, required this.subject, required this.type, required this.place, required this.building, required final  List<String> groups, required this.sync}): _groups = groups;
   
 
+@override final  String id;
 @override final  String day;
 @override final  String time;
 @override final  String teacher;
+@override final  String? teacherId;
 @override final  String subject;
 @override final  String type;
 @override final  String place;
@@ -243,16 +247,16 @@ _$LessonCopyWith<_Lesson> get copyWith => __$LessonCopyWithImpl<_Lesson>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Lesson&&(identical(other.day, day) || other.day == day)&&(identical(other.time, time) || other.time == time)&&(identical(other.teacher, teacher) || other.teacher == teacher)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.type, type) || other.type == type)&&(identical(other.place, place) || other.place == place)&&(identical(other.building, building) || other.building == building)&&const DeepCollectionEquality().equals(other._groups, _groups)&&(identical(other.sync, sync) || other.sync == sync));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Lesson&&(identical(other.id, id) || other.id == id)&&(identical(other.day, day) || other.day == day)&&(identical(other.time, time) || other.time == time)&&(identical(other.teacher, teacher) || other.teacher == teacher)&&(identical(other.teacherId, teacherId) || other.teacherId == teacherId)&&(identical(other.subject, subject) || other.subject == subject)&&(identical(other.type, type) || other.type == type)&&(identical(other.place, place) || other.place == place)&&(identical(other.building, building) || other.building == building)&&const DeepCollectionEquality().equals(other._groups, _groups)&&(identical(other.sync, sync) || other.sync == sync));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,day,time,teacher,subject,type,place,building,const DeepCollectionEquality().hash(_groups),sync);
+int get hashCode => Object.hash(runtimeType,id,day,time,teacher,teacherId,subject,type,place,building,const DeepCollectionEquality().hash(_groups),sync);
 
 @override
 String toString() {
-  return 'Lesson(day: $day, time: $time, teacher: $teacher, subject: $subject, type: $type, place: $place, building: $building, groups: $groups, sync: $sync)';
+  return 'Lesson(id: $id, day: $day, time: $time, teacher: $teacher, teacherId: $teacherId, subject: $subject, type: $type, place: $place, building: $building, groups: $groups, sync: $sync)';
 }
 
 
@@ -263,7 +267,7 @@ abstract mixin class _$LessonCopyWith<$Res> implements $LessonCopyWith<$Res> {
   factory _$LessonCopyWith(_Lesson value, $Res Function(_Lesson) _then) = __$LessonCopyWithImpl;
 @override @useResult
 $Res call({
- String day, String time, String teacher, String subject, String type, String place, String building, List<String> groups, String sync
+ String id, String day, String time, String teacher, String? teacherId, String subject, String type, String place, String building, List<String> groups, String sync
 });
 
 
@@ -280,12 +284,14 @@ class __$LessonCopyWithImpl<$Res>
 
 /// Create a copy of Lesson
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? day = null,Object? time = null,Object? teacher = null,Object? subject = null,Object? type = null,Object? place = null,Object? building = null,Object? groups = null,Object? sync = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? day = null,Object? time = null,Object? teacher = null,Object? teacherId = freezed,Object? subject = null,Object? type = null,Object? place = null,Object? building = null,Object? groups = null,Object? sync = null,}) {
   return _then(_Lesson(
-day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,day: null == day ? _self.day : day // ignore: cast_nullable_to_non_nullable
 as String,time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
 as String,teacher: null == teacher ? _self.teacher : teacher // ignore: cast_nullable_to_non_nullable
-as String,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
+as String,teacherId: freezed == teacherId ? _self.teacherId : teacherId // ignore: cast_nullable_to_non_nullable
+as String?,subject: null == subject ? _self.subject : subject // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,place: null == place ? _self.place : place // ignore: cast_nullable_to_non_nullable
 as String,building: null == building ? _self.building : building // ignore: cast_nullable_to_non_nullable

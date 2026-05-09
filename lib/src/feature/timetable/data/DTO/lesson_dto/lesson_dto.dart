@@ -6,15 +6,19 @@ part 'lesson_dto.g.dart';
 @freezed
 abstract class LessonDTO with _$LessonDTO {
   const factory LessonDTO({
+    required String id,
     required String day,
-    required String time,
+    @JsonKey(name: 'time_start') required String timeStart,
+    @JsonKey(name: 'time_end')   required String timeEnd,
     required String subject,
-    required String type,
-    required String place,
-    required String building,
-    required String sync,
+    @JsonKey(name: 'lesson_type') @Default('') String type,
+    @Default('') String place,
+    @Default('') String building,
+    @Default('') String room,
     @Default('') String teacher,
+    @JsonKey(name: 'teacher_id') String? teacherId,
     @Default([]) List<String> groups,
+    @Default('') String sync,
   }) = _LessonDTO;
 
   factory LessonDTO.fromJson(Map<String, dynamic> json) =>
