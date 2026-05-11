@@ -13,8 +13,6 @@ class QrScreen extends StatefulWidget {
 class _QrScreenState extends State<QrScreen> {
   _ScanFeedback? _feedback;
 
-  // Заглушка истории — заменить на реальный источник данных
-  // когда появится фича attendance history
   final List<_AttendanceRecord> _history = const [
     _AttendanceRecord(subject: 'Машинное обучение', time: 'Сегодня · 10:32'),
     _AttendanceRecord(subject: 'Базы данных', time: 'Вчера · 13:02'),
@@ -42,7 +40,6 @@ class _QrScreenState extends State<QrScreen> {
         setState(() => _feedback = const _ScanFeedback.error());
         break;
       case QRScannerStatus.cancelled:
-        // Пользователь закрыл — ничего не показываем
         break;
     }
   }
