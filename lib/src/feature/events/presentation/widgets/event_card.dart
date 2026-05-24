@@ -1,137 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
+import 'package:sfu/src/feature/events/domain/entity/event.dart';
+import 'package:sfu/src/feature/events/presentation/bloc/events_bloc.dart';
 
-import '../../core/widgets/detail_sheet.dart';
-
-class DepartmentEvent {
-  final String id;
-  final String day;
-  final String month;
-  final String title;
-  final String preview;
-  final String body;
-  final String location;
-  final String time;
-  final String organizer;
-  final int totalSeats;
-  final int takenSeats;
-  final List<String> tags;
-
-  const DepartmentEvent({
-    required this.id,
-    required this.day,
-    required this.month,
-    required this.title,
-    required this.preview,
-    required this.body,
-    required this.location,
-    required this.time,
-    required this.organizer,
-    required this.totalSeats,
-    required this.takenSeats,
-    this.tags = const [],
-  });
-
-  int get freeSeats => totalSeats - takenSeats;
-  bool get isFull => freeSeats <= 0;
-}
-
-const sampleEvents = [
-  DepartmentEvent(
-    id: 'ev_1',
-    day: '07',
-    month: 'МАЯ',
-    title: 'Хакатон по компьютерному зрению',
-    preview:
-        'Команды до 4 человек. Призовой фонд 150 000 ₽. Задача — детекция объектов на спутниковых снимках.',
-    body:
-        'Кафедра САИ совместно с «Ростелеком» проводит хакатон по компьютерному зрению.\n\n'
-        'Задача: разработать систему детекции объектов инфраструктуры на спутниковых снимках '
-        'с точностью mAP ≥ 0.75. Данные и бейзлайн будут выданы на старте.\n\n'
-        'Формат:\n'
-        '• Командный, 2–4 человека\n'
-        '• 48 часов непрерывной работы\n'
-        '• Очный формат, ноутбуки с собой\n'
-        '• Питание и напитки — за счёт организаторов\n\n'
-        'Призы:\n'
-        '• 1 место — 80 000 ₽\n'
-        '• 2 место — 50 000 ₽\n'
-        '• 3 место — 20 000 ₽\n\n'
-        'Финальная презентация и церемония награждения — 9 мая в 16:00.',
-    location: 'Корпус Л4, ауд. 21 (хакспейс)',
-    time: '07 мая · 10:00',
-    organizer: 'Соколова Е. В.',
-    totalSeats: 40,
-    takenSeats: 28,
-    tags: ['Хакатон', 'CV', 'Очно'],
-  ),
-  DepartmentEvent(
-    id: 'ev_2',
-    day: '12',
-    month: 'МАЯ',
-    title: 'Лекция: GenAI в индустрии',
-    preview:
-        'Открытая встреча с инженерами Yandex. Разберём как LLM внедряются в production-системы.',
-    body:
-        'Открытая лекция от инженеров Yandex Cloud AI.\n\n'
-        'Темы:\n'
-        '• Архитектура современных LLM: от трансформера до MoE\n'
-        '• Fine-tuning vs RAG — когда что применять\n'
-        '• Как устроен production-пайплайн генеративных сервисов Яндекса\n'
-        '• Q&A с командой: вопросы из зала\n\n'
-        'Спикеры:\n'
-        '• Артём Семёнов — ML Lead, Yandex Cloud\n'
-        '• Дарья Ким — Research Engineer, YandexGPT team\n\n'
-        'После лекции — неформальное общение и возможность попасть на стажировку.\n\n'
-        'Регистрация обязательна — мест ограниченно.',
-    location: 'Конференц-зал, корп. Г, ауд. 208',
-    time: '12 мая · 14:00',
-    organizer: 'Кузнецова А. П.',
-    totalSeats: 60,
-    takenSeats: 55,
-    tags: ['Лекция', 'GenAI', 'Гость'],
-  ),
-  DepartmentEvent(
-    id: 'ev_3',
-    day: '18',
-    month: 'МАЯ',
-    title: 'Защита курсовых работ',
-    preview:
-        'Поток БИ22, расписание по подгруппам. Каждая презентация — 10 мин + 5 мин вопросы.',
-    body:
-        'Защита курсовых работ студентов потока БИ22.\n\n'
-        'Расписание по подгруппам:\n'
-        '• 1 подгруппа (гр. БИ22-01, БИ22-02) — 09:00–12:00, ауд. Л4-12\n'
-        '• 2 подгруппа (гр. БИ22-03, БИ22-04) — 13:00–16:00, ауд. Л4-21\n\n'
-        'Регламент выступления:\n'
-        '• Презентация — 10 минут\n'
-        '• Ответы на вопросы комиссии — 5 минут\n'
-        '• Оценка выставляется сразу после выступления\n\n'
-        'Состав комиссии: Иванов А. М. (председатель), Петров С. И., Соколова Е. В.\n\n'
-        'Требования к презентации: не менее 12 слайдов, обязателен слайд с результатами и выводами.',
-    location: 'Ауд. Л4-12 и Л4-21',
-    time: '18 мая · 09:00',
-    organizer: 'Иванов А. М.',
-    totalSeats: 30,
-    takenSeats: 30,
-    tags: ['Защита', 'БИ22'],
-  ),
-];
+import '../../../../core/widgets/detail_sheet.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard({super.key, required this.event});
-  final DepartmentEvent event;
+  final Event event;
+
+  // Вычисляемые поля из модели
+  String get _day => DateFormat('d').format(event.startsAt);
+
+  String get _month =>
+      DateFormat('MMM', 'ru').format(event.startsAt).toUpperCase();
+
+  String get _timeLabel {
+    final start = DateFormat('HH:mm').format(event.startsAt);
+    final end = DateFormat('HH:mm').format(event.endsAt);
+    final date = DateFormat('d MMMM', 'ru').format(event.startsAt);
+
+    // Многодневное событие
+    if (event.endsAt.difference(event.startsAt).inDays >= 1) {
+      final endDate = DateFormat('d MMMM', 'ru').format(event.endsAt);
+      return '$date — $endDate';
+    }
+
+    return '$date · $start – $end';
+  }
+
+  String get _location =>
+      '${event.roomNumber} · ${event.roomAddress}';
+
+  bool get _isFull => event.takenSeats >= event.roomCapacity;
+  int get _freeSeats => event.roomCapacity - event.takenSeats;
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt = Theme.of(context).textTheme;
+    final tt  = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: () => showDetailSheet(
         context: context,
-        child: _EventDetail(event: event, cs: cs, ext: ext, tt: tt),
+        child: _EventDetail(
+          event: event,
+          timeLabel: _timeLabel,
+          location: _location,
+          isFull: _isFull,
+          freeSeats: _freeSeats,
+          cs: cs,
+          ext: ext,
+          tt: tt,
+        ),
       ),
       child: Container(
         width: 230,
@@ -154,7 +78,7 @@ class EventCard extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    event.day,
+                    _day,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
@@ -164,7 +88,7 @@ class EventCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    event.month,
+                    _month,
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
@@ -190,9 +114,9 @@ class EventCard extends StatelessWidget {
             ),
             const SizedBox(height: 5),
 
-            // Превью
+            // Annotation как превью
             Text(
-              event.preview,
+              event.annotation,
               style: tt.bodyMedium?.copyWith(
                 fontSize: 12,
                 color: ext.textSecondary,
@@ -203,9 +127,16 @@ class EventCard extends StatelessWidget {
 
             const Spacer(),
 
-            // Мест осталось
             const SizedBox(height: 8),
-            _SeatsIndicator(event: event, cs: cs, ext: ext, tt: tt),
+            _SeatsIndicator(
+              takenSeats: event.takenSeats,
+              totalSeats: event.roomCapacity,
+              isFull: _isFull,
+              freeSeats: _freeSeats,
+              cs: cs,
+              ext: ext,
+              tt: tt,
+            ),
           ],
         ),
       ),
@@ -216,25 +147,37 @@ class EventCard extends StatelessWidget {
 // ════════════════════════════════════════════════════════════
 // Контент шторки события
 // ════════════════════════════════════════════════════════════
+
 class _EventDetail extends StatelessWidget {
   const _EventDetail({
     required this.event,
+    required this.timeLabel,
+    required this.location,
+    required this.isFull,
+    required this.freeSeats,
     required this.cs,
     required this.ext,
     required this.tt,
   });
 
-  final DepartmentEvent event;
+  final Event event;
+  final String timeLabel;
+  final String location;
+  final bool isFull;
+  final int freeSeats;
   final ColorScheme cs;
   final AppColors ext;
   final TextTheme tt;
+
+  String get _dayMonth =>
+      DateFormat('d MMMM', 'ru').format(event.startsAt);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Дата + метка
+        // Дата + теги
         Row(
           children: [
             Container(
@@ -244,7 +187,7 @@ class _EventDetail extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                '${event.day} ${event.month}',
+                _dayMonth,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
@@ -255,14 +198,12 @@ class _EventDetail extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             if (event.tags.isNotEmpty)
-              ...event.tags
-                  .take(2)
-                  .map(
+              ...event.tags.take(2).map(
                     (t) => Padding(
-                      padding: const EdgeInsets.only(right: 6),
-                      child: _Tag(label: t, ext: ext),
-                    ),
-                  ),
+                  padding: const EdgeInsets.only(right: 6),
+                  child: _Tag(label: t, ext: ext),
+                ),
+              ),
           ],
         ),
         const SizedBox(height: 12),
@@ -286,37 +227,47 @@ class _EventDetail extends StatelessWidget {
             children: [
               _MetaRow(
                 icon: Icons.access_time_outlined,
-                label: event.time,
+                label: timeLabel,
                 ext: ext,
                 tt: tt,
               ),
               const SizedBox(height: 8),
               _MetaRow(
                 icon: Icons.location_on_outlined,
-                label: event.location,
+                label: location,
                 ext: ext,
                 tt: tt,
               ),
-              const SizedBox(height: 8),
-              _MetaRow(
-                icon: Icons.person_outline,
-                label: 'Организатор: ${event.organizer}',
-                ext: ext,
-                tt: tt,
-              ),
+              if (event.organizer.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                _MetaRow(
+                  icon: Icons.person_outline,
+                  label: 'Организатор: ${event.organizer}',
+                  ext: ext,
+                  tt: tt,
+                ),
+              ],
             ],
           ),
         ),
         const SizedBox(height: 14),
 
         // Места
-        _SeatsIndicator(event: event, cs: cs, ext: ext, tt: tt),
+        _SeatsIndicator(
+          takenSeats: event.takenSeats,
+          totalSeats: event.roomCapacity,
+          isFull: isFull,
+          freeSeats: freeSeats,
+          cs: cs,
+          ext: ext,
+          tt: tt,
+        ),
 
         Divider(color: ext.divider, height: 24),
 
         // Описание
         Text(
-          event.body,
+          event.body.isNotEmpty ? event.body : event.annotation,
           style: tt.bodyLarge?.copyWith(
             fontSize: 15,
             height: 1.6,
@@ -326,13 +277,46 @@ class _EventDetail extends StatelessWidget {
 
         const SizedBox(height: 24),
 
-        // Кнопка записаться
+        // Кнопка
         SizedBox(
           width: double.infinity,
           height: 52,
-          child: ElevatedButton(
-            onPressed: event.isFull ? null : () {},
-            child: Text(event.isFull ? 'Мест нет' : 'Записаться'),
+          child: BlocBuilder<EventsBloc, EventsState>(
+            builder: (context, state) {
+              final isEnrolled = state.maybeWhen(
+                success: (events) => events
+                    .firstWhere(
+                      (e) => e.id == event.id,
+                  orElse: () => event,
+                )
+                    .isEnrolled,
+                orElse: () => event.isEnrolled,
+              );
+
+              return ElevatedButton(
+                onPressed: isFull
+                    ? null
+                    : () {
+                  if (isEnrolled) {
+                    context.read<EventsBloc>().add(
+                      EventsEvent.unenroll(event.id),
+                    );
+                  } else {
+                    context.read<EventsBloc>().add(
+                      EventsEvent.enroll(event.id),
+                    );
+                  }
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  isFull
+                      ? 'Мест нет'
+                      : isEnrolled
+                      ? 'Отменить запись'
+                      : 'Записаться',
+                ),
+              );
+            },
           ),
         ),
       ],
@@ -343,34 +327,44 @@ class _EventDetail extends StatelessWidget {
 // ════════════════════════════════════════════════════════════
 // Индикатор мест
 // ════════════════════════════════════════════════════════════
+
 class _SeatsIndicator extends StatelessWidget {
   const _SeatsIndicator({
-    required this.event,
+    required this.takenSeats,
+    required this.totalSeats,
+    required this.isFull,
+    required this.freeSeats,
     required this.cs,
     required this.ext,
     required this.tt,
   });
 
-  final DepartmentEvent event;
+  final int takenSeats;
+  final int totalSeats;
+  final bool isFull;
+  final int freeSeats;
   final ColorScheme cs;
   final AppColors ext;
   final TextTheme tt;
 
   @override
   Widget build(BuildContext context) {
-    final fill = event.takenSeats / event.totalSeats;
+    // totalSeats == 0 — данных ещё нет, не показываем индикатор
+    if (totalSeats == 0) return const SizedBox.shrink();
+
+    final fill = (takenSeats / totalSeats).clamp(0.0, 1.0);
 
     final Color barColor;
     final String seatText;
-    if (event.isFull) {
+    if (isFull) {
       barColor = ext.errorFg;
       seatText = 'Мест нет';
-    } else if (event.freeSeats <= 5) {
+    } else if (freeSeats <= 5) {
       barColor = ext.warningFg;
-      seatText = 'Осталось ${event.freeSeats} мест';
+      seatText = 'Осталось $freeSeats мест';
     } else {
       barColor = ext.successFg;
-      seatText = '${event.freeSeats} свободных мест';
+      seatText = '$freeSeats свободных мест';
     }
 
     return Column(
@@ -387,7 +381,7 @@ class _SeatsIndicator extends StatelessWidget {
             ),
             const Spacer(),
             Text(
-              '${event.takenSeats}/${event.totalSeats}',
+              '$takenSeats/$totalSeats',
               style: tt.labelSmall?.copyWith(color: ext.textTertiary),
             ),
           ],
@@ -410,6 +404,7 @@ class _SeatsIndicator extends StatelessWidget {
 // ════════════════════════════════════════════════════════════
 // Вспомогательные
 // ════════════════════════════════════════════════════════════
+
 class _MetaRow extends StatelessWidget {
   const _MetaRow({
     required this.icon,

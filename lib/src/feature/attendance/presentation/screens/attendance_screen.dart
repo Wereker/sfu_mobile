@@ -5,10 +5,8 @@ import 'package:sfu/src/feature/attendance/presentation/bloc/session/attendance_
 import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_app_bar.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_day_picker.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_empty_view.dart';
-import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_skeleton.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/journal_sheet.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/lesson_attendance_card.dart';
-import 'package:sfu/src/feature/timetable/domain/entity/lesson/lesson.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});

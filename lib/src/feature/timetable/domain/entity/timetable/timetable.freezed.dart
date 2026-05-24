@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Timetable {
 
- String get target; String get type; String get institute; List<Week> get weeks;
+ int get groupId; Week get week1; Week get week2;
 /// Create a copy of Timetable
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TimetableCopyWith<Timetable> get copyWith => _$TimetableCopyWithImpl<Timetable>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Timetable&&(identical(other.target, target) || other.target == target)&&(identical(other.type, type) || other.type == type)&&(identical(other.institute, institute) || other.institute == institute)&&const DeepCollectionEquality().equals(other.weeks, weeks));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Timetable&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.week1, week1) || other.week1 == week1)&&(identical(other.week2, week2) || other.week2 == week2));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,target,type,institute,const DeepCollectionEquality().hash(weeks));
+int get hashCode => Object.hash(runtimeType,groupId,week1,week2);
 
 @override
 String toString() {
-  return 'Timetable(target: $target, type: $type, institute: $institute, weeks: $weeks)';
+  return 'Timetable(groupId: $groupId, week1: $week1, week2: $week2)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $TimetableCopyWith<$Res>  {
   factory $TimetableCopyWith(Timetable value, $Res Function(Timetable) _then) = _$TimetableCopyWithImpl;
 @useResult
 $Res call({
- String target, String type, String institute, List<Week> weeks
+ int groupId, Week week1, Week week2
 });
 
 
-
+$WeekCopyWith<$Res> get week1;$WeekCopyWith<$Res> get week2;
 
 }
 /// @nodoc
@@ -62,16 +62,33 @@ class _$TimetableCopyWithImpl<$Res>
 
 /// Create a copy of Timetable
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? target = null,Object? type = null,Object? institute = null,Object? weeks = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? groupId = null,Object? week1 = null,Object? week2 = null,}) {
   return _then(_self.copyWith(
-target: null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
-as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,institute: null == institute ? _self.institute : institute // ignore: cast_nullable_to_non_nullable
-as String,weeks: null == weeks ? _self.weeks : weeks // ignore: cast_nullable_to_non_nullable
-as List<Week>,
+groupId: null == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
+as int,week1: null == week1 ? _self.week1 : week1 // ignore: cast_nullable_to_non_nullable
+as Week,week2: null == week2 ? _self.week2 : week2 // ignore: cast_nullable_to_non_nullable
+as Week,
   ));
 }
-
+/// Create a copy of Timetable
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$WeekCopyWith<$Res> get week1 {
+  
+  return $WeekCopyWith<$Res>(_self.week1, (value) {
+    return _then(_self.copyWith(week1: value));
+  });
+}/// Create a copy of Timetable
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$WeekCopyWith<$Res> get week2 {
+  
+  return $WeekCopyWith<$Res>(_self.week2, (value) {
+    return _then(_self.copyWith(week2: value));
+  });
+}
 }
 
 
@@ -153,10 +170,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String target,  String type,  String institute,  List<Week> weeks)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int groupId,  Week week1,  Week week2)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Timetable() when $default != null:
-return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
+return $default(_that.groupId,_that.week1,_that.week2);case _:
   return orElse();
 
 }
@@ -174,10 +191,10 @@ return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String target,  String type,  String institute,  List<Week> weeks)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int groupId,  Week week1,  Week week2)  $default,) {final _that = this;
 switch (_that) {
 case _Timetable():
-return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
+return $default(_that.groupId,_that.week1,_that.week2);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +211,10 @@ return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String target,  String type,  String institute,  List<Week> weeks)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int groupId,  Week week1,  Week week2)?  $default,) {final _that = this;
 switch (_that) {
 case _Timetable() when $default != null:
-return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
+return $default(_that.groupId,_that.week1,_that.week2);case _:
   return null;
 
 }
@@ -209,19 +226,12 @@ return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
 
 
 class _Timetable implements Timetable {
-  const _Timetable({required this.target, required this.type, required this.institute, required final  List<Week> weeks}): _weeks = weeks;
+  const _Timetable({required this.groupId, required this.week1, required this.week2});
   
 
-@override final  String target;
-@override final  String type;
-@override final  String institute;
- final  List<Week> _weeks;
-@override List<Week> get weeks {
-  if (_weeks is EqualUnmodifiableListView) return _weeks;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_weeks);
-}
-
+@override final  int groupId;
+@override final  Week week1;
+@override final  Week week2;
 
 /// Create a copy of Timetable
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +243,16 @@ _$TimetableCopyWith<_Timetable> get copyWith => __$TimetableCopyWithImpl<_Timeta
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Timetable&&(identical(other.target, target) || other.target == target)&&(identical(other.type, type) || other.type == type)&&(identical(other.institute, institute) || other.institute == institute)&&const DeepCollectionEquality().equals(other._weeks, _weeks));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Timetable&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.week1, week1) || other.week1 == week1)&&(identical(other.week2, week2) || other.week2 == week2));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,target,type,institute,const DeepCollectionEquality().hash(_weeks));
+int get hashCode => Object.hash(runtimeType,groupId,week1,week2);
 
 @override
 String toString() {
-  return 'Timetable(target: $target, type: $type, institute: $institute, weeks: $weeks)';
+  return 'Timetable(groupId: $groupId, week1: $week1, week2: $week2)';
 }
 
 
@@ -253,11 +263,11 @@ abstract mixin class _$TimetableCopyWith<$Res> implements $TimetableCopyWith<$Re
   factory _$TimetableCopyWith(_Timetable value, $Res Function(_Timetable) _then) = __$TimetableCopyWithImpl;
 @override @useResult
 $Res call({
- String target, String type, String institute, List<Week> weeks
+ int groupId, Week week1, Week week2
 });
 
 
-
+@override $WeekCopyWith<$Res> get week1;@override $WeekCopyWith<$Res> get week2;
 
 }
 /// @nodoc
@@ -270,17 +280,34 @@ class __$TimetableCopyWithImpl<$Res>
 
 /// Create a copy of Timetable
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? target = null,Object? type = null,Object? institute = null,Object? weeks = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? groupId = null,Object? week1 = null,Object? week2 = null,}) {
   return _then(_Timetable(
-target: null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
-as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,institute: null == institute ? _self.institute : institute // ignore: cast_nullable_to_non_nullable
-as String,weeks: null == weeks ? _self._weeks : weeks // ignore: cast_nullable_to_non_nullable
-as List<Week>,
+groupId: null == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
+as int,week1: null == week1 ? _self.week1 : week1 // ignore: cast_nullable_to_non_nullable
+as Week,week2: null == week2 ? _self.week2 : week2 // ignore: cast_nullable_to_non_nullable
+as Week,
   ));
 }
 
-
+/// Create a copy of Timetable
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$WeekCopyWith<$Res> get week1 {
+  
+  return $WeekCopyWith<$Res>(_self.week1, (value) {
+    return _then(_self.copyWith(week1: value));
+  });
+}/// Create a copy of Timetable
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$WeekCopyWith<$Res> get week2 {
+  
+  return $WeekCopyWith<$Res>(_self.week2, (value) {
+    return _then(_self.copyWith(week2: value));
+  });
+}
 }
 
 // dart format on

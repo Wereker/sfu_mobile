@@ -15,8 +15,8 @@ class TimetableContent extends StatelessWidget {
       builder: (context, state) {
         return state.maybeWhen(
           loading: () => const LoadingView(),
-          success: (timetable) => TimetableBody(timetable: timetable),
-          error: (_) => const ErrorView(),
+          success: (timetable, _) => TimetableBody(timetable: timetable),
+          error: (error) => ErrorView(error: error),
           orElse: () => const EmptyView(),
         );
       },
@@ -45,7 +45,9 @@ class LoadingView extends StatelessWidget {
 }
 
 class ErrorView extends StatelessWidget {
-  const ErrorView({super.key});
+  final String error;
+
+  const ErrorView({super.key, required this.error});
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +88,7 @@ class ErrorView extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Проверь подключение и попробуй снова',
+                      error,
                       textAlign: TextAlign.center,
                       style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
                     ),

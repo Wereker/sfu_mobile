@@ -7,32 +7,17 @@ part 'user_dto.g.dart';
 @freezed
 abstract class UserDTO with _$UserDTO {
   const factory UserDTO({
-    required String id,
-    @JsonKey(name: 'first_name') required String firstName,
-    @JsonKey(name: 'last_name') required String lastName,
-    @JsonKey(name: 'father_name') String? fatherName,
-    DateTime? birthdate,
-    String? sex,
-    String? phone,
+    required int id,
+    @JsonKey(name: 'name') required String firstName,
+    @JsonKey(name: 'surname') required String lastName,
+    @JsonKey(name: 'patronymic') String? fatherName,
+    required String email,
     required String role,
-    String? avatarUrl,
-
-    // Только для студента
-    String? institute,
-    @JsonKey(name: 'group_id') String? groupId,
-    @JsonKey(name: 'group_name') String? groupName,
-    String? stream,
-    String? subgroup,
-    @JsonKey(name: 'record_book_number') String? recordBookNumber,
-
-    // Только для преподавателя
-    String? position,
-    String? degree,
-    String? office,
-    String? bio,
-    @Default([]) List<String> tags,
+    @JsonKey(name: 'is_active') required bool isActive,
+    @JsonKey(name: 'avatar') String? avatarUrl,
+    @JsonKey(name: 'created_at') required String createdAt,
+    @JsonKey(name: 'updated_at') required String updatedAt,
   }) = _UserDTO;
 
-  factory UserDTO.fromJson(Map<String, dynamic> json) =>
-      _$UserDTOFromJson(json);
+  factory UserDTO.fromJson(Map<String, dynamic> json) => _$UserDTOFromJson(json);
 }

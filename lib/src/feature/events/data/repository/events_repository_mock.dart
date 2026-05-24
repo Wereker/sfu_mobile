@@ -1,6 +1,6 @@
 import 'package:sfu/src/core/error/exception_handler.dart';
-import 'package:sfu/src/feature/events/data/dto/event_dto.dart';
 import 'package:sfu/src/feature/events/data/data_source/remote/events_remote_data_source.dart';
+import 'package:sfu/src/feature/events/data/dto/event_dto/event_dto.dart';
 import 'package:sfu/src/feature/events/data/mapper/event_mapper.dart';
 import 'package:sfu/src/feature/events/domain/entity/event.dart';
 import 'package:sfu/src/feature/events/domain/repository/events_repository.dart';

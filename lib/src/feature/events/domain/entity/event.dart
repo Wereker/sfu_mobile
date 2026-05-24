@@ -5,21 +5,23 @@ part 'event.freezed.dart';
 @freezed
 abstract class Event with _$Event {
   const factory Event({
+    // — с сервера —
     required String id,
-    required DateTime date,
-    required String time,
     required String title,
-    required String preview,
-    required String body,
-    required String location,
-    required String organizer,
-    required String organizerId,
-    required int totalSeats,
-    required int takenSeats,
-    required bool isEnrolled,
-    required List<String> tags,
-  }) = _Event;
+    required String annotation,
+    required DateTime startsAt,
+    required DateTime endsAt,
+    required String roomNumber,
+    required String roomAddress,
+    required int roomCapacity,
+    required String creatorId,
+    String? imageUrl,
 
-  // bool get isFull => takenSeats >= totalSeats;
-  // int  get freeSeats => totalSeats - takenSeats;
+    // — синтетика до появления на сервере —
+    @Default('') String body,
+    @Default('') String organizer,
+    @Default(0)  int takenSeats,
+    @Default(false) bool isEnrolled,
+    @Default([]) List<String> tags,
+  }) = _Event;
 }

@@ -1,56 +1,62 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
 import 'package:sfu/src/feature/timetable/data/dto/lesson_dto/lesson_dto.dart';
 import 'package:sfu/src/feature/timetable/data/dto/timetable_dto/timetable_dto.dart';
 import 'package:sfu/src/feature/timetable/data/dto/week_dto/week_dto.dart';
-import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
 
 class TimetableRemoteDataSourceImpl implements TimetableRemoteDataSource {
-  // TODO: Вынести DIO в отдельную структуру
-  final Dio dio = Dio();
-  final String baseUrl = dotenv.env['API_SFU_TIMETABLE_URL'] ?? '';
+  final Dio _authorizedClient;
+
+  const TimetableRemoteDataSourceImpl({required Dio authorizedClient})
+      : _authorizedClient = authorizedClient;
 
   @override
-  Future<TimetableDTO> getTimetableForTarget(String target) async {
-    final response = await dio.get(
-      '$baseUrl/api/timetable/get',
-      queryParameters: {'target': target},
-      options: Options(headers: {'Accept': 'application/json'}),
+  Future<TimetableDTO> getTimetableForGroup(int groupId) =>
+      _fetchByGroupId(groupId);
+
+  @override
+  Future<TimetableDTO> getTimetableForTeacher(int teacherId) =>
+      _fetchByTeacherId(teacherId);
+
+  @override
+  Future<TimetableDTO> getTimetableForTarget({
+    required int targetId,
+    required TimetableTargetType type,
+  }) =>
+      type == TimetableTargetType.group
+          ? _fetchByGroupId(targetId)
+          : _fetchByTeacherId(targetId);
+
+  Future<TimetableDTO> _fetchByGroupId(int groupId) async {
+    final response = await _authorizedClient.get<List<dynamic>>(
+      '/lessons/group/$groupId',
     );
+    return _parseResponse(response.data ?? [], groupId.toString());
+  }
 
-    // try {
-    //   final res = await dio.get(
-    //     'http://127.0.0.1:8000/health',
-    //     options: Options(headers: {'Accept': 'application/json'}),
-    //   );
-    //   print(res.data);
-    // } catch (e) {
-    //   print(e);
-    // }
+  Future<TimetableDTO> _fetchByTeacherId(int teacherId) async {
+    final response = await _authorizedClient.get<List<dynamic>>(
+      '/lessons/teacher/$teacherId',
+    );
+    return _parseResponse(response.data ?? [], teacherId.toString());
+  }
 
-    final Map<String, dynamic> json = response.data;
-    final List<dynamic> rawLessons = json['timetable'] ?? [];
-    final Map<String, List<LessonDTO>> lessonsByWeek = {'1': [], '2': []};
+  TimetableDTO _parseResponse(List<dynamic> rawLessons, String targetId) {
+    final Map<String, List<LessonDTO>> byWeek = {'1': [], '2': []};
 
     for (final lessonJson in rawLessons) {
-      final lesson = LessonDTO.fromJson(lessonJson);
-      final week = lessonJson['week'] as String;
-
-      if (lessonsByWeek.containsKey(week)) {
-        lessonsByWeek[week]!.add(lesson);
+      final lesson = LessonDTO.fromJson(lessonJson as Map<String, dynamic>);
+      if (byWeek.containsKey(lesson.week)) {
+        byWeek[lesson.week]!.add(lesson);
       }
     }
 
-    final weeks = [
-      WeekDTO(week: '1', lessons: lessonsByWeek['1']!),
-      WeekDTO(week: '2', lessons: lessonsByWeek['2']!),
-    ];
-
     return TimetableDTO(
-      target: json['target'],
-      type: json['type'],
-      institute: json['institute'],
-      weeks: weeks,
+      groupId: targetId,
+      weeks: [
+        WeekDTO(week: '1', lessons: byWeek['1']!),
+        WeekDTO(week: '2', lessons: byWeek['2']!),
+      ],
     );
   }
 }

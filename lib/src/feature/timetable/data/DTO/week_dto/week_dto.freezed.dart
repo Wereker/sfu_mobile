@@ -11,19 +11,16 @@ part of 'week_dto.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$WeekDTO {
 
- String get week;@JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson) List<LessonDTO> get lessons;
+ String get week; List<LessonDTO> get lessons;
 /// Create a copy of WeekDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $WeekDTOCopyWith<WeekDTO> get copyWith => _$WeekDTOCopyWithImpl<WeekDTO>(this as WeekDTO, _$identity);
 
-  /// Serializes this WeekDTO to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -31,7 +28,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is WeekDTO&&(identical(other.week, week) || other.week == week)&&const DeepCollectionEquality().equals(other.lessons, lessons));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,week,const DeepCollectionEquality().hash(lessons));
 
@@ -48,7 +45,7 @@ abstract mixin class $WeekDTOCopyWith<$Res>  {
   factory $WeekDTOCopyWith(WeekDTO value, $Res Function(WeekDTO) _then) = _$WeekDTOCopyWithImpl;
 @useResult
 $Res call({
- String week,@JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson) List<LessonDTO> lessons
+ String week, List<LessonDTO> lessons
 });
 
 
@@ -154,7 +151,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String week, @JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson)  List<LessonDTO> lessons)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String week,  List<LessonDTO> lessons)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _WeekDTO() when $default != null:
 return $default(_that.week,_that.lessons);case _:
@@ -175,7 +172,7 @@ return $default(_that.week,_that.lessons);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String week, @JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson)  List<LessonDTO> lessons)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String week,  List<LessonDTO> lessons)  $default,) {final _that = this;
 switch (_that) {
 case _WeekDTO():
 return $default(_that.week,_that.lessons);case _:
@@ -195,7 +192,7 @@ return $default(_that.week,_that.lessons);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String week, @JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson)  List<LessonDTO> lessons)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String week,  List<LessonDTO> lessons)?  $default,) {final _that = this;
 switch (_that) {
 case _WeekDTO() when $default != null:
 return $default(_that.week,_that.lessons);case _:
@@ -207,15 +204,15 @@ return $default(_that.week,_that.lessons);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _WeekDTO implements WeekDTO {
-  const _WeekDTO({required this.week, @JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson) required final  List<LessonDTO> lessons}): _lessons = lessons;
-  factory _WeekDTO.fromJson(Map<String, dynamic> json) => _$WeekDTOFromJson(json);
+  const _WeekDTO({required this.week, required final  List<LessonDTO> lessons}): _lessons = lessons;
+  
 
 @override final  String week;
  final  List<LessonDTO> _lessons;
-@override@JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson) List<LessonDTO> get lessons {
+@override List<LessonDTO> get lessons {
   if (_lessons is EqualUnmodifiableListView) return _lessons;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_lessons);
@@ -228,17 +225,14 @@ class _WeekDTO implements WeekDTO {
 @pragma('vm:prefer-inline')
 _$WeekDTOCopyWith<_WeekDTO> get copyWith => __$WeekDTOCopyWithImpl<_WeekDTO>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$WeekDTOToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _WeekDTO&&(identical(other.week, week) || other.week == week)&&const DeepCollectionEquality().equals(other._lessons, _lessons));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,week,const DeepCollectionEquality().hash(_lessons));
 
@@ -255,7 +249,7 @@ abstract mixin class _$WeekDTOCopyWith<$Res> implements $WeekDTOCopyWith<$Res> {
   factory _$WeekDTOCopyWith(_WeekDTO value, $Res Function(_WeekDTO) _then) = __$WeekDTOCopyWithImpl;
 @override @useResult
 $Res call({
- String week,@JsonKey(fromJson: _lessonListFromJson, toJson: _lessonListToJson) List<LessonDTO> lessons
+ String week, List<LessonDTO> lessons
 });
 
 

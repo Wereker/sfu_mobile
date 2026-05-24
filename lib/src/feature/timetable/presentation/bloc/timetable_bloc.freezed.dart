@@ -122,11 +122,11 @@ return loadDataForTarget(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadData,TResult Function( String target)?  loadDataForTarget,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int userId,  TimetableTargetType userType)?  loadData,TResult Function( int searchId,  TimetableTargetType searchType)?  loadDataForTarget,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoadData() when loadData != null:
-return loadData();case _LoadDataForTarget() when loadDataForTarget != null:
-return loadDataForTarget(_that.target);case _:
+return loadData(_that.userId,_that.userType);case _LoadDataForTarget() when loadDataForTarget != null:
+return loadDataForTarget(_that.searchId,_that.searchType);case _:
   return orElse();
 
 }
@@ -144,11 +144,11 @@ return loadDataForTarget(_that.target);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadData,required TResult Function( String target)  loadDataForTarget,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int userId,  TimetableTargetType userType)  loadData,required TResult Function( int searchId,  TimetableTargetType searchType)  loadDataForTarget,}) {final _that = this;
 switch (_that) {
 case _LoadData():
-return loadData();case _LoadDataForTarget():
-return loadDataForTarget(_that.target);case _:
+return loadData(_that.userId,_that.userType);case _LoadDataForTarget():
+return loadDataForTarget(_that.searchId,_that.searchType);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -165,11 +165,11 @@ return loadDataForTarget(_that.target);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadData,TResult? Function( String target)?  loadDataForTarget,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int userId,  TimetableTargetType userType)?  loadData,TResult? Function( int searchId,  TimetableTargetType searchType)?  loadDataForTarget,}) {final _that = this;
 switch (_that) {
 case _LoadData() when loadData != null:
-return loadData();case _LoadDataForTarget() when loadDataForTarget != null:
-return loadDataForTarget(_that.target);case _:
+return loadData(_that.userId,_that.userType);case _LoadDataForTarget() when loadDataForTarget != null:
+return loadDataForTarget(_that.searchId,_that.searchType);case _:
   return null;
 
 }
@@ -181,42 +181,79 @@ return loadDataForTarget(_that.target);case _:
 
 
 class _LoadData implements TimetableEvent {
-  const _LoadData();
+  const _LoadData({required this.userId, required this.userType});
   
 
+ final  int userId;
+ final  TimetableTargetType userType;
 
-
+/// Create a copy of TimetableEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LoadDataCopyWith<_LoadData> get copyWith => __$LoadDataCopyWithImpl<_LoadData>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadData);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadData&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.userType, userType) || other.userType == userType));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,userId,userType);
 
 @override
 String toString() {
-  return 'TimetableEvent.loadData()';
+  return 'TimetableEvent.loadData(userId: $userId, userType: $userType)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$LoadDataCopyWith<$Res> implements $TimetableEventCopyWith<$Res> {
+  factory _$LoadDataCopyWith(_LoadData value, $Res Function(_LoadData) _then) = __$LoadDataCopyWithImpl;
+@useResult
+$Res call({
+ int userId, TimetableTargetType userType
+});
 
 
+
+
+}
+/// @nodoc
+class __$LoadDataCopyWithImpl<$Res>
+    implements _$LoadDataCopyWith<$Res> {
+  __$LoadDataCopyWithImpl(this._self, this._then);
+
+  final _LoadData _self;
+  final $Res Function(_LoadData) _then;
+
+/// Create a copy of TimetableEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? userId = null,Object? userType = null,}) {
+  return _then(_LoadData(
+userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as int,userType: null == userType ? _self.userType : userType // ignore: cast_nullable_to_non_nullable
+as TimetableTargetType,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
 
 class _LoadDataForTarget implements TimetableEvent {
-  const _LoadDataForTarget(this.target);
+  const _LoadDataForTarget({required this.searchId, required this.searchType});
   
 
- final  String target;
+ final  int searchId;
+ final  TimetableTargetType searchType;
 
 /// Create a copy of TimetableEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -228,16 +265,16 @@ _$LoadDataForTargetCopyWith<_LoadDataForTarget> get copyWith => __$LoadDataForTa
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadDataForTarget&&(identical(other.target, target) || other.target == target));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoadDataForTarget&&(identical(other.searchId, searchId) || other.searchId == searchId)&&(identical(other.searchType, searchType) || other.searchType == searchType));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,target);
+int get hashCode => Object.hash(runtimeType,searchId,searchType);
 
 @override
 String toString() {
-  return 'TimetableEvent.loadDataForTarget(target: $target)';
+  return 'TimetableEvent.loadDataForTarget(searchId: $searchId, searchType: $searchType)';
 }
 
 
@@ -248,7 +285,7 @@ abstract mixin class _$LoadDataForTargetCopyWith<$Res> implements $TimetableEven
   factory _$LoadDataForTargetCopyWith(_LoadDataForTarget value, $Res Function(_LoadDataForTarget) _then) = __$LoadDataForTargetCopyWithImpl;
 @useResult
 $Res call({
- String target
+ int searchId, TimetableTargetType searchType
 });
 
 
@@ -265,10 +302,11 @@ class __$LoadDataForTargetCopyWithImpl<$Res>
 
 /// Create a copy of TimetableEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? target = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? searchId = null,Object? searchType = null,}) {
   return _then(_LoadDataForTarget(
-null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
-as String,
+searchId: null == searchId ? _self.searchId : searchId // ignore: cast_nullable_to_non_nullable
+as int,searchType: null == searchType ? _self.searchType : searchType // ignore: cast_nullable_to_non_nullable
+as TimetableTargetType,
   ));
 }
 
@@ -392,12 +430,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( Timetable timetable)?  success,TResult Function( String error)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( Timetable timetable,  NextLessonResult nextLesson)?  success,TResult Function( String error)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TimetableInitial() when initial != null:
 return initial();case _TimetableLoading() when loading != null:
 return loading();case _TimetableSuccess() when success != null:
-return success(_that.timetable);case _TimetableError() when error != null:
+return success(_that.timetable,_that.nextLesson);case _TimetableError() when error != null:
 return error(_that.error);case _:
   return orElse();
 
@@ -416,12 +454,12 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( Timetable timetable)  success,required TResult Function( String error)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( Timetable timetable,  NextLessonResult nextLesson)  success,required TResult Function( String error)  error,}) {final _that = this;
 switch (_that) {
 case _TimetableInitial():
 return initial();case _TimetableLoading():
 return loading();case _TimetableSuccess():
-return success(_that.timetable);case _TimetableError():
+return success(_that.timetable,_that.nextLesson);case _TimetableError():
 return error(_that.error);case _:
   throw StateError('Unexpected subclass');
 
@@ -439,12 +477,12 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( Timetable timetable)?  success,TResult? Function( String error)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( Timetable timetable,  NextLessonResult nextLesson)?  success,TResult? Function( String error)?  error,}) {final _that = this;
 switch (_that) {
 case _TimetableInitial() when initial != null:
 return initial();case _TimetableLoading() when loading != null:
 return loading();case _TimetableSuccess() when success != null:
-return success(_that.timetable);case _TimetableError() when error != null:
+return success(_that.timetable,_that.nextLesson);case _TimetableError() when error != null:
 return error(_that.error);case _:
   return null;
 
@@ -521,10 +559,11 @@ String toString() {
 
 
 class _TimetableSuccess implements TimetableState {
-  const _TimetableSuccess({required this.timetable});
+  const _TimetableSuccess({required this.timetable, required this.nextLesson});
   
 
  final  Timetable timetable;
+ final  NextLessonResult nextLesson;
 
 /// Create a copy of TimetableState
 /// with the given fields replaced by the non-null parameter values.
@@ -536,16 +575,16 @@ _$TimetableSuccessCopyWith<_TimetableSuccess> get copyWith => __$TimetableSucces
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimetableSuccess&&(identical(other.timetable, timetable) || other.timetable == timetable));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimetableSuccess&&(identical(other.timetable, timetable) || other.timetable == timetable)&&(identical(other.nextLesson, nextLesson) || other.nextLesson == nextLesson));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,timetable);
+int get hashCode => Object.hash(runtimeType,timetable,nextLesson);
 
 @override
 String toString() {
-  return 'TimetableState.success(timetable: $timetable)';
+  return 'TimetableState.success(timetable: $timetable, nextLesson: $nextLesson)';
 }
 
 
@@ -556,7 +595,7 @@ abstract mixin class _$TimetableSuccessCopyWith<$Res> implements $TimetableState
   factory _$TimetableSuccessCopyWith(_TimetableSuccess value, $Res Function(_TimetableSuccess) _then) = __$TimetableSuccessCopyWithImpl;
 @useResult
 $Res call({
- Timetable timetable
+ Timetable timetable, NextLessonResult nextLesson
 });
 
 
@@ -573,10 +612,11 @@ class __$TimetableSuccessCopyWithImpl<$Res>
 
 /// Create a copy of TimetableState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? timetable = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? timetable = null,Object? nextLesson = null,}) {
   return _then(_TimetableSuccess(
 timetable: null == timetable ? _self.timetable : timetable // ignore: cast_nullable_to_non_nullable
-as Timetable,
+as Timetable,nextLesson: null == nextLesson ? _self.nextLesson : nextLesson // ignore: cast_nullable_to_non_nullable
+as NextLessonResult,
   ));
 }
 

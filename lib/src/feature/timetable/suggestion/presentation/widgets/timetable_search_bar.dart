@@ -37,9 +37,7 @@ class TimetableSearchBar extends StatelessWidget {
             },
 
             onSelected: (String selection) {
-              context.read<TimetableBloc>().add(
-                TimetableEvent.loadDataForTarget(selection),
-              );
+              // TODO: Сделать поиск по преподавателям и группам
             },
 
             fieldViewBuilder:

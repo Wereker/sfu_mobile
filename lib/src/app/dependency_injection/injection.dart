@@ -1,20 +1,31 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_impl.dart';
+import 'package:sfu/src/core/auth/data/repository/auth_repository_impl.dart';
+import 'package:sfu/src/core/request/http_client.dart';
+import 'package:sfu/src/feature/announcements/data/data_source/remote/announcements_remote_data_source_impl.dart';
+import 'package:sfu/src/feature/announcements/data/repository/announcements_repository_impl.dart';
 import 'package:sfu/src/feature/announcements/presentation/bloc/announcements_bloc.dart';
 import 'package:sfu/src/feature/attendance/presentation/bloc/mark/attendance_mark_bloc.dart';
 import 'package:sfu/src/feature/attendance/presentation/bloc/session/attendance_session_bloc.dart';
 import 'package:sfu/src/feature/department/presentation/bloc/department_bloc.dart';
+import 'package:sfu/src/feature/events/data/data_source/remote/events_remote_data_source_impl.dart';
+import 'package:sfu/src/feature/events/data/repository/events_repository_impl.dart';
 import 'package:sfu/src/feature/events/presentation/bloc/events_bloc.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/publish/publish_bloc.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/students/students_bloc.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/theses/theses_bloc.dart';
+import 'package:sfu/src/feature/profile/data/data_source/remote/profile_remote_data_source_impl.dart';
+import 'package:sfu/src/feature/profile/data/repository/profile_repository_impl.dart';
+import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_impl.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/get_next_lesson_use_case.dart';
+import 'package:sfu/src/feature/timetable/domain/use_case/get_next_lesson_use_case_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source_impl.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
-import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_mock.dart';
-import 'package:sfu/src/core/auth/data/repository/auth_repository_mock.dart';
 import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/check_auth_status_use_case_impl.dart';
@@ -79,8 +90,6 @@ import 'package:sfu/src/feature/department/domain/use_case/get_staff_use_case.da
 import 'package:sfu/src/feature/department/domain/use_case/get_staff_use_case_impl.dart';
 
 import 'package:sfu/src/feature/events/data/data_source/remote/events_remote_data_source.dart';
-import 'package:sfu/src/feature/events/data/data_source/remote/events_remote_data_source_mock.dart';
-import 'package:sfu/src/feature/events/data/repository/events_repository_mock.dart';
 import 'package:sfu/src/feature/events/domain/repository/events_repository.dart';
 import 'package:sfu/src/feature/events/domain/use_case/enroll_event_use_case.dart';
 import 'package:sfu/src/feature/events/domain/use_case/enroll_event_use_case_impl.dart';
@@ -107,8 +116,6 @@ import 'package:sfu/src/feature/management/domain/use_case/update_thesis_use_cas
 import 'package:sfu/src/feature/management/domain/use_case/update_thesis_use_case_impl.dart';
 
 import 'package:sfu/src/feature/profile/data/data_source/remote/profile_remote_data_source.dart';
-import 'package:sfu/src/feature/profile/data/data_source/remote/profile_remote_data_source_mock.dart';
-import 'package:sfu/src/feature/profile/data/repository/profile_repositroy_mock.dart';
 import 'package:sfu/src/feature/profile/domain/repository/profile_repository.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/get_profile_use_case.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/get_profile_use_case_impl.dart';
@@ -128,7 +135,6 @@ import 'package:sfu/src/feature/timetable/data/data_source/local/timetable_local
 import 'package:sfu/src/feature/timetable/data/data_source/local/timetable_local_data_source_impl.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_impl.dart';
-import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_mock.dart';
 import 'package:sfu/src/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/get_timetable_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/get_timetable_use_case_impl.dart';
@@ -147,6 +153,8 @@ import 'package:sfu/src/feature/settings/presentation/bloc/settings_bloc.dart';
 import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
 import 'package:sfu/src/feature/timetable/suggestion/presentation/bloc/suggestions_bloc.dart';
 
+import '../app.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -154,6 +162,7 @@ Future<void> init() async {
   final secureStorage = const FlutterSecureStorage();
 
   _initLocalStorage(prefs, secureStorage);
+  _initDioClients();
   _initDataSources();
   _initRepositories();
   _initUseCases();
@@ -176,7 +185,12 @@ void _initDataSources() {
       sl<SharedPreferences>(),
     ),
   );
-  sl.registerSingleton<AuthRemoteDataSource>(AuthRemoteDataSourceMock());
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSourceImpl(
+      publicClient: sl<Dio>(instanceName: 'publicDio'),
+      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
+    ),
+  );
 
   // Settings
   sl.registerSingleton<SettingsLocalDataSource>(
@@ -185,7 +199,9 @@ void _initDataSources() {
 
   // Timetable
   sl.registerSingleton<TimetableRemoteDataSource>(
-    TimetableRemoteDataSourceImpl(),
+    TimetableRemoteDataSourceImpl(
+      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
+    ),
   );
   sl.registerSingleton<TimetableLocalDataSource>(
     TimetableLocalDataSourceImpl(),
@@ -200,15 +216,25 @@ void _initDataSources() {
   sl.registerSingleton<MessageRemoteDataSource>(MessageRemoteDataSourceMock());
 
   // Profile
-  sl.registerSingleton<ProfileRemoteDataSource>(ProfileRemoteDataSourceMock());
+  sl.registerSingleton<ProfileRemoteDataSource>(
+    ProfileRemoteDataSourceImpl(
+      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
+    ),
+  );
 
   // Announcements
-  sl.registerSingleton<AnnouncementsRemoteDataSource>(
-    AnnouncementsRemoteDataSourceMock(),
+  sl.registerLazySingleton<AnnouncementsRemoteDataSource>(
+    () => AnnouncementsRemoteDataSourceImpl(
+      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
+    ),
   );
 
   // Events
-  sl.registerSingleton<EventsRemoteDataSource>(EventsRemoteDataSourceMock());
+  sl.registerLazySingleton<EventsRemoteDataSource>(
+    () => EventsRemoteDataSourceImpl(
+      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
+    ),
+  );
 
   // Department
   sl.registerSingleton<DepartmentRemoteDataSource>(
@@ -228,10 +254,15 @@ void _initDataSources() {
 
 // Repositories
 void _initRepositories() {
-  sl.registerSingleton<AuthRepository>(AuthRepositoryMock());
+  sl.registerSingleton<AuthRepository>(
+    AuthRepositoryImpl(
+      local: sl<AuthLocalDataSource>(),
+      remote: sl<AuthRemoteDataSource>(),
+    ),
+  );
 
   sl.registerSingleton<ProfileRepository>(
-    ProfileRepositoryMock(sl<ProfileRemoteDataSource>()),
+    ProfileRepositoryImpl(sl<ProfileRemoteDataSource>()),
   );
 
   sl.registerSingleton<SettingsRepository>(
@@ -239,7 +270,10 @@ void _initRepositories() {
   );
 
   sl.registerSingleton<TimetableRepository>(
-    TimetableRepositoryMock(remote: sl<TimetableRemoteDataSource>()),
+    TimetableRepositoryImpl(
+      remote: sl<TimetableRemoteDataSource>(),
+      local: sl<TimetableLocalDataSource>(),
+    ),
   );
 
   sl.registerSingleton<SuggestionRepository>(
@@ -254,12 +288,12 @@ void _initRepositories() {
     MessageRepositoryMock(sl<MessageRemoteDataSource>()),
   );
 
-  sl.registerSingleton<AnnouncementsRepository>(
-    AnnouncementsRepositoryMock(sl<AnnouncementsRemoteDataSource>()),
+  sl.registerLazySingleton<AnnouncementsRepository>(
+    () => AnnouncementsRepositoryImpl(sl<AnnouncementsRemoteDataSource>()),
   );
 
-  sl.registerSingleton<EventsRepository>(
-    EventsRepositoryMock(sl<EventsRemoteDataSource>()),
+  sl.registerLazySingleton<EventsRepository>(
+    () => EventsRepositoryImpl(sl<EventsRemoteDataSource>()),
   );
 
   sl.registerSingleton<DepartmentRepository>(
@@ -317,6 +351,7 @@ void _initUseCases() {
   sl.registerFactory<GetSuggestionsUseCase>(
     () => GetSuggestionsUseCaseImpl(sl<SuggestionRepository>()),
   );
+  sl.registerFactory<GetNextLessonUseCase>(() => GetNextLessonUseCaseImpl());
 
   // Chat
   sl.registerFactory<GetChatsUseCase>(
@@ -414,7 +449,10 @@ void _initBloc() {
   );
 
   sl.registerFactory<TimetableBloc>(
-    () => TimetableBloc(sl<GetTimetableUseCase>()),
+    () => TimetableBloc(
+      getTimetableUseCase: sl<GetTimetableUseCase>(),
+      getNextLessonUseCase: sl<GetNextLessonUseCase>(),
+    ),
   );
 
   sl.registerFactory<SuggestionsBloc>(
@@ -477,4 +515,20 @@ void _initBloc() {
 // Widgets
 void _initWidgets() {
   sl.registerFactory<LoadingIndicator>(() => StandardLoadingIndicator());
+}
+
+void _initDioClients() {
+  sl.registerLazySingleton<Dio>(
+    () => buildPublicClient(),
+    instanceName: 'publicDio',
+  );
+
+  sl.registerLazySingleton<Dio>(
+    () => buildAuthorizedClient(
+      sl<AuthLocalDataSource>(),
+      sl<Dio>(instanceName: 'publicDio'),
+      App.navigatorKey,
+    ),
+    instanceName: 'authorizedDio',
+  );
 }
