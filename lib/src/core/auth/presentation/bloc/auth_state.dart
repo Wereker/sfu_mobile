@@ -6,6 +6,8 @@ class AuthState with _$AuthState {
 
   const factory AuthState.loading() = _AuthLoading;
 
+  const factory AuthState.registered({required String email}) = _AuthRegistered;
+
   const factory AuthState.unauthorized() = _AuthUnauthorized;
 
   const factory AuthState.authorized() = _AuthAuthorized;

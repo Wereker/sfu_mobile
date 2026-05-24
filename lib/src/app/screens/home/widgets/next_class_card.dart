@@ -413,7 +413,7 @@ class _NextClassShimmerState extends State<_NextClassShimmer>
         child: Container(
           height: 118,
           decoration: BoxDecoration(
-            color: cs.onSurface.withOpacity(_anim.value * 0.08),
+            color: cs.onSurface.withValues(alpha: _anim.value * 0.08),
             borderRadius: BorderRadius.circular(AppTheme.radiusLg),
             border: Border(
               left: BorderSide(color: ext.divider, width: 3),

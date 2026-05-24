@@ -74,34 +74,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },
-      signUp:
-          (
-            String login,
-            String password1,
-            String password2,
-            String name,
-            String role,
-            String group,
+      // Только изменённый handler signUp, остальное без изменений:
+
+      signUp: (
+          String name,
+          String surname,
+          String patronymic,
+          String email,
+          String password1,
+          String password2,
           ) async {
-            emit(AuthState.loading());
-            try {
-              await signUpUseCase.call(
-                email: login,
-                password1: password1,
-                password2: password2,
-                name: name,
-                role: role,
-                group: group,
-              );
-              emit(AuthState.authorized());
-            } on UnauthorizedException {
-              emit(AuthState.unauthorized());
-            } on AppException catch (e) {
-              emit(AuthState.error(error: e.message));
-            } on Exception catch (_) {
-              emit(AuthState.error(error: 'Что-то пошло не так'));
-            }
-          },
+        emit(AuthState.loading());
+        try {
+          await signUpUseCase.call(
+            name: name,
+            surname: surname,
+            patronymic: patronymic,
+            email: email,
+            password1: password1,
+            password2: password2,
+          );
+          emit(AuthState.registered(email: email));
+        } on UnauthorizedException {
+          emit(AuthState.unauthorized());
+        } on AppException catch (e) {
+          emit(AuthState.error(error: e.message));
+        } on Exception catch (_) {
+          emit(AuthState.error(error: 'Что-то пошло не так'));
+        }
+      },
       checkAuthStatus: () async {
         emit(AuthState.loading());
 

@@ -7,10 +7,7 @@ import 'package:sfu/src/core/error/data_exception.dart';
 import 'package:sfu/src/core/error/exception_handler.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  /// Публичный клиент — без заголовка Authorization.
   final Dio _publicClient;
-
-  /// Авторизованный клиент — автоматически добавляет Bearer-токен.
   final Dio _authorizedClient;
 
   const AuthRemoteDataSourceImpl({
@@ -19,11 +16,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   })  : _publicClient = publicClient,
         _authorizedClient = authorizedClient;
 
-  /// Авторизация по логину и паролю.
-  ///
-  /// Бросает:
-  /// - [InvalidCredentialsException] — при 401 (неверный логин/пароль).
-  /// - [NetworkException] / [TimeoutException] / [ServerException] — прочие сетевые ошибки.
   @override
   Future<TokenDTO> signIn(String email, String password) =>
       ExceptionHandler.handle(() async {
@@ -37,47 +29,33 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             'client_id': '',
             'client_secret': '',
           }),
-          options: Options(
-            contentType: 'application/x-www-form-urlencoded',
-          ),
+          options: Options(contentType: 'application/x-www-form-urlencoded'),
         );
         return _parseToken(response);
       });
 
-  /// Регистрация нового пользователя.
-  ///
-  /// Бросает:
-  /// - [ConflictException] — при 409 (пользователь уже существует).
-  /// - [ValidationException] — при 422 (невалидные данные).
   @override
-  Future<TokenDTO> signUp(
-    String email,
-    String password,
-    String name,
-    String group,
-    String subgroup,
-    String role,
-  ) =>
+  Future<void> signUp({
+    required String name,
+    required String surname,
+    required String patronymic,
+    required String email,
+    required String password,
+  }) =>
       ExceptionHandler.handle(() async {
-        final response = await _publicClient.post<Map<String, dynamic>>(
-          '/auth/sign-up',
+        await _publicClient.post<Map<String, dynamic>>(
+          '/auth/register',
           data: {
+            'name': name,
+            'surname': surname,
+            'patronymic': patronymic,
             'email': email,
             'password': password,
-            'name': name,
-            'group': group,
-            'subgroup': subgroup,
-            'role': role,
+            'role': 'student', // только студенты могут регистрироваться
           },
         );
-
-        return _parseToken(response);
       });
 
-  /// Сброс пароля для авторизованного пользователя.
-  ///
-  /// Бросает:
-  /// - [UnauthorizedException] — если access-токен отсутствует или истёк.
   @override
   Future<void> resetPassword(String newPassword) =>
       ExceptionHandler.handle(() async {
@@ -87,44 +65,29 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         );
       });
 
-  /// Обновление токенов по refresh-токену.
-  ///
-  /// Бросает:
-  /// - [UnauthorizedException] — при 401 (refresh-токен истёк или невалиден).
   @override
   Future<TokenDTO> refreshToken(String token) =>
       ExceptionHandler.handle(() async {
         final response = await _publicClient.post<Map<String, dynamic>>(
           '/auth/refresh',
-          data: {'refresh_token': token},
+          data: FormData.fromMap({'refresh_token': token}),
+          options: Options(contentType: 'application/x-www-form-urlencoded'),
         );
-
         return _parseToken(response);
       });
 
-  /// Получение метаданных пользователя по UID.
-  ///
-  /// Бросает:
-  /// - [NotFoundException] — при 404 (пользователь не найден).
-  /// - [UnauthorizedException] — если токен отсутствует или истёк.
   @override
   Future<AuthMetadataDTO> getUserData(String uid) =>
       ExceptionHandler.handle(() async {
         final response = await _authorizedClient.get<Map<String, dynamic>>(
           '/users/$uid',
         );
-
         final data = response.data;
         if (data == null) {
           throw const ParseException(details: 'getUserData: response body is null');
         }
-
         return AuthMetadataDTO.fromJson(data);
       });
-
-  // ---------------------------------------------------------------------------
-  // Вспомогательные методы
-  // ---------------------------------------------------------------------------
 
   TokenDTO _parseToken(Response<Map<String, dynamic>> response) {
     final data = response.data;

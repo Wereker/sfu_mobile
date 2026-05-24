@@ -7,19 +7,19 @@ class AuthEvent with _$AuthEvent {
     required String password,
   }) = _AuthSignIn;
 
+  const factory AuthEvent.signUp({
+    required String name,
+    required String surname,
+    required String patronymic,
+    required String email,
+    required String password1,
+    required String password2,
+  }) = _AuthSignUp;
+
   const factory AuthEvent.resetPassword({
     required String newPassword,
     required String confirmPassword,
   }) = _AuthResetPassword;
-
-  const factory AuthEvent.signUp({
-    required String email,
-    required String password1,
-    required String password2,
-    required String name,
-    required String role,
-    required String group,
-  }) = _AuthSignUp;
 
   const factory AuthEvent.logout() = _AuthLogout;
 

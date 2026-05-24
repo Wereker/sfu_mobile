@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:sfu/src/feature/announcements/data/dto/announcement_dto.dart';
 import 'package:sfu/src/feature/announcements/domain/entity/announcement.dart';
 
@@ -42,20 +41,27 @@ abstract class AnnouncementMapper {
   static List<String> _mockTags(String title, String content) {
     final t = '${title.toLowerCase()} ${content.toLowerCase()}';
     final tags = <String>[];
-    if (t.contains('расписани') || t.contains('перенос') || t.contains('отмен'))
+    if (t.contains('расписани') || t.contains('перенос') || t.contains('отмен')) {
       tags.add('Расписание');
-    if (t.contains('лаборатор') || t.contains('курсов') || t.contains('пересдач'))
+    }
+    if (t.contains('лаборатор') || t.contains('курсов') || t.contains('пересдач')) {
       tags.add('Учёба');
-    if (t.contains('хакатон') || t.contains('конференц'))
+    }
+    if (t.contains('хакатон') || t.contains('конференц')) {
       tags.add('Мероприятие');
-    if (t.contains('вкр') || t.contains('дипломн') || t.contains('выпускн'))
+    }
+    if (t.contains('вкр') || t.contains('дипломн') || t.contains('выпускн')) {
       tags.add('ВКР');
-    if (t.contains('зачётн') || t.contains('деканат'))
+    }
+    if (t.contains('зачётн') || t.contains('деканат')) {
       tags.add('Деканат');
-    if (t.contains('эиос') || t.contains('технич'))
+    }
+    if (t.contains('эиос') || t.contains('технич')) {
       tags.add('Система');
-    if (t.contains('карьер') || t.contains('it') || t.contains('айти'))
+    }
+    if (t.contains('карьер') || t.contains('it') || t.contains('айти')) {
       tags.add('IT');
+    }
     return tags;
   }
 }

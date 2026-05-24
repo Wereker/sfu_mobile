@@ -4,7 +4,6 @@ import 'package:sfu/src/feature/announcements/presentation/bloc/announcements_bl
 import 'package:sfu/src/feature/events/presentation/bloc/events_bloc.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
 import 'package:sfu/src/feature/profile/presentation/bloc/profile_bloc.dart';
-import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
 import 'package:sfu/src/feature/timetable/presentation/screens/timetable_screen.dart';
 import 'package:sfu/src/feature/qr/presentation/screens/qr_screen.dart';
 import 'package:sfu/src/feature/chat/presentation/screens/chat_screen.dart';
@@ -95,7 +94,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     physics: const ClampingScrollPhysics(),
                     onPageChanged: (i) {
                       if (_currentIndex != i) {
-                        print(i);
                         setState(() => _currentIndex = i);
                       }
                     },

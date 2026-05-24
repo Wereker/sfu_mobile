@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:sfu/src/feature/events/data/data_source/remote/events_remote_data_source.dart';
-import 'package:sfu/src/feature/events/data/dto/event_dto/event_dto.dart';
+import 'package:sfu/src/feature/events/data/dto/event_dto.dart';
 
 class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
   final Dio _authorizedClient;

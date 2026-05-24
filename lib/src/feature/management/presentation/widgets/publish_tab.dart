@@ -98,8 +98,11 @@ class _PublishTabState extends State<PublishTab> {
 
     if (result != null && mounted) {
       setState(() {
-        if (isStream) _selectedStream = result;
-        else          _selectedGroup  = result;
+        if (isStream) {
+          _selectedStream = result;
+        } else {
+          _selectedGroup  = result;
+        }
       });
     }
   }

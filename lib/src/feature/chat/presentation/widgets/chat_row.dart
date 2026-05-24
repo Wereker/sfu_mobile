@@ -20,7 +20,9 @@ class ChatRow extends StatelessWidget {
     final yesterday = now.subtract(const Duration(days: 1));
     if (date.year == yesterday.year &&
         date.month == yesterday.month &&
-        date.day == yesterday.day) return 'Вчера';
+        date.day == yesterday.day) {
+      return 'Вчера';
+    }
     return DateFormat('dd.MM').format(date);
   }
 

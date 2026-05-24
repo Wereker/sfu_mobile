@@ -42,8 +42,6 @@ import 'package:sfu/src/core/utils/loading_indicator/loading_indicator.dart';
 import 'package:sfu/src/core/utils/loading_indicator/standard_loading_indicator.dart';
 
 import 'package:sfu/src/feature/announcements/data/data_source/remote/announcements_remote_data_source.dart';
-import 'package:sfu/src/feature/announcements/data/data_source/remote/announcements_remote_data_source_mock.dart';
-import 'package:sfu/src/feature/announcements/data/repository/announcements_repository_mock.dart';
 import 'package:sfu/src/feature/announcements/domain/repository/announcements_repository.dart';
 import 'package:sfu/src/feature/announcements/domain/use_case/get_announcements_use_case.dart';
 import 'package:sfu/src/feature/announcements/domain/use_case/get_announcements_use_case_impl.dart';

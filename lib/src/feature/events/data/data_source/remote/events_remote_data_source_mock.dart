@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:sfu/src/core/mock/mock_delay.dart';
 import 'package:sfu/src/feature/events/data/data_source/remote/events_remote_data_source.dart';
-import 'package:sfu/src/feature/events/data/dto/event_dto/event_dto.dart';
+import 'package:sfu/src/feature/events/data/dto/event_dto.dart';
 
 class EventsRemoteDataSourceMock implements EventsRemoteDataSource {
   // Локальное состояние записей для имитации enroll/unenroll

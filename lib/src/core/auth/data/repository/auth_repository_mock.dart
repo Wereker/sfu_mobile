@@ -18,12 +18,11 @@ class AuthRepositoryMock implements AuthRepository {
 
   @override
   Future<void> signUp({
+    required String name,
+    required String surname,
+    required String patronymic,
     required String email,
     required String password,
-    required String name,
-    required String group,
-    required String subgroup,
-    required String role,
   }) async {
     await Future.delayed(Duration(seconds: 1));
   }

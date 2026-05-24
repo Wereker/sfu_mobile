@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
-import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
 import 'package:sfu/src/feature/timetable/suggestion/presentation/bloc/suggestions_bloc.dart';
 
 class TimetableSearchBar extends StatelessWidget {
