@@ -11,33 +11,30 @@ part of 'timetable_dto.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$TimetableDTO {
 
- String get target; String get type; String? get institute;@JsonKey(fromJson: _weekListFromJson, toJson: _weekListToJson) List<WeekDTO> get weeks;
+ String get groupId; List<WeekDTO> get weeks;
 /// Create a copy of TimetableDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $TimetableDTOCopyWith<TimetableDTO> get copyWith => _$TimetableDTOCopyWithImpl<TimetableDTO>(this as TimetableDTO, _$identity);
 
-  /// Serializes this TimetableDTO to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TimetableDTO&&(identical(other.target, target) || other.target == target)&&(identical(other.type, type) || other.type == type)&&(identical(other.institute, institute) || other.institute == institute)&&const DeepCollectionEquality().equals(other.weeks, weeks));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TimetableDTO&&(identical(other.groupId, groupId) || other.groupId == groupId)&&const DeepCollectionEquality().equals(other.weeks, weeks));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
-int get hashCode => Object.hash(runtimeType,target,type,institute,const DeepCollectionEquality().hash(weeks));
+int get hashCode => Object.hash(runtimeType,groupId,const DeepCollectionEquality().hash(weeks));
 
 @override
 String toString() {
-  return 'TimetableDTO(target: $target, type: $type, institute: $institute, weeks: $weeks)';
+  return 'TimetableDTO(groupId: $groupId, weeks: $weeks)';
 }
 
 
@@ -48,7 +45,7 @@ abstract mixin class $TimetableDTOCopyWith<$Res>  {
   factory $TimetableDTOCopyWith(TimetableDTO value, $Res Function(TimetableDTO) _then) = _$TimetableDTOCopyWithImpl;
 @useResult
 $Res call({
- String target, String type, String? institute,@JsonKey(fromJson: _weekListFromJson, toJson: _weekListToJson) List<WeekDTO> weeks
+ String groupId, List<WeekDTO> weeks
 });
 
 
@@ -65,12 +62,10 @@ class _$TimetableDTOCopyWithImpl<$Res>
 
 /// Create a copy of TimetableDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? target = null,Object? type = null,Object? institute = freezed,Object? weeks = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? groupId = null,Object? weeks = null,}) {
   return _then(_self.copyWith(
-target: null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
-as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,institute: freezed == institute ? _self.institute : institute // ignore: cast_nullable_to_non_nullable
-as String?,weeks: null == weeks ? _self.weeks : weeks // ignore: cast_nullable_to_non_nullable
+groupId: null == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
+as String,weeks: null == weeks ? _self.weeks : weeks // ignore: cast_nullable_to_non_nullable
 as List<WeekDTO>,
   ));
 }
@@ -156,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String target,  String type,  String? institute, @JsonKey(fromJson: _weekListFromJson, toJson: _weekListToJson)  List<WeekDTO> weeks)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String groupId,  List<WeekDTO> weeks)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TimetableDTO() when $default != null:
-return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
+return $default(_that.groupId,_that.weeks);case _:
   return orElse();
 
 }
@@ -177,10 +172,10 @@ return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String target,  String type,  String? institute, @JsonKey(fromJson: _weekListFromJson, toJson: _weekListToJson)  List<WeekDTO> weeks)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String groupId,  List<WeekDTO> weeks)  $default,) {final _that = this;
 switch (_that) {
 case _TimetableDTO():
-return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
+return $default(_that.groupId,_that.weeks);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +192,10 @@ return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String target,  String type,  String? institute, @JsonKey(fromJson: _weekListFromJson, toJson: _weekListToJson)  List<WeekDTO> weeks)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String groupId,  List<WeekDTO> weeks)?  $default,) {final _that = this;
 switch (_that) {
 case _TimetableDTO() when $default != null:
-return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
+return $default(_that.groupId,_that.weeks);case _:
   return null;
 
 }
@@ -209,17 +204,15 @@ return $default(_that.target,_that.type,_that.institute,_that.weeks);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _TimetableDTO implements TimetableDTO {
-  const _TimetableDTO({required this.target, required this.type, this.institute, @JsonKey(fromJson: _weekListFromJson, toJson: _weekListToJson) required final  List<WeekDTO> weeks}): _weeks = weeks;
-  factory _TimetableDTO.fromJson(Map<String, dynamic> json) => _$TimetableDTOFromJson(json);
+  const _TimetableDTO({required this.groupId, required final  List<WeekDTO> weeks}): _weeks = weeks;
+  
 
-@override final  String target;
-@override final  String type;
-@override final  String? institute;
+@override final  String groupId;
  final  List<WeekDTO> _weeks;
-@override@JsonKey(fromJson: _weekListFromJson, toJson: _weekListToJson) List<WeekDTO> get weeks {
+@override List<WeekDTO> get weeks {
   if (_weeks is EqualUnmodifiableListView) return _weeks;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_weeks);
@@ -232,23 +225,20 @@ class _TimetableDTO implements TimetableDTO {
 @pragma('vm:prefer-inline')
 _$TimetableDTOCopyWith<_TimetableDTO> get copyWith => __$TimetableDTOCopyWithImpl<_TimetableDTO>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$TimetableDTOToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimetableDTO&&(identical(other.target, target) || other.target == target)&&(identical(other.type, type) || other.type == type)&&(identical(other.institute, institute) || other.institute == institute)&&const DeepCollectionEquality().equals(other._weeks, _weeks));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TimetableDTO&&(identical(other.groupId, groupId) || other.groupId == groupId)&&const DeepCollectionEquality().equals(other._weeks, _weeks));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
-int get hashCode => Object.hash(runtimeType,target,type,institute,const DeepCollectionEquality().hash(_weeks));
+int get hashCode => Object.hash(runtimeType,groupId,const DeepCollectionEquality().hash(_weeks));
 
 @override
 String toString() {
-  return 'TimetableDTO(target: $target, type: $type, institute: $institute, weeks: $weeks)';
+  return 'TimetableDTO(groupId: $groupId, weeks: $weeks)';
 }
 
 
@@ -259,7 +249,7 @@ abstract mixin class _$TimetableDTOCopyWith<$Res> implements $TimetableDTOCopyWi
   factory _$TimetableDTOCopyWith(_TimetableDTO value, $Res Function(_TimetableDTO) _then) = __$TimetableDTOCopyWithImpl;
 @override @useResult
 $Res call({
- String target, String type, String? institute,@JsonKey(fromJson: _weekListFromJson, toJson: _weekListToJson) List<WeekDTO> weeks
+ String groupId, List<WeekDTO> weeks
 });
 
 
@@ -276,12 +266,10 @@ class __$TimetableDTOCopyWithImpl<$Res>
 
 /// Create a copy of TimetableDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? target = null,Object? type = null,Object? institute = freezed,Object? weeks = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? groupId = null,Object? weeks = null,}) {
   return _then(_TimetableDTO(
-target: null == target ? _self.target : target // ignore: cast_nullable_to_non_nullable
-as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,institute: freezed == institute ? _self.institute : institute // ignore: cast_nullable_to_non_nullable
-as String?,weeks: null == weeks ? _self._weeks : weeks // ignore: cast_nullable_to_non_nullable
+groupId: null == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
+as String,weeks: null == weeks ? _self._weeks : weeks // ignore: cast_nullable_to_non_nullable
 as List<WeekDTO>,
   ));
 }

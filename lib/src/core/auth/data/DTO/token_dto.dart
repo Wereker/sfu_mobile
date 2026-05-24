@@ -10,7 +10,6 @@ abstract class TokenDTO with _$TokenDTO {
     @JsonKey(name: 'access_token') required String access,
     @JsonKey(name: 'refresh_token') required String refresh,
     @JsonKey(name: 'token_type') required String type,
-    @JsonKey(name: 'expires_in') required int expires,
   }) = _TokenDTO;
 
   factory TokenDTO.fromJson(Map<String, dynamic> json) =>

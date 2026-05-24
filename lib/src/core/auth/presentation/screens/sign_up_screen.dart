@@ -72,7 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           unauthorized: () => Navigator.pop(context),
           error: (msg) =>
               ScaffoldMessenger.of(context).showSnackBar(_errorSnack(msg, ext)),
-          orElse: () {},
+          orElse: () => {},
         ),
         child: Scaffold(
           resizeToAvoidBottomInset: true,

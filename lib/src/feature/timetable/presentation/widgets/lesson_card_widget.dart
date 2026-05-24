@@ -24,41 +24,49 @@ class LessonCard extends StatelessWidget {
   final AppColors ext;
   final TextTheme tt;
 
-  String _lessonIndex(String time) {
+  // Номер пары по времени начала
+  String get _lessonIndex {
     const map = {
-      '8:30-10:05': '1',
-      '10:15-11:50': '2',
-      '12:00-13:35': '3',
-      '14:10-15:45': '4',
-      '15:55-17:30': '5',
-      '17:40-19:15': '6',
+      '08:30': '1',
+      '10:15': '2',
+      '12:00': '3',
+      '14:10': '4',
+      '15:55': '5',
+      '17:40': '6',
     };
-    return map[time] ?? '$index';
+    return map[lesson.timeStart] ?? '$index';
+  }
+
+  // Время для отображения: "08:30 – 10:05"
+  String get _timeLabel => '${lesson.timeStart} – ${lesson.timeEnd}';
+
+  // Строка времени для TimetableUtils: "08:30-10:05"
+  String get _timeRange => '${lesson.timeStart}-${lesson.timeEnd}';
+
+  String get _typeLabel {
+    switch (lesson.type) {
+      case LessonType.lecture:  return 'лекция';
+      case LessonType.practice: return 'пр. занятие';
+      case LessonType.lab:      return 'лаб. работа';
+      case LessonType.unknown:  return '';
+    }
   }
 
   Color _typeBg(AppColors e) {
     switch (lesson.type) {
-      case 'лекция':
-        return e.infoBg;
-      case 'пр. занятие':
-        return e.successBg;
-      case 'лаб. работа':
-        return e.warningBg;
-      default:
-        return e.divider;
+      case LessonType.lecture:  return e.infoBg;
+      case LessonType.practice: return e.successBg;
+      case LessonType.lab:      return e.warningBg;
+      case LessonType.unknown:  return e.divider;
     }
   }
 
   Color _typeFg(AppColors e) {
     switch (lesson.type) {
-      case 'лекция':
-        return e.infoFg;
-      case 'пр. занятие':
-        return e.successFg;
-      case 'лаб. работа':
-        return e.warningFg;
-      default:
-        return e.textSecondary;
+      case LessonType.lecture:  return e.infoFg;
+      case LessonType.practice: return e.successFg;
+      case LessonType.lab:      return e.warningFg;
+      case LessonType.unknown:  return e.textSecondary;
     }
   }
 
@@ -76,10 +84,10 @@ class LessonCard extends StatelessWidget {
     orElse: () => e.textSecondary,
   );
 
-  bool _showStatus(LessonStatus s, bool isFirst) => s.when(
+  bool _showStatus(LessonStatus s) => s.when(
     notToday: () => false,
     finished: () => false,
-    willStartIn: (_) => isFirst,
+    willStartIn: (_) => index == 1,
     inProgress: (_) => true,
     willEndIn: (_) => true,
   );
@@ -87,10 +95,10 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final status = isToday
-        ? TimetableUtils.getLessonStatus(lesson.time, now)
+        ? TimetableUtils.getLessonStatus(_timeRange, now)
         : const LessonStatus.notToday();
     final statusText = TimetableUtils.formatLessonStatus(status);
-    final showStatus = _showStatus(status, index == 1) && statusText.isNotEmpty;
+    final showStatus = _showStatus(status) && statusText.isNotEmpty;
 
     final sBg = _statusBg(status, ext);
     final sFg = _statusFg(status, ext);
@@ -99,6 +107,14 @@ class LessonCard extends StatelessWidget {
       inProgress: (_) => true,
       orElse: () => false,
     );
+
+    // Место: если онлайн — показываем "ЭИОС", иначе "ауд. room · building"
+    final placeLabel = lesson.isOnline
+        ? 'ЭИОС'
+        : [
+      if (lesson.room.isNotEmpty) 'ауд. ${lesson.room}',
+      if (lesson.building.isNotEmpty) lesson.building,
+    ].join(' · ');
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(AppTheme.radiusLg),
@@ -115,6 +131,7 @@ class LessonCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Строка: номер пары + тип + время
                 Row(
                   children: [
                     Container(
@@ -126,7 +143,7 @@ class LessonCard extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        _lessonIndex(lesson.time),
+                        _lessonIndex,
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
@@ -137,18 +154,16 @@ class LessonCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
 
-                    if (lesson.type.isNotEmpty)
+                    if (lesson.type != LessonType.unknown)
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 7,
-                          vertical: 3,
-                        ),
+                            horizontal: 7, vertical: 3),
                         decoration: BoxDecoration(
                           color: _typeBg(ext),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          lesson.type,
+                          _typeLabel,
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
@@ -160,9 +175,8 @@ class LessonCard extends StatelessWidget {
 
                     const Spacer(),
 
-                    // Время
                     Text(
-                      lesson.time,
+                      _timeLabel,
                       style: tt.labelSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: isToday ? sFg : ext.textSecondary,
@@ -173,6 +187,7 @@ class LessonCard extends StatelessWidget {
 
                 const SizedBox(height: 8),
 
+                // Название предмета
                 Text(
                   lesson.subject,
                   style: tt.titleMedium?.copyWith(fontSize: 15),
@@ -180,16 +195,16 @@ class LessonCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
 
+                // Статус пары (идёт / начнётся через N мин)
                 if (showStatus) ...[
                   const SizedBox(height: 6),
                   Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 9,
-                      vertical: 4,
-                    ),
+                        horizontal: 9, vertical: 4),
                     decoration: BoxDecoration(
                       color: sBg,
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                      borderRadius:
+                      BorderRadius.circular(AppTheme.radiusSm),
                     ),
                     child: Text(
                       statusText,
@@ -203,48 +218,41 @@ class LessonCard extends StatelessWidget {
                   ),
                 ],
 
-                const SizedBox(height: 10),
-
-                if (lesson.teacher.isNotEmpty ||
-                    lesson.groups.isNotEmpty ||
-                    lesson.place.isNotEmpty)
+                // Мета: преподаватель + место
+                if (lesson.teacherName.isNotEmpty || placeLabel.isNotEmpty) ...[
+                  const SizedBox(height: 10),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: lesson.teacher.isNotEmpty
-                            ? _MetaRow(
-                                icon: Icons.person_outline,
-                                label: lesson.teacher,
-                                ext: ext,
-                                tt: tt,
-                              )
-                            : _MetaRow(
-                                icon: Icons.groups_outlined,
-                                label: lesson.groups
-                                    .where((g) => g.isNotEmpty)
-                                    .join(', '),
-                                ext: ext,
-                                tt: tt,
-                              ),
-                      ),
-                      if (lesson.place.isNotEmpty) ...[
+                      if (lesson.teacherName.isNotEmpty)
+                        Expanded(
+                          child: _MetaRow(
+                            icon: Icons.person_outline,
+                            label: lesson.teacherName,
+                            ext: ext,
+                            tt: tt,
+                          ),
+                        ),
+                      if (lesson.teacherName.isNotEmpty &&
+                          placeLabel.isNotEmpty)
                         const SizedBox(width: 8),
+                      if (placeLabel.isNotEmpty)
                         _MetaRow(
-                          icon: Icons.location_on_outlined,
-                          label: lesson.place.length > 30
-                              ? lesson.building
-                              : lesson.place,
+                          icon: lesson.isOnline
+                              ? Icons.laptop_outlined
+                              : Icons.location_on_outlined,
+                          label: placeLabel,
                           ext: ext,
                           tt: tt,
                         ),
-                      ],
                     ],
                   ),
+                ],
               ],
             ),
           ),
 
+          // Полоска слева если пара идёт
           if (isInProgress)
             Positioned(
               left: 0,

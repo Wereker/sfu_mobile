@@ -18,31 +18,37 @@ class ProfileBody extends StatefulWidget {
 }
 
 class _ProfileBodyState extends State<ProfileBody> {
+  String? _localAvatarPath;
+
   late final TextEditingController _phoneCtrl;
   late final TextEditingController _emailCtrl;
   late final TextEditingController _tgCtrl;
   late final TextEditingController _bioCtrl;
 
+  late bool _notifyChats;
+  late bool _notifyNews;
+  late bool _notifyEvents;
+
   bool _editingPhone = false;
   bool _editingEmail = false;
-  bool _editingTg = false;
-  bool _editingBio = false;
+  bool _editingTg    = false;
+  bool _editingBio   = false;
 
-  bool _notifyChats = true;
-  bool _notifyNews = true;
-  bool _notifyEvents = false;
-
-  bool get _isTeacher => widget.user.role == 'teacher';
+  bool get _isTeacher =>
+      widget.user.role == UserRole.teacher ||
+          widget.user.role == UserRole.admin;
 
   @override
   void initState() {
     super.initState();
+    // Инициализируем из модели — данные сразу видны пользователю
     _phoneCtrl = TextEditingController(text: widget.user.phone ?? '');
-    // _emailCtrl = TextEditingController(text: widget.user.email ?? '');
-    _emailCtrl = TextEditingController(text: '');
-    // _tgCtrl    = TextEditingController(text: widget.user.telegram ?? '');
-    _tgCtrl = TextEditingController(text: '');
-    _bioCtrl = TextEditingController(text: widget.user.bio ?? '');
+    _emailCtrl = TextEditingController(text: widget.user.email);
+    _tgCtrl    = TextEditingController(text: '');
+    _bioCtrl   = TextEditingController(text: widget.user.bio ?? '');
+    _notifyChats = widget.user.notifyChats;
+    _notifyEvents = widget.user.notifyEvents;
+    _notifyNews = widget.user.notifyNews;
   }
 
   @override
@@ -56,12 +62,21 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   String get _fullName =>
       '${widget.user.lastName} ${widget.user.firstName}'
-      '${widget.user.fatherName != null ? ' ${widget.user.fatherName}' : ''}';
+          '${widget.user.fatherName != null ? ' ${widget.user.fatherName}' : ''}';
+
+  void _onAvatarChanged(String path) {
+    // TODO: вызвать UpdateAvatarUseCase(path) когда API будет готово
+    setState(() => _localAvatarPath = path);
+  }
 
   @override
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt = Theme.of(context).textTheme;
+    final tt  = Theme.of(context).textTheme;
+
+    final userWithLocalAvatar = _localAvatarPath != null
+        ? widget.user.copyWith(avatarUrl: _localAvatarPath)
+        : widget.user;
 
     return CustomScrollView(
       slivers: [
@@ -70,7 +85,12 @@ class _ProfileBodyState extends State<ProfileBody> {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
           sliver: SliverList(
             delegate: SliverChildListDelegate([
-              ProfileHeader(user: widget.user, fullName: _fullName),
+
+              ProfileHeader(
+                user: userWithLocalAvatar,
+                fullName: _fullName,
+                onAvatarChanged: _onAvatarChanged,
+              ),
 
               const SizedBox(height: 24),
 
@@ -89,17 +109,15 @@ class _ProfileBodyState extends State<ProfileBody> {
               _SectionLabel(label: 'Контакты'),
               const SizedBox(height: 8),
               ContactCard(
-                phoneCtrl: _phoneCtrl,
-                emailCtrl: _emailCtrl,
-                tgCtrl: _tgCtrl,
+                phoneCtrl:    _phoneCtrl,
+                emailCtrl:    _emailCtrl,
+                tgCtrl:       _tgCtrl,
                 editingPhone: _editingPhone,
                 editingEmail: _editingEmail,
-                editingTg: _editingTg,
-                onTogglePhone: () =>
-                    setState(() => _editingPhone = !_editingPhone),
-                onToggleEmail: () =>
-                    setState(() => _editingEmail = !_editingEmail),
-                onToggleTg: () => setState(() => _editingTg = !_editingTg),
+                editingTg:    _editingTg,
+                onTogglePhone: () => setState(() => _editingPhone = !_editingPhone),
+                onToggleEmail: () => setState(() => _editingEmail = !_editingEmail),
+                onToggleTg:    () => setState(() => _editingTg    = !_editingTg),
               ),
 
               const SizedBox(height: 24),
@@ -113,18 +131,16 @@ class _ProfileBodyState extends State<ProfileBody> {
               _SectionLabel(label: 'Уведомления'),
               const SizedBox(height: 8),
               NotificationsCard(
-                notifyChats: _notifyChats,
-                notifyNews: _notifyNews,
+                notifyChats:  _notifyChats,
+                notifyNews:   _notifyNews,
                 notifyEvents: _notifyEvents,
-                onChats: (v) => setState(() => _notifyChats = v),
-                onNews: (v) => setState(() => _notifyNews = v),
+                onChats:  (v) => setState(() => _notifyChats  = v),
+                onNews:   (v) => setState(() => _notifyNews   = v),
                 onEvents: (v) => setState(() => _notifyEvents = v),
               ),
 
               const SizedBox(height: 32),
-
               const LogoutButton(),
-
               const SizedBox(height: 16),
 
               Center(

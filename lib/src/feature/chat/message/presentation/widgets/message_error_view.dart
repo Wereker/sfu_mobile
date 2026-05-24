@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
-import 'package:sfu/src/feature/chat/message/presentation/bloc/message_bloc.dart';
 
 class MessageErrorView extends StatelessWidget {
   const MessageErrorView({super.key, required this.message});

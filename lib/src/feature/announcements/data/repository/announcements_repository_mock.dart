@@ -18,7 +18,7 @@ class AnnouncementsRepositoryMock implements AnnouncementsRepository {
       items.sort((a, b) {
         if (a.isPinned && !b.isPinned) return -1;
         if (!a.isPinned && b.isPinned) return 1;
-        return b.date.compareTo(a.date);
+        return b.publishAt.compareTo(a.publishAt);
       });
       return items;
     });

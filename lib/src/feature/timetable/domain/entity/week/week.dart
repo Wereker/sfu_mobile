@@ -5,6 +5,8 @@ part 'week.freezed.dart';
 
 @freezed
 abstract class Week with _$Week {
-  const factory Week({required String week, required List<Lesson> lessons}) =
-      _Week;
+  const factory Week({
+    required int number,
+    required List<Lesson> lessons,
+  }) = _Week;
 }

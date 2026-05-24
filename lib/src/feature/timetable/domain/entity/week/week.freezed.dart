@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Week {
 
- String get week; List<Lesson> get lessons;
+ int get number; List<Lesson> get lessons;
 /// Create a copy of Week
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $WeekCopyWith<Week> get copyWith => _$WeekCopyWithImpl<Week>(this as Week, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Week&&(identical(other.week, week) || other.week == week)&&const DeepCollectionEquality().equals(other.lessons, lessons));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Week&&(identical(other.number, number) || other.number == number)&&const DeepCollectionEquality().equals(other.lessons, lessons));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,week,const DeepCollectionEquality().hash(lessons));
+int get hashCode => Object.hash(runtimeType,number,const DeepCollectionEquality().hash(lessons));
 
 @override
 String toString() {
-  return 'Week(week: $week, lessons: $lessons)';
+  return 'Week(number: $number, lessons: $lessons)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $WeekCopyWith<$Res>  {
   factory $WeekCopyWith(Week value, $Res Function(Week) _then) = _$WeekCopyWithImpl;
 @useResult
 $Res call({
- String week, List<Lesson> lessons
+ int number, List<Lesson> lessons
 });
 
 
@@ -62,10 +62,10 @@ class _$WeekCopyWithImpl<$Res>
 
 /// Create a copy of Week
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? week = null,Object? lessons = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? number = null,Object? lessons = null,}) {
   return _then(_self.copyWith(
-week: null == week ? _self.week : week // ignore: cast_nullable_to_non_nullable
-as String,lessons: null == lessons ? _self.lessons : lessons // ignore: cast_nullable_to_non_nullable
+number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
+as int,lessons: null == lessons ? _self.lessons : lessons // ignore: cast_nullable_to_non_nullable
 as List<Lesson>,
   ));
 }
@@ -151,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String week,  List<Lesson> lessons)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int number,  List<Lesson> lessons)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Week() when $default != null:
-return $default(_that.week,_that.lessons);case _:
+return $default(_that.number,_that.lessons);case _:
   return orElse();
 
 }
@@ -172,10 +172,10 @@ return $default(_that.week,_that.lessons);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String week,  List<Lesson> lessons)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int number,  List<Lesson> lessons)  $default,) {final _that = this;
 switch (_that) {
 case _Week():
-return $default(_that.week,_that.lessons);case _:
+return $default(_that.number,_that.lessons);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -192,10 +192,10 @@ return $default(_that.week,_that.lessons);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String week,  List<Lesson> lessons)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int number,  List<Lesson> lessons)?  $default,) {final _that = this;
 switch (_that) {
 case _Week() when $default != null:
-return $default(_that.week,_that.lessons);case _:
+return $default(_that.number,_that.lessons);case _:
   return null;
 
 }
@@ -207,10 +207,10 @@ return $default(_that.week,_that.lessons);case _:
 
 
 class _Week implements Week {
-  const _Week({required this.week, required final  List<Lesson> lessons}): _lessons = lessons;
+  const _Week({required this.number, required final  List<Lesson> lessons}): _lessons = lessons;
   
 
-@override final  String week;
+@override final  int number;
  final  List<Lesson> _lessons;
 @override List<Lesson> get lessons {
   if (_lessons is EqualUnmodifiableListView) return _lessons;
@@ -229,16 +229,16 @@ _$WeekCopyWith<_Week> get copyWith => __$WeekCopyWithImpl<_Week>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Week&&(identical(other.week, week) || other.week == week)&&const DeepCollectionEquality().equals(other._lessons, _lessons));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Week&&(identical(other.number, number) || other.number == number)&&const DeepCollectionEquality().equals(other._lessons, _lessons));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,week,const DeepCollectionEquality().hash(_lessons));
+int get hashCode => Object.hash(runtimeType,number,const DeepCollectionEquality().hash(_lessons));
 
 @override
 String toString() {
-  return 'Week(week: $week, lessons: $lessons)';
+  return 'Week(number: $number, lessons: $lessons)';
 }
 
 
@@ -249,7 +249,7 @@ abstract mixin class _$WeekCopyWith<$Res> implements $WeekCopyWith<$Res> {
   factory _$WeekCopyWith(_Week value, $Res Function(_Week) _then) = __$WeekCopyWithImpl;
 @override @useResult
 $Res call({
- String week, List<Lesson> lessons
+ int number, List<Lesson> lessons
 });
 
 
@@ -266,10 +266,10 @@ class __$WeekCopyWithImpl<$Res>
 
 /// Create a copy of Week
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? week = null,Object? lessons = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? number = null,Object? lessons = null,}) {
   return _then(_Week(
-week: null == week ? _self.week : week // ignore: cast_nullable_to_non_nullable
-as String,lessons: null == lessons ? _self._lessons : lessons // ignore: cast_nullable_to_non_nullable
+number: null == number ? _self.number : number // ignore: cast_nullable_to_non_nullable
+as int,lessons: null == lessons ? _self._lessons : lessons // ignore: cast_nullable_to_non_nullable
 as List<Lesson>,
   ));
 }

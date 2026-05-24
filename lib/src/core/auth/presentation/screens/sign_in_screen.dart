@@ -52,7 +52,7 @@ class _SignInScreenState extends State<SignInScreen> {
           },
           error: (msg) =>
               ScaffoldMessenger.of(context).showSnackBar(_errorSnack(msg, ext)),
-          orElse: () {},
+          orElse: () => {},
         ),
         child: Scaffold(
           resizeToAvoidBottomInset: true,

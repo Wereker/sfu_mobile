@@ -5,16 +5,20 @@ part 'announcement.freezed.dart';
 @freezed
 abstract class Announcement with _$Announcement {
   const factory Announcement({
+    // — с сервера —
     required String id,
-    required bool isPinned,
-    required String source,
-    required String authorId,
-    required String author,
-    required DateTime date,
     required String title,
-    required String preview,
-    required String body,
-    required String audience,
-    required List<String> tags,
+    required String content,
+    required String status,
+    required DateTime publishAt,
+    required DateTime expiresAt,
+    required String authorId,
+    required DateTime createdAt,
+
+    // — синтетика до появления на сервере —
+    @Default(false) bool isPinned,
+    @Default('Кафедра') String source,
+    @Default('') String author,
+    @Default([]) List<String> tags,
   }) = _Announcement;
 }

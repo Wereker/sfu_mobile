@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TokenDTO {
 
-@JsonKey(name: 'access_token') String get access;@JsonKey(name: 'refresh_token') String get refresh;@JsonKey(name: 'token_type') String get type;@JsonKey(name: 'expires_in') int get expires;
+@JsonKey(name: 'access_token') String get access;@JsonKey(name: 'refresh_token') String get refresh;@JsonKey(name: 'token_type') String get type;
 /// Create a copy of TokenDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TokenDTOCopyWith<TokenDTO> get copyWith => _$TokenDTOCopyWithImpl<TokenDTO>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TokenDTO&&(identical(other.access, access) || other.access == access)&&(identical(other.refresh, refresh) || other.refresh == refresh)&&(identical(other.type, type) || other.type == type)&&(identical(other.expires, expires) || other.expires == expires));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TokenDTO&&(identical(other.access, access) || other.access == access)&&(identical(other.refresh, refresh) || other.refresh == refresh)&&(identical(other.type, type) || other.type == type));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,access,refresh,type,expires);
+int get hashCode => Object.hash(runtimeType,access,refresh,type);
 
 @override
 String toString() {
-  return 'TokenDTO(access: $access, refresh: $refresh, type: $type, expires: $expires)';
+  return 'TokenDTO(access: $access, refresh: $refresh, type: $type)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TokenDTOCopyWith<$Res>  {
   factory $TokenDTOCopyWith(TokenDTO value, $Res Function(TokenDTO) _then) = _$TokenDTOCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'access_token') String access,@JsonKey(name: 'refresh_token') String refresh,@JsonKey(name: 'token_type') String type,@JsonKey(name: 'expires_in') int expires
+@JsonKey(name: 'access_token') String access,@JsonKey(name: 'refresh_token') String refresh,@JsonKey(name: 'token_type') String type
 });
 
 
@@ -65,13 +65,12 @@ class _$TokenDTOCopyWithImpl<$Res>
 
 /// Create a copy of TokenDTO
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? access = null,Object? refresh = null,Object? type = null,Object? expires = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? access = null,Object? refresh = null,Object? type = null,}) {
   return _then(_self.copyWith(
 access: null == access ? _self.access : access // ignore: cast_nullable_to_non_nullable
 as String,refresh: null == refresh ? _self.refresh : refresh // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,expires: null == expires ? _self.expires : expires // ignore: cast_nullable_to_non_nullable
-as int,
+as String,
   ));
 }
 
@@ -156,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'access_token')  String access, @JsonKey(name: 'refresh_token')  String refresh, @JsonKey(name: 'token_type')  String type, @JsonKey(name: 'expires_in')  int expires)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'access_token')  String access, @JsonKey(name: 'refresh_token')  String refresh, @JsonKey(name: 'token_type')  String type)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TokenDTO() when $default != null:
-return $default(_that.access,_that.refresh,_that.type,_that.expires);case _:
+return $default(_that.access,_that.refresh,_that.type);case _:
   return orElse();
 
 }
@@ -177,10 +176,10 @@ return $default(_that.access,_that.refresh,_that.type,_that.expires);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'access_token')  String access, @JsonKey(name: 'refresh_token')  String refresh, @JsonKey(name: 'token_type')  String type, @JsonKey(name: 'expires_in')  int expires)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'access_token')  String access, @JsonKey(name: 'refresh_token')  String refresh, @JsonKey(name: 'token_type')  String type)  $default,) {final _that = this;
 switch (_that) {
 case _TokenDTO():
-return $default(_that.access,_that.refresh,_that.type,_that.expires);case _:
+return $default(_that.access,_that.refresh,_that.type);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +196,10 @@ return $default(_that.access,_that.refresh,_that.type,_that.expires);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'access_token')  String access, @JsonKey(name: 'refresh_token')  String refresh, @JsonKey(name: 'token_type')  String type, @JsonKey(name: 'expires_in')  int expires)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'access_token')  String access, @JsonKey(name: 'refresh_token')  String refresh, @JsonKey(name: 'token_type')  String type)?  $default,) {final _that = this;
 switch (_that) {
 case _TokenDTO() when $default != null:
-return $default(_that.access,_that.refresh,_that.type,_that.expires);case _:
+return $default(_that.access,_that.refresh,_that.type);case _:
   return null;
 
 }
@@ -212,13 +211,12 @@ return $default(_that.access,_that.refresh,_that.type,_that.expires);case _:
 @JsonSerializable()
 
 class _TokenDTO implements TokenDTO {
-  const _TokenDTO({@JsonKey(name: 'access_token') required this.access, @JsonKey(name: 'refresh_token') required this.refresh, @JsonKey(name: 'token_type') required this.type, @JsonKey(name: 'expires_in') required this.expires});
+  const _TokenDTO({@JsonKey(name: 'access_token') required this.access, @JsonKey(name: 'refresh_token') required this.refresh, @JsonKey(name: 'token_type') required this.type});
   factory _TokenDTO.fromJson(Map<String, dynamic> json) => _$TokenDTOFromJson(json);
 
 @override@JsonKey(name: 'access_token') final  String access;
 @override@JsonKey(name: 'refresh_token') final  String refresh;
 @override@JsonKey(name: 'token_type') final  String type;
-@override@JsonKey(name: 'expires_in') final  int expires;
 
 /// Create a copy of TokenDTO
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TokenDTO&&(identical(other.access, access) || other.access == access)&&(identical(other.refresh, refresh) || other.refresh == refresh)&&(identical(other.type, type) || other.type == type)&&(identical(other.expires, expires) || other.expires == expires));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TokenDTO&&(identical(other.access, access) || other.access == access)&&(identical(other.refresh, refresh) || other.refresh == refresh)&&(identical(other.type, type) || other.type == type));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,access,refresh,type,expires);
+int get hashCode => Object.hash(runtimeType,access,refresh,type);
 
 @override
 String toString() {
-  return 'TokenDTO(access: $access, refresh: $refresh, type: $type, expires: $expires)';
+  return 'TokenDTO(access: $access, refresh: $refresh, type: $type)';
 }
 
 
@@ -253,7 +251,7 @@ abstract mixin class _$TokenDTOCopyWith<$Res> implements $TokenDTOCopyWith<$Res>
   factory _$TokenDTOCopyWith(_TokenDTO value, $Res Function(_TokenDTO) _then) = __$TokenDTOCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'access_token') String access,@JsonKey(name: 'refresh_token') String refresh,@JsonKey(name: 'token_type') String type,@JsonKey(name: 'expires_in') int expires
+@JsonKey(name: 'access_token') String access,@JsonKey(name: 'refresh_token') String refresh,@JsonKey(name: 'token_type') String type
 });
 
 
@@ -270,13 +268,12 @@ class __$TokenDTOCopyWithImpl<$Res>
 
 /// Create a copy of TokenDTO
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? access = null,Object? refresh = null,Object? type = null,Object? expires = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? access = null,Object? refresh = null,Object? type = null,}) {
   return _then(_TokenDTO(
 access: null == access ? _self.access : access // ignore: cast_nullable_to_non_nullable
 as String,refresh: null == refresh ? _self.refresh : refresh // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String,expires: null == expires ? _self.expires : expires // ignore: cast_nullable_to_non_nullable
-as int,
+as String,
   ));
 }
 

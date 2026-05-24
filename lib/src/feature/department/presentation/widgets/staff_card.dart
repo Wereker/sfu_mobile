@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/detail_sheet.dart';
 import 'package:sfu/src/feature/department/domain/entity/staff_member.dart';

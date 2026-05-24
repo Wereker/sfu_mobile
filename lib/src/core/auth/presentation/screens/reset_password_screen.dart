@@ -61,7 +61,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               ),
             ),
           ),
-          orElse: () {},
+          orElse: () => {},
         ),
         child: Scaffold(
           resizeToAvoidBottomInset: true,

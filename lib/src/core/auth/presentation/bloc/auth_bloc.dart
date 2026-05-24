@@ -6,6 +6,7 @@ import 'package:sfu/src/core/auth/domain/use_case/reset_password_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/sign_in_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case.dart';
 import 'package:sfu/src/core/error/app_exception.dart';
+import 'package:sfu/src/core/error/auth_exception.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -36,6 +37,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           await signInUseCase.call(email: login, password: password);
           emit(AuthState.authorized());
+        } on UnauthorizedException {
+          emit(AuthState.unauthorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));
         } on Exception catch (_) {
@@ -50,6 +53,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             confirmPassword: confirmPassword,
           );
           emit(AuthState.unauthorized());
+        } on UnauthorizedException {
+          emit(AuthState.unauthorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));
         } on Exception catch (_) {
@@ -60,6 +65,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           emit(AuthState.loading());
           await logoutUseCase.call();
+          emit(AuthState.unauthorized());
+        } on UnauthorizedException {
           emit(AuthState.unauthorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));
@@ -87,6 +94,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 group: group,
               );
               emit(AuthState.authorized());
+            } on UnauthorizedException {
+              emit(AuthState.unauthorized());
             } on AppException catch (e) {
               emit(AuthState.error(error: e.message));
             } on Exception catch (_) {
@@ -99,6 +108,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           await checkAuthStatusUseCase.call();
           emit(AuthState.authorized());
+        } on UnauthorizedException {
+          emit(AuthState.unauthorized());
         } on AppException catch (e) {
           emit(AuthState.error(error: e.message));
         } on Exception catch (_) {
