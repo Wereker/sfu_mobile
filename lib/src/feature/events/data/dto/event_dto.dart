@@ -21,6 +21,27 @@ abstract class EventDTO with _$EventDTO {
 
   factory EventDTO.fromJson(Map<String, dynamic> json) =>
       _$EventDTOFromJson(json);
+
+  /// Маппинг из EventRead (API /events).
+  /// Обрабатывает nullable поля annotation и room из реального API.
+  static EventDTO fromApiJson(Map<String, dynamic> json) {
+    final roomJson = json['room'] as Map<String, dynamic>?;
+
+    return EventDTO(
+      id: (json['id'] as int).toString(),
+      title: json['title'] as String,
+      annotation: json['annotation'] as String? ?? '',
+      startsAt: json['starts_at'] as String,
+      endsAt: json['ends_at'] as String,
+      room: roomJson != null
+          ? RoomDTO.fromJson(roomJson)
+          : const RoomDTO(id: '', number: '—', address: '', capacity: 0),
+      imageUrl: json['image_url'] as String?,
+      creatorId: (json['creator_id'] as int).toString(),
+      createdAt: json['created_at'] as String,
+      updatedAt: json['updated_at'] as String,
+    );
+  }
 }
 
 String _intToString(dynamic v) => v.toString();

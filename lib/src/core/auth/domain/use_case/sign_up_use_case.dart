@@ -6,5 +6,6 @@ abstract class SignUpUseCase {
     required String email,
     required String password1,
     required String password2,
+    required int groupId,
   });
 }

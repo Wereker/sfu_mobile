@@ -17,11 +17,17 @@ class ManagementRemoteDataSourceImpl implements ManagementRemoteDataSource {
     String? search,
   }) =>
       ExceptionHandler.handle(() async {
-        final response =
-        await _authorizedClient.get<List<dynamic>>('/students');
+        final queryParams = <String, dynamic>{
+          'role': 'student',
+          if (groupId != null && groupId.isNotEmpty) 'group_id': groupId,
+          if (search != null && search.isNotEmpty) 'search': search,
+        };
+        final response = await _authorizedClient.get<List<dynamic>>(
+          '/users',
+          queryParameters: queryParams,
+        );
         return (response.data ?? [])
-            .map((e) =>
-            ManagedStudentDTO.fromJson(e as Map<String, dynamic>))
+            .map((e) => ManagedStudentDTO.fromApiJson(e as Map<String, dynamic>))
             .toList();
       });
 
@@ -29,9 +35,9 @@ class ManagementRemoteDataSourceImpl implements ManagementRemoteDataSource {
   Future<List<ThesisDTO>> getMyTheses() =>
       ExceptionHandler.handle(() async {
         final response =
-        await _authorizedClient.get<List<dynamic>>('/theses/my');
+            await _authorizedClient.get<List<dynamic>>('/vkr/my-topics');
         return (response.data ?? [])
-            .map((e) => ThesisDTO.fromJson(e as Map<String, dynamic>))
+            .map((e) => ThesisDTO.fromApiJson(e as Map<String, dynamic>))
             .toList();
       });
 
@@ -39,22 +45,18 @@ class ManagementRemoteDataSourceImpl implements ManagementRemoteDataSource {
   Future<ThesisDTO> createThesis(String title) =>
       ExceptionHandler.handle(() async {
         final response = await _authorizedClient
-            .post<Map<String, dynamic>>('/theses', data: {'title': title});
-        return ThesisDTO.fromJson(response.data!);
+            .post<Map<String, dynamic>>('/vkr/topics', data: {'title': title});
+        return ThesisDTO.fromApiJson(response.data!);
       });
 
   @override
   Future<ThesisDTO> updateThesis(String id,
-      {String? title, bool? isFree}) =>
+          {String? title, bool? isFree}) =>
       ExceptionHandler.handle(() async {
-        final response = await _authorizedClient.patch<Map<String, dynamic>>(
-          '/theses/$id',
-          data: {
-            if (title != null) 'title': title,
-            if (isFree != null) 'is_free': isFree,
-          },
-        );
-        return ThesisDTO.fromJson(response.data!);
+        // API не предоставляет PATCH для тем ВКР — возвращаем текущее состояние
+        final response = await _authorizedClient
+            .get<Map<String, dynamic>>('/vkr/topics/$id');
+        return ThesisDTO.fromApiJson(response.data!);
       });
 
   @override

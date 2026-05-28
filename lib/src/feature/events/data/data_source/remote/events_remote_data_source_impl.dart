@@ -13,7 +13,7 @@ class EventsRemoteDataSourceImpl implements EventsRemoteDataSource {
     final response = await _authorizedClient.get<List<dynamic>>('/events');
     final data = response.data ?? [];
     return data
-        .map((e) => EventDTO.fromJson(e as Map<String, dynamic>))
+        .map((e) => EventDTO.fromApiJson(e as Map<String, dynamic>))
         .toList();
   }
 

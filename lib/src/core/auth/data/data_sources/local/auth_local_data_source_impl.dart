@@ -1,5 +1,4 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:sfu/src/core/auth/data/dto/auth_user_data.dart';
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,11 +49,6 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }
 
   @override
-  Future<void> clear() async {
-    await _secureStorage.deleteAll();
-  }
-
-  @override
   Future<void> cacheUserData({
     required String uid,
     String? name,
@@ -62,27 +56,14 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     String? role,
     String? subgroup,
   }) async {
-    if (name != null) {
-      await _pref.setString('user.$uid.name', name);
-    }
-    if (group != null) {
-      await _pref.setString('user.$uid.group', group);
-    }
-    if (role != null) {
-      await _pref.setString('user.$uid.role', role);
-    }
-    if (subgroup != null) {
-      await _pref.setString('user.$uid.subgroup', subgroup);
-    }
+    if (name != null) await _pref.setString('user.$uid.name', name);
+    if (group != null) await _pref.setString('user.$uid.group', group);
+    if (role != null) await _pref.setString('user.$uid.role', role);
+    if (subgroup != null) await _pref.setString('user.$uid.subgroup', subgroup);
   }
 
   @override
-  Future<AuthMetadataDTO> getUserData(String uid) async {
-    return AuthMetadataDTO(
-      name: _pref.getString('user.$uid.name'),
-      group: _pref.getString('user.$uid.group'),
-      role: _pref.getString('user.$uid.role'),
-      subgroup: _pref.getString('user.$uid.subgroup'),
-    );
+  Future<void> clear() async {
+    await _secureStorage.deleteAll();
   }
 }

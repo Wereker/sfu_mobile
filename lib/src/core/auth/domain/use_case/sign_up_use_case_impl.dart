@@ -15,6 +15,7 @@ class SignUpUseCaseImpl implements SignUpUseCase {
     required String email,
     required String password1,
     required String password2,
+    required int groupId,
   }) async {
     final trimmedEmail    = email.trim();
     final trimmedName     = name.trim();
@@ -38,6 +39,9 @@ class SignUpUseCaseImpl implements SignUpUseCase {
     if (password1 != password2) {
       throw const ValidationException('Пароли не совпадают');
     }
+    if (groupId <= 0) {
+      throw const ValidationException('Выберите учебную группу');
+    }
 
     return ExceptionHandler.handle(
           () => _repo.signUp(
@@ -46,6 +50,7 @@ class SignUpUseCaseImpl implements SignUpUseCase {
         patronymic: patronymic.trim(),
         email: trimmedEmail,
         password: password1,
+        groupId: groupId,
       ),
     );
   }

@@ -88,7 +88,7 @@ import 'package:sfu/src/feature/chat/message/domain/use_case/get_messages_use_ca
 import 'package:sfu/src/feature/chat/message/domain/use_case/get_messages_use_case_impl.dart';
 
 import 'package:sfu/src/feature/department/data/data_source/remote/department_remote_data_source.dart';
-import 'package:sfu/src/feature/department/data/data_source/remote/department_remote_data_source_mock.dart';
+import 'package:sfu/src/feature/department/data/data_source/remote/department_remote_data_source_impl.dart';
 import 'package:sfu/src/feature/department/data/repository/department_repository_mock.dart';
 import 'package:sfu/src/feature/department/domain/repository/department_repository.dart';
 import 'package:sfu/src/feature/department/domain/use_case/get_staff_member_use_case.dart';
@@ -259,7 +259,9 @@ void _initDataSources() {
 
   // Department
   sl.registerSingleton<DepartmentRemoteDataSource>(
-    DepartmentRemoteDataSourceMock(),
+    DepartmentRemoteDataSourceImpl(
+      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
+    ),
   );
 
   // Management

@@ -1,5 +1,6 @@
 import 'package:sfu/src/core/auth/data/data_sources/local/auth_local_data_source.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
+import 'package:sfu/src/core/auth/data/dto/group_dto.dart';
 import 'package:sfu/src/core/auth/data/dto/token_dto.dart';
 import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 import 'package:sfu/src/core/error/auth_exception.dart';
@@ -28,6 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String patronymic,
     required String email,
     required String password,
+    required int groupId,
   }) async {
     await _remote.signUp(
       name: name,
@@ -35,8 +37,12 @@ class AuthRepositoryImpl implements AuthRepository {
       patronymic: patronymic,
       email: email,
       password: password,
+      groupId: groupId,
     );
   }
+
+  @override
+  Future<List<GroupDTO>> fetchGroups() => _remote.getGroups();
 
   @override
   Future<void> resetPassword(String newPassword) async {

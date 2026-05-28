@@ -21,4 +21,27 @@ abstract class ManagedStudentDTO with _$ManagedStudentDTO {
 
   factory ManagedStudentDTO.fromJson(Map<String, dynamic> json) =>
       _$ManagedStudentDTOFromJson(json);
+
+  /// Маппинг из UserRead (API /users).
+  static ManagedStudentDTO fromApiJson(Map<String, dynamic> json) {
+    final parts = <String>[
+      json['surname'] as String? ?? '',
+      json['name'] as String? ?? '',
+      if ((json['patronymic'] as String?)?.isNotEmpty == true)
+        json['patronymic'] as String,
+    ].where((s) => s.isNotEmpty).toList();
+
+    return ManagedStudentDTO(
+      id: (json['id'] as int).toString(),
+      name: parts.join(' '),
+      groupId: '',
+      groupName: '',
+      stream: '',
+      isHeadman: false,
+      phone: null,
+      telegram: null,
+      email: json['email'] as String?,
+      avatarUrl: json['avatar'] as String?,
+    );
+  }
 }

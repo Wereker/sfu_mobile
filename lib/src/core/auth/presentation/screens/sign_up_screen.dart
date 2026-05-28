@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
+import 'package:sfu/src/core/auth/data/dto/group_dto.dart';
+import 'package:sfu/src/core/auth/domain/repository/auth_repository.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
@@ -16,12 +19,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscure1 = true;
   bool _obscure2 = true;
 
-  final _surnameCtrl    = TextEditingController(); // фамилия
-  final _nameCtrl       = TextEditingController(); // имя
-  final _patronymicCtrl = TextEditingController(); // отчество
+  final _surnameCtrl    = TextEditingController();
+  final _nameCtrl       = TextEditingController();
+  final _patronymicCtrl = TextEditingController();
   final _emailCtrl      = TextEditingController();
   final _pass1Ctrl      = TextEditingController();
   final _pass2Ctrl      = TextEditingController();
+
+  late final Future<List<GroupDTO>> _groupsFuture;
+  GroupDTO? _selectedGroup;
+
+  @override
+  void initState() {
+    super.initState();
+    _groupsFuture = GetIt.instance<AuthRepository>().fetchGroups();
+  }
 
   @override
   void dispose() {
@@ -35,6 +47,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   void _submit(BuildContext context) {
+    if (_selectedGroup == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Выберите учебную группу'),
+          backgroundColor: Theme.of(context).extension<AppColors>()!.errorBg,
+        ),
+      );
+      return;
+    }
     FocusScope.of(context).unfocus();
     context.read<AuthBloc>().add(
       AuthEvent.signUp(
@@ -44,6 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         email:       _emailCtrl.text.trim(),
         password1:   _pass1Ctrl.text,
         password2:   _pass2Ctrl.text,
+        groupId:     _selectedGroup!.id,
       ),
     );
   }
@@ -68,7 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               arguments: {'email': email},
             );
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Аккаунт создан. Войдите в систему.')),
+              const SnackBar(content: Text('Аккаунт создан. Войдите в систему.')),
             );
             return null;
           },
@@ -97,7 +119,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // Лого
                       Center(
                         child: SvgPicture.asset(
                           'assets/images/logo.svg',
@@ -117,7 +138,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       const SizedBox(height: 6),
 
-                      // Плашка о том что только студенты
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 14, vertical: 10),
@@ -206,6 +226,73 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       const SizedBox(height: 12),
 
+                      // Выбор группы
+                      FutureBuilder<List<GroupDTO>>(
+                        future: _groupsFuture,
+                        builder: (context, snapshot) {
+                          final groups = snapshot.data ?? [];
+                          final isLoading = snapshot.connectionState ==
+                              ConnectionState.waiting;
+
+                          return Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: _selectedGroup != null
+                                    ? cs.primary
+                                    : ext.border,
+                                width: _selectedGroup != null ? 1.5 : 1.0,
+                              ),
+                              borderRadius:
+                                  BorderRadius.circular(AppTheme.radiusMd),
+                            ),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<GroupDTO>(
+                                value: _selectedGroup,
+                                isExpanded: true,
+                                hint: isLoading
+                                    ? Row(children: [
+                                        SizedBox(
+                                          width: 14,
+                                          height: 14,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                            color: ext.textTertiary,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text('Загрузка групп...',
+                                            style: tt.bodyMedium?.copyWith(
+                                                color: ext.textTertiary)),
+                                      ])
+                                    : Row(children: [
+                                        Icon(Icons.group_outlined,
+                                            size: 20,
+                                            color: ext.textTertiary),
+                                        const SizedBox(width: 8),
+                                        Text('Выберите группу',
+                                            style: tt.bodyMedium?.copyWith(
+                                                color: ext.textTertiary)),
+                                      ]),
+                                items: groups
+                                    .map((g) => DropdownMenuItem(
+                                          value: g,
+                                          child: Text(g.name),
+                                        ))
+                                    .toList(),
+                                onChanged: isLoading
+                                    ? null
+                                    : (val) =>
+                                        setState(() => _selectedGroup = val),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 12),
+
                       // Пароль
                       TextField(
                         controller: _pass1Ctrl,
@@ -257,7 +344,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       const SizedBox(height: 24),
 
-                      // Кнопка
                       BlocBuilder<AuthBloc, AuthState>(
                         builder: (context, state) => SizedBox(
                           height: 52,

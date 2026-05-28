@@ -105,6 +105,7 @@ class _AuthInterceptor extends Interceptor {
       final response = await _publicClient.post<Map<String, dynamic>>(
         '/auth/refresh',
         data: {'refresh_token': refreshToken},
+        options: Options(contentType: 'application/json'),
       );
 
       final newToken = TokenDTO.fromJson(response.data!);

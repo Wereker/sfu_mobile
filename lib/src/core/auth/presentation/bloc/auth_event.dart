@@ -14,6 +14,7 @@ class AuthEvent with _$AuthEvent {
     required String email,
     required String password1,
     required String password2,
+    required int groupId,
   }) = _AuthSignUp;
 
   const factory AuthEvent.resetPassword({

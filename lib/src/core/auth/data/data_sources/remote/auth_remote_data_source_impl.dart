@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
-import 'package:sfu/src/core/auth/data/dto/auth_user_data.dart';
+import 'package:sfu/src/core/auth/data/dto/group_dto.dart';
 import 'package:sfu/src/core/auth/data/dto/token_dto.dart';
 import 'package:sfu/src/core/error/data_exception.dart';
 import 'package:sfu/src/core/error/exception_handler.dart';
@@ -40,6 +40,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String patronymic,
     required String email,
     required String password,
+    required int groupId,
   }) =>
       ExceptionHandler.handle(() async {
         await _publicClient.post<Map<String, dynamic>>(
@@ -47,12 +48,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           data: {
             'name': name,
             'surname': surname,
-            'patronymic': patronymic,
+            if (patronymic.isNotEmpty) 'patronymic': patronymic,
             'email': email,
             'password': password,
-            'role': 'student', // только студенты могут регистрироваться
+            'group_id': groupId,
           },
         );
+      });
+
+  @override
+  Future<List<GroupDTO>> getGroups() =>
+      ExceptionHandler.handle(() async {
+        final response = await _publicClient.get<List<dynamic>>('/groups');
+        return (response.data ?? [])
+            .map((e) => GroupDTO.fromJson(e as Map<String, dynamic>))
+            .toList();
       });
 
   @override
@@ -69,23 +79,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       ExceptionHandler.handle(() async {
         final response = await _publicClient.post<Map<String, dynamic>>(
           '/auth/refresh',
-          data: FormData.fromMap({'refresh_token': token}),
-          options: Options(contentType: 'application/x-www-form-urlencoded'),
+          data: {'refresh_token': token},
         );
         return _parseToken(response);
-      });
-
-  @override
-  Future<AuthMetadataDTO> getUserData(String uid) =>
-      ExceptionHandler.handle(() async {
-        final response = await _authorizedClient.get<Map<String, dynamic>>(
-          '/users/$uid',
-        );
-        final data = response.data;
-        if (data == null) {
-          throw const ParseException(details: 'getUserData: response body is null');
-        }
-        return AuthMetadataDTO.fromJson(data);
       });
 
   TokenDTO _parseToken(Response<Map<String, dynamic>> response) {

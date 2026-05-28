@@ -1,4 +1,4 @@
-import 'package:sfu/src/core/auth/data/dto/auth_user_data.dart';
+import 'package:sfu/src/core/auth/data/dto/group_dto.dart';
 import 'package:sfu/src/core/auth/data/dto/token_dto.dart';
 
 abstract class AuthRemoteDataSource {
@@ -10,9 +10,11 @@ abstract class AuthRemoteDataSource {
     required String patronymic,
     required String email,
     required String password,
+    required int groupId,
   });
+
+  Future<List<GroupDTO>> getGroups();
 
   Future<void> resetPassword(String newPassword);
   Future<TokenDTO> refreshToken(String token);
-  Future<AuthMetadataDTO> getUserData(String uid);
 }

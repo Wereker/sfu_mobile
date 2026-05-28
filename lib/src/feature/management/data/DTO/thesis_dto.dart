@@ -18,4 +18,24 @@ abstract class ThesisDTO with _$ThesisDTO {
 
   factory ThesisDTO.fromJson(Map<String, dynamic> json) =>
       _$ThesisDTOFromJson(json);
+
+  /// Маппинг из VKRTopicRead (API /vkr/topics).
+  static ThesisDTO fromApiJson(Map<String, dynamic> json) {
+    final proposedBy = json['proposed_by'] as Map<String, dynamic>?;
+    final teacherName = proposedBy != null
+        ? '${proposedBy['surname'] ?? ''} ${proposedBy['name'] ?? ''}'.trim()
+        : '';
+
+    return ThesisDTO(
+      id: (json['id'] as int).toString(),
+      title: json['title'] as String,
+      teacherId: (json['proposed_by_id'] as int).toString(),
+      teacherName: teacherName,
+      isFree: json['student_id'] == null,
+      takenBy: null,
+      takenById: json['student_id'] != null
+          ? (json['student_id'] as int).toString()
+          : null,
+    );
+  }
 }

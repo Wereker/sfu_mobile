@@ -83,6 +83,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           String email,
           String password1,
           String password2,
+          int groupId,
           ) async {
         emit(AuthState.loading());
         try {
@@ -93,6 +94,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             email: email,
             password1: password1,
             password2: password2,
+            groupId: groupId,
           );
           emit(AuthState.registered(email: email));
         } on UnauthorizedException {
