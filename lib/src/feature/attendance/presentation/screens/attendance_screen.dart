@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/dependency_injection/injection.dart';
+import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/attendance/presentation/bloc/session/attendance_session_bloc.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_app_bar.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_day_picker.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_empty_view.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/journal_sheet.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/lesson_attendance_card.dart';
+import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
+import 'package:sfu/src/feature/timetable/domain/entity/lesson/lesson.dart';
+import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
@@ -18,45 +22,106 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen> {
   int _selectedDay = DateTime.now().weekday.clamp(1, 6);
 
-  // Синтетические пары — заменятся на TimetableBloc когда появится интеграция
-  // Здесь используем Lesson из domain/timetable как источник данных о парах
-  static final _sampleLessons = <LessonData>[
-    LessonData(
-      id: 'lesson_1',
-      subject: 'Машинное обучение',
-      type: 'лекция',
-      time: '10:15–11:50',
-      place: 'Л4-21',
-      group: 'БИ22-01',
-      studentCount: 12,
-      isStarted: true,
-      presentCount: 9,
-    ),
-    LessonData(
-      id: 'lesson_2',
-      subject: 'Глубокое обучение',
-      type: 'пр. занятие',
-      time: '12:00–13:35',
-      place: 'Л4-12',
-      group: 'БИ22-02',
-      studentCount: 10,
-      isStarted: false,
-      presentCount: 0,
-    ),
-    LessonData(
-      id: 'lesson_3',
-      subject: 'Компьютерное зрение',
-      type: 'лаб. работа',
-      time: '14:10–15:45',
-      place: 'УЛК 2-15',
-      group: 'БИ22-01',
-      studentCount: 6,
-      isStarted: false,
-      presentCount: 0,
-    ),
-  ];
+  // Пока преподаватели не привязаны к расписанию — берём group_id = 6
+  static const int _groupId = 6;
+  static const int _currentWeek = 1; // TODO: вычислять динамически
 
-  void _openJournal(BuildContext context, LessonData lesson) {
+  @override
+  Widget build(BuildContext context) {
+    final ext = Theme.of(context).extension<AppColors>()!;
+    final tt  = Theme.of(context).textTheme;
+
+    return BlocProvider(
+      create: (_) => sl<AttendanceSessionBloc>(),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            body: BlocBuilder<TimetableBloc, TimetableState>(
+              builder: (context, timetableState) {
+                final timetable = timetableState.maybeWhen(
+                  success: (t, _) => t,
+                  orElse: () => null,
+                );
+
+                // Уроки текущего дня
+                final lessons = timetable != null
+                    ? (_currentWeek == 1 ? timetable.week1 : timetable.week2)
+                    .lessons
+                    .where((l) => l.day == _selectedDay)
+                    .toList()
+                    : <Lesson>[];
+
+                lessons.sort((a, b) => a.timeStart.compareTo(b.timeStart));
+
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<TimetableBloc>().add(
+                      TimetableEvent.loadData(
+                        userId: _groupId,
+                        userType: TimetableTargetType.group,
+                      ),
+                    );
+                    await Future.delayed(const Duration(seconds: 1));
+                  },
+                  child: CustomScrollView(
+                    slivers: [
+                      const AttendanceAppBar(),
+
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                          child: AttendanceDayPicker(
+                            selected: _selectedDay,
+                            onChanged: (d) =>
+                                setState(() => _selectedDay = d),
+                          ),
+                        ),
+                      ),
+
+                      if (timetableState.maybeWhen(
+                        loading: () => true,
+                        initial: () => true,
+                        orElse: () => false,
+                      ))
+                        const SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 64),
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
+                        )
+                      else if (lessons.isEmpty)
+                        const SliverToBoxAdapter(
+                            child: AttendanceEmptyView())
+                      else
+                        SliverPadding(
+                          padding:
+                          const EdgeInsets.fromLTRB(16, 16, 16, 32),
+                          sliver: SliverList.separated(
+                            separatorBuilder: (_, __) =>
+                            const SizedBox(height: 10),
+                            itemCount: lessons.length,
+                            itemBuilder: (ctx, i) {
+                              final lesson = lessons[i];
+                              return LessonAttendanceCard(
+                                lesson: _toLessonData(lesson),
+                                onTap: () =>
+                                    _openJournal(ctx, lesson),
+                              );
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  void _openJournal(BuildContext context, Lesson lesson) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -65,60 +130,39 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       builder: (_) => BlocProvider.value(
         value: context.read<AttendanceSessionBloc>(),
         child: JournalSheet(
-          lessonId:    lesson.id,
+          lessonId:    int.tryParse(lesson.id.toString()) ?? 0,
           lessonTitle: lesson.subject,
-          lessonGroup: lesson.group,
-          lessonTime:  lesson.time,
-          lessonPlace: lesson.place,
-          isStarted:   lesson.isStarted,
-          onStarted: () => setState(() => lesson.isStarted = true),
+          lessonGroup: 'Группа $_groupId',
+          lessonTime:  '${lesson.timeStart}–${lesson.timeEnd}',
+          lessonPlace: lesson.isOnline
+              ? 'ЭИОС'
+              : lesson.room.isNotEmpty
+              ? 'ауд. ${lesson.room}'
+              : '',
         ),
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<AttendanceSessionBloc>(),
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            const AttendanceAppBar(),
-
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                child: AttendanceDayPicker(
-                  selected: _selectedDay,
-                  onChanged: (d) => setState(() => _selectedDay = d),
-                ),
-              ),
-            ),
-
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-              sliver: _sampleLessons.isEmpty
-                  ? const SliverToBoxAdapter(child: AttendanceEmptyView())
-                  : SliverList.separated(
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
-                itemCount: _sampleLessons.length,
-                itemBuilder: (ctx, i) => LessonAttendanceCard(
-                  lesson: _sampleLessons[i],
-                  onTap: () => _openJournal(ctx, _sampleLessons[i]),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  LessonData _toLessonData(Lesson lesson) => LessonData(
+    id: lesson.id,
+    subject: lesson.subject,
+    type: lesson.type == LessonType.lecture
+        ? 'лекция'
+        : lesson.type == LessonType.practice
+        ? 'пр. занятие'
+        : 'лаб. работа',
+    time: '${lesson.timeStart}–${lesson.timeEnd}',
+    place: lesson.isOnline ? 'ЭИОС' : 'ауд. ${lesson.room}',
+    group: 'Группа $_groupId',
+    studentCount: 5, // синтетика — реальное число из mock-студентов
+    isStarted: false,
+    presentCount: 0,
+  );
 }
 
-// Легковесная модель данных пары для UI (до интеграции с TimetableBloc)
 class LessonData {
-  final String id;
+  final int    id;
   final String subject;
   final String type;
   final String time;
@@ -141,5 +185,5 @@ class LessonData {
   });
 
   double get attendanceRate =>
-      studentCount == 0 ? 0 : presentCount / studentCount;
+      studentCount == 0 ? 0.0 : presentCount / studentCount;
 }

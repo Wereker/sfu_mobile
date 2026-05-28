@@ -108,8 +108,6 @@ class _ContactsBlock extends StatelessWidget {
         _ContactItem(icon: Icons.phone_outlined, label: 'Телефон', value: member.phone!),
       if (member.telegram != null)
         _ContactItem(icon: Icons.telegram, label: 'Telegram', value: member.telegram!),
-      if (member.office != null)
-        _ContactItem(icon: Icons.door_back_door_outlined, label: 'Кабинет', value: member.office!),
     ];
 
     return Container(

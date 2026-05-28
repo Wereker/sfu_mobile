@@ -31,9 +31,4 @@ class AuthRepositoryMock implements AuthRepository {
   Future<void> checkAuthStatus() async {
     await Future.delayed(Duration(seconds: 1));
   }
-
-  @override
-  Future<void> signInWithGoogle() async {
-    await Future.delayed(Duration(seconds: 1));
-  }
 }

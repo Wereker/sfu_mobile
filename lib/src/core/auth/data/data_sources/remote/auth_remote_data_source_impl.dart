@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source.dart';
 import 'package:sfu/src/core/auth/data/dto/auth_user_data.dart';
 import 'package:sfu/src/core/auth/data/dto/token_dto.dart';
-import 'package:sfu/src/core/error/auth_exception.dart';
 import 'package:sfu/src/core/error/data_exception.dart';
 import 'package:sfu/src/core/error/exception_handler.dart';
 

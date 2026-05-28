@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
-import 'package:sfu/src/core/widgets/initials_avatar.dart';
+import 'package:sfu/src/core/widgets/user_avatar.dart';
 import 'package:sfu/src/feature/chat/domain/entity/chat.dart';
-import 'package:sfu/src/feature/chat/message/domain/entity/message.dart';
 import 'package:sfu/src/feature/chat/message/presentation/screens/message_screen.dart';
 
 class ChatRow extends StatelessWidget {
@@ -45,8 +44,10 @@ class ChatRow extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) =>
-              MessageScreen(chatId: chat.id, chatTitle: chat.title),
+          builder: (_) => MessageScreen(
+            chatId: int.tryParse(chat.id) ?? 0,
+            chatTitle: chat.title,
+          ),
         ),
       ),
       child: Padding(
@@ -56,12 +57,11 @@ class ChatRow extends StatelessWidget {
             // Аватар + онлайн-индикатор
             Stack(
               children: [
-                chat.avatarUrl != null
-                    ? CircleAvatar(
-                  radius: 24,
-                  backgroundImage: NetworkImage(chat.avatarUrl!),
-                )
-                    : InitialsAvatar(name: chat.title, size: 48),
+                UserAvatar(
+                  name: chat.title,
+                  avatarUrl: chat.avatarUrl,
+                  size: 48,
+                ),
                 if (chat.type == ChatType.private)
                   Positioned(
                     bottom: 1, right: 1,
@@ -70,7 +70,7 @@ class ChatRow extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _isOnline()
-                            ? ext.success
+                            ? ext.successFg
                             : ext.textTertiary,
                         border: Border.all(
                           color: Theme.of(context).scaffoldBackgroundColor,
@@ -91,45 +91,51 @@ class ChatRow extends StatelessWidget {
                   Text(
                     chat.title,
                     style: tt.labelLarge?.copyWith(
-                      fontWeight: hasUnread
-                          ? FontWeight.w700 : FontWeight.w600,
+                      fontWeight:
+                      hasUnread ? FontWeight.w700 : FontWeight.w600,
                       fontSize: 15,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 2),
-                  // Превью последнего сообщения
                   if (lastMsg != null)
                     Row(
                       children: [
                         if (lastMsg.isOutgoing) ...[
                           Icon(
-                            lastMsg.status == MessageStatus.read
-                                ? Icons.done_all
-                                : Icons.done,
+                            Icons.done,
                             size: 14,
-                            color: lastMsg.status == MessageStatus.read
-                                ? ext.success
-                                : ext.textTertiary,
+                            color: ext.textTertiary,
                           ),
                           const SizedBox(width: 3),
                         ],
                         Expanded(
                           child: Text(
-                            lastMsg.text.isEmpty ? '📎 Файл' : lastMsg.text,
+                            lastMsg.body.isEmpty ? '📎 Файл' : lastMsg.body,
                             style: tt.bodyMedium?.copyWith(
                               fontSize: 13,
                               color: hasUnread
-                                  ? ext.textPrimary : ext.textSecondary,
+                                  ? ext.textPrimary
+                                  : ext.textSecondary,
                               fontWeight: hasUnread
-                                  ? FontWeight.w500 : FontWeight.w400,
+                                  ? FontWeight.w500
+                                  : FontWeight.w400,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
+                    )
+                  else
+                    Text(
+                      'Нет сообщений',
+                      style: tt.bodyMedium?.copyWith(
+                        fontSize: 13,
+                        color: ext.textTertiary,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                 ],
               ),
@@ -146,8 +152,8 @@ class ChatRow extends StatelessWidget {
                   date,
                   style: tt.labelSmall?.copyWith(
                     color: hasUnread ? cs.primary : ext.textTertiary,
-                    fontWeight: hasUnread
-                        ? FontWeight.w600 : FontWeight.w400,
+                    fontWeight:
+                    hasUnread ? FontWeight.w600 : FontWeight.w400,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -158,14 +164,19 @@ class ChatRow extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 6),
                     decoration: BoxDecoration(
                       color: cs.primary,
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                      borderRadius:
+                      BorderRadius.circular(AppTheme.radiusSm),
                     ),
                     alignment: Alignment.center,
                     child: Text(
-                      chat.unreadCount > 99 ? '99+' : '${chat.unreadCount}',
+                      chat.unreadCount > 99
+                          ? '99+'
+                          : '${chat.unreadCount}',
                       style: TextStyle(
-                        fontSize: 11, fontWeight: FontWeight.w700,
-                        color: cs.onPrimary, height: 1,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: cs.onPrimary,
+                        height: 1,
                       ),
                     ),
                   )

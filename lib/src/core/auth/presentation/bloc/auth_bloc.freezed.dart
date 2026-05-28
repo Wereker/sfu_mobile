@@ -55,13 +55,13 @@ extension AuthEventPatterns on AuthEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthSignIn value)?  signIn,TResult Function( _AuthResetPassword value)?  resetPassword,TResult Function( _AuthSignUp value)?  signUp,TResult Function( _AuthLogout value)?  logout,TResult Function( _AuthCheckAuthStatus value)?  checkAuthStatus,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthSignIn value)?  signIn,TResult Function( _AuthSignUp value)?  signUp,TResult Function( _AuthResetPassword value)?  resetPassword,TResult Function( _AuthLogout value)?  logout,TResult Function( _AuthCheckAuthStatus value)?  checkAuthStatus,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
-return signIn(_that);case _AuthResetPassword() when resetPassword != null:
-return resetPassword(_that);case _AuthSignUp() when signUp != null:
-return signUp(_that);case _AuthLogout() when logout != null:
+return signIn(_that);case _AuthSignUp() when signUp != null:
+return signUp(_that);case _AuthResetPassword() when resetPassword != null:
+return resetPassword(_that);case _AuthLogout() when logout != null:
 return logout(_that);case _AuthCheckAuthStatus() when checkAuthStatus != null:
 return checkAuthStatus(_that);case _:
   return orElse();
@@ -81,13 +81,13 @@ return checkAuthStatus(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthSignIn value)  signIn,required TResult Function( _AuthResetPassword value)  resetPassword,required TResult Function( _AuthSignUp value)  signUp,required TResult Function( _AuthLogout value)  logout,required TResult Function( _AuthCheckAuthStatus value)  checkAuthStatus,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthSignIn value)  signIn,required TResult Function( _AuthSignUp value)  signUp,required TResult Function( _AuthResetPassword value)  resetPassword,required TResult Function( _AuthLogout value)  logout,required TResult Function( _AuthCheckAuthStatus value)  checkAuthStatus,}){
 final _that = this;
 switch (_that) {
 case _AuthSignIn():
-return signIn(_that);case _AuthResetPassword():
-return resetPassword(_that);case _AuthSignUp():
-return signUp(_that);case _AuthLogout():
+return signIn(_that);case _AuthSignUp():
+return signUp(_that);case _AuthResetPassword():
+return resetPassword(_that);case _AuthLogout():
 return logout(_that);case _AuthCheckAuthStatus():
 return checkAuthStatus(_that);case _:
   throw StateError('Unexpected subclass');
@@ -106,13 +106,13 @@ return checkAuthStatus(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthSignIn value)?  signIn,TResult? Function( _AuthResetPassword value)?  resetPassword,TResult? Function( _AuthSignUp value)?  signUp,TResult? Function( _AuthLogout value)?  logout,TResult? Function( _AuthCheckAuthStatus value)?  checkAuthStatus,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthSignIn value)?  signIn,TResult? Function( _AuthSignUp value)?  signUp,TResult? Function( _AuthResetPassword value)?  resetPassword,TResult? Function( _AuthLogout value)?  logout,TResult? Function( _AuthCheckAuthStatus value)?  checkAuthStatus,}){
 final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
-return signIn(_that);case _AuthResetPassword() when resetPassword != null:
-return resetPassword(_that);case _AuthSignUp() when signUp != null:
-return signUp(_that);case _AuthLogout() when logout != null:
+return signIn(_that);case _AuthSignUp() when signUp != null:
+return signUp(_that);case _AuthResetPassword() when resetPassword != null:
+return resetPassword(_that);case _AuthLogout() when logout != null:
 return logout(_that);case _AuthCheckAuthStatus() when checkAuthStatus != null:
 return checkAuthStatus(_that);case _:
   return null;
@@ -131,12 +131,12 @@ return checkAuthStatus(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password)?  signIn,TResult Function( String newPassword,  String confirmPassword)?  resetPassword,TResult Function( String email,  String password1,  String password2,  String name,  String role,  String group)?  signUp,TResult Function()?  logout,TResult Function()?  checkAuthStatus,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String email,  String password)?  signIn,TResult Function( String name,  String surname,  String patronymic,  String email,  String password1,  String password2)?  signUp,TResult Function( String newPassword,  String confirmPassword)?  resetPassword,TResult Function()?  logout,TResult Function()?  checkAuthStatus,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
-return signIn(_that.email,_that.password);case _AuthResetPassword() when resetPassword != null:
-return resetPassword(_that.newPassword,_that.confirmPassword);case _AuthSignUp() when signUp != null:
-return signUp(_that.email,_that.password1,_that.password2,_that.name,_that.role,_that.group);case _AuthLogout() when logout != null:
+return signIn(_that.email,_that.password);case _AuthSignUp() when signUp != null:
+return signUp(_that.name,_that.surname,_that.patronymic,_that.email,_that.password1,_that.password2);case _AuthResetPassword() when resetPassword != null:
+return resetPassword(_that.newPassword,_that.confirmPassword);case _AuthLogout() when logout != null:
 return logout();case _AuthCheckAuthStatus() when checkAuthStatus != null:
 return checkAuthStatus();case _:
   return orElse();
@@ -156,12 +156,12 @@ return checkAuthStatus();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password)  signIn,required TResult Function( String newPassword,  String confirmPassword)  resetPassword,required TResult Function( String email,  String password1,  String password2,  String name,  String role,  String group)  signUp,required TResult Function()  logout,required TResult Function()  checkAuthStatus,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String email,  String password)  signIn,required TResult Function( String name,  String surname,  String patronymic,  String email,  String password1,  String password2)  signUp,required TResult Function( String newPassword,  String confirmPassword)  resetPassword,required TResult Function()  logout,required TResult Function()  checkAuthStatus,}) {final _that = this;
 switch (_that) {
 case _AuthSignIn():
-return signIn(_that.email,_that.password);case _AuthResetPassword():
-return resetPassword(_that.newPassword,_that.confirmPassword);case _AuthSignUp():
-return signUp(_that.email,_that.password1,_that.password2,_that.name,_that.role,_that.group);case _AuthLogout():
+return signIn(_that.email,_that.password);case _AuthSignUp():
+return signUp(_that.name,_that.surname,_that.patronymic,_that.email,_that.password1,_that.password2);case _AuthResetPassword():
+return resetPassword(_that.newPassword,_that.confirmPassword);case _AuthLogout():
 return logout();case _AuthCheckAuthStatus():
 return checkAuthStatus();case _:
   throw StateError('Unexpected subclass');
@@ -180,12 +180,12 @@ return checkAuthStatus();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password)?  signIn,TResult? Function( String newPassword,  String confirmPassword)?  resetPassword,TResult? Function( String email,  String password1,  String password2,  String name,  String role,  String group)?  signUp,TResult? Function()?  logout,TResult? Function()?  checkAuthStatus,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String email,  String password)?  signIn,TResult? Function( String name,  String surname,  String patronymic,  String email,  String password1,  String password2)?  signUp,TResult? Function( String newPassword,  String confirmPassword)?  resetPassword,TResult? Function()?  logout,TResult? Function()?  checkAuthStatus,}) {final _that = this;
 switch (_that) {
 case _AuthSignIn() when signIn != null:
-return signIn(_that.email,_that.password);case _AuthResetPassword() when resetPassword != null:
-return resetPassword(_that.newPassword,_that.confirmPassword);case _AuthSignUp() when signUp != null:
-return signUp(_that.email,_that.password1,_that.password2,_that.name,_that.role,_that.group);case _AuthLogout() when logout != null:
+return signIn(_that.email,_that.password);case _AuthSignUp() when signUp != null:
+return signUp(_that.name,_that.surname,_that.patronymic,_that.email,_that.password1,_that.password2);case _AuthResetPassword() when resetPassword != null:
+return resetPassword(_that.newPassword,_that.confirmPassword);case _AuthLogout() when logout != null:
 return logout();case _AuthCheckAuthStatus() when checkAuthStatus != null:
 return checkAuthStatus();case _:
   return null;
@@ -266,6 +266,82 @@ as String,
 /// @nodoc
 
 
+class _AuthSignUp implements AuthEvent {
+  const _AuthSignUp({required this.name, required this.surname, required this.patronymic, required this.email, required this.password1, required this.password2});
+  
+
+ final  String name;
+ final  String surname;
+ final  String patronymic;
+ final  String email;
+ final  String password1;
+ final  String password2;
+
+/// Create a copy of AuthEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AuthSignUpCopyWith<_AuthSignUp> get copyWith => __$AuthSignUpCopyWithImpl<_AuthSignUp>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthSignUp&&(identical(other.name, name) || other.name == name)&&(identical(other.surname, surname) || other.surname == surname)&&(identical(other.patronymic, patronymic) || other.patronymic == patronymic)&&(identical(other.email, email) || other.email == email)&&(identical(other.password1, password1) || other.password1 == password1)&&(identical(other.password2, password2) || other.password2 == password2));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,name,surname,patronymic,email,password1,password2);
+
+@override
+String toString() {
+  return 'AuthEvent.signUp(name: $name, surname: $surname, patronymic: $patronymic, email: $email, password1: $password1, password2: $password2)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AuthSignUpCopyWith<$Res> implements $AuthEventCopyWith<$Res> {
+  factory _$AuthSignUpCopyWith(_AuthSignUp value, $Res Function(_AuthSignUp) _then) = __$AuthSignUpCopyWithImpl;
+@useResult
+$Res call({
+ String name, String surname, String patronymic, String email, String password1, String password2
+});
+
+
+
+
+}
+/// @nodoc
+class __$AuthSignUpCopyWithImpl<$Res>
+    implements _$AuthSignUpCopyWith<$Res> {
+  __$AuthSignUpCopyWithImpl(this._self, this._then);
+
+  final _AuthSignUp _self;
+  final $Res Function(_AuthSignUp) _then;
+
+/// Create a copy of AuthEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? name = null,Object? surname = null,Object? patronymic = null,Object? email = null,Object? password1 = null,Object? password2 = null,}) {
+  return _then(_AuthSignUp(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,surname: null == surname ? _self.surname : surname // ignore: cast_nullable_to_non_nullable
+as String,patronymic: null == patronymic ? _self.patronymic : patronymic // ignore: cast_nullable_to_non_nullable
+as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,password1: null == password1 ? _self.password1 : password1 // ignore: cast_nullable_to_non_nullable
+as String,password2: null == password2 ? _self.password2 : password2 // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
 class _AuthResetPassword implements AuthEvent {
   const _AuthResetPassword({required this.newPassword, required this.confirmPassword});
   
@@ -324,82 +400,6 @@ class __$AuthResetPasswordCopyWithImpl<$Res>
   return _then(_AuthResetPassword(
 newPassword: null == newPassword ? _self.newPassword : newPassword // ignore: cast_nullable_to_non_nullable
 as String,confirmPassword: null == confirmPassword ? _self.confirmPassword : confirmPassword // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
-class _AuthSignUp implements AuthEvent {
-  const _AuthSignUp({required this.email, required this.password1, required this.password2, required this.name, required this.role, required this.group});
-  
-
- final  String email;
- final  String password1;
- final  String password2;
- final  String name;
- final  String role;
- final  String group;
-
-/// Create a copy of AuthEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$AuthSignUpCopyWith<_AuthSignUp> get copyWith => __$AuthSignUpCopyWithImpl<_AuthSignUp>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthSignUp&&(identical(other.email, email) || other.email == email)&&(identical(other.password1, password1) || other.password1 == password1)&&(identical(other.password2, password2) || other.password2 == password2)&&(identical(other.name, name) || other.name == name)&&(identical(other.role, role) || other.role == role)&&(identical(other.group, group) || other.group == group));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,email,password1,password2,name,role,group);
-
-@override
-String toString() {
-  return 'AuthEvent.signUp(email: $email, password1: $password1, password2: $password2, name: $name, role: $role, group: $group)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$AuthSignUpCopyWith<$Res> implements $AuthEventCopyWith<$Res> {
-  factory _$AuthSignUpCopyWith(_AuthSignUp value, $Res Function(_AuthSignUp) _then) = __$AuthSignUpCopyWithImpl;
-@useResult
-$Res call({
- String email, String password1, String password2, String name, String role, String group
-});
-
-
-
-
-}
-/// @nodoc
-class __$AuthSignUpCopyWithImpl<$Res>
-    implements _$AuthSignUpCopyWith<$Res> {
-  __$AuthSignUpCopyWithImpl(this._self, this._then);
-
-  final _AuthSignUp _self;
-  final $Res Function(_AuthSignUp) _then;
-
-/// Create a copy of AuthEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? email = null,Object? password1 = null,Object? password2 = null,Object? name = null,Object? role = null,Object? group = null,}) {
-  return _then(_AuthSignUp(
-email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String,password1: null == password1 ? _self.password1 : password1 // ignore: cast_nullable_to_non_nullable
-as String,password2: null == password2 ? _self.password2 : password2 // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -515,12 +515,13 @@ extension AuthStatePatterns on AuthState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthInitial value)?  initial,TResult Function( _AuthLoading value)?  loading,TResult Function( _AuthUnauthorized value)?  unauthorized,TResult Function( _AuthAuthorized value)?  authorized,TResult Function( _AuthError value)?  error,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _AuthInitial value)?  initial,TResult Function( _AuthLoading value)?  loading,TResult Function( _AuthRegistered value)?  registered,TResult Function( _AuthUnauthorized value)?  unauthorized,TResult Function( _AuthAuthorized value)?  authorized,TResult Function( _AuthError value)?  error,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _AuthInitial() when initial != null:
 return initial(_that);case _AuthLoading() when loading != null:
-return loading(_that);case _AuthUnauthorized() when unauthorized != null:
+return loading(_that);case _AuthRegistered() when registered != null:
+return registered(_that);case _AuthUnauthorized() when unauthorized != null:
 return unauthorized(_that);case _AuthAuthorized() when authorized != null:
 return authorized(_that);case _AuthError() when error != null:
 return error(_that);case _:
@@ -541,12 +542,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthInitial value)  initial,required TResult Function( _AuthLoading value)  loading,required TResult Function( _AuthUnauthorized value)  unauthorized,required TResult Function( _AuthAuthorized value)  authorized,required TResult Function( _AuthError value)  error,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _AuthInitial value)  initial,required TResult Function( _AuthLoading value)  loading,required TResult Function( _AuthRegistered value)  registered,required TResult Function( _AuthUnauthorized value)  unauthorized,required TResult Function( _AuthAuthorized value)  authorized,required TResult Function( _AuthError value)  error,}){
 final _that = this;
 switch (_that) {
 case _AuthInitial():
 return initial(_that);case _AuthLoading():
-return loading(_that);case _AuthUnauthorized():
+return loading(_that);case _AuthRegistered():
+return registered(_that);case _AuthUnauthorized():
 return unauthorized(_that);case _AuthAuthorized():
 return authorized(_that);case _AuthError():
 return error(_that);case _:
@@ -566,12 +568,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthInitial value)?  initial,TResult? Function( _AuthLoading value)?  loading,TResult? Function( _AuthUnauthorized value)?  unauthorized,TResult? Function( _AuthAuthorized value)?  authorized,TResult? Function( _AuthError value)?  error,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _AuthInitial value)?  initial,TResult? Function( _AuthLoading value)?  loading,TResult? Function( _AuthRegistered value)?  registered,TResult? Function( _AuthUnauthorized value)?  unauthorized,TResult? Function( _AuthAuthorized value)?  authorized,TResult? Function( _AuthError value)?  error,}){
 final _that = this;
 switch (_that) {
 case _AuthInitial() when initial != null:
 return initial(_that);case _AuthLoading() when loading != null:
-return loading(_that);case _AuthUnauthorized() when unauthorized != null:
+return loading(_that);case _AuthRegistered() when registered != null:
+return registered(_that);case _AuthUnauthorized() when unauthorized != null:
 return unauthorized(_that);case _AuthAuthorized() when authorized != null:
 return authorized(_that);case _AuthError() when error != null:
 return error(_that);case _:
@@ -591,11 +594,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function()?  unauthorized,TResult Function()?  authorized,TResult Function( String error)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( String email)?  registered,TResult Function()?  unauthorized,TResult Function()?  authorized,TResult Function( String error)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthInitial() when initial != null:
 return initial();case _AuthLoading() when loading != null:
-return loading();case _AuthUnauthorized() when unauthorized != null:
+return loading();case _AuthRegistered() when registered != null:
+return registered(_that.email);case _AuthUnauthorized() when unauthorized != null:
 return unauthorized();case _AuthAuthorized() when authorized != null:
 return authorized();case _AuthError() when error != null:
 return error(_that.error);case _:
@@ -616,11 +620,12 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function()  unauthorized,required TResult Function()  authorized,required TResult Function( String error)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( String email)  registered,required TResult Function()  unauthorized,required TResult Function()  authorized,required TResult Function( String error)  error,}) {final _that = this;
 switch (_that) {
 case _AuthInitial():
 return initial();case _AuthLoading():
-return loading();case _AuthUnauthorized():
+return loading();case _AuthRegistered():
+return registered(_that.email);case _AuthUnauthorized():
 return unauthorized();case _AuthAuthorized():
 return authorized();case _AuthError():
 return error(_that.error);case _:
@@ -640,11 +645,12 @@ return error(_that.error);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function()?  unauthorized,TResult? Function()?  authorized,TResult? Function( String error)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( String email)?  registered,TResult? Function()?  unauthorized,TResult? Function()?  authorized,TResult? Function( String error)?  error,}) {final _that = this;
 switch (_that) {
 case _AuthInitial() when initial != null:
 return initial();case _AuthLoading() when loading != null:
-return loading();case _AuthUnauthorized() when unauthorized != null:
+return loading();case _AuthRegistered() when registered != null:
+return registered(_that.email);case _AuthUnauthorized() when unauthorized != null:
 return unauthorized();case _AuthAuthorized() when authorized != null:
 return authorized();case _AuthError() when error != null:
 return error(_that.error);case _:
@@ -718,6 +724,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _AuthRegistered implements AuthState {
+  const _AuthRegistered({required this.email});
+  
+
+ final  String email;
+
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AuthRegisteredCopyWith<_AuthRegistered> get copyWith => __$AuthRegisteredCopyWithImpl<_AuthRegistered>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthRegistered&&(identical(other.email, email) || other.email == email));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,email);
+
+@override
+String toString() {
+  return 'AuthState.registered(email: $email)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AuthRegisteredCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
+  factory _$AuthRegisteredCopyWith(_AuthRegistered value, $Res Function(_AuthRegistered) _then) = __$AuthRegisteredCopyWithImpl;
+@useResult
+$Res call({
+ String email
+});
+
+
+
+
+}
+/// @nodoc
+class __$AuthRegisteredCopyWithImpl<$Res>
+    implements _$AuthRegisteredCopyWith<$Res> {
+  __$AuthRegisteredCopyWithImpl(this._self, this._then);
+
+  final _AuthRegistered _self;
+  final $Res Function(_AuthRegistered) _then;
+
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? email = null,}) {
+  return _then(_AuthRegistered(
+email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

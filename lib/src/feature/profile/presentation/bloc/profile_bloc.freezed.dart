@@ -55,11 +55,12 @@ extension ProfileEventPatterns on ProfileEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _LoadData value)?  loadData,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _LoadData value)?  loadData,TResult Function( _UploadAvatar value)?  uploadAvatar,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _LoadData() when loadData != null:
-return loadData(_that);case _:
+return loadData(_that);case _UploadAvatar() when uploadAvatar != null:
+return uploadAvatar(_that);case _:
   return orElse();
 
 }
@@ -77,11 +78,12 @@ return loadData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _LoadData value)  loadData,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _LoadData value)  loadData,required TResult Function( _UploadAvatar value)  uploadAvatar,}){
 final _that = this;
 switch (_that) {
 case _LoadData():
-return loadData(_that);case _:
+return loadData(_that);case _UploadAvatar():
+return uploadAvatar(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +100,12 @@ return loadData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _LoadData value)?  loadData,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _LoadData value)?  loadData,TResult? Function( _UploadAvatar value)?  uploadAvatar,}){
 final _that = this;
 switch (_that) {
 case _LoadData() when loadData != null:
-return loadData(_that);case _:
+return loadData(_that);case _UploadAvatar() when uploadAvatar != null:
+return uploadAvatar(_that);case _:
   return null;
 
 }
@@ -119,10 +122,11 @@ return loadData(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadData,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadData,TResult Function( String filePath)?  uploadAvatar,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoadData() when loadData != null:
-return loadData();case _:
+return loadData();case _UploadAvatar() when uploadAvatar != null:
+return uploadAvatar(_that.filePath);case _:
   return orElse();
 
 }
@@ -140,10 +144,11 @@ return loadData();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadData,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadData,required TResult Function( String filePath)  uploadAvatar,}) {final _that = this;
 switch (_that) {
 case _LoadData():
-return loadData();case _:
+return loadData();case _UploadAvatar():
+return uploadAvatar(_that.filePath);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +165,11 @@ return loadData();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadData,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadData,TResult? Function( String filePath)?  uploadAvatar,}) {final _that = this;
 switch (_that) {
 case _LoadData() when loadData != null:
-return loadData();case _:
+return loadData();case _UploadAvatar() when uploadAvatar != null:
+return uploadAvatar(_that.filePath);case _:
   return null;
 
 }
@@ -202,6 +208,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _UploadAvatar implements ProfileEvent {
+  const _UploadAvatar(this.filePath);
+  
+
+ final  String filePath;
+
+/// Create a copy of ProfileEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UploadAvatarCopyWith<_UploadAvatar> get copyWith => __$UploadAvatarCopyWithImpl<_UploadAvatar>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UploadAvatar&&(identical(other.filePath, filePath) || other.filePath == filePath));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,filePath);
+
+@override
+String toString() {
+  return 'ProfileEvent.uploadAvatar(filePath: $filePath)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UploadAvatarCopyWith<$Res> implements $ProfileEventCopyWith<$Res> {
+  factory _$UploadAvatarCopyWith(_UploadAvatar value, $Res Function(_UploadAvatar) _then) = __$UploadAvatarCopyWithImpl;
+@useResult
+$Res call({
+ String filePath
+});
+
+
+
+
+}
+/// @nodoc
+class __$UploadAvatarCopyWithImpl<$Res>
+    implements _$UploadAvatarCopyWith<$Res> {
+  __$UploadAvatarCopyWithImpl(this._self, this._then);
+
+  final _UploadAvatar _self;
+  final $Res Function(_UploadAvatar) _then;
+
+/// Create a copy of ProfileEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? filePath = null,}) {
+  return _then(_UploadAvatar(
+null == filePath ? _self.filePath : filePath // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 mixin _$ProfileState {

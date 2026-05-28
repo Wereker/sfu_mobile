@@ -9,15 +9,11 @@ class ProfileHeader extends StatelessWidget {
   const ProfileHeader({
     super.key,
     required this.user,
-    required this.fullName,
     required this.onAvatarChanged,
   });
 
   final User user;
-  final String fullName;
 
-  /// Вызывается с локальным путём выбранного файла.
-  /// TODO: внутри ProfileBody вызвать UpdateAvatarUseCase
   final ValueChanged<String> onAvatarChanged;
 
   String _roleLabel(UserRole role) {
@@ -33,7 +29,6 @@ class ProfileHeader extends StatelessWidget {
       user.role == UserRole.teacher || user.role == UserRole.admin;
 
   Future<void> _pickAvatar(BuildContext context) async {
-    // TODO: заменить на UpdateAvatarUseCase после реализации API
     final picker = ImagePicker();
     final picked = await picker.pickImage(
       source: ImageSource.gallery,
@@ -41,7 +36,7 @@ class ProfileHeader extends StatelessWidget {
       maxWidth: 512,
       maxHeight: 512,
     );
-    if (picked != null) {
+    if (picked != null && context.mounted) {
       onAvatarChanged(picked.path);
     }
   }
@@ -55,7 +50,7 @@ class ProfileHeader extends StatelessWidget {
     return GestureDetector(
       onTap: () => showDetailSheet(
         context: context,
-        child: _ProfileDetailSheet(user: user, fullName: fullName),
+        child: _ProfileDetailSheet(user: user),
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -68,7 +63,7 @@ class ProfileHeader extends StatelessWidget {
           children: [
             // Аватар с кнопкой выбора
             UserAvatar(
-              name: fullName,
+              name: user.fullName,
               avatarUrl: user.avatarUrl,
               size: 72,
               fontSize: 24,
@@ -89,7 +84,7 @@ class ProfileHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(fullName, style: tt.titleMedium),
+                  Text(user.fullName, style: tt.titleMedium),
                   const SizedBox(height: 4),
                   Text(
                     user.email,
@@ -130,11 +125,9 @@ class ProfileHeader extends StatelessWidget {
 class _ProfileDetailSheet extends StatelessWidget {
   const _ProfileDetailSheet({
     required this.user,
-    required this.fullName,
   });
 
   final User user;
-  final String fullName;
 
   bool get _isTeacher =>
       user.role == UserRole.teacher || user.role == UserRole.admin;
@@ -151,7 +144,7 @@ class _ProfileDetailSheet extends StatelessWidget {
         Row(
           children: [
             UserAvatar(
-              name: fullName,
+              name: user.fullName,
               avatarUrl: user.avatarUrl,
               size: 56,
               fontSize: 20,
@@ -161,7 +154,7 @@ class _ProfileDetailSheet extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(fullName, style: tt.titleMedium),
+                  Text(user.fullName, style: tt.titleMedium),
                   const SizedBox(height: 2),
                   Text(user.email,
                       style: tt.bodySmall

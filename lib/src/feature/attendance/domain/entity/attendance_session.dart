@@ -5,10 +5,13 @@ part 'attendance_session.freezed.dart';
 @freezed
 abstract class AttendanceSession with _$AttendanceSession {
   const factory AttendanceSession({
-    required String sessionId,
+    required String id,
+    required String lessonId,
     required String token,
     required DateTime expiresAt,
+    required bool isActive,
   }) = _AttendanceSession;
 
-  // bool get isExpired => DateTime.now().isAfter(expiresAt);
+  const AttendanceSession._();
+  bool get isExpired => DateTime.now().isAfter(expiresAt);
 }

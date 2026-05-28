@@ -6,12 +6,16 @@ part 'chat.freezed.dart';
 @freezed
 abstract class Chat with _$Chat {
   const factory Chat({
+    // — с сервера —
     required String id,
     required ChatType type,
-    required String title,
+    String? groupId,
+    required List<String> memberIds,  // user_id из members[]
+
+    // — синтетика до появления на сервере —
+    @Default('') String title,
     String? avatarUrl,
-    required List<String> participantIds,
-    Message? lastMessage, // nullable
+    Message? lastMessage,
     DateTime? lastMessageAt,
     @Default(0) int unreadCount,
     required DateTime createdAt,
@@ -19,4 +23,4 @@ abstract class Chat with _$Chat {
   }) = _Chat;
 }
 
-enum ChatType { private, group }
+enum ChatType { group, private }

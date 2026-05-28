@@ -1,11 +1,10 @@
 abstract class PublishAnnouncementUseCase {
   Future<void> call({
     required String title,
-    required String body,
-    required String audience,
-    bool isPinned,
-    String? stream,
-    String? groupId,
-    List<String> tags,
+    required String content,
+    required String publishAt,
+    required String expiresAt,
+    required List<int> targetGroupIds,
+    required List<int> targetStreamIds,
   });
 }

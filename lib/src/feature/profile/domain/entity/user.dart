@@ -45,6 +45,17 @@ abstract class User with _$User {
     @Default(true)  bool notifyNews,
     @Default(false) bool notifyEvents,
   }) = _User;
+
+  const User._();
+
+  String get fullName =>
+      '$lastName $firstName${fatherName != null ? ' $fatherName' : ''}';
+
+  String get initials {
+    final l = lastName.isNotEmpty ? lastName[0].toUpperCase() : '';
+    final f = firstName.isNotEmpty ? firstName[0].toUpperCase() : '';
+    return '$l$f';
+  }
 }
 
 enum UserRole { student, teacher, admin, unknown }

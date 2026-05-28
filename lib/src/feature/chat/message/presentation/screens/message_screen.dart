@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/app/app.dart';
 import 'package:sfu/src/app/dependency_injection/injection.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/chat/message/presentation/bloc/message_bloc.dart';
@@ -16,14 +17,14 @@ class MessageScreen extends StatelessWidget {
     this.chatTitle = '',
   });
 
-  final String chatId;
+  final int chatId;
   final String chatTitle;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<MessageBloc>()
-        ..add(MessageEvent.getMessagesForChat(chatId)),
+      create: (_) =>
+      sl<MessageBloc>()..add(MessageEvent.connect(chatId)),
       child: _MessageScaffold(chatTitle: chatTitle),
     );
   }
@@ -48,35 +49,92 @@ class _MessageScaffoldState extends State<_MessageScaffold> {
     super.dispose();
   }
 
-  void _onSend() {
+  void _onSend(BuildContext context) {
     final text = _inputCtrl.text.trim();
     if (text.isEmpty) return;
-    // TODO: SendMessageUseCase
+    context.read<MessageBloc>().add(MessageEvent.send(text));
     _inputCtrl.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ext = Theme.of(context).extension<AppColors>()!;
-
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: MessageAppBar(chatTitle: widget.chatTitle),
-      bottomNavigationBar: MessageInputBar(
-        controller: _inputCtrl,
-        focusNode:  _inputFocus,
-        onSend:     _onSend,
-      ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: BlocBuilder<MessageBloc, MessageState>(
-          builder: (context, state) => state.when(
-            initial: () => const MessageSkeleton(),
-            loading: () => const MessageSkeleton(),
-            success: (messages) => MessageList(messages: messages),
-            error:   (msg)      => MessageErrorView(message: msg),
+    return BlocListener<MessageBloc, MessageState>(
+      listener: (context, state) {
+        state.maybeWhen(
+          disconnected: (reason) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(reason)),
+            );
+            if (reason.contains('истекла')) {
+              App.navigatorKey.currentState
+                  ?.pushNamedAndRemoveUntil('/signIn', (_) => false);
+            }
+          },
+          orElse: () {},
+        );
+      },
+      child: Scaffold(
+        appBar: MessageAppBar(chatTitle: widget.chatTitle),
+        bottomNavigationBar: Builder(
+          builder: (ctx) => MessageInputBar(
+            controller: _inputCtrl,
+            focusNode: _inputFocus,
+            onSend: () => _onSend(ctx),
           ),
+        ),
+        body: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: BlocBuilder<MessageBloc, MessageState>(
+            builder: (context, state) => state.when(
+              initial: () => const MessageSkeleton(),
+              loading: () => const MessageSkeleton(),
+              success: (messages, _) => MessageList(messages: messages),
+              error: (msg) => MessageErrorView(message: msg),
+              disconnected: (reason) => _DisconnectedView(
+                reason: reason,
+                chatId: null, // chatId хранится в Bloc
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DisconnectedView extends StatelessWidget {
+  const _DisconnectedView({required this.reason, required this.chatId});
+  final String reason;
+  final int? chatId;
+
+  @override
+  Widget build(BuildContext context) {
+    final ext = Theme.of(context).extension<AppColors>()!;
+    final tt  = Theme.of(context).textTheme;
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 64, height: 64,
+              decoration:
+              BoxDecoration(color: ext.warningBg, shape: BoxShape.circle),
+              child: Icon(Icons.wifi_off, size: 28, color: ext.warningFg),
+            ),
+            const SizedBox(height: 12),
+            Text(reason,
+                textAlign: TextAlign.center, style: tt.bodyMedium),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.arrow_back, size: 18),
+              label: const Text('Назад'),
+            ),
+          ],
         ),
       ),
     );

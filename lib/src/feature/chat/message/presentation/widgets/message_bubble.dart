@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
-import 'package:sfu/src/core/widgets/initials_avatar.dart';
+import 'package:sfu/src/core/widgets/user_avatar.dart';
 import 'package:sfu/src/feature/chat/message/domain/entity/message.dart';
 
 class MessageBubble extends StatelessWidget {
@@ -15,8 +15,8 @@ class MessageBubble extends StatelessWidget {
   final Message message;
   final bool showAvatar;
 
-  void _copyText(BuildContext context, String text) {
-    Clipboard.setData(ClipboardData(text: text));
+  void _copyText(BuildContext context) {
+    Clipboard.setData(ClipboardData(text: message.body));
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Скопировано')));
   }
@@ -48,18 +48,24 @@ class MessageBubble extends StatelessWidget {
         isOut ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          // Аватар входящего
           if (!isOut)
             SizedBox(
               width: 32,
               child: showAvatar
-                  ? InitialsAvatar(name: message.senderName, size: 28)
+                  ? UserAvatar(
+                name: message.senderName.isNotEmpty
+                    ? message.senderName
+                    : '?',
+                size: 28,
+              )
                   : null,
             ),
           if (!isOut) const SizedBox(width: 6),
 
           Flexible(
             child: GestureDetector(
-              onLongPress: () => _copyText(context, message.text),
+              onLongPress: () => _copyText(context),
               child: Container(
                 padding: const EdgeInsets.fromLTRB(12, 8, 12, 6),
                 decoration: BoxDecoration(
@@ -70,23 +76,50 @@ class MessageBubble extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
+                    // Имя отправителя для групповых чатов
+                    if (!isOut && message.senderName.isNotEmpty)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          message.senderName,
+                          style: tt.labelSmall?.copyWith(
+                            color: cs.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    if (!isOut && message.senderName.isNotEmpty)
+                      const SizedBox(height: 2),
+
+                    // Текст
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(message.text,
-                          style: tt.bodyLarge?.copyWith(fontSize: 15)),
+                      child: Text(
+                        message.body,
+                        style: tt.bodyLarge?.copyWith(fontSize: 15),
+                      ),
                     ),
+
                     const SizedBox(height: 3),
+
+                    // Время + статус
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (message.isEdited)
-                          Text('изм. ',
-                              style: tt.labelSmall?.copyWith(
-                                  color: ext.textTertiary, fontSize: 10)),
+                          Text(
+                            'изм. ',
+                            style: tt.labelSmall?.copyWith(
+                              color: ext.textTertiary,
+                              fontSize: 10,
+                            ),
+                          ),
                         Text(
-                          DateFormat('HH:mm').format(message.sentAt),
+                          DateFormat('HH:mm').format(message.createdAt),
                           style: tt.labelSmall?.copyWith(
-                              color: ext.textTertiary, fontSize: 10),
+                            color: ext.textTertiary,
+                            fontSize: 10,
+                          ),
                         ),
                         if (isOut) ...[
                           const SizedBox(width: 4),
@@ -118,7 +151,7 @@ class _StatusIcon extends StatelessWidget {
       case MessageStatus.delivered:
         return Icon(Icons.done_all, size: 14, color: ext.textTertiary);
       case MessageStatus.read:
-        return Icon(Icons.done_all, size: 14, color: ext.success);
+        return Icon(Icons.done_all, size: 14, color: ext.successFg);
     }
   }
 }

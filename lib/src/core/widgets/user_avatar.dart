@@ -11,6 +11,7 @@ class UserAvatar extends StatelessWidget {
     this.fontSize,
     this.onTap,
     this.badge,
+    this.headers,
   });
 
   final String name;
@@ -18,6 +19,8 @@ class UserAvatar extends StatelessWidget {
   final double size;
   final double? fontSize;
   final VoidCallback? onTap;
+  final Map<String, String>? headers;
+
 
   /// Виджет поверх аватара (например иконка редактирования)
   final Widget? badge;
@@ -52,6 +55,7 @@ class UserAvatar extends StatelessWidget {
       url: avatarUrl!,
       size: size,
       fallback: _Initials(initials: _initials, bg: _bg, size: size, fontSize: fontSize),
+      headers: headers,
     )
         : _Initials(initials: _initials, bg: _bg, size: size, fontSize: fontSize);
 
@@ -76,11 +80,13 @@ class _NetworkAvatar extends StatefulWidget {
     required this.url,
     required this.size,
     required this.fallback,
+    required this.headers,
   });
 
   final String url;
   final double size;
   final Widget fallback;
+  final Map<String, String>? headers;
 
   @override
   State<_NetworkAvatar> createState() => _NetworkAvatarState();
@@ -99,6 +105,7 @@ class _NetworkAvatarState extends State<_NetworkAvatar> {
         width: widget.size,
         height: widget.size,
         fit: BoxFit.cover,
+        headers: widget.headers,
         errorBuilder: (_, __, ___) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) setState(() => _hasError = true);

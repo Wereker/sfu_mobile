@@ -8,5 +8,5 @@ class GetProfileUseCaseImpl implements GetProfileUseCase {
   const GetProfileUseCaseImpl(this._repo);
 
   @override
-  Future<User> call() => ExceptionHandler.handle(_repo.loadData);
+  Future<User> call() => ExceptionHandler.handle(_repo.getProfile);
 }

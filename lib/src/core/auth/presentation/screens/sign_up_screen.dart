@@ -70,10 +70,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Аккаунт создан. Войдите в систему.')),
             );
+            return null;
           },
           error: (msg) => ScaffoldMessenger.of(context)
               .showSnackBar(_errorSnack(msg, ext)),
-          orElse: () {},
+          orElse: () => {},
         ),
         child: Scaffold(
           resizeToAvoidBottomInset: true,

@@ -9,14 +9,15 @@ abstract class Message with _$Message {
     required String chatId,
     required String senderId,
     required String senderName,
-    required String text,
-    required DateTime sentAt,
-    required MessageStatus status,
-    DateTime? deliveredAt,
-    DateTime? readAt,
-    required bool isOutgoing,
-    @Default(false) bool isEdited,
+
+    // — с сервера (WS и HTTP) —
+    required String body,
     required DateTime createdAt,
+    required bool isOutgoing,
+
+    // — синтетика до появления на сервере —
+    @Default(MessageStatus.sent) MessageStatus status,
+    @Default(false) bool isEdited,
   }) = _Message;
 }
 

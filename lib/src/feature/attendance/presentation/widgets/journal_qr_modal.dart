@@ -49,7 +49,6 @@ class _JournalQrModalState extends State<JournalQrModal> {
   Widget build(BuildContext context) {
     final ext     = Theme.of(context).extension<AppColors>()!;
     final tt      = Theme.of(context).textTheme;
-    final cs      = Theme.of(context).colorScheme;
     final screenH = MediaQuery.of(context).size.height;
 
     return Stack(

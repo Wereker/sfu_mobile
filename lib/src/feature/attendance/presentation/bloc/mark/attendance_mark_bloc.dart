@@ -11,43 +11,43 @@ part 'attendance_mark_bloc.freezed.dart';
 
 class AttendanceMarkBloc
     extends Bloc<AttendanceMarkEvent, AttendanceMarkState> {
-  final MarkAttendanceUseCase _markAttendanceUseCase;
-  final GetAttendanceHistoryUseCase _getHistoryUseCase;
+  final MarkAttendanceUseCase _mark;
+  final GetAttendanceHistoryUseCase _history;
 
   AttendanceMarkBloc({
-    required MarkAttendanceUseCase markAttendanceUseCase,
-    required GetAttendanceHistoryUseCase getHistoryUseCase,
-  }) : _markAttendanceUseCase = markAttendanceUseCase,
-       _getHistoryUseCase = getHistoryUseCase,
-       super(AttendanceMarkState.initial()) {
+    required MarkAttendanceUseCase mark,
+    required GetAttendanceHistoryUseCase history,
+  })  : _mark = mark,
+        _history = history,
+        super(const AttendanceMarkState.initial()) {
     on<AttendanceMarkEvent>(_onEvent);
   }
 
   Future<void> _onEvent(
-    AttendanceMarkEvent event,
-    Emitter<AttendanceMarkState> emit,
-  ) async {
+      AttendanceMarkEvent event,
+      Emitter<AttendanceMarkState> emit,
+      ) async {
     await event.when(
-      mark: (String token) async {
-        emit(AttendanceMarkState.marking());
+      scan: (String token) async {
+        emit(const AttendanceMarkState.marking());
         try {
-          final record = await _markAttendanceUseCase.call(token);
+          final record = await _mark.call(token);
           emit(AttendanceMarkState.markSuccess(record));
         } on AppException catch (e) {
           emit(AttendanceMarkState.error(e.message));
         } catch (_) {
-          emit(AttendanceMarkState.error('Ошибка отметки посещаемости'));
+          emit(const AttendanceMarkState.error('Ошибка отметки посещаемости'));
         }
       },
-      loadHistory: () async {
-        emit(AttendanceMarkState.historyLoading());
+      loadHistory: (int studentId) async {
+        emit(const AttendanceMarkState.historyLoading());
         try {
-          final records = await _getHistoryUseCase.call();
+          final records = await _history.call(studentId);
           emit(AttendanceMarkState.historySuccess(records));
         } on AppException catch (e) {
           emit(AttendanceMarkState.error(e.message));
         } catch (_) {
-          emit(AttendanceMarkState.error('Ошибка загрузки истории'));
+          emit(const AttendanceMarkState.error('Ошибка загрузки истории'));
         }
       },
     );

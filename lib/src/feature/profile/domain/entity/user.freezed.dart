@@ -238,8 +238,8 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.fatherName,_that.e
 /// @nodoc
 
 
-class _User implements User {
-  const _User({required this.id, required this.firstName, required this.lastName, this.fatherName, required this.email, required this.role, required this.isActive, this.avatarUrl, required this.createdAt, required this.updatedAt, this.phone, this.telegram, this.birthdate, this.sex, this.institute, this.groupId, this.groupName, this.stream, this.subgroup, this.recordBookNumber, this.position, this.degree, this.department, this.bio, final  List<String> tags = const [], this.notifyChats = true, this.notifyNews = true, this.notifyEvents = false}): _tags = tags;
+class _User extends User {
+  const _User({required this.id, required this.firstName, required this.lastName, this.fatherName, required this.email, required this.role, required this.isActive, this.avatarUrl, required this.createdAt, required this.updatedAt, this.phone, this.telegram, this.birthdate, this.sex, this.institute, this.groupId, this.groupName, this.stream, this.subgroup, this.recordBookNumber, this.position, this.degree, this.department, this.bio, final  List<String> tags = const [], this.notifyChats = true, this.notifyNews = true, this.notifyEvents = false}): _tags = tags,super._();
   
 
 // — с сервера —

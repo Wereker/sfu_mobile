@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
+import 'package:sfu/src/feature/profile/presentation/bloc/profile_bloc.dart';
 import 'package:sfu/src/feature/profile/presentation/widgets/app_settings_card.dart';
 import 'package:sfu/src/feature/profile/presentation/widgets/bio_card_widget.dart';
 import 'package:sfu/src/feature/profile/presentation/widgets/contact_card_widget.dart';
@@ -60,13 +62,9 @@ class _ProfileBodyState extends State<ProfileBody> {
     super.dispose();
   }
 
-  String get _fullName =>
-      '${widget.user.lastName} ${widget.user.firstName}'
-          '${widget.user.fatherName != null ? ' ${widget.user.fatherName}' : ''}';
-
   void _onAvatarChanged(String path) {
-    // TODO: вызвать UpdateAvatarUseCase(path) когда API будет готово
     setState(() => _localAvatarPath = path);
+    context.read<ProfileBloc>().add(ProfileEvent.uploadAvatar(path));
   }
 
   @override
@@ -88,7 +86,6 @@ class _ProfileBodyState extends State<ProfileBody> {
 
               ProfileHeader(
                 user: userWithLocalAvatar,
-                fullName: _fullName,
                 onAvatarChanged: _onAvatarChanged,
               ),
 

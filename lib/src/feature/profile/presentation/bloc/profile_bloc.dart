@@ -3,15 +3,22 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sfu/src/core/error/app_exception.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/get_profile_use_case.dart';
+import 'package:sfu/src/feature/profile/domain/use_case/upload_avatar_use_case.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
 part 'profile_bloc.freezed.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final GetProfileUseCase _getProfileUseCase;
+  final GetProfileUseCase _getProfile;
+  final UploadAvatarUseCase _uploadAvatar;
 
-  ProfileBloc(this._getProfileUseCase) : super(ProfileState.initial()) {
+  ProfileBloc({
+    required GetProfileUseCase getProfile,
+    required UploadAvatarUseCase uploadAvatar,
+  })  : _getProfile = getProfile,
+        _uploadAvatar = uploadAvatar,
+        super(const ProfileState.initial()) {
     on<ProfileEvent>(_onEvent);
   }
 
@@ -20,12 +27,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       loadData: () async {
         emit(ProfileState.loading());
         try {
-          final user = await _getProfileUseCase.call();
+          final user = await _getProfile.call();
           emit(ProfileState.success(user));
         } on AppException catch (e) {
           emit(ProfileState.error(error: e.message));
         } catch (_) {
           emit(ProfileState.error(error: 'Ошибка загрузки профиля'));
+        }
+      },
+      uploadAvatar: (String filePath) async {
+        try {
+          await _uploadAvatar.call(filePath);
+          // После загрузки обновляем профиль чтобы получить новый URL
+          add(const ProfileEvent.loadData());
+        } on AppException catch (e) {
+          // Не переходим в error — профиль уже загружен,
+          // просто показываем snackbar через BlocListener в UI
+          emit(state); // оставляем текущий стейт
         }
       },
     );

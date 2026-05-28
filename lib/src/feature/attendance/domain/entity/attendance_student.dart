@@ -7,8 +7,8 @@ abstract class AttendanceStudent with _$AttendanceStudent {
   const factory AttendanceStudent({
     required String id,
     required String name,
-    required bool isHeadman,
-    required AttendanceStatus status,
+    @Default(false) bool isHeadman,
+    @Default(AttendanceStatus.absent) AttendanceStatus status,
     DateTime? markedAt,
   }) = _AttendanceStudent;
 }

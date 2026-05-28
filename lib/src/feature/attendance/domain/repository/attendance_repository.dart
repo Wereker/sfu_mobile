@@ -4,15 +4,11 @@ import 'package:sfu/src/feature/attendance/domain/entity/attendance_student.dart
 
 abstract class AttendanceRepository {
   // Teacher
-  Future<AttendanceSession> createSession(String lessonId, {int ttlSeconds});
-  Future<void> closeSession(String sessionId);
-  Future<List<AttendanceStudent>> getSessionStudents(String sessionId);
-  Future<AttendanceStudent> updateStudentStatus(
-    String sessionId,
-    String studentId,
-    AttendanceStatus status,
-  );
+  Future<AttendanceSession> createToken(int lessonId);
+  Future<AttendanceRecord> markManual(int lessonId, int studentId);
+  Future<List<AttendanceStudent>> getLessonStudents(int lessonId);
+
   // Student
-  Future<AttendanceRecord> markAttendance(String token);
-  Future<List<AttendanceRecord>> getAttendanceHistory();
+  Future<AttendanceRecord> scanToken(String token);
+  Future<List<AttendanceRecord>> getStudentHistory(int studentId);
 }

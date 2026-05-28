@@ -15,76 +15,63 @@ class PublishBloc extends Bloc<PublishEvent, PublishState> {
   PublishBloc({
     required PublishAnnouncementUseCase publishAnnouncementUseCase,
     required PublishEventUseCase publishEventUseCase,
-  }) : _publishAnnouncementUseCase = publishAnnouncementUseCase,
-       _publishEventUseCase = publishEventUseCase,
-       super(PublishState.initial()) {
+  })  : _publishAnnouncementUseCase = publishAnnouncementUseCase,
+        _publishEventUseCase = publishEventUseCase,
+        super(PublishState.initial()) {
     on<PublishEvent>(_onEvent);
   }
 
   Future<void> _onEvent(PublishEvent event, Emitter<PublishState> emit) async {
     await event.when(
-      publishAnnouncement:
-          (
-            String title,
-            String body,
-            String audience,
-            bool isPinned,
-            String? stream,
-            String? groupId,
-            List<String> tags,
+      publishAnnouncement: (
+          String title,
+          String content,
+          String publishAt,
+          String expiresAt,
+          List<int> targetGroupIds,
+          List<int> targetStreamIds,
           ) async {
-            emit(PublishState.loading());
-            try {
-              await _publishAnnouncementUseCase.call(
-                title: title,
-                body: body,
-                audience: audience,
-                isPinned: isPinned,
-                stream: stream,
-                groupId: groupId,
-                tags: tags,
-              );
-              emit(PublishState.success());
-            } on AppException catch (e) {
-              emit(PublishState.error(e.message));
-            } catch (_) {
-              emit(PublishState.error('Ошибка публикации объявления'));
-            }
-          },
-      publishEvent:
-          (
-            String title,
-            String body,
-            String date,
-            String time,
-            String location,
-            int totalSeats,
-            String audience,
-            String? stream,
-            String? groupId,
-            List<String> tags,
+        emit(PublishState.loading());
+        try {
+          await _publishAnnouncementUseCase.call(
+            title: title,
+            content: content,
+            publishAt: publishAt,
+            expiresAt: expiresAt,
+            targetGroupIds: targetGroupIds,
+            targetStreamIds: targetStreamIds,
+          );
+          emit(PublishState.success());
+        } on AppException catch (e) {
+          emit(PublishState.error(e.message));
+        } catch (_) {
+          emit(PublishState.error('Ошибка публикации объявления'));
+        }
+      },
+
+      publishEvent: (
+          String title,
+          String annotation,
+          String startsAt,
+          String endsAt,
+          int roomId,
           ) async {
-            emit(PublishState.loading());
-            try {
-              await _publishEventUseCase.call(
-                title: title,
-                body: body,
-                date: date,
-                time: time,
-                location: location,
-                totalSeats: totalSeats,
-                audience: audience,
-                stream: stream,
-                groupId: groupId,
-                tags: tags,
-              );
-              emit(PublishState.success());
-            } on AppException catch (e) {
-              emit(PublishState.error(e.message));
-            } catch (_) {
-              emit(PublishState.error('Ошибка создания события'));
-            }
-          },
+        emit(PublishState.loading());
+        try {
+          await _publishEventUseCase.call(
+            title: title,
+            annotation: annotation,
+            startsAt: startsAt,
+            endsAt: endsAt,
+            roomId: roomId,
+          );
+          emit(PublishState.success());
+        } on AppException catch (e) {
+          emit(PublishState.error(e.message));
+        } catch (_) {
+          emit(PublishState.error('Ошибка создания события'));
+        }
+      },
     );
   }
 }

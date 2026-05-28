@@ -64,9 +64,7 @@ class HomeAppBar extends StatelessWidget {
                       ),
                     )
                         : UserAvatar(
-                      name: user != null
-                          ? '${user.firstName} ${user.lastName}'
-                          : '?',
+                      name: user?.fullName ?? '?',
                       avatarUrl: user?.avatarUrl,
                       size: 42,
                       fontSize: 14,

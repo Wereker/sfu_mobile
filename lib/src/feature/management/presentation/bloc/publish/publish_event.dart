@@ -4,24 +4,18 @@ part of 'publish_bloc.dart';
 abstract class PublishEvent with _$PublishEvent {
   const factory PublishEvent.publishAnnouncement({
     required String title,
-    required String body,
-    required String audience,
-    @Default(false) bool isPinned,
-    String? stream,
-    String? groupId,
-    @Default([]) List<String> tags,
+    required String content,
+    required String publishAt,
+    required String expiresAt,
+    required List<int> targetGroupIds,
+    required List<int> targetStreamIds,
   }) = _PublishAnnouncement;
 
   const factory PublishEvent.publishEvent({
     required String title,
-    required String body,
-    required String date,
-    required String time,
-    required String location,
-    required int totalSeats,
-    required String audience,
-    String? stream,
-    String? groupId,
-    @Default([]) List<String> tags,
+    required String annotation,
+    required String startsAt,
+    required String endsAt,
+    required int roomId,
   }) = _PublishEvent;
 }

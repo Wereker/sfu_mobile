@@ -11,21 +11,30 @@ class PublishTab extends StatefulWidget {
 }
 
 class _PublishTabState extends State<PublishTab> {
-  String  _type           = 'announcement';
-  String  _audience       = 'all';
-  bool    _isPinned       = false;
+  String _type = 'announcement';
+  String _audience = 'all';
+  bool _isPinned = false;
   String? _selectedStream;
   String? _selectedGroup;
 
   static const _allStreams = ['БИ22', 'БИ23', 'МА23'];
-  static const _allGroups  = [
-    'БИ22-01', 'БИ22-02', 'БИ23-01', 'БИ23-02', 'МА23-01',
+  static const _allGroups = [
+    'БИ22-01',
+    'БИ22-02',
+    'БИ23-01',
+    'БИ23-02',
+    'МА23-01',
   ];
 
   final _titleCtrl = TextEditingController();
-  final _bodyCtrl  = TextEditingController();
-  final _dateCtrl  = TextEditingController();
+  final _bodyCtrl = TextEditingController();
+  final _dateCtrl = TextEditingController();
   final _placeCtrl = TextEditingController();
+  final _startDateCtrl = TextEditingController();
+  final _endDateCtrl = TextEditingController();
+  final _publishAtCtrl = TextEditingController();
+  final _expiresAtCtrl = TextEditingController();
+  final _roomIdCtrl = TextEditingController();
 
   @override
   void dispose() {
@@ -33,6 +42,11 @@ class _PublishTabState extends State<PublishTab> {
     _bodyCtrl.dispose();
     _dateCtrl.dispose();
     _placeCtrl.dispose();
+    _startDateCtrl.dispose();
+    _endDateCtrl.dispose();
+    _publishAtCtrl.dispose();
+    _expiresAtCtrl.dispose();
+    _roomIdCtrl.dispose();
     super.dispose();
   }
 
@@ -41,49 +55,83 @@ class _PublishTabState extends State<PublishTab> {
     _bodyCtrl.clear();
     _dateCtrl.clear();
     _placeCtrl.clear();
+    _startDateCtrl.clear();
+    _endDateCtrl.clear();
+    _publishAtCtrl.clear();
+    _expiresAtCtrl.clear();
+    _roomIdCtrl.clear();
     setState(() {
-      _isPinned       = false;
-      _audience       = 'all';
+      _isPinned = false;
+      _audience = 'all';
       _selectedStream = null;
-      _selectedGroup  = null;
+      _selectedGroup = null;
     });
   }
 
   void _submit(BuildContext context) {
+    if (_titleCtrl.text.trim().isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Введите заголовок')));
+      return;
+    }
+
+    FocusScope.of(context).unfocus();
+
     if (_type == 'announcement') {
+      if (_publishAtCtrl.text.isEmpty || _expiresAtCtrl.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Укажите даты публикации')),
+        );
+        return;
+      }
+
+      final List<int> groupIds = _selectedGroup != null
+          ? [int.tryParse(_selectedGroup!) ?? 0]
+          : [];
+      final List<int> streamIds = _selectedStream != null
+          ? [int.tryParse(_selectedStream!) ?? 0]
+          : [];
+
       context.read<PublishBloc>().add(
         PublishEvent.publishAnnouncement(
-          title:    _titleCtrl.text,
-          body:     _bodyCtrl.text,
-          audience: _audience,
-          isPinned: _isPinned,
-          stream:   _selectedStream,
-          groupId:  _selectedGroup,
+          title: _titleCtrl.text.trim(),
+          content: _bodyCtrl.text.trim(),
+          publishAt: '${_publishAtCtrl.text}T00:00:00.000Z',
+          expiresAt: '${_expiresAtCtrl.text}T23:59:59.000Z',
+          targetGroupIds: groupIds,
+          targetStreamIds: streamIds,
         ),
       );
     } else {
+      if (_startDateCtrl.text.isEmpty || _endDateCtrl.text.isEmpty) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Укажите даты события')));
+        return;
+      }
+      if (_roomIdCtrl.text.isEmpty) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Укажите ID аудитории')));
+        return;
+      }
+
       context.read<PublishBloc>().add(
         PublishEvent.publishEvent(
-          title:      _titleCtrl.text,
-          body:       _bodyCtrl.text,
-          date:       _dateCtrl.text,
-          time:       '',
-          location:   _placeCtrl.text,
-          totalSeats: 30,
-          audience:   _audience,
-          stream:     _selectedStream,
-          groupId:    _selectedGroup,
+          title: _titleCtrl.text.trim(),
+          annotation: _bodyCtrl.text.trim(),
+          startsAt: _startDateCtrl.text,
+          endsAt: _endDateCtrl.text,
+          roomId: int.tryParse(_roomIdCtrl.text) ?? 0,
         ),
       );
     }
   }
 
   Future<void> _openPicker({required bool isStream}) async {
-    final items   = isStream ? _allStreams : _allGroups;
+    final items = isStream ? _allStreams : _allGroups;
     final current = isStream ? _selectedStream : _selectedGroup;
-    final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
-    final cs  = Theme.of(context).colorScheme;
 
     final result = await showModalBottomSheet<String>(
       context: context,
@@ -101,7 +149,7 @@ class _PublishTabState extends State<PublishTab> {
         if (isStream) {
           _selectedStream = result;
         } else {
-          _selectedGroup  = result;
+          _selectedGroup = result;
         }
       });
     }
@@ -109,30 +157,37 @@ class _PublishTabState extends State<PublishTab> {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return BlocConsumer<PublishBloc, PublishState>(
       listener: (context, state) {
         state.maybeWhen(
           success: () {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(_type == 'announcement'
-                  ? 'Объявление опубликовано'
-                  : 'Событие создано'),
-              backgroundColor: ext.successBg,
-            ));
+            _resetForm();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  _type == 'announcement'
+                      ? 'Объявление опубликовано'
+                      : 'Событие создано',
+                ),
+                backgroundColor: ext.successBg,
+              ),
+            );
             _resetForm();
           },
-          error: (msg) => ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(msg))),
+          error: (msg) => ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(msg))),
           orElse: () {},
         );
       },
       builder: (context, state) {
         final isLoading = state.maybeWhen(
-          loading: () => true, orElse: () => false,
+          loading: () => true,
+          orElse: () => false,
         );
 
         return SliverToBoxAdapter(
@@ -178,8 +233,11 @@ class _PublishTabState extends State<PublishTab> {
                     hintText: _type == 'announcement'
                         ? 'Запись на элективы открыта'
                         : 'Хакатон по компьютерному зрению',
-                    prefixIcon: Icon(Icons.title,
-                        size: 20, color: ext.textTertiary),
+                    prefixIcon: Icon(
+                      Icons.title,
+                      size: 20,
+                      color: ext.textTertiary,
+                    ),
                   ),
                 ),
 
@@ -195,152 +253,214 @@ class _PublishTabState extends State<PublishTab> {
                     alignLabelWithHint: true,
                     prefixIcon: Padding(
                       padding: const EdgeInsets.only(bottom: 64),
-                      child: Icon(Icons.notes,
-                          size: 20, color: ext.textTertiary),
+                      child: Icon(
+                        Icons.notes,
+                        size: 20,
+                        color: ext.textTertiary,
+                      ),
                     ),
                   ),
                 ),
 
                 if (_type == 'event') ...[
                   const SizedBox(height: 14),
+                  // Дата начала
                   TextField(
-                    controller: _dateCtrl,
+                    controller: _startDateCtrl,
                     readOnly: true,
                     onTap: () async {
                       final date = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime.now(),
-                        lastDate: DateTime.now()
-                            .add(const Duration(days: 365)),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
                       );
-                      if (date != null) {
-                        _dateCtrl.text =
-                        '${date.day}.${date.month}.${date.year}';
+                      if (date != null && mounted) {
+                        final time = await showTimePicker(
+                          context: context,
+                          initialTime: const TimeOfDay(hour: 10, minute: 0),
+                        );
+                        if (time != null) {
+                          final dt = DateTime(
+                            date.year,
+                            date.month,
+                            date.day,
+                            time.hour,
+                            time.minute,
+                          );
+                          _startDateCtrl.text = dt.toIso8601String();
+                        }
                       }
                     },
                     decoration: InputDecoration(
-                      labelText: 'Дата проведения',
+                      labelText: 'Начало события',
+                      hintText: 'Выберите дату и время',
+                      prefixIcon: Icon(
+                        Icons.calendar_today_outlined,
+                        size: 20,
+                        color: ext.textTertiary,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  // Дата конца
+                  TextField(
+                    controller: _endDateCtrl,
+                    readOnly: true,
+                    onTap: () async {
+                      final date = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      );
+                      if (date != null && mounted) {
+                        final time = await showTimePicker(
+                          context: context,
+                          initialTime: const TimeOfDay(hour: 18, minute: 0),
+                        );
+                        if (time != null) {
+                          final dt = DateTime(
+                            date.year,
+                            date.month,
+                            date.day,
+                            time.hour,
+                            time.minute,
+                          );
+                          _endDateCtrl.text = dt.toIso8601String();
+                        }
+                      }
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Конец события',
+                      hintText: 'Выберите дату и время',
+                      prefixIcon: Icon(
+                        Icons.calendar_month_outlined,
+                        size: 20,
+                        color: ext.textTertiary,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  // room_id
+                  TextField(
+                    controller: _roomIdCtrl,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'ID аудитории',
+                      hintText: 'Например: 4',
+                      prefixIcon: Icon(
+                        Icons.meeting_room_outlined,
+                        size: 20,
+                        color: ext.textTertiary,
+                      ),
+                    ),
+                  ),
+                ],
+
+                // Для объявления — даты публикации и истечения
+                if (_type == 'announcement') ...[
+                  const SizedBox(height: 14),
+                  TextField(
+                    controller: _publishAtCtrl,
+                    readOnly: true,
+                    onTap: () async {
+                      final date = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      );
+                      if (date != null && mounted) {
+                        _publishAtCtrl.text = date.toIso8601String().substring(
+                          0,
+                          10,
+                        );
+                      }
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Дата публикации',
                       hintText: 'Выберите дату',
-                      prefixIcon: Icon(Icons.calendar_today_outlined,
-                          size: 20, color: ext.textTertiary),
+                      prefixIcon: Icon(
+                        Icons.publish_outlined,
+                        size: 20,
+                        color: ext.textTertiary,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 14),
                   TextField(
-                    controller: _placeCtrl,
+                    controller: _expiresAtCtrl,
+                    readOnly: true,
+                    onTap: () async {
+                      final date = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now().add(
+                          const Duration(days: 7),
+                        ),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      );
+                      if (date != null && mounted) {
+                        _expiresAtCtrl.text = date.toIso8601String().substring(
+                          0,
+                          10,
+                        );
+                      }
+                    },
                     decoration: InputDecoration(
-                      labelText: 'Место проведения',
-                      hintText: 'Корпус Л4, ауд. 21',
-                      prefixIcon: Icon(Icons.location_on_outlined,
-                          size: 20, color: ext.textTertiary),
-                    ),
-                  ),
-                ],
-
-                const SizedBox(height: 20),
-
-                Text('Аудитория', style: tt.labelLarge),
-                const SizedBox(height: 10),
-
-                Row(
-                  children: [
-                    _AudienceChip(
-                      icon: Icons.public_outlined,
-                      label: 'Все',
-                      isActive: _audience == 'all',
-                      onTap: () => setState(() {
-                        _audience       = 'all';
-                        _selectedStream = null;
-                        _selectedGroup  = null;
-                      }),
-                    ),
-                    const SizedBox(width: 8),
-                    _AudienceChip(
-                      icon: Icons.account_tree_outlined,
-                      label: 'Поток',
-                      isActive: _audience == 'stream',
-                      onTap: () => setState(() {
-                        _audience      = 'stream';
-                        _selectedGroup = null;
-                      }),
-                    ),
-                    const SizedBox(width: 8),
-                    _AudienceChip(
-                      icon: Icons.groups_outlined,
-                      label: 'Группа',
-                      isActive: _audience == 'group',
-                      onTap: () => setState(() {
-                        _audience       = 'group';
-                        _selectedStream = null;
-                      }),
-                    ),
-                  ],
-                ),
-
-                if (_audience == 'stream' || _audience == 'group') ...[
-                  const SizedBox(height: 12),
-                  _StreamGroupPicker(
-                    isStream: _audience == 'stream',
-                    selected: _audience == 'stream'
-                        ? _selectedStream
-                        : _selectedGroup,
-                    onTap: () =>
-                        _openPicker(isStream: _audience == 'stream'),
-                  ),
-                ],
-
-                if (_type == 'announcement') ...[
-                  const SizedBox(height: 16),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: cs.surface,
-                      borderRadius:
-                      BorderRadius.circular(AppTheme.radiusMd),
-                      border: Border.all(color: ext.border),
-                    ),
-                    child: SwitchListTile(
-                      dense: true,
-                      title: Text('Закрепить объявление',
-                          style: tt.labelLarge),
-                      subtitle: Text(
-                        'Будет отображаться вверху списка',
-                        style: tt.labelSmall
-                            ?.copyWith(color: ext.textSecondary),
+                      labelText: 'Срок действия',
+                      hintText: 'Когда убрать из ленты',
+                      prefixIcon: Icon(
+                        Icons.event_busy_outlined,
+                        size: 20,
+                        color: ext.textTertiary,
                       ),
-                      value: _isPinned,
-                      activeThumbColor: cs.primary,
-                      onChanged: (v) => setState(() => _isPinned = v),
                     ),
                   ),
                 ],
 
-                const SizedBox(height: 28),
+                const SizedBox(height: 24),
 
-                SizedBox(
-                  width: double.infinity,
-                  height: 52,
-                  child: ElevatedButton.icon(
-                    onPressed: isLoading ? null : () => _submit(context),
-                    icon: isLoading
-                        ? const SizedBox(
-                      width: 18, height: 18,
-                      child: CircularProgressIndicator(
-                          strokeWidth: 2, color: Colors.white),
-                    )
-                        : Icon(
-                      _type == 'announcement'
-                          ? Icons.send_outlined
-                          : Icons.event_available_outlined,
-                      size: 18,
-                    ),
-                    label: Text(
-                      _type == 'announcement'
-                          ? 'Опубликовать объявление'
-                          : 'Создать событие',
-                    ),
-                  ),
+                // ── Кнопка «Создать» ──
+                BlocBuilder<PublishBloc, PublishState>(
+                  builder: (context, state) {
+                    final isLoading = state.maybeWhen(
+                      loading: () => true,
+                      orElse: () => false,
+                    );
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 52,
+                      child: ElevatedButton.icon(
+                        onPressed: isLoading ? null : () => _submit(context),
+                        icon: isLoading
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Icon(
+                                _type == 'announcement'
+                                    ? Icons.campaign_outlined
+                                    : Icons.event_outlined,
+                                size: 18,
+                              ),
+                        label: Text(
+                          isLoading
+                              ? 'Публикуем...'
+                              : _type == 'announcement'
+                              ? 'Опубликовать объявление'
+                              : 'Создать событие',
+                        ),
+                      ),
+                    );
+                  },
                 ),
+                const SizedBox(height: 32),
               ],
             ),
           ),
@@ -367,9 +487,9 @@ class _TypeSegment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
     final isSelected = value == selected;
 
     return Expanded(
@@ -385,16 +505,19 @@ class _TypeSegment extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 16,
-                  color: isSelected ? cs.primary : ext.textSecondary),
+              Icon(
+                icon,
+                size: 16,
+                color: isSelected ? cs.primary : ext.textSecondary,
+              ),
               const SizedBox(width: 6),
-              Text(label,
-                  style: tt.labelLarge?.copyWith(
-                    fontWeight: isSelected
-                        ? FontWeight.w600 : FontWeight.w500,
-                    color: isSelected
-                        ? ext.textPrimary : ext.textSecondary,
-                  )),
+              Text(
+                label,
+                style: tt.labelLarge?.copyWith(
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected ? ext.textPrimary : ext.textSecondary,
+                ),
+              ),
             ],
           ),
         ),
@@ -418,7 +541,7 @@ class _AudienceChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
 
     return Expanded(
@@ -433,16 +556,21 @@ class _AudienceChip extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Icon(icon, size: 18,
-                  color: isActive ? cs.onPrimary : ext.textOnTinted),
+              Icon(
+                icon,
+                size: 18,
+                color: isActive ? cs.onPrimary : ext.textOnTinted,
+              ),
               const SizedBox(height: 4),
-              Text(label,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: isActive ? cs.onPrimary : ext.textOnTinted,
-                    height: 1,
-                  )),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  color: isActive ? cs.onPrimary : ext.textOnTinted,
+                  height: 1,
+                ),
+              ),
             ],
           ),
         ),
@@ -464,9 +592,9 @@ class _StreamGroupPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
     final hasValue = selected != null && selected!.isNotEmpty;
 
     return GestureDetector(
@@ -484,9 +612,7 @@ class _StreamGroupPicker extends StatelessWidget {
         child: Row(
           children: [
             Icon(
-              isStream
-                  ? Icons.account_tree_outlined
-                  : Icons.groups_outlined,
+              isStream ? Icons.account_tree_outlined : Icons.groups_outlined,
               size: 18,
               color: hasValue ? cs.primary : ext.textTertiary,
             ),
@@ -495,17 +621,18 @@ class _StreamGroupPicker extends StatelessWidget {
               child: Text(
                 hasValue
                     ? selected!
-                    : (isStream
-                    ? 'Выберите поток...'
-                    : 'Выберите группу...'),
+                    : (isStream ? 'Выберите поток...' : 'Выберите группу...'),
                 style: tt.bodyLarge?.copyWith(
                   fontSize: 15,
                   color: hasValue ? ext.textPrimary : ext.textTertiary,
                 ),
               ),
             ),
-            Icon(Icons.search, size: 18,
-                color: hasValue ? cs.primary : ext.textTertiary),
+            Icon(
+              Icons.search,
+              size: 18,
+              color: hasValue ? cs.primary : ext.textTertiary,
+            ),
           ],
         ),
       ),
@@ -535,8 +662,8 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
   List<String> get _filtered => _query.isEmpty
       ? widget.items
       : widget.items
-      .where((i) => i.toLowerCase().contains(_query.toLowerCase()))
-      .toList();
+            .where((i) => i.toLowerCase().contains(_query.toLowerCase()))
+            .toList();
 
   @override
   void dispose() {
@@ -546,26 +673,29 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.6,
       decoration: BoxDecoration(
         color: cs.surface,
         borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(AppTheme.radiusLg)),
+          top: Radius.circular(AppTheme.radiusLg),
+        ),
       ),
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 10, bottom: 4),
             child: Container(
-              width: 36, height: 4,
+              width: 36,
+              height: 4,
               decoration: BoxDecoration(
-                  color: ext.border,
-                  borderRadius: BorderRadius.circular(2)),
+                color: ext.border,
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
           Padding(
@@ -576,8 +706,7 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
                 const Spacer(),
                 GestureDetector(
                   onTap: () => Navigator.pop(context),
-                  child: Icon(Icons.close,
-                      size: 20, color: ext.textSecondary),
+                  child: Icon(Icons.close, size: 20, color: ext.textSecondary),
                 ),
               ],
             ),
@@ -589,11 +718,13 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
               autofocus: true,
               onChanged: (v) => setState(() => _query = v),
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.search,
-                    size: 20, color: ext.textTertiary),
+                prefixIcon: Icon(
+                  Icons.search,
+                  size: 20,
+                  color: ext.textTertiary,
+                ),
                 hintText: 'Поиск...',
-                hintStyle:
-                tt.bodyMedium?.copyWith(color: ext.textTertiary),
+                hintStyle: tt.bodyMedium?.copyWith(color: ext.textTertiary),
               ),
             ),
           ),
@@ -601,36 +732,43 @@ class _SearchBottomSheetState extends State<_SearchBottomSheet> {
           Expanded(
             child: _filtered.isEmpty
                 ? Center(
-                child: Text('Ничего не найдено',
-                    style: tt.bodyMedium
-                        ?.copyWith(color: ext.textSecondary)))
+                    child: Text(
+                      'Ничего не найдено',
+                      style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+                    ),
+                  )
                 : ListView.separated(
-              padding: EdgeInsets.only(
-                bottom:
-                MediaQuery.of(context).padding.bottom + 16,
-              ),
-              separatorBuilder: (_, __) =>
-                  Divider(height: 1, color: ext.divider, indent: 16),
-              itemCount: _filtered.length,
-              itemBuilder: (_, i) {
-                final item = _filtered[i];
-                final isSel = item == widget.selected;
-                return ListTile(
-                  dense: true,
-                  title: Text(item,
-                      style: tt.labelLarge?.copyWith(
-                        fontWeight: isSel
-                            ? FontWeight.w700 : FontWeight.w400,
-                        color: isSel ? cs.primary : ext.textPrimary,
-                      )),
-                  trailing: isSel
-                      ? Icon(Icons.check_circle,
-                      color: cs.primary, size: 20)
-                      : null,
-                  onTap: () => Navigator.pop(context, item),
-                );
-              },
-            ),
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).padding.bottom + 16,
+                    ),
+                    separatorBuilder: (_, __) =>
+                        Divider(height: 1, color: ext.divider, indent: 16),
+                    itemCount: _filtered.length,
+                    itemBuilder: (_, i) {
+                      final item = _filtered[i];
+                      final isSel = item == widget.selected;
+                      return ListTile(
+                        dense: true,
+                        title: Text(
+                          item,
+                          style: tt.labelLarge?.copyWith(
+                            fontWeight: isSel
+                                ? FontWeight.w700
+                                : FontWeight.w400,
+                            color: isSel ? cs.primary : ext.textPrimary,
+                          ),
+                        ),
+                        trailing: isSel
+                            ? Icon(
+                                Icons.check_circle,
+                                color: cs.primary,
+                                size: 20,
+                              )
+                            : null,
+                        onTap: () => Navigator.pop(context, item),
+                      );
+                    },
+                  ),
           ),
         ],
       ),

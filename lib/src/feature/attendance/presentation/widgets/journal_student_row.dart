@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
-import 'package:sfu/src/core/widgets/initials_avatar.dart';
+import 'package:sfu/src/core/widgets/user_avatar.dart';
 import 'package:sfu/src/feature/attendance/domain/entity/attendance_student.dart';
 
 class JournalStudentRow extends StatelessWidget {
   const JournalStudentRow({
     super.key,
     required this.student,
+    required this.onMarkManual,
     required this.onStatusChanged,
   });
 
   final AttendanceStudent student;
+  final VoidCallback onMarkManual;
   final ValueChanged<AttendanceStatus> onStatusChanged;
 
   static const _statusColors = {
@@ -42,7 +44,7 @@ class JournalStudentRow extends StatelessWidget {
     return '${parts[0]} $first$middle';
   }
 
-  void _showStatusPicker(BuildContext context) {
+  void _showActions(BuildContext context) {
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
@@ -70,7 +72,34 @@ class JournalStudentRow extends StatelessWidget {
             ),
             Text(student.name.split(' ').first, style: tt.titleMedium),
             const SizedBox(height: 12),
-            ...AttendanceStatus.values.map((status) {
+
+            // Ручная отметка через API
+            if (student.status == AttendanceStatus.absent)
+              ListTile(
+                dense: true,
+                leading: Container(
+                  width: 32, height: 32,
+                  decoration: BoxDecoration(
+                      color: const Color(0x1A10B981), shape: BoxShape.circle),
+                  child: const Icon(Icons.edit_outlined,
+                      size: 16, color: Color(0xFF047857)),
+                ),
+                title: Text('Отметить вручную',
+                    style: tt.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w600)),
+                subtitle: Text('POST /attendance/manual',
+                    style: tt.labelSmall
+                        ?.copyWith(color: ext.textTertiary)),
+                onTap: () {
+                  onMarkManual();
+                  Navigator.pop(context);
+                },
+              ),
+
+            // Остальные статусы (локально, без API пока)
+            ...AttendanceStatus.values
+                .where((s) => s != AttendanceStatus.absent || student.status != AttendanceStatus.absent)
+                .map((status) {
               final colors = _statusColors[status]!;
               final isSelected = student.status == status;
               return ListTile(
@@ -112,12 +141,12 @@ class JournalStudentRow extends StatelessWidget {
     final icon   = _statusIcons[student.status]!;
 
     return InkWell(
-      onTap: () => _showStatusPicker(context),
+      onTap: () => _showActions(context),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
           children: [
-            InitialsAvatar(name: student.name, size: 36),
+            UserAvatar(name: student.name, size: 36),
             const SizedBox(width: 12),
 
             Expanded(
@@ -147,31 +176,36 @@ class JournalStudentRow extends StatelessWidget {
                           )),
                     ),
                   ],
+                  if (student.markedAt != null) ...[
+                    const SizedBox(width: 6),
+                    Text(
+                      _formatTime(student.markedAt!),
+                      style: tt.labelSmall
+                          ?.copyWith(color: ext.textTertiary),
+                    ),
+                  ],
                 ],
               ),
             ),
 
-            GestureDetector(
-              onTap: () => _showStatusPicker(context),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: colors.bg,
-                  borderRadius: BorderRadius.circular(AppTheme.radiusSm),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(icon, size: 12, color: colors.fg),
-                    const SizedBox(width: 4),
-                    Text(label,
-                        style: TextStyle(
-                          fontSize: 11, fontWeight: FontWeight.w600,
-                          color: colors.fg, height: 1,
-                        )),
-                  ],
-                ),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                color: colors.bg,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(icon, size: 12, color: colors.fg),
+                  const SizedBox(width: 4),
+                  Text(label,
+                      style: TextStyle(
+                        fontSize: 11, fontWeight: FontWeight.w600,
+                        color: colors.fg, height: 1,
+                      )),
+                ],
               ),
             ),
           ],
@@ -179,4 +213,8 @@ class JournalStudentRow extends StatelessWidget {
       ),
     );
   }
+
+  String _formatTime(DateTime dt) =>
+      '${dt.hour.toString().padLeft(2, '0')}:'
+          '${dt.minute.toString().padLeft(2, '0')}';
 }

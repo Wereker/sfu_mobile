@@ -10,25 +10,23 @@ abstract class ManagementRemoteDataSource {
   Future<List<ThesisDTO>> getMyTheses();
   Future<ThesisDTO> createThesis(String title);
   Future<ThesisDTO> updateThesis(String id, {String? title, bool? isFree});
-  Future<void> createAnnouncement({
-    required String title,
-    required String body,
-    required String audience,
-    bool isPinned,
-    String? stream,
-    String? groupId,
-    List<String> tags,
-  });
+
+  // POST /events
   Future<void> createEvent({
     required String title,
-    required String body,
-    required String date,
-    required String time,
-    required String location,
-    required int totalSeats,
-    required String audience,
-    String? stream,
-    String? groupId,
-    List<String> tags,
+    required String annotation,
+    required String startsAt,
+    required String endsAt,
+    required int roomId,
+  });
+
+  // POST /announcements
+  Future<void> createAnnouncement({
+    required String title,
+    required String content,
+    required String publishAt,
+    required String expiresAt,
+    required List<int> targetGroupIds,
+    required List<int> targetStreamIds,
   });
 }

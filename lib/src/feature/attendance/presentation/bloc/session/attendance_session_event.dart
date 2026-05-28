@@ -1,21 +1,17 @@
 part of 'attendance_session_bloc.dart';
 
 @freezed
-class AttendanceSessionEvent with _$AttendanceSessionEvent {
-  const factory AttendanceSessionEvent.createSession(
-    String lessonId, {
-    @Default(300) int ttlSeconds,
-  }) = _CreateSession;
+abstract class AttendanceSessionEvent with _$AttendanceSessionEvent {
+  const factory AttendanceSessionEvent.createSession(int lessonId) =
+  _CreateSession;
 
-  const factory AttendanceSessionEvent.closeSession(String sessionId) =
-      _CloseSession;
+  const factory AttendanceSessionEvent.loadStudents(int lessonId) =
+  _LoadStudents;
 
-  const factory AttendanceSessionEvent.loadStudents(String sessionId) =
-      _LoadStudents;
+  const factory AttendanceSessionEvent.markManual({
+    required int lessonId,
+    required int studentId,
+  }) = _MarkManual;
 
-  const factory AttendanceSessionEvent.updateStatus(
-    String sessionId,
-    String studentId,
-    AttendanceStatus status,
-  ) = _UpdateStatus;
+  const factory AttendanceSessionEvent.refresh(int lessonId) = _Refresh;
 }
