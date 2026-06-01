@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
@@ -20,7 +23,7 @@ class ProfileBody extends StatefulWidget {
 }
 
 class _ProfileBodyState extends State<ProfileBody> {
-  String? _localAvatarPath;
+  Uint8List? _localImageBytes; // превью после выбора из галереи
 
   late final TextEditingController _phoneCtrl;
   late final TextEditingController _emailCtrl;
@@ -33,21 +36,20 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   bool _editingPhone = false;
   bool _editingEmail = false;
-  bool _editingTg    = false;
-  bool _editingBio   = false;
+  bool _editingTg = false;
+  bool _editingBio = false;
 
   bool get _isTeacher =>
       widget.user.role == UserRole.teacher ||
-          widget.user.role == UserRole.admin;
+      widget.user.role == UserRole.admin;
 
   @override
   void initState() {
     super.initState();
-    // Инициализируем из модели — данные сразу видны пользователю
     _phoneCtrl = TextEditingController(text: widget.user.phone ?? '');
     _emailCtrl = TextEditingController(text: widget.user.email);
-    _tgCtrl    = TextEditingController(text: '');
-    _bioCtrl   = TextEditingController(text: widget.user.bio ?? '');
+    _tgCtrl = TextEditingController(text: '');
+    _bioCtrl = TextEditingController(text: widget.user.bio ?? '');
     _notifyChats = widget.user.notifyChats;
     _notifyEvents = widget.user.notifyEvents;
     _notifyNews = widget.user.notifyNews;
@@ -62,97 +64,100 @@ class _ProfileBodyState extends State<ProfileBody> {
     super.dispose();
   }
 
-  void _onAvatarChanged(String path) {
-    setState(() => _localAvatarPath = path);
-    context.read<ProfileBloc>().add(ProfileEvent.uploadAvatar(path));
+  Future<void> _onAvatarChanged(String path) async {
+    // Читаем байты для мгновенного локального превью
+    final bytes = await File(path).readAsBytes();
+    if (mounted) setState(() => _localImageBytes = bytes);
+    // Загружаем на сервер — после успеха блок перезагрузит профиль
+    // и _RemoteAvatar подхватит новое изображение из кэша
+    if (mounted) {
+      context.read<ProfileBloc>().add(ProfileEvent.uploadAvatar(path));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
-
-    final userWithLocalAvatar = _localAvatarPath != null
-        ? widget.user.copyWith(avatarUrl: _localAvatarPath)
-        : widget.user;
+    final tt = Theme.of(context).textTheme;
 
     return CustomScrollView(
-      slivers: [
-        const ProfileAppBar(),
-        SliverPadding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
-          sliver: SliverList(
-            delegate: SliverChildListDelegate([
-
-              ProfileHeader(
-                user: userWithLocalAvatar,
-                onAvatarChanged: _onAvatarChanged,
-              ),
-
-              const SizedBox(height: 24),
-
-              // «О себе» — только для преподавателя
-              if (_isTeacher) ...[
-                _SectionLabel(label: 'О себе'),
-                const SizedBox(height: 8),
-                BioCard(
-                  controller: _bioCtrl,
-                  isEditing: _editingBio,
-                  onToggle: () => setState(() => _editingBio = !_editingBio),
+        slivers: [
+          const ProfileAppBar(),
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 40),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                ProfileHeader(
+                  user: widget.user,
+                  localImageBytes: _localImageBytes, // ← превью локального фото
+                  onAvatarChanged: _onAvatarChanged,
                 ),
+
                 const SizedBox(height: 24),
-              ],
 
-              _SectionLabel(label: 'Контакты'),
-              const SizedBox(height: 8),
-              ContactCard(
-                phoneCtrl:    _phoneCtrl,
-                emailCtrl:    _emailCtrl,
-                tgCtrl:       _tgCtrl,
-                editingPhone: _editingPhone,
-                editingEmail: _editingEmail,
-                editingTg:    _editingTg,
-                onTogglePhone: () => setState(() => _editingPhone = !_editingPhone),
-                onToggleEmail: () => setState(() => _editingEmail = !_editingEmail),
-                onToggleTg:    () => setState(() => _editingTg    = !_editingTg),
-              ),
+                if (_isTeacher) ...[
+                  _SectionLabel(label: 'О себе'),
+                  const SizedBox(height: 8),
+                  BioCard(
+                    controller: _bioCtrl,
+                    isEditing: _editingBio,
+                    onToggle: () => setState(() => _editingBio = !_editingBio),
+                  ),
+                  const SizedBox(height: 24),
+                ],
 
-              const SizedBox(height: 24),
-
-              _SectionLabel(label: 'Настройки'),
-              const SizedBox(height: 8),
-              const AppSettingsCard(),
-
-              const SizedBox(height: 24),
-
-              _SectionLabel(label: 'Уведомления'),
-              const SizedBox(height: 8),
-              NotificationsCard(
-                notifyChats:  _notifyChats,
-                notifyNews:   _notifyNews,
-                notifyEvents: _notifyEvents,
-                onChats:  (v) => setState(() => _notifyChats  = v),
-                onNews:   (v) => setState(() => _notifyNews   = v),
-                onEvents: (v) => setState(() => _notifyEvents = v),
-              ),
-
-              const SizedBox(height: 32),
-              const LogoutButton(),
-              const SizedBox(height: 16),
-
-              Center(
-                child: Text(
-                  'Версия 1.1.0',
-                  style: tt.labelSmall?.copyWith(color: ext.textTertiary),
+                _SectionLabel(label: 'Контакты'),
+                const SizedBox(height: 8),
+                ContactCard(
+                  phoneCtrl: _phoneCtrl,
+                  emailCtrl: _emailCtrl,
+                  tgCtrl: _tgCtrl,
+                  editingPhone: _editingPhone,
+                  editingEmail: _editingEmail,
+                  editingTg: _editingTg,
+                  onTogglePhone: () =>
+                      setState(() => _editingPhone = !_editingPhone),
+                  onToggleEmail: () =>
+                      setState(() => _editingEmail = !_editingEmail),
+                  onToggleTg: () => setState(() => _editingTg = !_editingTg),
                 ),
-              ),
 
-              SizedBox(height: MediaQuery.of(context).padding.bottom),
-            ]),
+                const SizedBox(height: 24),
+
+                _SectionLabel(label: 'Настройки'),
+                const SizedBox(height: 8),
+                const AppSettingsCard(),
+
+                const SizedBox(height: 24),
+
+                _SectionLabel(label: 'Уведомления'),
+                const SizedBox(height: 8),
+                NotificationsCard(
+                  notifyChats: _notifyChats,
+                  notifyNews: _notifyNews,
+                  notifyEvents: _notifyEvents,
+                  onChats: (v) => setState(() => _notifyChats = v),
+                  onNews: (v) => setState(() => _notifyNews = v),
+                  onEvents: (v) => setState(() => _notifyEvents = v),
+                ),
+
+                const SizedBox(height: 32),
+                const LogoutButton(),
+                const SizedBox(height: 16),
+
+                Center(
+                  child: Text(
+                    'Версия 1.1.0',
+                    style: tt.labelSmall?.copyWith(color: ext.textTertiary),
+                  ),
+                ),
+
+                SizedBox(height: MediaQuery.of(context).padding.bottom),
+              ]),
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
   }
 }
 

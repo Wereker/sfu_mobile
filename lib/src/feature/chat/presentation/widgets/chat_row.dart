@@ -59,7 +59,7 @@ class ChatRow extends StatelessWidget {
               children: [
                 UserAvatar(
                   name: chat.title,
-                  avatarUrl: chat.avatarUrl,
+                  userId: int.parse(chat.memberIds[0]),
                   size: 48,
                 ),
                 if (chat.type == ChatType.private)

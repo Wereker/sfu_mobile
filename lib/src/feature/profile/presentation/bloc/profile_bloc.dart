@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sfu/src/core/error/app_exception.dart';
+import 'package:sfu/src/core/widgets/user_avatar.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/get_profile_use_case.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/upload_avatar_use_case.dart';
@@ -38,12 +39,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       uploadAvatar: (String filePath) async {
         try {
           await _uploadAvatar.call(filePath);
-          // После загрузки обновляем профиль чтобы получить новый URL
+
+          final currentUser = state.maybeWhen(
+            success: (user) => user,
+            orElse: () => null,
+          );
+          if (currentUser != null) {
+            UserAvatar.clearCacheForUser(currentUser.id);
+          }
+
+          // Перезагружаем профиль
           add(const ProfileEvent.loadData());
         } on AppException catch (e) {
-          // Не переходим в error — профиль уже загружен,
-          // просто показываем snackbar через BlocListener в UI
-          emit(state); // оставляем текущий стейт
+          emit(state);
         }
       },
     );

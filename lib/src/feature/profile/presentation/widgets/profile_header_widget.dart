@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
@@ -10,11 +12,12 @@ class ProfileHeader extends StatelessWidget {
     super.key,
     required this.user,
     required this.onAvatarChanged,
+    this.localImageBytes,
   });
 
   final User user;
-
   final ValueChanged<String> onAvatarChanged;
+  final Uint8List? localImageBytes;
 
   String _roleLabel(UserRole role) {
     switch (role) {
@@ -64,9 +67,11 @@ class ProfileHeader extends StatelessWidget {
             // Аватар с кнопкой выбора
             UserAvatar(
               name: user.fullName,
-              avatarUrl: user.avatarUrl,
+              userId: user.id,
               size: 72,
               fontSize: 24,
+              localImageBytes: localImageBytes,
+              avatarVersion: user.updatedAt.millisecondsSinceEpoch,
               onTap: () => _pickAvatar(context),
               badge: Container(
                 width: 22, height: 22,
@@ -145,9 +150,10 @@ class _ProfileDetailSheet extends StatelessWidget {
           children: [
             UserAvatar(
               name: user.fullName,
-              avatarUrl: user.avatarUrl,
+              userId: user.id,
               size: 56,
               fontSize: 20,
+              avatarVersion: user.updatedAt.millisecondsSinceEpoch,
             ),
             const SizedBox(width: 12),
             Expanded(

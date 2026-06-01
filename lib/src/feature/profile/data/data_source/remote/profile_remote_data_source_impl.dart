@@ -19,7 +19,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   @override
   Future<UserDTO> getProfile() => ExceptionHandler.handle(() async {
     final response = await _authorizedClient
-        .get<Map<String, dynamic>>('/auth/me');
+        .get<Map<String, dynamic>>('/users/me');
     return UserDTO.fromJson(response.data!);
   });
 

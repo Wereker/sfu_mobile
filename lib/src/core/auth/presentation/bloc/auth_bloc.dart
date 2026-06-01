@@ -7,6 +7,7 @@ import 'package:sfu/src/core/auth/domain/use_case/sign_in_use_case.dart';
 import 'package:sfu/src/core/auth/domain/use_case/sign_up_use_case.dart';
 import 'package:sfu/src/core/error/app_exception.dart';
 import 'package:sfu/src/core/error/auth_exception.dart';
+import 'package:sfu/src/core/widgets/user_avatar.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -65,6 +66,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           emit(AuthState.loading());
           await logoutUseCase.call();
+          UserAvatar.clearAllCache();
           emit(AuthState.unauthorized());
         } on UnauthorizedException {
           emit(AuthState.unauthorized());
@@ -74,7 +76,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthState.error(error: 'Что-то пошло не так'));
         }
       },
-      // Только изменённый handler signUp, остальное без изменений:
 
       signUp: (
           String name,

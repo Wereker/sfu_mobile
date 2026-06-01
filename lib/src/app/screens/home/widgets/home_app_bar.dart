@@ -65,9 +65,10 @@ class HomeAppBar extends StatelessWidget {
                     )
                         : UserAvatar(
                       name: user?.fullName ?? '?',
-                      avatarUrl: user?.avatarUrl,
+                      userId: user?.id,
                       size: 42,
                       fontSize: 14,
+                      avatarVersion: user?.updatedAt.millisecondsSinceEpoch,
                     ),
                   ),
                   const SizedBox(width: 10),

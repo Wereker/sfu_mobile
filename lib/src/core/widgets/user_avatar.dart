@@ -1,29 +1,29 @@
+import 'dart:typed_data';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sfu/src/app/dependency_injection/injection.dart';
 
-/// Аватар пользователя с fallback на инициалы.
-/// Если [avatarUrl] задан но изображение не грузится — показывает инициалы.
 class UserAvatar extends StatelessWidget {
   const UserAvatar({
     super.key,
     required this.name,
-    this.avatarUrl,
+    this.userId,
     required this.size,
     this.fontSize,
     this.onTap,
     this.badge,
-    this.headers,
+    this.localImageBytes,
+    this.avatarVersion,
   });
 
   final String name;
-  final String? avatarUrl;
+  final int? userId;
   final double size;
   final double? fontSize;
   final VoidCallback? onTap;
-  final Map<String, String>? headers;
-
-
-  /// Виджет поверх аватара (например иконка редактирования)
   final Widget? badge;
+  final Uint8List? localImageBytes;
+  final int? avatarVersion;
 
   static const _palette = [
     Color(0xFF5C6BC0), Color(0xFF26A69A), Color(0xFFEF5350),
@@ -36,9 +36,8 @@ class UserAvatar extends StatelessWidget {
       .split(' ')
       .where((p) => p.isNotEmpty)
       .take(2)
-      .map((p) => p[0])
-      .join()
-      .toUpperCase();
+      .map((p) => p[0].toUpperCase())
+      .join();
 
   Color get _bg {
     int h = 0;
@@ -48,19 +47,46 @@ class UserAvatar extends StatelessWidget {
     return _palette[h % _palette.length];
   }
 
+  static void clearCacheForUser(int userId) =>
+      _RemoteAvatarState._cache.remove(userId);
+
+  static void clearAllCache() => _RemoteAvatarState._cache.clear();
+
   @override
   Widget build(BuildContext context) {
-    final Widget avatar = avatarUrl != null
-        ? _NetworkAvatar(
-      url: avatarUrl!,
+    final fallback = _Initials(
+      initials: _initials,
+      bg: _bg,
       size: size,
-      fallback: _Initials(initials: _initials, bg: _bg, size: size, fontSize: fontSize),
-      headers: headers,
-    )
-        : _Initials(initials: _initials, bg: _bg, size: size, fontSize: fontSize);
+      fontSize: fontSize,
+    );
+
+    Widget avatar;
+
+    if (localImageBytes != null) {
+      avatar = ClipOval(
+        child: Image.memory(
+          localImageBytes!,
+          width: size,
+          height: size,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => fallback,
+        ),
+      );
+    } else if (userId != null) {
+      avatar = _RemoteAvatar(
+        key: ValueKey('avatar_${userId}_${avatarVersion ?? 0}'),
+        userId: userId!,
+        size: size,
+        fallback: fallback,
+      );
+    } else {
+      avatar = fallback;
+    }
 
     final Widget wrapped = badge != null
         ? Stack(
+      clipBehavior: Clip.none,
       children: [
         avatar,
         Positioned(bottom: 0, right: 0, child: badge!),
@@ -68,54 +94,109 @@ class UserAvatar extends StatelessWidget {
     )
         : avatar;
 
-    if (onTap != null) {
-      return GestureDetector(onTap: onTap, child: wrapped);
-    }
-    return wrapped;
+    return onTap != null
+        ? GestureDetector(onTap: onTap, child: wrapped)
+        : wrapped;
   }
 }
 
-class _NetworkAvatar extends StatefulWidget {
-  const _NetworkAvatar({
-    required this.url,
+
+class _RemoteAvatar extends StatefulWidget {
+  const _RemoteAvatar({
+    super.key,
+    required this.userId,
     required this.size,
     required this.fallback,
-    required this.headers,
   });
 
-  final String url;
+  final int userId;
   final double size;
   final Widget fallback;
-  final Map<String, String>? headers;
 
   @override
-  State<_NetworkAvatar> createState() => _NetworkAvatarState();
+  State<_RemoteAvatar> createState() => _RemoteAvatarState();
 }
 
-class _NetworkAvatarState extends State<_NetworkAvatar> {
+class _RemoteAvatarState extends State<_RemoteAvatar> {
+  static final _cache = <int, Uint8List>{};
+
+  Uint8List? _bytes;
+  bool _loading = true;
   bool _hasError = false;
 
   @override
+  void initState() {
+    super.initState();
+    _cache.remove(widget.userId);
+    _load();
+  }
+
+  Future<void> _load() async {
+    if (_cache.containsKey(widget.userId)) {
+      if (mounted) {
+        setState(() {
+          _bytes = _cache[widget.userId];
+          _loading = false;
+        });
+      }
+      return;
+    }
+
+    try {
+      final dio = sl<Dio>(instanceName: 'authorizedDio');
+      final response = await dio.get<List<int>>(
+        '/users/${widget.userId}/avatar',
+        options: Options(responseType: ResponseType.bytes),
+      );
+
+      final data = response.data;
+      if (data == null || data.isEmpty) {
+        if (mounted) setState(() { _hasError = true; _loading = false; });
+        return;
+      }
+
+      final bytes = Uint8List.fromList(data);
+      _cache[widget.userId] = bytes;
+
+      if (mounted) {
+        setState(() {
+          _bytes = bytes;
+          _loading = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _hasError = true;
+          _loading = false;
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (_hasError) return widget.fallback;
+    if (_loading) {
+      return SizedBox(width: widget.size, height: widget.size);
+    }
+
+    if (_hasError || _bytes == null || _bytes!.isEmpty) {
+      return widget.fallback;
+    }
 
     return ClipOval(
-      child: Image.network(
-        widget.url,
+      child: Image.memory(
+        _bytes!,
         width: widget.size,
         height: widget.size,
         fit: BoxFit.cover,
-        headers: widget.headers,
-        errorBuilder: (_, __, ___) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted) setState(() => _hasError = true);
-          });
-          return widget.fallback;
-        },
+        errorBuilder: (_, __, ___) => widget.fallback,
       ),
     );
   }
 }
+
+// ── Инициалы ────────────────────────────────────────────────────────────────
 
 class _Initials extends StatelessWidget {
   const _Initials({
