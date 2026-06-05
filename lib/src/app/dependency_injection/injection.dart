@@ -304,6 +304,7 @@ void _initRepositories() {
         () => ChatRepositoryImpl(
       remote: sl<ChatRemoteDataSource>(),
       ws: sl<ChatWsDataSource>(),
+      local: sl<AuthLocalDataSource>(),
     ),
   );
 

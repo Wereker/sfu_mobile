@@ -12,5 +12,7 @@ abstract class MessageMapper {
     isOutgoing: currentUserId != null
         ? dto.senderId == currentUserId
         : dto.isOutgoing,
+    status: MessageStatus.sent,
+    isEdited: false,
   );
 }
