@@ -25,7 +25,6 @@ class GetNextLessonUseCaseImpl implements GetNextLessonUseCase {
     for (int i = 0; i < todayLessons.length; i++) {
       final lesson = todayLessons[i];
       final start = _parseTime(lesson.timeStart, now);
-      final end = _parseTime(lesson.timeEnd, now);
 
       // Идёт первые 50 минут (45 мин пара + 5 мин перерыв)
       final firstHalfEnd = start.add(const Duration(minutes: 50));

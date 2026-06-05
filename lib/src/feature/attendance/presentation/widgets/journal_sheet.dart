@@ -167,7 +167,7 @@ class _JournalSheetState extends State<JournalSheet> {
                               ),
 
                               // QR-кнопка — показывает токен из API
-                              if (hasSession && session!.isActive)
+                              if (hasSession && session.isActive)
                                 GestureDetector(
                                   onTap: () => _showQrModal(
                                       context, session.token),

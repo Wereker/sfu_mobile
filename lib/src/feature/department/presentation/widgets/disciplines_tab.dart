@@ -345,7 +345,7 @@ class DisciplineData {
 
 // Шторка с деталями дисциплины
 class DisciplineDetailSheet extends StatelessWidget {
-  const DisciplineDetailSheet({required this.discipline});
+  const DisciplineDetailSheet({super.key, required this.discipline});
   final DisciplineData discipline;
 
   @override

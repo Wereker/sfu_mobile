@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/events/presentation/bloc/events_bloc.dart';
-
-import '../../../../feature/events/presentation/widgets/event_card.dart';
+import 'package:sfu/src/feature/events/presentation/widgets/event_card.dart';
 
 class EventsRow extends StatelessWidget {
   const EventsRow({super.key});

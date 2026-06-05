@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/dependency_injection/injection.dart';
-import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/attendance/presentation/bloc/session/attendance_session_bloc.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_app_bar.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_day_picker.dart';
@@ -28,9 +27,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
-
     return BlocProvider(
       create: (_) => sl<AttendanceSessionBloc>(),
       child: Builder(

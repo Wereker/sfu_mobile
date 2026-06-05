@@ -50,7 +50,6 @@ class _StudentsTabState extends State<StudentsTab> {
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
-    final cs  = Theme.of(context).colorScheme;
 
     return BlocBuilder<StudentsBloc, StudentsState>(
       builder: (context, state) {

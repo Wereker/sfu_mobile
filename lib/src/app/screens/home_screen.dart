@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/home/home_body.dart';
+import 'package:sfu/src/core/home/home_loading_screen.dart';
 import 'package:sfu/src/feature/announcements/presentation/bloc/announcements_bloc.dart';
 import 'package:sfu/src/feature/events/presentation/bloc/events_bloc.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
@@ -10,9 +12,6 @@ import 'package:sfu/src/feature/chat/presentation/screens/chat_screen.dart';
 import 'package:sfu/src/feature/department/presentation/screens/department_screen.dart';
 import 'package:sfu/src/feature/attendance/presentation/screens/attendance_screen.dart';
 import 'package:sfu/src/feature/management/presentation/screens/management_screen.dart';
-
-import 'home/home_body.dart';
-import 'home/home_loading_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

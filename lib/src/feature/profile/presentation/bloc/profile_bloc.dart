@@ -50,7 +50,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
           // Перезагружаем профиль
           add(const ProfileEvent.loadData());
-        } on AppException catch (e) {
+        } on AppException catch (_) {
           emit(state);
         }
       },

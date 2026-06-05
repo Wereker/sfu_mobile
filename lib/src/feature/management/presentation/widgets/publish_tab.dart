@@ -12,8 +12,6 @@ class PublishTab extends StatefulWidget {
 
 class _PublishTabState extends State<PublishTab> {
   String _type = 'announcement';
-  String _audience = 'all';
-  bool _isPinned = false;
   String? _selectedStream;
   String? _selectedGroup;
 
@@ -61,8 +59,6 @@ class _PublishTabState extends State<PublishTab> {
     _expiresAtCtrl.clear();
     _roomIdCtrl.clear();
     setState(() {
-      _isPinned = false;
-      _audience = 'all';
       _selectedStream = null;
       _selectedGroup = null;
     });
@@ -157,9 +153,7 @@ class _PublishTabState extends State<PublishTab> {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt = Theme.of(context).textTheme;
 
     return BlocConsumer<PublishBloc, PublishState>(
       listener: (context, state) {
@@ -520,120 +514,6 @@ class _TypeSegment extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _AudienceChip extends StatelessWidget {
-  const _AudienceChip({
-    required this.icon,
-    required this.label,
-    required this.isActive,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final bool isActive;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final ext = Theme.of(context).extension<AppColors>()!;
-
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: isActive ? cs.primary : ext.surfaceTinted,
-            borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-          ),
-          child: Column(
-            children: [
-              Icon(
-                icon,
-                size: 18,
-                color: isActive ? cs.onPrimary : ext.textOnTinted,
-              ),
-              const SizedBox(height: 4),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: isActive ? cs.onPrimary : ext.textOnTinted,
-                  height: 1,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StreamGroupPicker extends StatelessWidget {
-  const _StreamGroupPicker({
-    required this.isStream,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final bool isStream;
-  final String? selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final ext = Theme.of(context).extension<AppColors>()!;
-    final tt = Theme.of(context).textTheme;
-    final hasValue = selected != null && selected!.isNotEmpty;
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: cs.surface,
-          borderRadius: BorderRadius.circular(AppTheme.radiusMd),
-          border: Border.all(
-            color: hasValue ? cs.primary : ext.border,
-            width: hasValue ? 1.5 : 1,
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-        child: Row(
-          children: [
-            Icon(
-              isStream ? Icons.account_tree_outlined : Icons.groups_outlined,
-              size: 18,
-              color: hasValue ? cs.primary : ext.textTertiary,
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                hasValue
-                    ? selected!
-                    : (isStream ? 'Выберите поток...' : 'Выберите группу...'),
-                style: tt.bodyLarge?.copyWith(
-                  fontSize: 15,
-                  color: hasValue ? ext.textPrimary : ext.textTertiary,
-                ),
-              ),
-            ),
-            Icon(
-              Icons.search,
-              size: 18,
-              color: hasValue ? cs.primary : ext.textTertiary,
-            ),
-          ],
         ),
       ),
     );

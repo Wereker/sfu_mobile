@@ -13,7 +13,6 @@ class ChatWsDataSourceImpl implements ChatWsDataSource {
 
   WebSocketChannel? _channel;
   StreamController<MessageDTO>? _controller;
-  int? _currentChatId;
 
   ChatWsDataSourceImpl(this._local);
 
@@ -27,7 +26,6 @@ class ChatWsDataSourceImpl implements ChatWsDataSource {
 
     // Создаём новый контроллер для каждого подключения
     _controller = StreamController<MessageDTO>.broadcast();
-    _currentChatId = chatId;
 
     // Запускаем подключение асинхронно
     _connectAsync(chatId);
@@ -49,7 +47,6 @@ class ChatWsDataSourceImpl implements ChatWsDataSource {
 
     final uri = Uri.parse('$wsBase/chats/$chatId/ws?token=$token');
 
-    print(uri);
 
     try {
       _channel = WebSocketChannel.connect(uri);
@@ -86,7 +83,6 @@ class ChatWsDataSourceImpl implements ChatWsDataSource {
         cancelOnError: false,
       );
     } catch (e) {
-      print(e);
       _controller?.addError(const WsDisconnectedException());
     }
   }
@@ -109,6 +105,5 @@ class ChatWsDataSourceImpl implements ChatWsDataSource {
       _controller?.close();
     }
     _controller = null;
-    _currentChatId = null;
   }
 }
