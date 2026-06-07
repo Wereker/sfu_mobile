@@ -308,7 +308,6 @@ class _JournalSheetState extends State<JournalSheet> {
                               student: student,
                               onMarkManual: () =>
                                   _markManual(student.id),
-                              // Ручная отметка = POST /attendance/manual
                               onStatusChanged: (_) =>
                                   _markManual(student.id),
                             );

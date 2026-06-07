@@ -21,9 +21,35 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen> {
   int _selectedDay = DateTime.now().weekday.clamp(1, 6);
 
-  // Пока преподаватели не привязаны к расписанию — берём group_id = 6
-  static const int _groupId = 6;
-  static const int _currentWeek = 1; // TODO: вычислять динамически
+  static const int _teacherId = 30;
+
+  int get _currentWeek {
+    final now = DateTime.now();
+    final academicStart = _academicYearStart(now);
+    final weeks = now.difference(academicStart).inDays ~/ 7;
+    return (weeks % 2 == 0) ? 1 : 2;
+  }
+
+  DateTime _academicYearStart(DateTime date) {
+    final sep = DateTime(date.year, 9, 1);
+    return date.isBefore(sep) ? DateTime(date.year - 1, 9, 1) : sep;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Загружаем расписание преподавателя сразу при открытии экрана
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<TimetableBloc>().add(
+          TimetableEvent.loadData(
+            userId: _teacherId,
+            userType: TimetableTargetType.teacher,
+          ),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,22 +65,23 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   orElse: () => null,
                 );
 
-                // Уроки текущего дня
-                final lessons = timetable != null
-                    ? (_currentWeek == 1 ? timetable.week1 : timetable.week2)
+                final week = _currentWeek;
+                final lessonList = timetable != null
+                    ? (week == 1 ? timetable.week1 : timetable.week2)
                     .lessons
                     .where((l) => l.day == _selectedDay)
                     .toList()
                     : <Lesson>[];
 
-                lessons.sort((a, b) => a.timeStart.compareTo(b.timeStart));
+                lessonList.sort(
+                        (a, b) => a.timeStart.compareTo(b.timeStart));
 
                 return RefreshIndicator(
                   onRefresh: () async {
                     context.read<TimetableBloc>().add(
                       TimetableEvent.loadData(
-                        userId: _groupId,
-                        userType: TimetableTargetType.group,
+                        userId: _teacherId,
+                        userType: TimetableTargetType.teacher,
                       ),
                     );
                     await Future.delayed(const Duration(seconds: 1));
@@ -65,7 +92,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
                       SliverToBoxAdapter(
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                          padding:
+                          const EdgeInsets.fromLTRB(16, 12, 16, 0),
                           child: AttendanceDayPicker(
                             selected: _selectedDay,
                             onChanged: (d) =>
@@ -82,26 +110,26 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         const SliverToBoxAdapter(
                           child: Padding(
                             padding: EdgeInsets.only(top: 64),
-                            child: Center(child: CircularProgressIndicator()),
+                            child: Center(
+                                child: CircularProgressIndicator()),
                           ),
                         )
-                      else if (lessons.isEmpty)
+                      else if (lessonList.isEmpty)
                         const SliverToBoxAdapter(
                             child: AttendanceEmptyView())
                       else
                         SliverPadding(
-                          padding:
-                          const EdgeInsets.fromLTRB(16, 16, 16, 32),
+                          padding: const EdgeInsets.fromLTRB(
+                              16, 16, 16, 32),
                           sliver: SliverList.separated(
                             separatorBuilder: (_, __) =>
                             const SizedBox(height: 10),
-                            itemCount: lessons.length,
+                            itemCount: lessonList.length,
                             itemBuilder: (ctx, i) {
-                              final lesson = lessons[i];
+                              final lesson = lessonList[i];
                               return LessonAttendanceCard(
                                 lesson: _toLessonData(lesson),
-                                onTap: () =>
-                                    _openJournal(ctx, lesson),
+                                onTap: () => _openJournal(ctx, lesson),
                               );
                             },
                           ),
@@ -126,10 +154,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       builder: (_) => BlocProvider.value(
         value: context.read<AttendanceSessionBloc>(),
         child: JournalSheet(
-          lessonId:    int.tryParse(lesson.id.toString()) ?? 0,
+          lessonId: lesson.id,
           lessonTitle: lesson.subject,
-          lessonGroup: 'Группа $_groupId',
-          lessonTime:  '${lesson.timeStart}–${lesson.timeEnd}',
+          lessonGroup: lesson.teacherName.isNotEmpty
+              ? lesson.teacherName
+              : 'Группа ${lesson.groupId}',
+          lessonTime: '${lesson.timeStart}–${lesson.timeEnd}',
           lessonPlace: lesson.isOnline
               ? 'ЭИОС'
               : lesson.room.isNotEmpty
@@ -149,24 +179,30 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         ? 'пр. занятие'
         : 'лаб. работа',
     time: '${lesson.timeStart}–${lesson.timeEnd}',
-    place: lesson.isOnline ? 'ЭИОС' : 'ауд. ${lesson.room}',
-    group: 'Группа $_groupId',
-    studentCount: 5, // синтетика — реальное число из mock-студентов
+    place: lesson.isOnline
+        ? 'ЭИОС'
+        : lesson.room.isNotEmpty
+        ? 'ауд. ${lesson.room}'
+        : '',
+    group: lesson.teacherName.isNotEmpty
+        ? lesson.teacherName
+        : 'Группа ${lesson.groupId}',
+    studentCount: 5,
     isStarted: false,
     presentCount: 0,
   );
 }
 
 class LessonData {
-  final int    id;
+  final int id;
   final String subject;
   final String type;
   final String time;
   final String place;
   final String group;
-  final int    studentCount;
-  bool         isStarted;
-  int          presentCount;
+  final int studentCount;
+  bool isStarted;
+  int presentCount;
 
   LessonData({
     required this.id,

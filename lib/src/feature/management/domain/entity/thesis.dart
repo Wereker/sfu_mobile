@@ -12,5 +12,8 @@ abstract class Thesis with _$Thesis {
     required bool isFree,
     String? takenBy,
     String? takenById,
+    @Default('') String description,
+    @Default(1) int maxStudents,
+    @Default([]) List<String> tags,
   }) = _Thesis;
 }

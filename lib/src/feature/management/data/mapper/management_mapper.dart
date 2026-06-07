@@ -1,9 +1,9 @@
+import 'package:sfu/src/feature/management/data/dto/discipline_dto.dart';
 import 'package:sfu/src/feature/management/data/dto/managed_student_dto.dart';
 import 'package:sfu/src/feature/management/data/dto/thesis_dto.dart';
-import 'package:sfu/src/feature/management/data/dto/discipline_dto.dart';
+import 'package:sfu/src/feature/management/domain/entity/discipline.dart';
 import 'package:sfu/src/feature/management/domain/entity/managed_student.dart';
 import 'package:sfu/src/feature/management/domain/entity/thesis.dart';
-import 'package:sfu/src/feature/management/domain/entity/discipline.dart';
 
 abstract class ManagementMapper {
   static ManagedStudent studentFromDTO(ManagedStudentDTO dto) => ManagedStudent(
@@ -27,6 +27,9 @@ abstract class ManagementMapper {
     isFree: dto.isFree,
     takenBy: dto.takenBy,
     takenById: dto.takenById,
+    description: '',
+    maxStudents: 1,
+    tags: const [],
   );
 
   static Discipline disciplineFromDTO(DisciplineDTO dto) => Discipline(

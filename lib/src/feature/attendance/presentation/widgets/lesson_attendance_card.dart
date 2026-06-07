@@ -13,25 +13,25 @@ class LessonAttendanceCard extends StatelessWidget {
   final VoidCallback onTap;
 
   Color _typeBg(AppColors ext) => switch (lesson.type) {
-    'лекция'      => ext.infoBg,
+    'лекция' => ext.infoBg,
     'пр. занятие' => ext.successBg,
     'лаб. работа' => ext.warningBg,
-    _             => ext.divider,
+    _ => ext.divider,
   };
 
   Color _typeFg(AppColors ext) => switch (lesson.type) {
-    'лекция'      => ext.infoFg,
+    'лекция' => ext.infoFg,
     'пр. занятие' => ext.successFg,
     'лаб. работа' => ext.warningFg,
-    _             => ext.textSecondary,
+    _ => ext.textSecondary,
   };
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
-    final rate    = lesson.attendanceRate;
+    final tt = Theme.of(context).textTheme;
+    final rate = lesson.attendanceRate;
     final started = lesson.isStarted;
 
     return GestureDetector(
@@ -63,16 +63,20 @@ class LessonAttendanceCard extends StatelessWidget {
                         child: Text(
                           lesson.type,
                           style: TextStyle(
-                            fontSize: 10, fontWeight: FontWeight.w600,
-                            color: _typeFg(ext), height: 1,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: _typeFg(ext),
+                            height: 1,
                           ),
                         ),
                       ),
                       const Spacer(),
-                      Text(lesson.time,
-                          style: tt.labelSmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: ext.textSecondary)),
+                      Text(
+                        lesson.time,
+                        style: tt.labelSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: ext.textSecondary),
+                      ),
                     ],
                   ),
 
@@ -81,22 +85,38 @@ class LessonAttendanceCard extends StatelessWidget {
                       style: tt.titleMedium?.copyWith(fontSize: 15)),
                   const SizedBox(height: 4),
 
-                  // Группа + место
+                  // Группа + место — место обрезается с ...
                   Row(
                     children: [
                       Icon(Icons.groups_outlined,
                           size: 13, color: ext.textTertiary),
                       const SizedBox(width: 4),
-                      Text(lesson.group,
+                      Flexible(
+                        flex: 2,
+                        child: Text(
+                          lesson.group,
                           style: tt.labelSmall
-                              ?.copyWith(color: ext.textSecondary)),
+                              ?.copyWith(color: ext.textSecondary),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
                       const SizedBox(width: 10),
                       Icon(Icons.location_on_outlined,
                           size: 13, color: ext.textTertiary),
                       const SizedBox(width: 4),
-                      Text(lesson.place,
+                      Flexible(
+                        flex: 3,
+                        child: Text(
+                          lesson.place.isNotEmpty
+                              ? lesson.place
+                              : '—',
                           style: tt.labelSmall
-                              ?.copyWith(color: ext.textSecondary)),
+                              ?.copyWith(color: ext.textSecondary),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
                     ],
                   ),
 
@@ -111,14 +131,18 @@ class LessonAttendanceCard extends StatelessWidget {
                           style: tt.labelSmall?.copyWith(
                             color: rate >= 0.75
                                 ? ext.successFg
-                                : rate >= 0.5 ? ext.warningFg : ext.errorFg,
+                                : rate >= 0.5
+                                ? ext.warningFg
+                                : ext.errorFg,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         const Spacer(),
-                        Text('${(rate * 100).round()}%',
-                            style: tt.labelSmall
-                                ?.copyWith(color: ext.textTertiary)),
+                        Text(
+                          '${(rate * 100).round()}%',
+                          style: tt.labelSmall
+                              ?.copyWith(color: ext.textTertiary),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 6),
@@ -131,7 +155,9 @@ class LessonAttendanceCard extends StatelessWidget {
                         valueColor: AlwaysStoppedAnimation(
                           rate >= 0.75
                               ? ext.successFg
-                              : rate >= 0.5 ? ext.warningFg : ext.errorFg,
+                              : rate >= 0.5
+                              ? ext.warningFg
+                              : ext.errorFg,
                         ),
                       ),
                     ),
@@ -141,13 +167,17 @@ class LessonAttendanceCard extends StatelessWidget {
                         Icon(Icons.people_outline,
                             size: 13, color: ext.textTertiary),
                         const SizedBox(width: 4),
-                        Text('${lesson.studentCount} студентов',
-                            style: tt.labelSmall
-                                ?.copyWith(color: ext.textSecondary)),
+                        Text(
+                          '${lesson.studentCount} студентов',
+                          style: tt.labelSmall
+                              ?.copyWith(color: ext.textSecondary),
+                        ),
                         const Spacer(),
-                        Text('Нажмите, чтобы начать',
-                            style: tt.labelSmall
-                                ?.copyWith(color: ext.textTertiary)),
+                        Text(
+                          'Нажмите, чтобы начать',
+                          style: tt.labelSmall
+                              ?.copyWith(color: ext.textTertiary),
+                        ),
                       ],
                     ),
                   ],
@@ -155,10 +185,11 @@ class LessonAttendanceCard extends StatelessWidget {
               ),
             ),
 
-            // Цветная полоска слева для активной пары
             if (started)
               Positioned(
-                left: 0, top: 0, bottom: 0,
+                left: 0,
+                top: 0,
+                bottom: 0,
                 child: Container(width: 3, color: cs.primary),
               ),
           ],

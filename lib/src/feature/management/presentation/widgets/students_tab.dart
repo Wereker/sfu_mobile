@@ -49,7 +49,7 @@ class _StudentsTabState extends State<StudentsTab> {
   @override
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return BlocBuilder<StudentsBloc, StudentsState>(
       builder: (context, state) {
@@ -63,7 +63,6 @@ class _StudentsTabState extends State<StudentsTab> {
                   children: [
                     Row(
                       children: [
-                        // Поток
                         Expanded(
                           child: _DropdownFilter<String>(
                             hint: 'Поток',
@@ -81,7 +80,6 @@ class _StudentsTabState extends State<StudentsTab> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        // Группа
                         Expanded(
                           child: _DropdownFilter<String>(
                             hint: 'Группа',
@@ -97,10 +95,7 @@ class _StudentsTabState extends State<StudentsTab> {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 12),
-
-                    // ── Поиск ──
                     TextField(
                       onChanged: (v) {
                         setState(() => _query = v);
@@ -110,18 +105,16 @@ class _StudentsTabState extends State<StudentsTab> {
                         prefixIcon: Icon(Icons.search,
                             color: ext.textTertiary, size: 20),
                         hintText: 'Поиск по имени',
-                        hintStyle: tt.bodyMedium
-                            ?.copyWith(color: ext.textTertiary),
+                        hintStyle:
+                        tt.bodyMedium?.copyWith(color: ext.textTertiary),
                       ),
                     ),
-
                     const SizedBox(height: 10),
-
                     state.maybeWhen(
                       success: (students) => Text(
                         '${students.length} студентов',
-                        style: tt.labelSmall
-                            ?.copyWith(color: ext.textSecondary),
+                        style:
+                        tt.labelSmall?.copyWith(color: ext.textSecondary),
                       ),
                       orElse: () => const SizedBox.shrink(),
                     ),
@@ -130,7 +123,6 @@ class _StudentsTabState extends State<StudentsTab> {
                 ),
               ),
             ),
-
             state.when(
               initial: () => const StudentsSkeleton(),
               loading: () => const StudentsSkeleton(),
@@ -164,7 +156,6 @@ class _StudentsTabState extends State<StudentsTab> {
                 ),
               ),
             ),
-
             const SliverPadding(padding: EdgeInsets.only(bottom: 32)),
           ],
         );
@@ -180,14 +171,15 @@ class _StudentRow extends StatelessWidget {
   String _short(String full) {
     final p = full.trim().split(' ');
     if (p.length == 1) return p[0];
-    return '${p[0]} ${p.length > 1 ? '${p[1][0]}.' : ''}'
-        '${p.length > 2 ? '${p[2][0]}.' : ''}';
+    final first = p.length > 1 ? '${p[1][0]}.' : '';
+    final middle = p.length > 2 ? '${p[2][0]}.' : '';
+    return '${p[0]} $first$middle';
   }
 
   @override
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return InkWell(
       onTap: () => showDetailSheet(
@@ -200,7 +192,6 @@ class _StudentRow extends StatelessWidget {
           children: [
             ManagementInitialsAvatar(name: student.name, size: 44),
             const SizedBox(width: 12),
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,16 +216,35 @@ class _StudentRow extends StatelessWidget {
                       ],
                     ],
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    student.groupName,
-                    style: tt.labelSmall
-                        ?.copyWith(color: ext.textSecondary),
+                  const SizedBox(height: 3),
+                  Row(
+                    children: [
+                      Text(
+                        student.groupName,
+                        style: tt.labelSmall
+                            ?.copyWith(color: ext.textSecondary),
+                      ),
+                      // Иконки контактов рядом с группой
+                      if (student.phone != null) ...[
+                        const SizedBox(width: 8),
+                        Icon(Icons.phone_outlined,
+                            size: 13, color: ext.textTertiary),
+                      ],
+                      if (student.telegram != null) ...[
+                        const SizedBox(width: 4),
+                        Icon(Icons.telegram,
+                            size: 13, color: ext.textTertiary),
+                      ],
+                      if (student.email != null) ...[
+                        const SizedBox(width: 4),
+                        Icon(Icons.mail_outline,
+                            size: 13, color: ext.textTertiary),
+                      ],
+                    ],
                   ),
                 ],
               ),
             ),
-
             Icon(Icons.chevron_right, size: 18, color: ext.textTertiary),
           ],
         ),
@@ -256,7 +266,7 @@ class _StudentDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     final contacts = <_ContactItem>[
       if (student.phone != null)
@@ -270,7 +280,6 @@ class _StudentDetail extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Шапка
         Row(
           children: [
             ManagementInitialsAvatar(name: student.name, size: 56),
@@ -302,10 +311,7 @@ class _StudentDetail extends StatelessWidget {
             ),
           ],
         ),
-
         Divider(color: ext.divider, height: 24),
-
-        // Контакты — с копированием
         if (contacts.isEmpty)
           Text('Контакты не указаны',
               style: tt.bodyMedium?.copyWith(color: ext.textSecondary))
@@ -321,7 +327,6 @@ class _StudentDetail extends StatelessWidget {
                 final i = entry.key;
                 final item = entry.value;
                 final isLast = i == contacts.length - 1;
-
                 return Column(
                   children: [
                     InkWell(
@@ -339,7 +344,8 @@ class _StudentDetail extends StatelessWidget {
                             horizontal: 14, vertical: 11),
                         child: Row(
                           children: [
-                            Icon(item.icon, size: 17, color: ext.textTertiary),
+                            Icon(item.icon,
+                                size: 17, color: ext.textTertiary),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
@@ -368,9 +374,7 @@ class _StudentDetail extends StatelessWidget {
               }).toList(),
             ),
           ),
-
         const SizedBox(height: 24),
-
         SizedBox(
           width: double.infinity,
           height: 52,
@@ -411,9 +415,9 @@ class _DropdownFilter<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return Container(
       decoration: BoxDecoration(
@@ -434,13 +438,15 @@ class _DropdownFilter<T> extends StatelessWidget {
           icon: value != null && clearable
               ? GestureDetector(
             onTap: () => onChanged(null),
-            child: Icon(Icons.close, size: 16, color: ext.textTertiary),
+            child:
+            Icon(Icons.close, size: 16, color: ext.textTertiary),
           )
               : Icon(Icons.keyboard_arrow_down,
               size: 20, color: ext.textSecondary),
           style: tt.labelLarge?.copyWith(
             color: value != null ? cs.primary : ext.textPrimary,
-            fontWeight: value != null ? FontWeight.w600 : FontWeight.w400,
+            fontWeight:
+            value != null ? FontWeight.w600 : FontWeight.w400,
           ),
           items: items
               .map((item) => DropdownMenuItem<T>(

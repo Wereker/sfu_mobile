@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Thesis {
 
- String get id; String get title; String get teacherId; String get teacherName; bool get isFree; String? get takenBy; String? get takenById;
+ String get id; String get title; String get teacherId; String get teacherName; bool get isFree; String? get takenBy; String? get takenById; String get description; int get maxStudents; List<String> get tags;
 /// Create a copy of Thesis
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ThesisCopyWith<Thesis> get copyWith => _$ThesisCopyWithImpl<Thesis>(this as The
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Thesis&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.teacherId, teacherId) || other.teacherId == teacherId)&&(identical(other.teacherName, teacherName) || other.teacherName == teacherName)&&(identical(other.isFree, isFree) || other.isFree == isFree)&&(identical(other.takenBy, takenBy) || other.takenBy == takenBy)&&(identical(other.takenById, takenById) || other.takenById == takenById));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Thesis&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.teacherId, teacherId) || other.teacherId == teacherId)&&(identical(other.teacherName, teacherName) || other.teacherName == teacherName)&&(identical(other.isFree, isFree) || other.isFree == isFree)&&(identical(other.takenBy, takenBy) || other.takenBy == takenBy)&&(identical(other.takenById, takenById) || other.takenById == takenById)&&(identical(other.description, description) || other.description == description)&&(identical(other.maxStudents, maxStudents) || other.maxStudents == maxStudents)&&const DeepCollectionEquality().equals(other.tags, tags));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,teacherId,teacherName,isFree,takenBy,takenById);
+int get hashCode => Object.hash(runtimeType,id,title,teacherId,teacherName,isFree,takenBy,takenById,description,maxStudents,const DeepCollectionEquality().hash(tags));
 
 @override
 String toString() {
-  return 'Thesis(id: $id, title: $title, teacherId: $teacherId, teacherName: $teacherName, isFree: $isFree, takenBy: $takenBy, takenById: $takenById)';
+  return 'Thesis(id: $id, title: $title, teacherId: $teacherId, teacherName: $teacherName, isFree: $isFree, takenBy: $takenBy, takenById: $takenById, description: $description, maxStudents: $maxStudents, tags: $tags)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ThesisCopyWith<$Res>  {
   factory $ThesisCopyWith(Thesis value, $Res Function(Thesis) _then) = _$ThesisCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String teacherId, String teacherName, bool isFree, String? takenBy, String? takenById
+ String id, String title, String teacherId, String teacherName, bool isFree, String? takenBy, String? takenById, String description, int maxStudents, List<String> tags
 });
 
 
@@ -62,7 +62,7 @@ class _$ThesisCopyWithImpl<$Res>
 
 /// Create a copy of Thesis
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? teacherId = null,Object? teacherName = null,Object? isFree = null,Object? takenBy = freezed,Object? takenById = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? teacherId = null,Object? teacherName = null,Object? isFree = null,Object? takenBy = freezed,Object? takenById = freezed,Object? description = null,Object? maxStudents = null,Object? tags = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -71,7 +71,10 @@ as String,teacherName: null == teacherName ? _self.teacherName : teacherName // 
 as String,isFree: null == isFree ? _self.isFree : isFree // ignore: cast_nullable_to_non_nullable
 as bool,takenBy: freezed == takenBy ? _self.takenBy : takenBy // ignore: cast_nullable_to_non_nullable
 as String?,takenById: freezed == takenById ? _self.takenById : takenById // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,maxStudents: null == maxStudents ? _self.maxStudents : maxStudents // ignore: cast_nullable_to_non_nullable
+as int,tags: null == tags ? _self.tags : tags // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -156,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String teacherId,  String teacherName,  bool isFree,  String? takenBy,  String? takenById)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String teacherId,  String teacherName,  bool isFree,  String? takenBy,  String? takenById,  String description,  int maxStudents,  List<String> tags)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Thesis() when $default != null:
-return $default(_that.id,_that.title,_that.teacherId,_that.teacherName,_that.isFree,_that.takenBy,_that.takenById);case _:
+return $default(_that.id,_that.title,_that.teacherId,_that.teacherName,_that.isFree,_that.takenBy,_that.takenById,_that.description,_that.maxStudents,_that.tags);case _:
   return orElse();
 
 }
@@ -177,10 +180,10 @@ return $default(_that.id,_that.title,_that.teacherId,_that.teacherName,_that.isF
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String teacherId,  String teacherName,  bool isFree,  String? takenBy,  String? takenById)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String teacherId,  String teacherName,  bool isFree,  String? takenBy,  String? takenById,  String description,  int maxStudents,  List<String> tags)  $default,) {final _that = this;
 switch (_that) {
 case _Thesis():
-return $default(_that.id,_that.title,_that.teacherId,_that.teacherName,_that.isFree,_that.takenBy,_that.takenById);case _:
+return $default(_that.id,_that.title,_that.teacherId,_that.teacherName,_that.isFree,_that.takenBy,_that.takenById,_that.description,_that.maxStudents,_that.tags);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +200,10 @@ return $default(_that.id,_that.title,_that.teacherId,_that.teacherName,_that.isF
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String teacherId,  String teacherName,  bool isFree,  String? takenBy,  String? takenById)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String teacherId,  String teacherName,  bool isFree,  String? takenBy,  String? takenById,  String description,  int maxStudents,  List<String> tags)?  $default,) {final _that = this;
 switch (_that) {
 case _Thesis() when $default != null:
-return $default(_that.id,_that.title,_that.teacherId,_that.teacherName,_that.isFree,_that.takenBy,_that.takenById);case _:
+return $default(_that.id,_that.title,_that.teacherId,_that.teacherName,_that.isFree,_that.takenBy,_that.takenById,_that.description,_that.maxStudents,_that.tags);case _:
   return null;
 
 }
@@ -212,7 +215,7 @@ return $default(_that.id,_that.title,_that.teacherId,_that.teacherName,_that.isF
 
 
 class _Thesis implements Thesis {
-  const _Thesis({required this.id, required this.title, required this.teacherId, required this.teacherName, required this.isFree, this.takenBy, this.takenById});
+  const _Thesis({required this.id, required this.title, required this.teacherId, required this.teacherName, required this.isFree, this.takenBy, this.takenById, this.description = '', this.maxStudents = 1, final  List<String> tags = const []}): _tags = tags;
   
 
 @override final  String id;
@@ -222,6 +225,15 @@ class _Thesis implements Thesis {
 @override final  bool isFree;
 @override final  String? takenBy;
 @override final  String? takenById;
+@override@JsonKey() final  String description;
+@override@JsonKey() final  int maxStudents;
+ final  List<String> _tags;
+@override@JsonKey() List<String> get tags {
+  if (_tags is EqualUnmodifiableListView) return _tags;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_tags);
+}
+
 
 /// Create a copy of Thesis
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +245,16 @@ _$ThesisCopyWith<_Thesis> get copyWith => __$ThesisCopyWithImpl<_Thesis>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Thesis&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.teacherId, teacherId) || other.teacherId == teacherId)&&(identical(other.teacherName, teacherName) || other.teacherName == teacherName)&&(identical(other.isFree, isFree) || other.isFree == isFree)&&(identical(other.takenBy, takenBy) || other.takenBy == takenBy)&&(identical(other.takenById, takenById) || other.takenById == takenById));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Thesis&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.teacherId, teacherId) || other.teacherId == teacherId)&&(identical(other.teacherName, teacherName) || other.teacherName == teacherName)&&(identical(other.isFree, isFree) || other.isFree == isFree)&&(identical(other.takenBy, takenBy) || other.takenBy == takenBy)&&(identical(other.takenById, takenById) || other.takenById == takenById)&&(identical(other.description, description) || other.description == description)&&(identical(other.maxStudents, maxStudents) || other.maxStudents == maxStudents)&&const DeepCollectionEquality().equals(other._tags, _tags));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,teacherId,teacherName,isFree,takenBy,takenById);
+int get hashCode => Object.hash(runtimeType,id,title,teacherId,teacherName,isFree,takenBy,takenById,description,maxStudents,const DeepCollectionEquality().hash(_tags));
 
 @override
 String toString() {
-  return 'Thesis(id: $id, title: $title, teacherId: $teacherId, teacherName: $teacherName, isFree: $isFree, takenBy: $takenBy, takenById: $takenById)';
+  return 'Thesis(id: $id, title: $title, teacherId: $teacherId, teacherName: $teacherName, isFree: $isFree, takenBy: $takenBy, takenById: $takenById, description: $description, maxStudents: $maxStudents, tags: $tags)';
 }
 
 
@@ -253,7 +265,7 @@ abstract mixin class _$ThesisCopyWith<$Res> implements $ThesisCopyWith<$Res> {
   factory _$ThesisCopyWith(_Thesis value, $Res Function(_Thesis) _then) = __$ThesisCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String teacherId, String teacherName, bool isFree, String? takenBy, String? takenById
+ String id, String title, String teacherId, String teacherName, bool isFree, String? takenBy, String? takenById, String description, int maxStudents, List<String> tags
 });
 
 
@@ -270,7 +282,7 @@ class __$ThesisCopyWithImpl<$Res>
 
 /// Create a copy of Thesis
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? teacherId = null,Object? teacherName = null,Object? isFree = null,Object? takenBy = freezed,Object? takenById = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? teacherId = null,Object? teacherName = null,Object? isFree = null,Object? takenBy = freezed,Object? takenById = freezed,Object? description = null,Object? maxStudents = null,Object? tags = null,}) {
   return _then(_Thesis(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -279,7 +291,10 @@ as String,teacherName: null == teacherName ? _self.teacherName : teacherName // 
 as String,isFree: null == isFree ? _self.isFree : isFree // ignore: cast_nullable_to_non_nullable
 as bool,takenBy: freezed == takenBy ? _self.takenBy : takenBy // ignore: cast_nullable_to_non_nullable
 as String?,takenById: freezed == takenById ? _self.takenById : takenById // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,maxStudents: null == maxStudents ? _self.maxStudents : maxStudents // ignore: cast_nullable_to_non_nullable
+as int,tags: null == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 

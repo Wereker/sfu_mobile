@@ -56,7 +56,7 @@ class JournalStudentRow extends StatelessWidget {
           borderRadius: BorderRadius.vertical(
               top: Radius.circular(AppTheme.radiusLg))),
       builder: (_) => Padding(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.of(context).padding.bottom + 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,29 +72,6 @@ class JournalStudentRow extends StatelessWidget {
             ),
             Text(student.name.split(' ').first, style: tt.titleMedium),
             const SizedBox(height: 12),
-
-            // Ручная отметка через API
-            if (student.status == AttendanceStatus.absent)
-              ListTile(
-                dense: true,
-                leading: Container(
-                  width: 32, height: 32,
-                  decoration: BoxDecoration(
-                      color: const Color(0x1A10B981), shape: BoxShape.circle),
-                  child: const Icon(Icons.edit_outlined,
-                      size: 16, color: Color(0xFF047857)),
-                ),
-                title: Text('Отметить вручную',
-                    style: tt.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w600)),
-                subtitle: Text('POST /attendance/manual',
-                    style: tt.labelSmall
-                        ?.copyWith(color: ext.textTertiary)),
-                onTap: () {
-                  onMarkManual();
-                  Navigator.pop(context);
-                },
-              ),
 
             // Остальные статусы (локально, без API пока)
             ...AttendanceStatus.values
