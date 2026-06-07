@@ -1,56 +1,62 @@
-{
-  "data": [
-    {
-      "id": "teacher_1",
-      "name": "Соколова Елена Викторовна",
-      "position": "Доцент, зам. зав. кафедрой",
-      "degree": "к.т.н.",
-      "email": "sokolova@sfu-kras.ru",
-      "phone": "+7 (391) 206-22-11",
-      "telegram": "@sokolova_sai",
-      "office": "Л4-309",
-      "bio": "Кандидат технических наук, доцент кафедры систем искусственного интеллекта. Читает курсы «Машинное обучение» и «NLP». Участник международных конференций AAAI, ACL.",
-      "tags": ["Машинное обучение", "NLP", "RAG"],
-      "avatar_url": null
-    },
-    {
-      "id": "teacher_2",
-      "name": "Петров Сергей Игоревич",
-      "position": "Доцент",
-      "degree": "к.ф.-м.н.",
-      "email": "petrov@sfu-kras.ru",
-      "phone": "+7 (391) 206-22-34",
-      "telegram": "@petrov_db",
-      "office": "Л4-314",
-      "bio": "Кандидат физико-математических наук. Специализируется в области теории алгоритмов и баз данных. Автор 23 научных статей.",
-      "tags": ["Базы данных", "Алгоритмы", "NoSQL"],
-      "avatar_url": null
-    },
-    {
-      "id": "teacher_3",
-      "name": "Иванов Александр Михайлович",
-      "position": "Профессор, зав. кафедрой",
-      "degree": "д.т.н.",
-      "email": "ivanov@sfu-kras.ru",
-      "phone": "+7 (391) 206-22-00",
-      "telegram": null,
-      "office": "Л4-301",
-      "bio": "Доктор технических наук, профессор. Заведующий кафедрой САИ с 2018 года. Руководитель трёх грантов РНФ.",
-      "tags": ["Линейная алгебра", "Оптимизация", "Управление"],
-      "avatar_url": null
-    },
-    {
-      "id": "teacher_4",
-      "name": "Кузнецова Анна Павловна",
-      "position": "Старший преподаватель",
-      "degree": "",
-      "email": "kuznetsova@sfu-kras.ru",
-      "phone": null,
-      "telegram": "@kuznetsova_cv",
-      "office": "Л4-312",
-      "bio": "Специалист в области компьютерного зрения. Ведёт практические занятия по Python, OpenCV и PyTorch.",
-      "tags": ["Python", "CV", "PyTorch"],
-      "avatar_url": null
-    }
-  ]
-}
+[
+  {
+    "id": "100",
+    "name": "Масич Игорь Степанович",
+    "position": "Доцент",
+    "degree": "к.т.н.",
+    "email": "masich@sfu-kras.ru",
+    "phone": "+7 391 206-21-07",
+    "telegram": "@masich_sfu",
+    "bio": "Занимается исследованиями в области машинного обучения и анализа данных. Преподаёт курсы по ML и компьютерному зрению.",
+    "tags": ["Machine Learning", "CV", "Python"],
+    "avatar_url": null
+  },
+  {
+    "id": "101",
+    "name": "Маглинец Юрий Анатольевич",
+    "position": "Профессор",
+    "degree": "д.т.н.",
+    "email": "magl@sfu-kras.ru",
+    "phone": "+7 391 206-21-08",
+    "telegram": null,
+    "bio": "Специализируется на методах и средствах проектирования информационных систем.",
+    "tags": ["IS Design", "Architecture"],
+    "avatar_url": null
+  },
+  {
+    "id": "102",
+    "name": "Сопов Евгений Александрович",
+    "position": "Старший преподаватель",
+    "degree": "",
+    "email": "sopov@sfu-kras.ru",
+    "phone": null,
+    "telegram": "@sopov_ea",
+    "bio": "Преподаёт алгоритмическое обеспечение систем поддержки принятия решений.",
+    "tags": ["DSS", "Algorithms"],
+    "avatar_url": null
+  },
+  {
+    "id": "103",
+    "name": "Федорова Анна Владимировна",
+    "position": "Доцент",
+    "degree": "к.э.н.",
+    "email": "fedorova@sfu-kras.ru",
+    "phone": "+7 391 206-21-10",
+    "telegram": null,
+    "bio": "Преподаёт инструменты бизнес-аналитики и методы анализа данных в экономике.",
+    "tags": ["BI", "Analytics", "Excel"],
+    "avatar_url": null
+  },
+  {
+    "id": "104",
+    "name": "Кузнецов Максим Олегович",
+    "position": "Ассистент",
+    "degree": "",
+    "email": "kuznetsov@sfu-kras.ru",
+    "phone": null,
+    "telegram": "@kuznetsov_mo",
+    "bio": "Ведёт практические занятия по методам проектирования ИС.",
+    "tags": ["IS Design", "UML"],
+    "avatar_url": null
+  }
+]

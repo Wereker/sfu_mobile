@@ -9,7 +9,7 @@ abstract class LessonDTO with _$LessonDTO {
   const factory LessonDTO({
     @JsonKey(fromJson: _intToString) required String id,
     @JsonKey(name: 'group_id', fromJson: _intToString) required String groupId,
-    @JsonKey(name: 'teacher_id') String? teacherId,
+    @JsonKey(name: 'teacher_id', fromJson: _intToStringNullable) String? teacherId,
     @JsonKey(name: 'teacher_name') String? teacherName,
     @JsonKey(fromJson: _intToString) required String day,
     @JsonKey(fromJson: _intToString) required String week,
@@ -26,3 +26,6 @@ abstract class LessonDTO with _$LessonDTO {
 }
 
 String _intToString(dynamic v) => v.toString();
+
+String? _intToStringNullable(dynamic v) =>
+    v?.toString();

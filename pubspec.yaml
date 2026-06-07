@@ -57,5 +57,13 @@ flutter:
     - assets/images/event-schedule.svg
     - assets/images/list.svg
     - assets/images/recordBook.svg
+    - lib/src/core/mock/announcements.json
+    - lib/src/core/mock/events.json
+    - lib/src/core/mock/staff.json
+    - lib/src/core/mock/students.json
+    - lib/src/core/mock/theses.json
+    - lib/src/core/mock/timetable.json
+    - lib/src/core/mock/chats.json
+    - lib/src/core/mock/messages.json
+    - lib/src/core/mock/attendance_records.json
     - .env
-    - lib/src/core/mock/

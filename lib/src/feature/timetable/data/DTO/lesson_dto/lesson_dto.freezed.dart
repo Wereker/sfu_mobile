@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LessonDTO {
 
-@JsonKey(fromJson: _intToString) String get id;@JsonKey(name: 'group_id', fromJson: _intToString) String get groupId;@JsonKey(name: 'teacher_id') String? get teacherId;@JsonKey(name: 'teacher_name') String? get teacherName;@JsonKey(fromJson: _intToString) String get day;@JsonKey(fromJson: _intToString) String get week;@JsonKey(name: 'time_start') String get timeStart;@JsonKey(name: 'time_end') String get timeEnd; String get subject;@JsonKey(name: 'lesson_type') String get lessonType; String get room; String get building;
+@JsonKey(fromJson: _intToString) String get id;@JsonKey(name: 'group_id', fromJson: _intToString) String get groupId;@JsonKey(name: 'teacher_id', fromJson: _intToStringNullable) String? get teacherId;@JsonKey(name: 'teacher_name') String? get teacherName;@JsonKey(fromJson: _intToString) String get day;@JsonKey(fromJson: _intToString) String get week;@JsonKey(name: 'time_start') String get timeStart;@JsonKey(name: 'time_end') String get timeEnd; String get subject;@JsonKey(name: 'lesson_type') String get lessonType; String get room; String get building;
 /// Create a copy of LessonDTO
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $LessonDTOCopyWith<$Res>  {
   factory $LessonDTOCopyWith(LessonDTO value, $Res Function(LessonDTO) _then) = _$LessonDTOCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(fromJson: _intToString) String id,@JsonKey(name: 'group_id', fromJson: _intToString) String groupId,@JsonKey(name: 'teacher_id') String? teacherId,@JsonKey(name: 'teacher_name') String? teacherName,@JsonKey(fromJson: _intToString) String day,@JsonKey(fromJson: _intToString) String week,@JsonKey(name: 'time_start') String timeStart,@JsonKey(name: 'time_end') String timeEnd, String subject,@JsonKey(name: 'lesson_type') String lessonType, String room, String building
+@JsonKey(fromJson: _intToString) String id,@JsonKey(name: 'group_id', fromJson: _intToString) String groupId,@JsonKey(name: 'teacher_id', fromJson: _intToStringNullable) String? teacherId,@JsonKey(name: 'teacher_name') String? teacherName,@JsonKey(fromJson: _intToString) String day,@JsonKey(fromJson: _intToString) String week,@JsonKey(name: 'time_start') String timeStart,@JsonKey(name: 'time_end') String timeEnd, String subject,@JsonKey(name: 'lesson_type') String lessonType, String room, String building
 });
 
 
@@ -164,7 +164,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _intToString)  String id, @JsonKey(name: 'group_id', fromJson: _intToString)  String groupId, @JsonKey(name: 'teacher_id')  String? teacherId, @JsonKey(name: 'teacher_name')  String? teacherName, @JsonKey(fromJson: _intToString)  String day, @JsonKey(fromJson: _intToString)  String week, @JsonKey(name: 'time_start')  String timeStart, @JsonKey(name: 'time_end')  String timeEnd,  String subject, @JsonKey(name: 'lesson_type')  String lessonType,  String room,  String building)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _intToString)  String id, @JsonKey(name: 'group_id', fromJson: _intToString)  String groupId, @JsonKey(name: 'teacher_id', fromJson: _intToStringNullable)  String? teacherId, @JsonKey(name: 'teacher_name')  String? teacherName, @JsonKey(fromJson: _intToString)  String day, @JsonKey(fromJson: _intToString)  String week, @JsonKey(name: 'time_start')  String timeStart, @JsonKey(name: 'time_end')  String timeEnd,  String subject, @JsonKey(name: 'lesson_type')  String lessonType,  String room,  String building)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LessonDTO() when $default != null:
 return $default(_that.id,_that.groupId,_that.teacherId,_that.teacherName,_that.day,_that.week,_that.timeStart,_that.timeEnd,_that.subject,_that.lessonType,_that.room,_that.building);case _:
@@ -185,7 +185,7 @@ return $default(_that.id,_that.groupId,_that.teacherId,_that.teacherName,_that.d
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _intToString)  String id, @JsonKey(name: 'group_id', fromJson: _intToString)  String groupId, @JsonKey(name: 'teacher_id')  String? teacherId, @JsonKey(name: 'teacher_name')  String? teacherName, @JsonKey(fromJson: _intToString)  String day, @JsonKey(fromJson: _intToString)  String week, @JsonKey(name: 'time_start')  String timeStart, @JsonKey(name: 'time_end')  String timeEnd,  String subject, @JsonKey(name: 'lesson_type')  String lessonType,  String room,  String building)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _intToString)  String id, @JsonKey(name: 'group_id', fromJson: _intToString)  String groupId, @JsonKey(name: 'teacher_id', fromJson: _intToStringNullable)  String? teacherId, @JsonKey(name: 'teacher_name')  String? teacherName, @JsonKey(fromJson: _intToString)  String day, @JsonKey(fromJson: _intToString)  String week, @JsonKey(name: 'time_start')  String timeStart, @JsonKey(name: 'time_end')  String timeEnd,  String subject, @JsonKey(name: 'lesson_type')  String lessonType,  String room,  String building)  $default,) {final _that = this;
 switch (_that) {
 case _LessonDTO():
 return $default(_that.id,_that.groupId,_that.teacherId,_that.teacherName,_that.day,_that.week,_that.timeStart,_that.timeEnd,_that.subject,_that.lessonType,_that.room,_that.building);case _:
@@ -205,7 +205,7 @@ return $default(_that.id,_that.groupId,_that.teacherId,_that.teacherName,_that.d
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _intToString)  String id, @JsonKey(name: 'group_id', fromJson: _intToString)  String groupId, @JsonKey(name: 'teacher_id')  String? teacherId, @JsonKey(name: 'teacher_name')  String? teacherName, @JsonKey(fromJson: _intToString)  String day, @JsonKey(fromJson: _intToString)  String week, @JsonKey(name: 'time_start')  String timeStart, @JsonKey(name: 'time_end')  String timeEnd,  String subject, @JsonKey(name: 'lesson_type')  String lessonType,  String room,  String building)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _intToString)  String id, @JsonKey(name: 'group_id', fromJson: _intToString)  String groupId, @JsonKey(name: 'teacher_id', fromJson: _intToStringNullable)  String? teacherId, @JsonKey(name: 'teacher_name')  String? teacherName, @JsonKey(fromJson: _intToString)  String day, @JsonKey(fromJson: _intToString)  String week, @JsonKey(name: 'time_start')  String timeStart, @JsonKey(name: 'time_end')  String timeEnd,  String subject, @JsonKey(name: 'lesson_type')  String lessonType,  String room,  String building)?  $default,) {final _that = this;
 switch (_that) {
 case _LessonDTO() when $default != null:
 return $default(_that.id,_that.groupId,_that.teacherId,_that.teacherName,_that.day,_that.week,_that.timeStart,_that.timeEnd,_that.subject,_that.lessonType,_that.room,_that.building);case _:
@@ -220,12 +220,12 @@ return $default(_that.id,_that.groupId,_that.teacherId,_that.teacherName,_that.d
 @JsonSerializable()
 
 class _LessonDTO implements LessonDTO {
-  const _LessonDTO({@JsonKey(fromJson: _intToString) required this.id, @JsonKey(name: 'group_id', fromJson: _intToString) required this.groupId, @JsonKey(name: 'teacher_id') this.teacherId, @JsonKey(name: 'teacher_name') this.teacherName, @JsonKey(fromJson: _intToString) required this.day, @JsonKey(fromJson: _intToString) required this.week, @JsonKey(name: 'time_start') required this.timeStart, @JsonKey(name: 'time_end') required this.timeEnd, required this.subject, @JsonKey(name: 'lesson_type') this.lessonType = '', this.room = '', this.building = ''});
+  const _LessonDTO({@JsonKey(fromJson: _intToString) required this.id, @JsonKey(name: 'group_id', fromJson: _intToString) required this.groupId, @JsonKey(name: 'teacher_id', fromJson: _intToStringNullable) this.teacherId, @JsonKey(name: 'teacher_name') this.teacherName, @JsonKey(fromJson: _intToString) required this.day, @JsonKey(fromJson: _intToString) required this.week, @JsonKey(name: 'time_start') required this.timeStart, @JsonKey(name: 'time_end') required this.timeEnd, required this.subject, @JsonKey(name: 'lesson_type') this.lessonType = '', this.room = '', this.building = ''});
   factory _LessonDTO.fromJson(Map<String, dynamic> json) => _$LessonDTOFromJson(json);
 
 @override@JsonKey(fromJson: _intToString) final  String id;
 @override@JsonKey(name: 'group_id', fromJson: _intToString) final  String groupId;
-@override@JsonKey(name: 'teacher_id') final  String? teacherId;
+@override@JsonKey(name: 'teacher_id', fromJson: _intToStringNullable) final  String? teacherId;
 @override@JsonKey(name: 'teacher_name') final  String? teacherName;
 @override@JsonKey(fromJson: _intToString) final  String day;
 @override@JsonKey(fromJson: _intToString) final  String week;
@@ -269,7 +269,7 @@ abstract mixin class _$LessonDTOCopyWith<$Res> implements $LessonDTOCopyWith<$Re
   factory _$LessonDTOCopyWith(_LessonDTO value, $Res Function(_LessonDTO) _then) = __$LessonDTOCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(fromJson: _intToString) String id,@JsonKey(name: 'group_id', fromJson: _intToString) String groupId,@JsonKey(name: 'teacher_id') String? teacherId,@JsonKey(name: 'teacher_name') String? teacherName,@JsonKey(fromJson: _intToString) String day,@JsonKey(fromJson: _intToString) String week,@JsonKey(name: 'time_start') String timeStart,@JsonKey(name: 'time_end') String timeEnd, String subject,@JsonKey(name: 'lesson_type') String lessonType, String room, String building
+@JsonKey(fromJson: _intToString) String id,@JsonKey(name: 'group_id', fromJson: _intToString) String groupId,@JsonKey(name: 'teacher_id', fromJson: _intToStringNullable) String? teacherId,@JsonKey(name: 'teacher_name') String? teacherName,@JsonKey(fromJson: _intToString) String day,@JsonKey(fromJson: _intToString) String week,@JsonKey(name: 'time_start') String timeStart,@JsonKey(name: 'time_end') String timeEnd, String subject,@JsonKey(name: 'lesson_type') String lessonType, String room, String building
 });
 
 

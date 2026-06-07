@@ -4,27 +4,30 @@ import 'package:get_it/get_it.dart';
 import 'package:sfu/src/core/auth/data/data_sources/remote/auth_remote_data_source_impl.dart';
 import 'package:sfu/src/core/auth/data/repository/auth_repository_impl.dart';
 import 'package:sfu/src/core/request/http_client.dart';
-import 'package:sfu/src/feature/announcements/data/data_source/remote/announcements_remote_data_source_impl.dart';
-import 'package:sfu/src/feature/announcements/data/repository/announcements_repository_impl.dart';
+import 'package:sfu/src/feature/announcements/data/data_source/remote/announcements_remote_data_source_mock.dart';
+import 'package:sfu/src/feature/announcements/data/repository/announcements_repository_mock.dart';
 import 'package:sfu/src/feature/announcements/presentation/bloc/announcements_bloc.dart';
-import 'package:sfu/src/feature/attendance/data/data_source/remote/attendance_remote_data_source_impl.dart';
-import 'package:sfu/src/feature/attendance/data/repository/attendance_repository_impl.dart';
+import 'package:sfu/src/feature/attendance/data/data_source/remote/attendance_remote_data_source_mock.dart';
+import 'package:sfu/src/feature/attendance/data/repository/attendance_repository_mock.dart';
 import 'package:sfu/src/feature/attendance/presentation/bloc/mark/attendance_mark_bloc.dart';
 import 'package:sfu/src/feature/attendance/presentation/bloc/session/attendance_session_bloc.dart';
+import 'package:sfu/src/feature/chat/data/data_source/remote/chat_remote_data_source_mock.dart';
 import 'package:sfu/src/feature/chat/data/data_source/ws/chat_ws_data_source.dart';
-import 'package:sfu/src/feature/chat/data/data_source/ws/chat_ws_data_source_impl.dart';
-import 'package:sfu/src/feature/chat/data/repository/chat_repository_impl.dart';
+import 'package:sfu/src/feature/chat/data/data_source/ws/chat_ws_data_source_mock.dart';
+import 'package:sfu/src/feature/chat/data/repository/chat_repository_mock.dart';
 import 'package:sfu/src/feature/chat/domain/use_case/open_direct_chat_use_case.dart';
 import 'package:sfu/src/feature/chat/domain/use_case/open_direct_chat_use_case_impl.dart';
 import 'package:sfu/src/feature/chat/message/domain/use_case/connect_to_chat_use_case.dart';
 import 'package:sfu/src/feature/chat/message/domain/use_case/connect_to_chat_use_case_impl.dart';
 import 'package:sfu/src/feature/chat/message/domain/use_case/send_message_use_case.dart';
 import 'package:sfu/src/feature/chat/message/domain/use_case/send_message_use_case_impl.dart';
+import 'package:sfu/src/feature/department/data/data_source/remote/department_remote_data_source_mock.dart';
 import 'package:sfu/src/feature/department/presentation/bloc/department_bloc.dart';
-import 'package:sfu/src/feature/events/data/data_source/remote/events_remote_data_source_impl.dart';
-import 'package:sfu/src/feature/events/data/repository/events_repository_impl.dart';
+import 'package:sfu/src/feature/events/data/data_source/remote/events_remote_data_source_mock.dart';
+import 'package:sfu/src/feature/events/data/repository/events_repository_mock.dart';
 import 'package:sfu/src/feature/events/presentation/bloc/events_bloc.dart';
-import 'package:sfu/src/feature/management/data/data_source/remote/management_remote_data_source_impl.dart';
+import 'package:sfu/src/feature/management/data/data_source/remote/management_remote_data_source_mock.dart';
+import 'package:sfu/src/feature/management/data/repository/management_repository_mock.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/publish/publish_bloc.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/students/students_bloc.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/theses/theses_bloc.dart';
@@ -32,7 +35,10 @@ import 'package:sfu/src/feature/profile/data/data_source/remote/profile_remote_d
 import 'package:sfu/src/feature/profile/data/repository/profile_repository_impl.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/upload_avatar_use_case.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/upload_avatar_use_case_impl.dart';
+import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_impl.dart';
+import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_mock.dart';
 import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_impl.dart';
+import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_mock.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/get_next_lesson_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/get_next_lesson_use_case_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,7 +82,6 @@ import 'package:sfu/src/feature/attendance/domain/use_case/update_student_status
 import 'package:sfu/src/feature/chat/data/data_source/local/chat_locale_data_source.dart';
 import 'package:sfu/src/feature/chat/data/data_source/local/chat_locale_data_source_mock.dart';
 import 'package:sfu/src/feature/chat/data/data_source/remote/chat_remote_data_source.dart';
-import 'package:sfu/src/feature/chat/data/data_source/remote/chat_remote_data_source_impl.dart';
 import 'package:sfu/src/feature/chat/domain/repository/chat_repository.dart';
 import 'package:sfu/src/feature/chat/domain/use_case/get_chats_use_case.dart';
 import 'package:sfu/src/feature/chat/domain/use_case/get_chats_use_case_impl.dart';
@@ -88,7 +93,6 @@ import 'package:sfu/src/feature/chat/message/domain/use_case/get_messages_use_ca
 import 'package:sfu/src/feature/chat/message/domain/use_case/get_messages_use_case_impl.dart';
 
 import 'package:sfu/src/feature/department/data/data_source/remote/department_remote_data_source.dart';
-import 'package:sfu/src/feature/department/data/data_source/remote/department_remote_data_source_impl.dart';
 import 'package:sfu/src/feature/department/data/repository/department_repository_mock.dart';
 import 'package:sfu/src/feature/department/domain/repository/department_repository.dart';
 import 'package:sfu/src/feature/department/domain/use_case/get_staff_member_use_case.dart';
@@ -106,7 +110,6 @@ import 'package:sfu/src/feature/events/domain/use_case/unenroll_event_use_case.d
 import 'package:sfu/src/feature/events/domain/use_case/unenroll_event_use_case_impl.dart';
 
 import 'package:sfu/src/feature/management/data/data_source/remote/management_remote_data_source.dart';
-import 'package:sfu/src/feature/management/data/repository/management_repository_impl.dart';
 import 'package:sfu/src/feature/management/domain/repository/management_repository.dart';
 import 'package:sfu/src/feature/management/domain/use_case/create_thesis_use_case.dart';
 import 'package:sfu/src/feature/management/domain/use_case/create_thesis_use_case_impl.dart';
@@ -140,7 +143,6 @@ import 'package:sfu/src/feature/settings/domain/use_case/update_app_theme_mode_u
 import 'package:sfu/src/feature/timetable/data/data_source/local/timetable_local_data_source.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/local/timetable_local_data_source_impl.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source.dart';
-import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_impl.dart';
 import 'package:sfu/src/feature/timetable/domain/repository/timetable_repository.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/get_timetable_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/get_timetable_use_case_impl.dart';
@@ -204,8 +206,8 @@ void _initDataSources() {
   );
 
   // Timetable
-  sl.registerSingleton<TimetableRemoteDataSource>(
-    TimetableRemoteDataSourceImpl(
+  sl.registerLazySingleton<TimetableRemoteDataSource>(
+    () => TimetableRemoteDataSourceImpl(
       authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
     ),
   );
@@ -218,19 +220,15 @@ void _initDataSources() {
 
   // Chat
   sl.registerLazySingleton<ChatRemoteDataSource>(
-        () => ChatRemoteDataSourceImpl(
-      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
-    ),
+    () => ChatRemoteDataSourceMock(),
   );
-  sl.registerSingleton<ChatWsDataSource>(
-    ChatWsDataSourceImpl(sl<AuthLocalDataSource>()),
-  );
+  sl.registerLazySingleton<ChatWsDataSource>(() => ChatWsDataSourceMock());
   sl.registerSingleton<ChatLocaleDataSource>(ChatLocaleDataSourceMock());
   sl.registerSingleton<MessageRemoteDataSource>(MessageRemoteDataSourceMock());
 
   // Profile
   sl.registerLazySingleton<ProfileRemoteDataSource>(
-        () => ProfileRemoteDataSourceImpl(
+    () => ProfileRemoteDataSourceImpl(
       authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
       localDataSource: sl<AuthLocalDataSource>(),
     ),
@@ -238,37 +236,27 @@ void _initDataSources() {
 
   // Announcements
   sl.registerLazySingleton<AnnouncementsRemoteDataSource>(
-    () => AnnouncementsRemoteDataSourceImpl(
-      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
-    ),
+    () => AnnouncementsRemoteDataSourceMock(),
   );
 
   // Events
   sl.registerLazySingleton<EventsRemoteDataSource>(
-    () => EventsRemoteDataSourceImpl(
-      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
-    ),
+    () => EventsRemoteDataSourceMock(),
   );
 
   // Attendance
   sl.registerLazySingleton<AttendanceRemoteDataSource>(
-        () => AttendanceRemoteDataSourceImpl(
-      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
-    ),
+    () => AttendanceRemoteDataSourceMock(),
   );
 
   // Department
-  sl.registerSingleton<DepartmentRemoteDataSource>(
-    DepartmentRemoteDataSourceImpl(
-      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
-    ),
+  sl.registerLazySingleton<DepartmentRemoteDataSource>(
+    () => DepartmentRemoteDataSourceMock(),
   );
 
   // Management
   sl.registerLazySingleton<ManagementRemoteDataSource>(
-        () => ManagementRemoteDataSourceImpl(
-      authorizedClient: sl<Dio>(instanceName: 'authorizedDio'),
-    ),
+    () => ManagementRemoteDataSourceMock(),
   );
 }
 
@@ -280,17 +268,16 @@ void _initRepositories() {
       remote: sl<AuthRemoteDataSource>(),
     ),
   );
-
-  sl.registerSingleton<ProfileRepository>(
-    ProfileRepositoryImpl(sl<ProfileRemoteDataSource>()),
+  sl.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(sl<ProfileRemoteDataSource>()),
   );
 
   sl.registerSingleton<SettingsRepository>(
     SettingsRepositoryImpl(sl<SettingsLocalDataSource>()),
   );
 
-  sl.registerSingleton<TimetableRepository>(
-    TimetableRepositoryImpl(
+  sl.registerLazySingleton<TimetableRepository>(
+    () => TimetableRepositoryImpl(
       remote: sl<TimetableRemoteDataSource>(),
       local: sl<TimetableLocalDataSource>(),
     ),
@@ -301,10 +288,9 @@ void _initRepositories() {
   );
 
   sl.registerLazySingleton<ChatRepository>(
-        () => ChatRepositoryImpl(
+    () => ChatRepositoryMock(
       remote: sl<ChatRemoteDataSource>(),
       ws: sl<ChatWsDataSource>(),
-      local: sl<AuthLocalDataSource>(),
     ),
   );
 
@@ -313,23 +299,23 @@ void _initRepositories() {
   );
 
   sl.registerLazySingleton<AnnouncementsRepository>(
-    () => AnnouncementsRepositoryImpl(sl<AnnouncementsRemoteDataSource>()),
+    () => AnnouncementsRepositoryMock(sl<AnnouncementsRemoteDataSource>()),
   );
 
   sl.registerLazySingleton<EventsRepository>(
-    () => EventsRepositoryImpl(sl<EventsRemoteDataSource>()),
+    () => EventsRepositoryMock(sl<EventsRemoteDataSource>()),
   );
 
-  sl.registerSingleton<DepartmentRepository>(
-    DepartmentRepositoryMock(sl<DepartmentRemoteDataSource>()),
+  sl.registerLazySingleton<DepartmentRepository>(
+    () => DepartmentRepositoryMock(sl<DepartmentRemoteDataSource>()),
   );
 
-  sl.registerSingleton<ManagementRepository>(
-    ManagementRepositoryImpl(sl<ManagementRemoteDataSource>()),
+  sl.registerLazySingleton<ManagementRepository>(
+    () => ManagementRepositoryMock(sl<ManagementRemoteDataSource>()),
   );
 
   sl.registerLazySingleton<AttendanceRepository>(
-        () => AttendanceRepositoryImpl(sl<AttendanceRemoteDataSource>()),
+    () => AttendanceRepositoryMock(sl<AttendanceRemoteDataSource>()),
   );
 }
 
@@ -357,7 +343,7 @@ void _initUseCases() {
     () => GetProfileUseCaseImpl(sl<ProfileRepository>()),
   );
   sl.registerFactory<UploadAvatarUseCase>(
-        () => UploadAvatarUseCaseImpl(sl<ProfileRepository>()),
+    () => UploadAvatarUseCaseImpl(sl<ProfileRepository>()),
   );
 
   // Settings
@@ -382,19 +368,19 @@ void _initUseCases() {
 
   // Chat
   sl.registerFactory<GetChatsUseCase>(
-        () => GetChatsUseCaseImpl(sl<ChatRepository>()),
+    () => GetChatsUseCaseImpl(sl<ChatRepository>()),
   );
   sl.registerFactory<OpenDirectChatUseCase>(
-        () => OpenDirectChatUseCaseImpl(sl<ChatRepository>()),
+    () => OpenDirectChatUseCaseImpl(sl<ChatRepository>()),
   );
   sl.registerFactory<GetMessagesUseCase>(
-        () => GetMessagesUseCaseImpl(sl<ChatRepository>()),
+    () => GetMessagesUseCaseImpl(sl<ChatRepository>()),
   );
   sl.registerFactory<ConnectToChatUseCase>(
-        () => ConnectToChatUseCaseImpl(sl<ChatRepository>()),
+    () => ConnectToChatUseCaseImpl(sl<ChatRepository>()),
   );
   sl.registerFactory<SendMessageUseCase>(
-        () => SendMessageUseCaseImpl(sl<ChatRepository>()),
+    () => SendMessageUseCaseImpl(sl<ChatRepository>()),
   );
 
   // Announcements
@@ -443,19 +429,19 @@ void _initUseCases() {
 
   // Attendance
   sl.registerFactory<CreateAttendanceSessionUseCase>(
-        () => CreateAttendanceSessionUseCaseImpl(sl<AttendanceRepository>()),
+    () => CreateAttendanceSessionUseCaseImpl(sl<AttendanceRepository>()),
   );
   sl.registerFactory<GetSessionStudentsUseCase>(
-        () => GetSessionStudentsUseCaseImpl(sl<AttendanceRepository>()),
+    () => GetSessionStudentsUseCaseImpl(sl<AttendanceRepository>()),
   );
   sl.registerFactory<UpdateStudentStatusUseCase>(
-        () => UpdateStudentStatusUseCaseImpl(sl<AttendanceRepository>()),
+    () => UpdateStudentStatusUseCaseImpl(sl<AttendanceRepository>()),
   );
   sl.registerFactory<MarkAttendanceUseCase>(
-        () => MarkAttendanceUseCaseImpl(sl<AttendanceRepository>()),
+    () => MarkAttendanceUseCaseImpl(sl<AttendanceRepository>()),
   );
   sl.registerFactory<GetAttendanceHistoryUseCase>(
-        () => GetAttendanceHistoryUseCaseImpl(sl<AttendanceRepository>()),
+    () => GetAttendanceHistoryUseCaseImpl(sl<AttendanceRepository>()),
   );
 }
 
@@ -472,7 +458,7 @@ void _initBloc() {
   );
 
   sl.registerFactory<ProfileBloc>(
-        () => ProfileBloc(
+    () => ProfileBloc(
       getProfile: sl<GetProfileUseCase>(),
       uploadAvatar: sl<UploadAvatarUseCase>(),
     ),
@@ -497,11 +483,9 @@ void _initBloc() {
     () => SuggestionsBloc(sl<GetSuggestionsUseCase>()),
   );
 
-  sl.registerFactory<ChatBloc>(
-        () => ChatBloc(sl<GetChatsUseCase>()),
-  );
+  sl.registerFactory<ChatBloc>(() => ChatBloc(sl<GetChatsUseCase>()));
   sl.registerFactory<MessageBloc>(
-        () => MessageBloc(
+    () => MessageBloc(
       getMessages: sl<GetMessagesUseCase>(),
       connect: sl<ConnectToChatUseCase>(),
       send: sl<SendMessageUseCase>(),
@@ -542,15 +526,15 @@ void _initBloc() {
   );
 
   sl.registerFactory<AttendanceSessionBloc>(
-        () => AttendanceSessionBloc(
+    () => AttendanceSessionBloc(
       createSession: sl<CreateAttendanceSessionUseCase>(),
-      getStudents:   sl<GetSessionStudentsUseCase>(),
-      markManual:    sl<UpdateStudentStatusUseCase>(),
+      getStudents: sl<GetSessionStudentsUseCase>(),
+      markManual: sl<UpdateStudentStatusUseCase>(),
     ),
   );
   sl.registerFactory<AttendanceMarkBloc>(
-        () => AttendanceMarkBloc(
-      mark:    sl<MarkAttendanceUseCase>(),
+    () => AttendanceMarkBloc(
+      mark: sl<MarkAttendanceUseCase>(),
       history: sl<GetAttendanceHistoryUseCase>(),
     ),
   );

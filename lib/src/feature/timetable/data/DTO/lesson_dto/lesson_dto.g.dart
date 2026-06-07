@@ -9,7 +9,7 @@ part of 'lesson_dto.dart';
 _LessonDTO _$LessonDTOFromJson(Map<String, dynamic> json) => _LessonDTO(
   id: _intToString(json['id']),
   groupId: _intToString(json['group_id']),
-  teacherId: json['teacher_id'] as String?,
+  teacherId: _intToStringNullable(json['teacher_id']),
   teacherName: json['teacher_name'] as String?,
   day: _intToString(json['day']),
   week: _intToString(json['week']),
