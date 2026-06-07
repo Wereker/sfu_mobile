@@ -62,7 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 48),
+                  SizedBox(height: MediaQuery.of(context).size.height / 15 + 24),
 
                   _AuthLogo(cs: cs),
 
@@ -74,7 +74,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     textAlign: TextAlign.center,
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: MediaQuery.of(context).size.height / 15 + 24),
 
                   AutofillGroup(
                     onDisposeAction: AutofillContextAction.commit,
@@ -95,7 +95,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               color: ext.textTertiary,
                             ),
                             labelText: 'Почта',
-                            hintText: 'aaaaaa@sfu-kras.ru',
+                            hintText: 'user@sfu-kras.ru',
                           ),
                         ),
 
