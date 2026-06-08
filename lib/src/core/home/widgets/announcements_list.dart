@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/announcements/presentation/bloc/announcements_bloc.dart';
 import 'package:sfu/src/feature/announcements/presentation/widgets/announcement_card.dart';
@@ -41,11 +42,12 @@ class _EmptyAnnouncements extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
+    final t = Translations.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Center(
         child: Text(
-          'Нет объявлений',
+          t.home.noAnnouncements,
           style: Theme.of(context)
               .textTheme
               .bodyMedium
@@ -81,7 +83,7 @@ class _AnnouncementsError extends StatelessWidget {
             onPressed: () => context
                 .read<AnnouncementsBloc>()
                 .add(const AnnouncementsEvent.load()),
-            child: Text('Повторить',
+            child: Text(t.common.retry,
                 style: TextStyle(color: cs.primary)),
           ),
         ],

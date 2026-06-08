@@ -2,15 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/lesson/lesson.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/get_next_lesson_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/get_next_lesson_use_case_impl.dart';
 import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
 
-/// Карточка «ближайшая пара» на главном экране.
-/// Получает расписание из TimetableBloc, пересчитывает результат
-/// каждые 30 секунд через локальный Timer без обращения к серверу.
 class NextClassCard extends StatefulWidget {
   const NextClassCard({super.key});
 
@@ -43,7 +41,6 @@ class _NextClassCardState extends State<NextClassCard> {
         return state.maybeWhen(
           loading: () => const _NextClassShimmer(),
           success: (timetable, _) {
-            // Пересчитываем каждый раз когда меняется _now или стейт
             final result = GetNextLessonUseCaseImpl().call(
               timetable: timetable,
               now: _now,
@@ -57,59 +54,81 @@ class _NextClassCardState extends State<NextClassCard> {
   }
 }
 
-// ── Контент ──────────────────────────────────────────────────────────────────
-
 class _NextClassContent extends StatelessWidget {
   const _NextClassContent({required this.result});
   final NextLessonResult result;
+
+  String _typeLabel(LessonType type, Translations t) {
+    switch (type) {
+      case LessonType.lecture:  return t.lesson.lecture;
+      case LessonType.practice: return t.lesson.practice;
+      case LessonType.lab:      return t.lesson.lab;
+      case LessonType.unknown:  return '';
+    }
+  }
+
+  String _placeLabel(Lesson lesson, Translations t) {
+    if (lesson.isOnline) return t.common.eios;
+    return [
+      if (lesson.room.isNotEmpty) t.common.room(room: lesson.room),
+      if (lesson.building.isNotEmpty) lesson.building,
+    ].join(' · ');
+  }
 
   @override
   Widget build(BuildContext context) {
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
+    final t   = Translations.of(context);
 
     return switch (result) {
       LessonInProgress(:final lesson, :final minutesGone) => _LessonCard(
-        cs: cs, ext: ext, tt: tt,
+        cs: cs,
+        ext: ext,
+        tt: tt,
         lesson: lesson,
-        headerLabel: 'ИДЁТ СЕЙЧАС',
-        badgeLabel: _minutesLabel(minutesGone, suffix: 'мин'),
+        headerLabel: t.nextClass.inProgress,
+        badgeLabel: minutesGone == 0
+            ? t.nextClass.lessThanOne
+            : t.nextClass.minutesGone(minutes: minutesGone),
         badgeTone: _BadgeTone.success,
+        typeLabel: _typeLabel(lesson.type, t),
+        placeLabel: _placeLabel(lesson, t),
       ),
       LessonUpcoming(:final lesson, :final minutesLeft) => _LessonCard(
-        cs: cs, ext: ext, tt: tt,
+        cs: cs,
+        ext: ext,
+        tt: tt,
         lesson: lesson,
-        headerLabel: 'СЛЕДУЮЩАЯ ПАРА',
+        headerLabel: t.nextClass.upcoming,
         badgeLabel: minutesLeft < 60
-            ? 'Через $minutesLeft мин'
-            : 'Через ${minutesLeft ~/ 60} ч ${minutesLeft % 60} мин',
+            ? t.nextClass.inMinutes(minutes: minutesLeft)
+            : t.nextClass.inHoursMinutes(
+          hours: minutesLeft ~/ 60,
+          minutes: minutesLeft % 60,
+        ),
         badgeTone: minutesLeft <= 15
             ? _BadgeTone.error
             : minutesLeft <= 45
             ? _BadgeTone.warning
             : _BadgeTone.neutral,
+        typeLabel: _typeLabel(lesson.type, t),
+        placeLabel: _placeLabel(lesson, t),
       ),
       NoMoreLessonsToday() => _EmptyCard(
         icon: Icons.check_circle_outline,
-        title: 'На сегодня всё',
-        subtitle: 'Все пары закончились',
+        title: t.nextClass.noMoreToday,
+        subtitle: t.nextClass.allDone,
       ),
       NoLessonsToday() => _EmptyCard(
         icon: Icons.wb_sunny_outlined,
-        title: 'Сегодня пар нет',
-        subtitle: 'Свободный день',
+        title: t.nextClass.noLessonsToday,
+        subtitle: t.nextClass.freeDay,
       ),
     };
   }
-
-  String _minutesLabel(int minutes, {required String suffix}) {
-    if (minutes == 0) return '< 1 $suffix';
-    return 'Идёт $minutes $suffix';
-  }
 }
-
-// ── Карточка с парой ─────────────────────────────────────────────────────────
 
 class _LessonCard extends StatelessWidget {
   const _LessonCard({
@@ -120,6 +139,8 @@ class _LessonCard extends StatelessWidget {
     required this.headerLabel,
     required this.badgeLabel,
     required this.badgeTone,
+    required this.typeLabel,
+    required this.placeLabel,
   });
 
   final ColorScheme cs;
@@ -129,17 +150,8 @@ class _LessonCard extends StatelessWidget {
   final String headerLabel;
   final String badgeLabel;
   final _BadgeTone badgeTone;
-
-  // ── Те же методы что в LessonCard ──
-
-  String get _typeLabel {
-    switch (lesson.type) {
-      case LessonType.lecture:  return 'лекция';
-      case LessonType.practice: return 'пр. занятие';
-      case LessonType.lab:      return 'лаб. работа';
-      case LessonType.unknown:  return '';
-    }
-  }
+  final String typeLabel;
+  final String placeLabel;
 
   Color _typeBg(AppColors e) {
     switch (lesson.type) {
@@ -157,14 +169,6 @@ class _LessonCard extends StatelessWidget {
       case LessonType.lab:      return e.warningFg;
       case LessonType.unknown:  return e.textSecondary;
     }
-  }
-
-  String get _placeLabel {
-    if (lesson.isOnline) return 'ЭИОС';
-    return [
-      if (lesson.room.isNotEmpty) 'ауд. ${lesson.room}',
-      if (lesson.building.isNotEmpty) lesson.building,
-    ].join(' · ');
   }
 
   Color _badgeBg(AppColors e) {
@@ -199,8 +203,6 @@ class _LessonCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            // ── Строка 1: заголовок + бейдж времени ──
             Row(
               children: [
                 Text(
@@ -235,7 +237,6 @@ class _LessonCard extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            // ── Строка 2: тип пары (бейдж — те же цвета что в LessonCard) ──
             if (lesson.type != LessonType.unknown)
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -245,7 +246,7 @@ class _LessonCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  _typeLabel,
+                  typeLabel,
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
@@ -258,7 +259,6 @@ class _LessonCard extends StatelessWidget {
             if (lesson.type != LessonType.unknown)
               const SizedBox(height: 6),
 
-            // ── Предмет ──
             Text(
               lesson.subject,
               style: tt.titleMedium,
@@ -268,7 +268,6 @@ class _LessonCard extends StatelessWidget {
 
             const SizedBox(height: 4),
 
-            // ── Время + место ──
             Row(
               children: [
                 Text(
@@ -277,17 +276,17 @@ class _LessonCard extends StatelessWidget {
                     color: ext.textSecondary,
                   ),
                 ),
-                if (_placeLabel.isNotEmpty) ...[
+                if (placeLabel.isNotEmpty) ...[
                   Text(
                     ' · ',
-                    style: tt.bodyMedium?.copyWith(
-                        color: ext.textTertiary),
+                    style: tt.bodyMedium
+                        ?.copyWith(color: ext.textTertiary),
                   ),
                   Flexible(
                     child: Text(
-                      _placeLabel,
-                      style: tt.bodyMedium?.copyWith(
-                          color: ext.textSecondary),
+                      placeLabel,
+                      style: tt.bodyMedium
+                          ?.copyWith(color: ext.textSecondary),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -295,7 +294,6 @@ class _LessonCard extends StatelessWidget {
               ],
             ),
 
-            // ── Преподаватель ──
             if (lesson.teacherName.isNotEmpty) ...[
               const SizedBox(height: 10),
               Row(
@@ -318,8 +316,6 @@ class _LessonCard extends StatelessWidget {
     );
   }
 }
-
-// ── Карточка «нет пар» ───────────────────────────────────────────────────────
 
 class _EmptyCard extends StatelessWidget {
   const _EmptyCard({
@@ -345,7 +341,8 @@ class _EmptyCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppTheme.radiusLg),
           border: Border(left: BorderSide(color: ext.divider, width: 3)),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding:
+        const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Row(
           children: [
             Icon(icon, size: 28, color: ext.textTertiary),
@@ -357,8 +354,8 @@ class _EmptyCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: tt.bodySmall?.copyWith(
-                      color: ext.textSecondary),
+                  style: tt.bodySmall
+                      ?.copyWith(color: ext.textSecondary),
                 ),
               ],
             ),
@@ -368,8 +365,6 @@ class _EmptyCard extends StatelessWidget {
     );
   }
 }
-
-// ── Шиммер ───────────────────────────────────────────────────────────────────
 
 class _NextClassShimmer extends StatefulWidget {
   const _NextClassShimmer();
@@ -425,8 +420,6 @@ class _NextClassShimmerState extends State<_NextClassShimmer>
   }
 }
 
-// ── Вспомогательные ──────────────────────────────────────────────────────────
-
 enum _BadgeTone { success, warning, error, neutral }
 
 class _InitialsAvatar extends StatelessWidget {
@@ -459,7 +452,8 @@ class _InitialsAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: size, height: size,
+      width: size,
+      height: size,
       decoration: BoxDecoration(shape: BoxShape.circle, color: _bg),
       alignment: Alignment.center,
       child: Text(

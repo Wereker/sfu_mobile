@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sfu/src/app/screens/auth_wrapper.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
 import 'package:sfu/src/core/auth/presentation/screens/reset_password_screen.dart';
 import 'package:sfu/src/core/auth/presentation/screens/sign_in_screen.dart';
 import 'package:sfu/src/core/auth/presentation/screens/sign_up_screen.dart';
-import 'package:sfu/src/core/localization/app_localizations.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/splash_screen.dart';
 import 'package:sfu/src/feature/announcements/presentation/bloc/announcements_bloc.dart';
@@ -28,7 +29,6 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        // Существующий — авторизация
         BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             state.maybeWhen(
@@ -46,27 +46,33 @@ class App extends StatelessWidget {
           },
         ),
 
-        // Новый — как только профиль загрузился, грузим расписание
         BlocListener<ProfileBloc, ProfileState>(
           listener: (context, state) {
             state.maybeWhen(
               success: (user) {
-                final isTeacher =
-                    user.role == UserRole.teacher ||
-                        user.role == UserRole.admin;
+                final isTeacher = user.role == UserRole.teacher ||
+                    user.role == UserRole.admin;
                 final targetId = isTeacher
                     ? user.id
                     : int.tryParse(user.groupId ?? '') ?? 0;
                 final type = isTeacher
                     ? TimetableTargetType.teacher
                     : TimetableTargetType.group;
-
                 context.read<TimetableBloc>().add(
-                  TimetableEvent.loadData(
-                    userId: targetId,
-                    userType: type,
-                  ),
+                  TimetableEvent.loadData(userId: targetId, userType: type),
                 );
+              },
+              orElse: () {},
+            );
+          },
+        ),
+
+        // При смене языка в настройках — применяем локаль в slang
+        BlocListener<SettingsBloc, SettingsState>(
+          listener: (context, state) {
+            state.maybeWhen(
+              success: (settings) {
+                LocaleSettings.setLocale(_appLocaleFromCode(settings.locale));
               },
               orElse: () {},
             );
@@ -75,24 +81,26 @@ class App extends StatelessWidget {
       ],
       child: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {
-          final locale = state.maybeWhen(
-            success: (settings) => _localeFromCode(settings.locale),
-            orElse: () => const Locale('ru'),
-          );
           final themeMode = state.maybeWhen(
             success: (settings) => _parseThemeMode(settings.themeMode),
             orElse: () => ThemeMode.system,
           );
 
+          // locale берём напрямую из LocaleSettings — без TranslationProvider
+          final locale = LocaleSettings.currentLocale.flutterLocale;
+
           return MaterialApp(
             navigatorKey: App.navigatorKey,
             locale: locale,
-            localeResolutionCallback: (locale, _) => locale,
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
             themeMode: themeMode,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocaleUtils.supportedLocales,
             debugShowCheckedModeBanner: false,
             routes: _routes(),
             home: state.maybeWhen(
@@ -106,21 +114,16 @@ class App extends StatelessWidget {
     );
   }
 
-  Locale _localeFromCode(String code) {
-    final parts = code.split('_');
-    return parts.length > 1 ? Locale(parts[0], parts[1]) : Locale(code);
-  }
+  AppLocale _appLocaleFromCode(String code) => switch (code) {
+    'en' => AppLocale.en,
+    _ => AppLocale.ru,
+  };
 
-  ThemeMode _parseThemeMode(String mode) {
-    switch (mode) {
-      case 'light':
-        return ThemeMode.light;
-      case 'dark':
-        return ThemeMode.dark;
-      default:
-        return ThemeMode.system;
-    }
-  }
+  ThemeMode _parseThemeMode(String mode) => switch (mode) {
+    'light' => ThemeMode.light,
+    'dark' => ThemeMode.dark,
+    _ => ThemeMode.system,
+  };
 
   Map<String, WidgetBuilder> _routes() => {
     '/signIn': (_) => const SignInScreen(),
@@ -137,6 +140,7 @@ class _ErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     return Scaffold(
       body: Center(
         child: Column(
@@ -150,7 +154,7 @@ class _ErrorScreen extends StatelessWidget {
               onPressed: () => context
                   .read<SettingsBloc>()
                   .add(SettingsEvent.getAppSettings()),
-              child: const Text('Повторить'),
+              child: Text(t.common.retry),
             ),
           ],
         ),

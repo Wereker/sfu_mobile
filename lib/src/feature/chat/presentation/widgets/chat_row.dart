@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/user_avatar.dart';
 import 'package:sfu/src/feature/chat/domain/entity/chat.dart';
@@ -9,7 +10,7 @@ class ChatRow extends StatelessWidget {
   const ChatRow({super.key, required this.chat});
   final Chat chat;
 
-  String _formatDate(DateTime date) {
+  String _formatDate(DateTime date, Translations t) {
     final now = DateTime.now();
     if (date.year == now.year &&
         date.month == now.month &&
@@ -20,7 +21,7 @@ class ChatRow extends StatelessWidget {
     if (date.year == yesterday.year &&
         date.month == yesterday.month &&
         date.day == yesterday.day) {
-      return 'Вчера';
+      return t.chat.yesterday;
     }
     return DateFormat('dd.MM').format(date);
   }
@@ -32,13 +33,14 @@ class ChatRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
 
     final hasUnread = chat.unreadCount > 0;
-    final date = _formatDate(chat.lastMessageAt ?? chat.updatedAt);
-    final lastMsg = chat.lastMessage;
+    final date      = _formatDate(chat.lastMessageAt ?? chat.updatedAt, t);
+    final lastMsg   = chat.lastMessage;
 
     return InkWell(
       onTap: () => Navigator.push(
@@ -54,12 +56,13 @@ class ChatRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Row(
           children: [
-            // Аватар + онлайн-индикатор
             Stack(
               children: [
                 UserAvatar(
                   name: chat.title,
-                  userId: int.parse(chat.memberIds[0]),
+                  userId: int.tryParse(
+                      chat.memberIds.isNotEmpty ? chat.memberIds[0] : '0') ??
+                      0,
                   size: 48,
                 ),
                 if (chat.type == ChatType.private)
@@ -73,7 +76,8 @@ class ChatRow extends StatelessWidget {
                             ? ext.successFg
                             : ext.textTertiary,
                         border: Border.all(
-                          color: Theme.of(context).scaffoldBackgroundColor,
+                          color:
+                          Theme.of(context).scaffoldBackgroundColor,
                           width: 2,
                         ),
                       ),
@@ -103,16 +107,12 @@ class ChatRow extends StatelessWidget {
                     Row(
                       children: [
                         if (lastMsg.isOutgoing) ...[
-                          Icon(
-                            Icons.done,
-                            size: 14,
-                            color: ext.textTertiary,
-                          ),
+                          Icon(Icons.done, size: 14, color: ext.textTertiary),
                           const SizedBox(width: 3),
                         ],
                         Expanded(
                           child: Text(
-                            lastMsg.body.isEmpty ? '📎 Файл' : lastMsg.body,
+                            lastMsg.body.isEmpty ? '📎' : lastMsg.body,
                             style: tt.bodyMedium?.copyWith(
                               fontSize: 13,
                               color: hasUnread
@@ -130,7 +130,7 @@ class ChatRow extends StatelessWidget {
                     )
                   else
                     Text(
-                      'Нет сообщений',
+                      t.chat.noMessages,
                       style: tt.bodyMedium?.copyWith(
                         fontSize: 13,
                         color: ext.textTertiary,
@@ -143,7 +143,6 @@ class ChatRow extends StatelessWidget {
 
             const SizedBox(width: 10),
 
-            // Дата + счётчик непрочитанных
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +160,8 @@ class ChatRow extends StatelessWidget {
                   Container(
                     constraints: const BoxConstraints(minWidth: 20),
                     height: 20,
-                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 6),
                     decoration: BoxDecoration(
                       color: cs.primary,
                       borderRadius:

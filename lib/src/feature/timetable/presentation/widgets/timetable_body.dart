@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/utils/timetable_utils/timetable_utils.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
@@ -28,7 +29,7 @@ class TimetableBody extends StatefulWidget {
 
 class _TimetableBodyState extends State<TimetableBody> {
   late int _selectedWeek; // 1 или 2
-  late int _selectedDay;  // 1=пн … 6=сб
+  late int _selectedDay; // 1=пн … 6=сб
   DateTime _now = DateTime.now();
   Timer? _timer;
 
@@ -51,6 +52,8 @@ class _TimetableBodyState extends State<TimetableBody> {
   }
 
   Future<void> _onRefresh() async {
+    final t = Translations.of(context);
+
     final profileState = context.read<ProfileBloc>().state;
     profileState.maybeWhen(
       success: (user) {
@@ -58,9 +61,7 @@ class _TimetableBodyState extends State<TimetableBody> {
             user.role == UserRole.teacher || user.role == UserRole.admin;
         context.read<TimetableBloc>().add(
           TimetableEvent.loadData(
-            userId: isTeacher
-                ? user.id
-                : int.tryParse(user.groupId ?? '') ?? 0,
+            userId: isTeacher ? user.id : int.tryParse(user.groupId ?? '') ?? 0,
             userType: isTeacher
                 ? TimetableTargetType.teacher
                 : TimetableTargetType.group,
@@ -83,7 +84,14 @@ class _TimetableBodyState extends State<TimetableBody> {
   Week get _currentWeek =>
       _selectedWeek == 1 ? widget.timetable.week1 : widget.timetable.week2;
 
-  static const _dowShort = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+  static final _dowShort = [
+    t.timetable.days.mon,
+    t.timetable.days.tue,
+    t.timetable.days.wed,
+    t.timetable.days.thu,
+    t.timetable.days.fri,
+    t.timetable.days.sat,
+  ];
 
   DateTime _dateForWeekday(int wd) {
     final today = DateTime(_now.year, _now.month, _now.day);
@@ -95,17 +103,18 @@ class _TimetableBodyState extends State<TimetableBody> {
     final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt = Theme.of(context).textTheme;
+    final t = Translations.of(context);
 
     final byDay = _groupByDay(_currentWeek.lessons);
     final dayLessons = byDay[_selectedDay] ?? [];
 
     final actualWeekNum = TimetableUtils.getWeekNumberFromAcademicStart(_now);
-    final isCurrentWeek = (_selectedWeek == 1 && actualWeekNum.isOdd) ||
+    final isCurrentWeek =
+        (_selectedWeek == 1 && actualWeekNum.isOdd) ||
         (_selectedWeek == 2 && actualWeekNum.isEven);
     final isToday = isCurrentWeek && (_selectedDay == _now.weekday);
 
-    // Заголовок AppBar — groupId как строка пока нет названия группы из API
-    final appBarTitle = 'Группа ${widget.timetable.groupId}';
+    final appBarTitle = t.timetable.groupTitle(id: widget.timetable.groupId);
 
     return RefreshIndicator(
       color: cs.primary,
@@ -148,8 +157,7 @@ class _TimetableBodyState extends State<TimetableBody> {
                             isCurrentWeek && wd == _now.weekday;
                         return Expanded(
                           child: Padding(
-                            padding: EdgeInsets.only(
-                                right: i < 5 ? 6 : 0),
+                            padding: EdgeInsets.only(right: i < 5 ? 6 : 0),
                             child: DayChip(
                               dow: _dowShort[i],
                               num: date.day,
@@ -159,8 +167,7 @@ class _TimetableBodyState extends State<TimetableBody> {
                               cs: cs,
                               ext: ext,
                               tt: tt,
-                              onTap: () =>
-                                  setState(() => _selectedDay = wd),
+                              onTap: () => setState(() => _selectedDay = wd),
                             ),
                           ),
                         );
@@ -176,21 +183,22 @@ class _TimetableBodyState extends State<TimetableBody> {
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
               sliver: dayLessons.isEmpty
-                  ? SliverToBoxAdapter(child: EmptyDay(ext: ext, tt: tt))
+                  ? SliverToBoxAdapter(
+                      child: EmptyDay(ext: ext, tt: tt),
+                    )
                   : SliverList.separated(
-                separatorBuilder: (_, __) =>
-                const SizedBox(height: 10),
-                itemCount: dayLessons.length,
-                itemBuilder: (_, i) => LessonCard(
-                  lesson: dayLessons[i],
-                  index: i + 1,
-                  isToday: isToday,
-                  now: _now,
-                  cs: cs,
-                  ext: ext,
-                  tt: tt,
-                ),
-              ),
+                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      itemCount: dayLessons.length,
+                      itemBuilder: (_, i) => LessonCard(
+                        lesson: dayLessons[i],
+                        index: i + 1,
+                        isToday: isToday,
+                        now: _now,
+                        cs: cs,
+                        ext: ext,
+                        tt: tt,
+                      ),
+                    ),
             ),
           ],
         ),

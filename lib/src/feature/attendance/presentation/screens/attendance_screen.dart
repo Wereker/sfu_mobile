@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/dependency_injection/injection.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/feature/attendance/presentation/bloc/session/attendance_session_bloc.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_app_bar.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/attendance_day_picker.dart';
@@ -38,7 +39,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   void initState() {
     super.initState();
-    // Загружаем расписание преподавателя сразу при открытии экрана
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         context.read<TimetableBloc>().add(
@@ -158,12 +158,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           lessonTitle: lesson.subject,
           lessonGroup: lesson.teacherName.isNotEmpty
               ? lesson.teacherName
-              : 'Группа ${lesson.groupId}',
+              : t.common.group(id: lesson.groupId),
           lessonTime: '${lesson.timeStart}–${lesson.timeEnd}',
           lessonPlace: lesson.isOnline
-              ? 'ЭИОС'
+              ? t.common.eios
               : lesson.room.isNotEmpty
-              ? 'ауд. ${lesson.room}'
+              ? t.common.room(room: lesson.room)
               : '',
         ),
       ),
@@ -174,19 +174,19 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     id: lesson.id,
     subject: lesson.subject,
     type: lesson.type == LessonType.lecture
-        ? 'лекция'
+        ? t.lesson.lecture
         : lesson.type == LessonType.practice
-        ? 'пр. занятие'
-        : 'лаб. работа',
+        ? t.lesson.practice
+        : t.lesson.lab,
     time: '${lesson.timeStart}–${lesson.timeEnd}',
     place: lesson.isOnline
-        ? 'ЭИОС'
+        ? t.common.eios
         : lesson.room.isNotEmpty
-        ? 'ауд. ${lesson.room}'
+        ? t.common.room(room: lesson.room)
         : '',
     group: lesson.teacherName.isNotEmpty
         ? lesson.teacherName
-        : 'Группа ${lesson.groupId}',
+        : t.common.group(id: lesson.groupId),
     studentCount: 5,
     isStarted: false,
     presentCount: 0,

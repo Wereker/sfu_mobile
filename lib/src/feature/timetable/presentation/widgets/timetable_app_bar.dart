@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class TimetableAppBar extends StatelessWidget {
@@ -12,6 +13,7 @@ class TimetableAppBar extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt = Theme.of(context).textTheme;
+    final t = Translations.of(context);
 
     final today = DateTime.now();
     final subtitle = DateFormat('EEEE, d MMMM', 'ru').format(today);
@@ -37,7 +39,7 @@ class TimetableAppBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Расписание', style: tt.displaySmall),
+                    Text(t.timetable.title, style: tt.displaySmall),
                     const SizedBox(height: 2),
                     Text(
                       target.isNotEmpty ? target : subtitle,

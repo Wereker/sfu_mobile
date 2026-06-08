@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 
@@ -37,6 +38,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
     final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt = Theme.of(context).textTheme;
@@ -102,7 +104,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Новый пароль',
+                        t.auth.resetPassword.title,
                         style: tt.headlineSmall,
                         textAlign: TextAlign.center,
                       ),
@@ -116,7 +118,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Придумайте надёжный пароль.\nПароли должны совпадать.',
+                    t.auth.resetPassword.subtitle,
                     style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
                     textAlign: TextAlign.center,
                   ),
@@ -133,7 +135,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         size: 20,
                         color: ext.textTertiary,
                       ),
-                      labelText: 'Новый пароль',
+                      labelText: t.auth.resetPassword.newPasswordLabel,
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscure1
@@ -160,7 +162,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         size: 20,
                         color: ext.textTertiary,
                       ),
-                      labelText: 'Повторите пароль',
+                      labelText: t.auth.resetPassword.repeatPasswordLabel,
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscure2
@@ -187,7 +189,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         ),
                         child: state.maybeWhen(
                           loading: () => const LoadingIndicatorWidget(),
-                          orElse: () => const Text('Сохранить пароль'),
+                          orElse: () => Text(t.auth.resetPassword.submitBtn),
                         ),
                       ),
                     ),
@@ -199,7 +201,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     child: TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: Text(
-                        'Вернуться ко входу',
+                        t.auth.resetPassword.backToLogin,
                         style: tt.labelLarge?.copyWith(
                           color: ext.textSecondary,
                         ),

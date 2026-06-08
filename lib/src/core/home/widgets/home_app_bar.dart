@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/user_avatar.dart';
 import 'package:sfu/src/feature/profile/presentation/bloc/profile_bloc.dart';
@@ -15,6 +16,7 @@ class HomeAppBar extends StatelessWidget {
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
     final subtitle = DateFormat('EEEE, d MMMM', 'ru').format(DateTime.now());
+    final t = Translations.of(context);
 
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
@@ -83,8 +85,8 @@ class HomeAppBar extends StatelessWidget {
                             ? _ShimmerLine(width: 140, height: 16, cs: cs)
                             : Text(
                           user != null
-                              ? 'Привет, ${user.firstName}'
-                              : 'Привет!',
+                              ? t.home.greeting(name: user.firstName)
+                              : t.home.greetingDefault,
                           style: tt.displaySmall,
                         ),
                         const SizedBox(height: 2),

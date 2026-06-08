@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/detail_sheet.dart';
 import 'package:sfu/src/core/widgets/user_avatar.dart';
@@ -19,17 +20,17 @@ class ProfileHeader extends StatelessWidget {
   final ValueChanged<String> onAvatarChanged;
   final Uint8List? localImageBytes;
 
-  String _roleLabel(UserRole role) {
-    switch (role) {
-      case UserRole.student: return 'Студент';
-      case UserRole.teacher: return 'Преподаватель';
-      case UserRole.admin:   return 'Администратор';
-      case UserRole.unknown: return 'Пользователь';
-    }
-  }
-
   bool get _isTeacher =>
       user.role == UserRole.teacher || user.role == UserRole.admin;
+
+  String _roleLabel(UserRole role, Translations t) {
+    switch (role) {
+      case UserRole.student: return t.profile.roleStudent;
+      case UserRole.teacher: return t.profile.roleTeacher;
+      case UserRole.admin:   return t.profile.roleAdmin;
+      case UserRole.unknown: return t.profile.roleUnknown;
+    }
+  }
 
   Future<void> _pickAvatar(BuildContext context) async {
     final picker = ImagePicker();
@@ -46,6 +47,7 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
@@ -64,7 +66,6 @@ class ProfileHeader extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            // Аватар с кнопкой выбора
             UserAvatar(
               name: user.fullName,
               userId: user.id,
@@ -80,33 +81,34 @@ class ProfileHeader extends StatelessWidget {
                   shape: BoxShape.circle,
                   border: Border.all(color: cs.surface, width: 2),
                 ),
-                child: Icon(Icons.edit_outlined, size: 11, color: cs.onPrimary),
+                child:
+                Icon(Icons.edit_outlined, size: 11, color: cs.onPrimary),
               ),
             ),
             const SizedBox(width: 14),
-
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(user.fullName, style: tt.titleMedium),
                   const SizedBox(height: 4),
-                  Text(
-                    user.email,
-                    style: tt.bodySmall?.copyWith(color: ext.textSecondary),
-                  ),
+                  Text(user.email,
+                      style:
+                      tt.bodySmall?.copyWith(color: ext.textSecondary)),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 9, vertical: 4),
                     decoration: BoxDecoration(
                       color: _isTeacher ? ext.warningBg : ext.infoBg,
-                      borderRadius: BorderRadius.circular(AppTheme.radiusSm),
+                      borderRadius:
+                      BorderRadius.circular(AppTheme.radiusSm),
                     ),
                     child: Text(
-                      _roleLabel(user.role),
+                      _roleLabel(user.role, t),
                       style: TextStyle(
-                        fontSize: 11, fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
                         color: _isTeacher ? ext.warningFg : ext.infoFg,
                         height: 1,
                       ),
@@ -115,8 +117,6 @@ class ProfileHeader extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Подсказка что можно открыть детали
             Icon(Icons.chevron_right, color: ext.textTertiary, size: 20),
           ],
         ),
@@ -125,27 +125,33 @@ class ProfileHeader extends StatelessWidget {
   }
 }
 
-// ── Шторка с подробной информацией ──────────────────────────────────────────
-
 class _ProfileDetailSheet extends StatelessWidget {
-  const _ProfileDetailSheet({
-    required this.user,
-  });
-
+  const _ProfileDetailSheet({required this.user});
   final User user;
 
   bool get _isTeacher =>
       user.role == UserRole.teacher || user.role == UserRole.admin;
 
+  String _formatDate(DateTime date, Translations t) {
+    final months = [
+      '',
+      t.profile.months.jan, t.profile.months.feb, t.profile.months.mar,
+      t.profile.months.apr, t.profile.months.may, t.profile.months.jun,
+      t.profile.months.jul, t.profile.months.aug, t.profile.months.sep,
+      t.profile.months.oct, t.profile.months.nov, t.profile.months.dec,
+    ];
+    return '${date.day} ${months[date.month]} ${date.year}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Шапка шторки
         Row(
           children: [
             UserAvatar(
@@ -175,93 +181,90 @@ class _ProfileDetailSheet extends StatelessWidget {
         Divider(color: ext.divider, height: 1),
         const SizedBox(height: 16),
 
-        // Детали студента
         if (!_isTeacher) ...[
           if (user.groupName != null && user.groupName!.isNotEmpty)
             _DetailRow(
               icon: Icons.groups_outlined,
-              label: 'Группа',
+              label: t.profile.fieldGroup,
               value: user.subgroup != null
-                  ? '${user.groupName} · ${user.subgroup} подгруппа'
+                  ? t.profile.groupSubgroup(
+                group: user.groupName!,
+                subgroup: user.subgroup.toString(),
+              )
                   : user.groupName!,
             ),
           if (user.stream != null && user.stream!.isNotEmpty)
             _DetailRow(
               icon: Icons.linear_scale_outlined,
-              label: 'Поток',
+              label: t.profile.fieldStream,
               value: user.stream!,
             ),
           if (user.institute != null && user.institute!.isNotEmpty)
             _DetailRow(
               icon: Icons.account_balance_outlined,
-              label: 'Институт',
+              label: t.profile.fieldInstitute,
               value: user.institute!,
             ),
           if (user.recordBookNumber != null &&
               user.recordBookNumber!.isNotEmpty)
             _DetailRow(
               icon: Icons.badge_outlined,
-              label: 'Зачётная книжка',
+              label: t.profile.fieldRecordBook,
               value: user.recordBookNumber!,
             ),
           if (user.birthdate != null)
             _DetailRow(
               icon: Icons.cake_outlined,
-              label: 'Дата рождения',
-              value: _formatDate(user.birthdate!),
+              label: t.profile.fieldBirthdate,
+              value: _formatDate(user.birthdate!, t),
             ),
           if (user.sex != null && user.sex!.isNotEmpty)
             _DetailRow(
               icon: Icons.person_outline,
-              label: 'Пол',
-              value: user.sex == 'male' ? 'Мужской' : 'Женский',
+              label: t.profile.fieldSex,
+              value: user.sex == 'male'
+                  ? t.profile.sexMale
+                  : t.profile.sexFemale,
             ),
         ],
 
-        // Детали преподавателя
         if (_isTeacher) ...[
           if (user.position != null && user.position!.isNotEmpty)
             _DetailRow(
               icon: Icons.work_outline,
-              label: 'Должность',
+              label: t.profile.fieldPosition,
               value: user.position!,
             ),
           if (user.degree != null && user.degree!.isNotEmpty)
             _DetailRow(
               icon: Icons.school_outlined,
-              label: 'Учёная степень',
+              label: t.profile.fieldDegree,
               value: user.degree!,
             ),
           if (user.department != null && user.department!.isNotEmpty)
             _DetailRow(
               icon: Icons.meeting_room_outlined,
-              label: 'Кафедра',
+              label: t.profile.fieldDepartment,
               value: user.department!,
             ),
           if (user.institute != null && user.institute!.isNotEmpty)
             _DetailRow(
               icon: Icons.account_balance_outlined,
-              label: 'Институт',
+              label: t.profile.fieldInstitute,
               value: user.institute!,
             ),
           if (user.tags.isNotEmpty) ...[
             const SizedBox(height: 8),
             Wrap(
-              spacing: 6, runSpacing: 6,
-              children: user.tags.map((tag) => _TagChip(label: tag)).toList(),
+              spacing: 6,
+              runSpacing: 6,
+              children:
+              user.tags.map((tag) => _TagChip(label: tag)).toList(),
             ),
           ],
         ],
       ],
     );
-  }
-
-  String _formatDate(DateTime date) {
-    const months = [
-      '', 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-      'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
-    ];
-    return '${date.day} ${months[date.month]} ${date.year}';
   }
 }
 
@@ -292,10 +295,9 @@ class _DetailRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  label,
-                  style: tt.labelSmall?.copyWith(color: ext.textTertiary),
-                ),
+                Text(label,
+                    style:
+                    tt.labelSmall?.copyWith(color: ext.textTertiary)),
                 const SizedBox(height: 1),
                 Text(value, style: tt.bodyMedium),
               ],
@@ -324,8 +326,10 @@ class _TagChip extends StatelessWidget {
       child: Text(
         label,
         style: TextStyle(
-          fontSize: 11, fontWeight: FontWeight.w500,
-          color: ext.textOnTinted, height: 1,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+          color: ext.textOnTinted,
+          height: 1,
         ),
       ),
     );

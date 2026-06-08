@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/feature/attendance/domain/entity/attendance_student.dart';
 import 'package:sfu/src/feature/attendance/presentation/bloc/session/attendance_session_bloc.dart';
 import 'package:sfu/src/feature/attendance/presentation/widgets/journal_student_row.dart';
@@ -232,21 +233,21 @@ class _JournalSheetState extends State<JournalSheet> {
                           Row(
                             children: [
                               AttendanceFilterChip(
-                                label: 'Все',
+                                label: t.attendance.filterAll,
                                 isActive: _filter == 'all',
                                 onTap: () =>
                                     setState(() => _filter = 'all'),
                               ),
                               const SizedBox(width: 6),
                               AttendanceFilterChip(
-                                label: 'Присутствуют',
+                                label: t.attendance.filterPresent,
                                 isActive: _filter == 'present',
                                 onTap: () =>
                                     setState(() => _filter = 'present'),
                               ),
                               const SizedBox(width: 6),
                               AttendanceFilterChip(
-                                label: 'Отсутствуют',
+                                label: t.attendance.filterAbsent,
                                 isActive: _filter == 'absent',
                                 onTap: () =>
                                     setState(() => _filter = 'absent'),
@@ -276,7 +277,7 @@ class _JournalSheetState extends State<JournalSheet> {
                                   color: Colors.white),
                             )
                                 : const Icon(Icons.qr_code_2, size: 18),
-                            label: const Text('Создать QR для отметки'),
+                            label: Text(t.attendance.createQr),
                           ),
                         ),
                       ),
@@ -288,7 +289,7 @@ class _JournalSheetState extends State<JournalSheet> {
                           : students.isEmpty
                           ? Center(
                         child: Text(
-                          'Список загружается...',
+                          t.attendance.listLoading,
                           style: tt.bodyMedium?.copyWith(
                               color: ext.textSecondary),
                         ),
@@ -355,7 +356,7 @@ class _JournalSheetState extends State<JournalSheet> {
             Text('QR для отметки', style: tt.titleMedium),
             const SizedBox(height: 6),
             Text(
-              'Студенты сканируют этот код в приложении',
+              t.attendance.studentsScanning,
               style: tt.bodySmall?.copyWith(color: ext.textSecondary),
             ),
             const SizedBox(height: 24),
@@ -373,7 +374,7 @@ class _JournalSheetState extends State<JournalSheet> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Токен действителен 5 минут',
+              t.attendance.tokenValid,
               style: tt.labelSmall?.copyWith(color: ext.textTertiary),
             ),
           ],

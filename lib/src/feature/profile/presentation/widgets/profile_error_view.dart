@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/profile/presentation/bloc/profile_bloc.dart';
 import 'package:sfu/src/feature/profile/presentation/widgets/profile_app_bar.dart';
@@ -10,6 +11,7 @@ class ProfileErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
 
@@ -24,22 +26,21 @@ class ProfileErrorView extends StatelessWidget {
                 Container(
                   width: 64, height: 64,
                   decoration: BoxDecoration(
-                    color: ext.errorBg,
-                    shape: BoxShape.circle,
-                  ),
+                      color: ext.errorBg, shape: BoxShape.circle),
                   child: Icon(Icons.wifi_off_outlined,
                       size: 28, color: ext.errorFg),
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'Не удалось загрузить профиль',
+                  t.profile.errorLoad,
                   style: tt.titleMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   message,
-                  style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
+                  style:
+                  tt.bodyMedium?.copyWith(color: ext.textSecondary),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
@@ -48,7 +49,7 @@ class ProfileErrorView extends StatelessWidget {
                       .read<ProfileBloc>()
                       .add(const ProfileEvent.loadData()),
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Повторить'),
+                  label: Text(t.common.retry),
                 ),
               ],
             ),

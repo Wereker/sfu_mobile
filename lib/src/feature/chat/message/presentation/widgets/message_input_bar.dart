@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class MessageInputBar extends StatefulWidget {
@@ -31,6 +32,7 @@ class _MessageInputBarState extends State<MessageInputBar> {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
@@ -52,7 +54,8 @@ class _MessageInputBarState extends State<MessageInputBar> {
               constraints: const BoxConstraints(maxHeight: 120),
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+                borderRadius:
+                BorderRadius.circular(AppTheme.radiusMd),
                 border: Border.all(color: ext.border),
               ),
               child: TextField(
@@ -63,8 +66,9 @@ class _MessageInputBarState extends State<MessageInputBar> {
                 textInputAction: TextInputAction.newline,
                 style: tt.bodyLarge?.copyWith(fontSize: 15),
                 decoration: InputDecoration(
-                  hintText: 'Сообщение…',
-                  hintStyle: tt.bodyMedium?.copyWith(color: ext.textTertiary),
+                  hintText: t.chat.inputHint,
+                  hintStyle: tt.bodyMedium
+                      ?.copyWith(color: ext.textTertiary),
                   border: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/user_avatar.dart';
 import 'package:sfu/src/feature/attendance/domain/entity/attendance_student.dart';
@@ -22,18 +23,18 @@ class JournalStudentRow extends StatelessWidget {
     AttendanceStatus.excused: (bg: Color(0x1A6366F1), fg: Color(0xFF4338CA)),
   };
 
-  static const _statusLabels = {
-    AttendanceStatus.present: 'Присут.',
-    AttendanceStatus.absent:  'Отсутст.',
-    AttendanceStatus.late:    'Опоздал',
-    AttendanceStatus.excused: 'УВ',
-  };
-
   static const _statusIcons = {
     AttendanceStatus.present: Icons.check_circle_outline,
     AttendanceStatus.absent:  Icons.cancel_outlined,
     AttendanceStatus.late:    Icons.watch_later_outlined,
     AttendanceStatus.excused: Icons.info_outline,
+  };
+
+  Map<AttendanceStatus, String> _statusLabels(Translations t) => {
+    AttendanceStatus.present: t.attendance.statusPresent,
+    AttendanceStatus.absent:  t.attendance.statusAbsent,
+    AttendanceStatus.late:    t.attendance.statusLate,
+    AttendanceStatus.excused: t.attendance.statusExcused,
   };
 
   String _shortName(String fullName) {
@@ -45,9 +46,11 @@ class JournalStudentRow extends StatelessWidget {
   }
 
   void _showActions(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
+    final labels = _statusLabels(t);
 
     showModalBottomSheet(
       context: context,
@@ -56,7 +59,8 @@ class JournalStudentRow extends StatelessWidget {
           borderRadius: BorderRadius.vertical(
               top: Radius.circular(AppTheme.radiusLg))),
       builder: (_) => Padding(
-        padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.of(context).padding.bottom + 16),
+        padding: EdgeInsets.fromLTRB(
+            16, 16, 16, MediaQuery.of(context).padding.bottom + 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,10 +77,30 @@ class JournalStudentRow extends StatelessWidget {
             Text(student.name.split(' ').first, style: tt.titleMedium),
             const SizedBox(height: 12),
 
-            // Остальные статусы (локально, без API пока)
-            ...AttendanceStatus.values
-                .where((s) => s != AttendanceStatus.absent || student.status != AttendanceStatus.absent)
-                .map((status) {
+            if (student.status == AttendanceStatus.absent)
+              ListTile(
+                dense: true,
+                leading: Container(
+                  width: 32, height: 32,
+                  decoration: BoxDecoration(
+                      color: const Color(0x1A10B981),
+                      shape: BoxShape.circle),
+                  child: const Icon(Icons.edit_outlined,
+                      size: 16, color: Color(0xFF047857)),
+                ),
+                title: Text(t.attendance.markManual,
+                    style: tt.labelLarge
+                        ?.copyWith(fontWeight: FontWeight.w600)),
+                subtitle: Text(t.attendance.markManualSub,
+                    style:
+                    tt.labelSmall?.copyWith(color: ext.textTertiary)),
+                onTap: () {
+                  onMarkManual();
+                  Navigator.pop(context);
+                },
+              ),
+
+            ...AttendanceStatus.values.map((status) {
               final colors = _statusColors[status]!;
               final isSelected = student.status == status;
               return ListTile(
@@ -85,13 +109,15 @@ class JournalStudentRow extends StatelessWidget {
                   width: 32, height: 32,
                   decoration: BoxDecoration(
                       color: colors.bg, shape: BoxShape.circle),
-                  child: Icon(_statusIcons[status], size: 16, color: colors.fg),
+                  child: Icon(_statusIcons[status],
+                      size: 16, color: colors.fg),
                 ),
                 title: Text(
-                  _statusLabels[status]!,
+                  labels[status]!,
                   style: tt.labelLarge?.copyWith(
                     fontWeight: isSelected
-                        ? FontWeight.w700 : FontWeight.w400,
+                        ? FontWeight.w700
+                        : FontWeight.w400,
                   ),
                 ),
                 trailing: isSelected
@@ -111,10 +137,12 @@ class JournalStudentRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t      = Translations.of(context);
     final ext    = Theme.of(context).extension<AppColors>()!;
     final tt     = Theme.of(context).textTheme;
     final colors = _statusColors[student.status]!;
-    final label  = _statusLabels[student.status]!;
+    final labels = _statusLabels(t);
+    final label  = labels[student.status]!;
     final icon   = _statusIcons[student.status]!;
 
     return InkWell(
@@ -125,7 +153,6 @@ class JournalStudentRow extends StatelessWidget {
           children: [
             UserAvatar(name: student.name, size: 36),
             const SizedBox(width: 12),
-
             Expanded(
               child: Row(
                 children: [
@@ -146,11 +173,13 @@ class JournalStudentRow extends StatelessWidget {
                         color: ext.infoBg,
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: Text('Ст.',
-                          style: TextStyle(
-                            fontSize: 9, fontWeight: FontWeight.w700,
-                            color: ext.infoFg, height: 1,
-                          )),
+                      child: Text(
+                        t.attendance.headman,
+                        style: TextStyle(
+                          fontSize: 9, fontWeight: FontWeight.w700,
+                          color: ext.infoFg, height: 1,
+                        ),
+                      ),
                     ),
                   ],
                   if (student.markedAt != null) ...[
@@ -164,10 +193,9 @@ class JournalStudentRow extends StatelessWidget {
                 ],
               ),
             ),
-
             Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 10, vertical: 5),
+              padding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
                 color: colors.bg,
                 borderRadius: BorderRadius.circular(AppTheme.radiusSm),

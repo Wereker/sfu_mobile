@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/core/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class LogoutButton extends StatelessWidget {
@@ -8,6 +9,7 @@ class LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final ext = Theme.of(context).extension<AppColors>()!;
 
     return SizedBox(
@@ -16,7 +18,7 @@ class LogoutButton extends StatelessWidget {
       child: ElevatedButton.icon(
         onPressed: () => _confirmLogout(context),
         icon: const Icon(Icons.logout_outlined, size: 18),
-        label: const Text('Выйти из аккаунта'),
+        label: Text(t.profile.logout.button),
         style: ElevatedButton.styleFrom(
           backgroundColor: ext.errorBg,
           foregroundColor: ext.errorFg,
@@ -30,6 +32,7 @@ class LogoutButton extends StatelessWidget {
   }
 
   void _confirmLogout(BuildContext context) {
+    final t   = Translations.of(context);
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
     final cs  = Theme.of(context).colorScheme;
@@ -50,12 +53,13 @@ class LogoutButton extends StatelessWidget {
               width: 36, height: 4,
               margin: const EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
-                  color: ext.border, borderRadius: BorderRadius.circular(2)),
+                  color: ext.border,
+                  borderRadius: BorderRadius.circular(2)),
             ),
-            Text('Выйти из аккаунта?', style: tt.titleMedium),
+            Text(t.profile.logout.title, style: tt.titleMedium),
             const SizedBox(height: 8),
             Text(
-              'Все локальные данные будут удалены.',
+              t.profile.logout.subtitle,
               style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
               textAlign: TextAlign.center,
             ),
@@ -67,7 +71,7 @@ class LogoutButton extends StatelessWidget {
                     height: 48,
                     child: OutlinedButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Отмена'),
+                      child: Text(t.profile.logout.cancel),
                     ),
                   ),
                 ),
@@ -87,7 +91,7 @@ class LogoutButton extends StatelessWidget {
                         foregroundColor: ext.errorFg,
                         elevation: 0,
                       ),
-                      child: const Text('Выйти'),
+                      child: Text(t.profile.logout.confirm),
                     ),
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 
 class AttendanceAppBar extends StatelessWidget {
   const AttendanceAppBar({super.key});
@@ -31,9 +32,9 @@ class AttendanceAppBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Журнал', style: tt.displaySmall),
+                    Text(t.attendance.title, style: tt.displaySmall),
                     const SizedBox(height: 2),
-                    Text('Посещаемость',
+                    Text(t.attendance.subtitle,
                         style: tt.labelLarge?.copyWith(color: ext.textSecondary)),
                   ],
                 ),

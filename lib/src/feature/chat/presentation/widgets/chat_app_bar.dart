@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class ChatAppBar extends StatelessWidget {
@@ -7,6 +8,7 @@ class ChatAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
@@ -31,11 +33,12 @@ class ChatAppBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Чаты', style: tt.displaySmall),
+                    Text(t.chat.title, style: tt.displaySmall),
                     const SizedBox(height: 2),
                     Text(
-                      'Кафедра, группы, преподаватели',
-                      style: tt.labelLarge?.copyWith(color: ext.textSecondary),
+                      t.chat.subtitle,
+                      style: tt.labelLarge
+                          ?.copyWith(color: ext.textSecondary),
                     ),
                   ],
                 ),

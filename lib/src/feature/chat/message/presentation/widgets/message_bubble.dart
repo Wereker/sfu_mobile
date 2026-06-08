@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/user_avatar.dart';
 import 'package:sfu/src/feature/chat/message/domain/entity/message.dart';
@@ -16,19 +17,22 @@ class MessageBubble extends StatelessWidget {
   final bool showAvatar;
 
   void _copyText(BuildContext context) {
+    final t = Translations.of(context);
     Clipboard.setData(ClipboardData(text: message.body));
     ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Скопировано')));
+        .showSnackBar(SnackBar(content: Text(t.common.copied)));
   }
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
     final isOut = message.isOutgoing;
 
-    final bubbleColor = isOut ? cs.primary.withValues(alpha: .15) : cs.surface;
+    final bubbleColor =
+    isOut ? cs.primary.withValues(alpha: .15) : cs.surface;
     final bubbleBorder = isOut ? null : Border.all(color: ext.border);
     final radius = BorderRadius.only(
       topLeft:     const Radius.circular(16),
@@ -48,7 +52,6 @@ class MessageBubble extends StatelessWidget {
         isOut ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // Аватар входящего
           if (!isOut)
             SizedBox(
               width: 32,
@@ -76,7 +79,6 @@ class MessageBubble extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    // Имя отправителя для групповых чатов
                     if (!isOut && message.senderName.isNotEmpty)
                       Align(
                         alignment: Alignment.centerLeft,
@@ -91,7 +93,6 @@ class MessageBubble extends StatelessWidget {
                     if (!isOut && message.senderName.isNotEmpty)
                       const SizedBox(height: 2),
 
-                    // Текст
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -102,13 +103,12 @@ class MessageBubble extends StatelessWidget {
 
                     const SizedBox(height: 3),
 
-                    // Время + статус
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (message.isEdited)
                           Text(
-                            'изм. ',
+                            '${t.chat.edited} ',
                             style: tt.labelSmall?.copyWith(
                               color: ext.textTertiary,
                               fontSize: 10,

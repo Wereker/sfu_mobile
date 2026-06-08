@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class EmptyDay extends StatelessWidget {
@@ -8,6 +9,8 @@ class EmptyDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return Padding(
       padding: const EdgeInsets.only(top: 64),
       child: Column(
@@ -15,7 +18,7 @@ class EmptyDay extends StatelessWidget {
           Icon(Icons.coffee_outlined, size: 40, color: ext.textTertiary),
           const SizedBox(height: 12),
           Text(
-            'Занятий нет, отдыхай',
+            t.timetable.noLessons,
             style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
           ),
         ],

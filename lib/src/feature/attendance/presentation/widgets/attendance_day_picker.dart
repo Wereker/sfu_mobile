@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 
 class AttendanceDayPicker extends StatelessWidget {
   const AttendanceDayPicker({
@@ -11,26 +12,33 @@ class AttendanceDayPicker extends StatelessWidget {
   final int selected;
   final ValueChanged<int> onChanged;
 
-  static const _labels = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+  static final _labels = [
+    t.timetable.days.mon,
+    t.timetable.days.tue,
+    t.timetable.days.wed,
+    t.timetable.days.thu,
+    t.timetable.days.fri,
+    t.timetable.days.sat,
+  ];
 
   DateTime _dateForWeekday(int wd) {
-    final today  = DateTime.now();
+    final today = DateTime.now();
     final monday = today.subtract(Duration(days: today.weekday - 1));
     return monday.add(Duration(days: wd - 1));
   }
 
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
+    final cs = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final now = DateTime.now();
 
     return Row(
       children: List.generate(6, (i) {
-        final wd      = i + 1;
-        final date    = _dateForWeekday(wd);
+        final wd = i + 1;
+        final date = _dateForWeekday(wd);
         final isActive = wd == selected;
-        final isToday  = wd == now.weekday;
+        final isToday = wd == now.weekday;
 
         return Expanded(
           child: Padding(

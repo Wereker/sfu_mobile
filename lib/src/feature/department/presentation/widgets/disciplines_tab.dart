@@ -86,7 +86,6 @@ class DisciplinesTab extends StatelessWidget {
         error: (_) => const DisciplinesSkeleton(),
         success: (_) => SliverMainAxisGroup(
           slivers: [
-            // Бакалавриат — с приоритетами
             SliverToBoxAdapter(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,8 +103,6 @@ class DisciplinesTab extends StatelessWidget {
               ),
             ),
             _BachelorDisciplineList(disciplines: _bachelor),
-
-            // Магистратура — только информация
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(top: 24, bottom: 4),
@@ -137,8 +134,6 @@ class DisciplinesTab extends StatelessWidget {
   }
 }
 
-// ── Список бакалаврских дисциплин с перетаскиванием приоритетов
-
 class _BachelorDisciplineList extends StatefulWidget {
   const _BachelorDisciplineList({required this.disciplines});
   final List<DisciplineData> disciplines;
@@ -158,11 +153,85 @@ class _BachelorDisciplineListState extends State<_BachelorDisciplineList> {
     _ordered = List.of(widget.disciplines);
   }
 
+  Widget _buildCard(BuildContext context, int i, {double opacity = 1.0}) {
+    final cs = Theme.of(context).colorScheme;
+    final ext = Theme.of(context).extension<AppColors>()!;
+    final tt = Theme.of(context).textTheme;
+    final d = _ordered[i];
+
+    return Opacity(
+      opacity: opacity,
+      child: Container(
+        decoration: BoxDecoration(
+          color: cs.surface,
+          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+          border: Border.all(color: ext.border),
+          boxShadow: opacity < 1.0
+              ? [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: .12),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            )
+          ]
+              : null,
+        ),
+        padding: const EdgeInsets.all(14),
+        child: Row(
+          children: [
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: cs.primary,
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                '${i + 1}',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                  height: 1,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    d.name,
+                    style: tt.labelLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '${d.professor} · ${d.credits} з.е.',
+                    style:
+                    tt.labelSmall?.copyWith(color: ext.textSecondary),
+                  ),
+                ],
+              ),
+            ),
+            ReorderableDragStartListener(
+              index: i,
+              child: Icon(Icons.drag_handle,
+                  color: ext.textTertiary, size: 22),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
 
     return SliverMainAxisGroup(
       slivers: [
@@ -171,6 +240,18 @@ class _BachelorDisciplineListState extends State<_BachelorDisciplineList> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             buildDefaultDragHandles: false,
+            // Ключевое исправление — proxyDecorator сохраняет скругление
+            proxyDecorator: (child, index, animation) {
+              return AnimatedBuilder(
+                animation: animation,
+                builder: (_, __) => Material(
+                  color: Colors.transparent,
+                  borderRadius:
+                  BorderRadius.circular(AppTheme.radiusLg),
+                  child: _buildCard(context, index, opacity: 0.95),
+                ),
+              );
+            },
             onReorder: (oldIndex, newIndex) {
               setState(() {
                 if (newIndex > oldIndex) newIndex--;
@@ -189,72 +270,12 @@ class _BachelorDisciplineListState extends State<_BachelorDisciplineList> {
                     context: context,
                     child: DisciplineDetailSheet(discipline: d),
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: cs.surface,
-                      borderRadius:
-                      BorderRadius.circular(AppTheme.radiusLg),
-                      border: Border.all(color: ext.border),
-                    ),
-                    padding: const EdgeInsets.all(14),
-                    child: Row(
-                      children: [
-                        // Приоритет
-                        Container(
-                          width: 32, height: 32,
-                          decoration: BoxDecoration(
-                            color: cs.primary,
-                            shape: BoxShape.circle,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            '${i + 1}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 14,
-                              height: 1,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                d.name,
-                                style: tt.labelLarge?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                '${d.professor} · ${d.credits} з.е.',
-                                style: tt.labelSmall
-                                    ?.copyWith(color: ext.textSecondary),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Ручка для перетаскивания
-                        ReorderableDragStartListener(
-                          index: i,
-                          child: Icon(Icons.drag_handle,
-                              color: ext.textTertiary, size: 22),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: _buildCard(context, i),
                 ),
               );
             },
           ),
         ),
-
-        // Кнопка отправки приоритетов
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(bottom: 8),
@@ -298,7 +319,7 @@ class _InfoBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -313,8 +334,8 @@ class _InfoBanner extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(text,
-                style: tt.bodySmall?.copyWith(
-                    color: ext.infoFg, height: 1.4)),
+                style: tt.bodySmall
+                    ?.copyWith(color: ext.infoFg, height: 1.4)),
           ),
         ],
       ),
@@ -322,7 +343,6 @@ class _InfoBanner extends StatelessWidget {
   }
 }
 
-// Тип дисциплины влияет на UI
 enum DisciplineType { bachelor, master }
 
 class DisciplineData {
@@ -343,7 +363,6 @@ class DisciplineData {
   });
 }
 
-// Шторка с деталями дисциплины
 class DisciplineDetailSheet extends StatelessWidget {
   const DisciplineDetailSheet({super.key, required this.discipline});
   final DisciplineData discipline;
@@ -351,7 +370,7 @@ class DisciplineDetailSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final tt = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -395,23 +414,17 @@ class DisciplineDetailSheet extends StatelessWidget {
             ),
           ],
         ),
-
         const SizedBox(height: 12),
-
         Text(
           discipline.name,
           style: tt.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
-
         const SizedBox(height: 6),
-
         Text(
           discipline.professor,
           style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
         ),
-
         Divider(color: ext.divider, height: 24),
-
         Text('О дисциплине',
             style: tt.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
@@ -420,10 +433,7 @@ class DisciplineDetailSheet extends StatelessWidget {
           style: tt.bodyLarge?.copyWith(
               fontSize: 15, height: 1.6, color: ext.textPrimary),
         ),
-
         const SizedBox(height: 16),
-
-        // Мест
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(12),
@@ -433,7 +443,8 @@ class DisciplineDetailSheet extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(Icons.people_outline, size: 16, color: ext.textOnTinted),
+              Icon(Icons.people_outline,
+                  size: 16, color: ext.textOnTinted),
               const SizedBox(width: 8),
               Text(
                 'Мест: ${discipline.seats}',
@@ -442,7 +453,6 @@ class DisciplineDetailSheet extends StatelessWidget {
             ],
           ),
         ),
-
         if (discipline.type == DisciplineType.master) ...[
           const SizedBox(height: 24),
           Container(

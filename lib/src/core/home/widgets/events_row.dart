@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/events/presentation/bloc/events_bloc.dart';
 import 'package:sfu/src/feature/events/presentation/widgets/event_card.dart';
@@ -89,9 +90,11 @@ class _EmptyEvents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
+    final t = Translations.of(context);
+
     return Center(
       child: Text(
-        'Нет событий',
+        t.home.noEvents,
         style: Theme.of(context)
             .textTheme
             .bodyMedium

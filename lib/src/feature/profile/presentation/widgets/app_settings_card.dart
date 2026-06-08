@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/settings/presentation/bloc/settings_bloc.dart';
 
@@ -8,13 +9,14 @@ class AppSettingsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
 
     return BlocBuilder<SettingsBloc, SettingsState>(
       builder: (context, state) {
-        final settings = state.maybeWhen(success: (s) => s, orElse: () => null);
+        final settings  = state.maybeWhen(success: (s) => s, orElse: () => null);
         final themeMode = settings?.themeMode ?? 'light';
         final locale    = settings?.locale ?? 'ru';
 
@@ -26,7 +28,6 @@ class AppSettingsCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // ── Тема ──
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
                 child: Column(
@@ -42,14 +43,14 @@ class AppSettingsCard extends StatelessWidget {
                           color: ext.textSecondary,
                         ),
                         const SizedBox(width: 10),
-                        Text('Тема', style: tt.labelLarge),
+                        Text(t.profile.settings.theme, style: tt.labelLarge),
                       ],
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
                         _ThemeButton(
-                          label: 'Светлая',
+                          label: t.profile.settings.light,
                           icon: Icons.light_mode_outlined,
                           isSelected: themeMode == 'light',
                           onTap: () => context.read<SettingsBloc>().add(
@@ -59,7 +60,7 @@ class AppSettingsCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 5),
                         _ThemeButton(
-                          label: 'Тёмная',
+                          label: t.profile.settings.dark,
                           icon: Icons.dark_mode_outlined,
                           isSelected: themeMode == 'dark',
                           onTap: () => context.read<SettingsBloc>().add(
@@ -69,7 +70,7 @@ class AppSettingsCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 5),
                         _ThemeButton(
-                          label: 'Системная',
+                          label: t.profile.settings.system,
                           icon: Icons.brightness_auto_outlined,
                           isSelected: themeMode == 'system',
                           onTap: () => context.read<SettingsBloc>().add(
@@ -85,7 +86,6 @@ class AppSettingsCard extends StatelessWidget {
 
               Divider(height: 1, color: ext.divider, indent: 16),
 
-              // ── Язык ──
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
                 child: Column(
@@ -96,14 +96,15 @@ class AppSettingsCard extends StatelessWidget {
                         Icon(Icons.language_outlined,
                             size: 18, color: ext.textSecondary),
                         const SizedBox(width: 10),
-                        Text('Язык', style: tt.labelLarge),
+                        Text(t.profile.settings.language,
+                            style: tt.labelLarge),
                       ],
                     ),
                     const SizedBox(height: 10),
                     Row(
                       children: [
                         _ThemeButton(
-                          label: 'Русский',
+                          label: t.profile.settings.russian,
                           isSelected: locale == 'ru',
                           onTap: () => context.read<SettingsBloc>().add(
                             SettingsEvent.updateAppLocalization(
@@ -112,7 +113,7 @@ class AppSettingsCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         _ThemeButton(
-                          label: 'English',
+                          label: t.profile.settings.english,
                           isSelected: locale == 'en',
                           onTap: () => context.read<SettingsBloc>().add(
                             SettingsEvent.updateAppLocalization(
@@ -156,9 +157,12 @@ class _ThemeButton extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+          padding:
+          const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
           decoration: BoxDecoration(
-            color: isSelected ? cs.primary.withValues(alpha: .12) : ext.surfaceTinted,
+            color: isSelected
+                ? cs.primary.withValues(alpha: .12)
+                : ext.surfaceTinted,
             borderRadius: BorderRadius.circular(AppTheme.radiusMd),
             border: Border.all(
               color: isSelected ? cs.primary : ext.border,
@@ -169,11 +173,8 @@ class _ThemeButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (icon != null) ...[
-                Icon(
-                  icon,
-                  size: 14,
-                  color: isSelected ? cs.primary : ext.textSecondary,
-                ),
+                Icon(icon, size: 14,
+                    color: isSelected ? cs.primary : ext.textSecondary),
                 const SizedBox(width: 5),
               ],
               Text(

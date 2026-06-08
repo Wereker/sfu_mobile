@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class ContactCard extends StatelessWidget {
@@ -21,6 +22,7 @@ class ContactCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
 
@@ -34,7 +36,7 @@ class ContactCard extends StatelessWidget {
         children: [
           _EditableContactRow(
             icon: Icons.phone_outlined,
-            label: 'Телефон',
+            label: t.profile.contacts.phone,
             hint: '+7 900 000 00 00',
             controller: phoneCtrl,
             isEditing: editingPhone,
@@ -43,7 +45,7 @@ class ContactCard extends StatelessWidget {
           Divider(height: 1, color: ext.divider, indent: 16),
           _EditableContactRow(
             icon: Icons.mail_outline,
-            label: 'Почта',
+            label: t.profile.contacts.email,
             hint: 'example@sfu-kras.ru',
             controller: emailCtrl,
             isEditing: editingEmail,
@@ -52,7 +54,7 @@ class ContactCard extends StatelessWidget {
           Divider(height: 1, color: ext.divider, indent: 16),
           _EditableContactRow(
             icon: Icons.telegram,
-            label: 'Telegram',
+            label: t.profile.contacts.telegram,
             hint: '@username',
             controller: tgCtrl,
             isEditing: editingTg,
@@ -97,7 +99,8 @@ class _EditableContactRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(label,
-                    style: tt.labelSmall?.copyWith(color: ext.textSecondary)),
+                    style:
+                    tt.labelSmall?.copyWith(color: ext.textSecondary)),
                 const SizedBox(height: 3),
                 isEditing
                     ? TextField(

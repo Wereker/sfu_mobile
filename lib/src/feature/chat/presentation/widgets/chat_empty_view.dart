@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class ChatEmptyView extends StatelessWidget {
@@ -6,6 +7,7 @@ class ChatEmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
 
@@ -14,10 +16,9 @@ class ChatEmptyView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.chat_bubble_outline,
-                size: 48, color: ext.textTertiary),
+            Icon(Icons.chat_bubble_outline, size: 48, color: ext.textTertiary),
             const SizedBox(height: 12),
-            Text('Чатов пока нет',
+            Text(t.chat.noChats,
                 style: tt.bodyMedium?.copyWith(color: ext.textSecondary)),
           ],
         ),

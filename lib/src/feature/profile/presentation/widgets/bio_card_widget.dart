@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class BioCard extends StatelessWidget {
@@ -15,6 +16,7 @@ class BioCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
@@ -33,7 +35,7 @@ class BioCard extends StatelessWidget {
             children: [
               Icon(Icons.person_outline, size: 16, color: ext.textTertiary),
               const SizedBox(width: 8),
-              Text('Краткая биография',
+              Text(t.profile.bio.title,
                   style: tt.labelSmall?.copyWith(color: ext.textSecondary)),
               const Spacer(),
               GestureDetector(
@@ -63,8 +65,7 @@ class BioCard extends StatelessWidget {
             textCapitalization: TextCapitalization.sentences,
             style: tt.bodyLarge?.copyWith(fontSize: 15, height: 1.5),
             decoration: InputDecoration(
-              hintText:
-              'Расскажите о своей научной деятельности...',
+              hintText: t.profile.bio.hint,
               hintStyle:
               tt.bodyMedium?.copyWith(color: ext.textTertiary),
               isDense: true,
@@ -76,7 +77,7 @@ class BioCard extends StatelessWidget {
           )
               : controller.text.isEmpty
               ? Text(
-            'Нажмите редактировать чтобы добавить информацию о себе',
+            t.profile.bio.empty,
             style: tt.bodyMedium
                 ?.copyWith(color: ext.textTertiary, height: 1.5),
           )

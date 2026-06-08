@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/attendance/presentation/screens/attendance_screen.dart';
 
@@ -12,27 +13,34 @@ class LessonAttendanceCard extends StatelessWidget {
   final LessonData lesson;
   final VoidCallback onTap;
 
-  Color _typeBg(AppColors ext) => switch (lesson.type) {
-    'лекция' => ext.infoBg,
-    'пр. занятие' => ext.successBg,
-    'лаб. работа' => ext.warningBg,
-    _ => ext.divider,
-  };
-
-  Color _typeFg(AppColors ext) => switch (lesson.type) {
-    'лекция' => ext.infoFg,
-    'пр. занятие' => ext.successFg,
-    'лаб. работа' => ext.warningFg,
-    _ => ext.textSecondary,
-  };
+  Color _typeBg(String typeLabel, AppColors ext) {
+    if (typeLabel == ext.toString()) return ext.divider;
+    return ext.divider;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final ext = Theme.of(context).extension<AppColors>()!;
-    final tt = Theme.of(context).textTheme;
-    final rate = lesson.attendanceRate;
+    final cs      = Theme.of(context).colorScheme;
+    final ext     = Theme.of(context).extension<AppColors>()!;
+    final tt      = Theme.of(context).textTheme;
+    final t       = Translations.of(context);
+    final rate    = lesson.attendanceRate;
     final started = lesson.isStarted;
+
+    // Цвет определяем через сравнение с локализованными строками
+    Color typeBg() {
+      if (lesson.type == t.lesson.lecture)  return ext.infoBg;
+      if (lesson.type == t.lesson.practice) return ext.successBg;
+      if (lesson.type == t.lesson.lab)      return ext.warningBg;
+      return ext.divider;
+    }
+
+    Color typeFg() {
+      if (lesson.type == t.lesson.lecture)  return ext.infoFg;
+      if (lesson.type == t.lesson.practice) return ext.successFg;
+      if (lesson.type == t.lesson.lab)      return ext.warningFg;
+      return ext.textSecondary;
+    }
 
     return GestureDetector(
       onTap: onTap,
@@ -50,14 +58,13 @@ class LessonAttendanceCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Тип + время
                   Row(
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 7, vertical: 3),
                         decoration: BoxDecoration(
-                          color: _typeBg(ext),
+                          color: typeBg(),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
@@ -65,7 +72,7 @@ class LessonAttendanceCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
-                            color: _typeFg(ext),
+                            color: typeFg(),
                             height: 1,
                           ),
                         ),
@@ -85,7 +92,6 @@ class LessonAttendanceCard extends StatelessWidget {
                       style: tt.titleMedium?.copyWith(fontSize: 15)),
                   const SizedBox(height: 4),
 
-                  // Группа + место — место обрезается с ...
                   Row(
                     children: [
                       Icon(Icons.groups_outlined,
@@ -108,9 +114,7 @@ class LessonAttendanceCard extends StatelessWidget {
                       Flexible(
                         flex: 3,
                         child: Text(
-                          lesson.place.isNotEmpty
-                              ? lesson.place
-                              : '—',
+                          lesson.place.isNotEmpty ? lesson.place : '—',
                           style: tt.labelSmall
                               ?.copyWith(color: ext.textSecondary),
                           overflow: TextOverflow.ellipsis,
@@ -122,12 +126,14 @@ class LessonAttendanceCard extends StatelessWidget {
 
                   const SizedBox(height: 12),
 
-                  // Прогресс / приглашение начать
                   if (started) ...[
                     Row(
                       children: [
                         Text(
-                          '${lesson.presentCount} из ${lesson.studentCount} присутствует',
+                          t.attendance.presentOf(
+                            present: lesson.presentCount,
+                            total: lesson.studentCount,
+                          ),
                           style: tt.labelSmall?.copyWith(
                             color: rate >= 0.75
                                 ? ext.successFg
@@ -168,13 +174,13 @@ class LessonAttendanceCard extends StatelessWidget {
                             size: 13, color: ext.textTertiary),
                         const SizedBox(width: 4),
                         Text(
-                          '${lesson.studentCount} студентов',
+                          '${lesson.studentCount}',
                           style: tt.labelSmall
                               ?.copyWith(color: ext.textSecondary),
                         ),
                         const Spacer(),
                         Text(
-                          'Нажмите, чтобы начать',
+                          t.attendance.startJournal,
                           style: tt.labelSmall
                               ?.copyWith(color: ext.textTertiary),
                         ),
@@ -187,9 +193,7 @@ class LessonAttendanceCard extends StatelessWidget {
 
             if (started)
               Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
+                left: 0, top: 0, bottom: 0,
                 child: Container(width: 3, color: cs.primary),
               ),
           ],

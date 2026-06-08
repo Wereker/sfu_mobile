@@ -36,9 +36,7 @@ import 'package:sfu/src/feature/profile/data/repository/profile_repository_impl.
 import 'package:sfu/src/feature/profile/domain/use_case/upload_avatar_use_case.dart';
 import 'package:sfu/src/feature/profile/domain/use_case/upload_avatar_use_case_impl.dart';
 import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_impl.dart';
-import 'package:sfu/src/feature/timetable/data/data_source/remote/timetable_remote_data_source_mock.dart';
 import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_impl.dart';
-import 'package:sfu/src/feature/timetable/data/repository/timetable_repository_mock.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/get_next_lesson_use_case.dart';
 import 'package:sfu/src/feature/timetable/domain/use_case/get_next_lesson_use_case_impl.dart';
 import 'package:shared_preferences/shared_preferences.dart';

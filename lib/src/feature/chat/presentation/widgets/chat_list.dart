@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/chat/domain/entity/chat.dart';
 import 'package:sfu/src/feature/chat/presentation/bloc/chat_bloc.dart';
@@ -31,6 +32,7 @@ class _ChatListState extends State<ChatList> {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
@@ -53,7 +55,7 @@ class _ChatListState extends State<ChatList> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search,
                         color: ext.textTertiary, size: 20),
-                    hintText: 'Поиск чатов и сообщений',
+                    hintText: t.chat.searchHint,
                     hintStyle:
                     tt.bodyMedium?.copyWith(color: ext.textTertiary),
                   ),
@@ -65,7 +67,7 @@ class _ChatListState extends State<ChatList> {
                 ? SliverFillRemaining(
               child: Center(
                 child: Text(
-                  'Ничего не найдено',
+                  t.common.nothingFound,
                   style: tt.bodyMedium
                       ?.copyWith(color: ext.textSecondary),
                 ),
@@ -80,8 +82,7 @@ class _ChatListState extends State<ChatList> {
 
             SliverPadding(
               padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).padding.bottom + 16,
-              ),
+                  bottom: MediaQuery.of(context).padding.bottom + 16),
             ),
           ],
         ),

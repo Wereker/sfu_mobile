@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/core/home/home_body.dart';
 import 'package:sfu/src/core/home/home_loading_screen.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/feature/announcements/presentation/bloc/announcements_bloc.dart';
 import 'package:sfu/src/feature/events/presentation/bloc/events_bloc.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
@@ -61,6 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, profileState) {
         return BlocBuilder<AnnouncementsBloc, AnnouncementsState>(
@@ -128,59 +131,59 @@ class _HomeScreenState extends State<HomeScreen> {
     const ManagementScreen(),
   ];
 
-  List<NavigationDestination> _studentDestinations() => const [
+  List<NavigationDestination> _studentDestinations() => [
     NavigationDestination(
-      icon: Icon(Icons.home_outlined),
-      selectedIcon: Icon(Icons.home),
-      label: 'Главная',
+      icon: const Icon(Icons.home_outlined),
+      selectedIcon: const Icon(Icons.home),
+      label: t.nav.home,
     ),
     NavigationDestination(
       icon: Icon(Icons.calendar_month_outlined),
       selectedIcon: Icon(Icons.calendar_month),
-      label: 'Расписание',
+      label: t.nav.timetable,
     ),
     NavigationDestination(
       icon: Icon(Icons.qr_code_scanner_outlined),
       selectedIcon: Icon(Icons.qr_code_scanner),
-      label: 'QR',
+      label: t.nav.qr,
     ),
     NavigationDestination(
       icon: Icon(Icons.chat_bubble_outline),
       selectedIcon: Icon(Icons.chat_bubble),
-      label: 'Чат',
+      label: t.nav.chat,
     ),
     NavigationDestination(
       icon: Icon(Icons.school_outlined),
       selectedIcon: Icon(Icons.school),
-      label: 'Кафедра',
+      label: t.nav.department,
     ),
   ];
 
-  List<NavigationDestination> _teacherDestinations() => const [
+  List<NavigationDestination> _teacherDestinations() => [
     NavigationDestination(
-      icon: Icon(Icons.home_outlined),
-      selectedIcon: Icon(Icons.home),
-      label: 'Главная',
+      icon: const Icon(Icons.home_outlined),
+      selectedIcon: const Icon(Icons.home),
+      label: t.nav.home,
     ),
     NavigationDestination(
-      icon: Icon(Icons.calendar_month_outlined),
-      selectedIcon: Icon(Icons.calendar_month),
-      label: 'Расписание',
+      icon: const Icon(Icons.calendar_month_outlined),
+      selectedIcon: const Icon(Icons.calendar_month),
+      label: t.nav.timetable,
     ),
     NavigationDestination(
-      icon: Icon(Icons.fact_check_outlined),
-      selectedIcon: Icon(Icons.fact_check),
-      label: 'Журнал',
+      icon: const Icon(Icons.fact_check_outlined),
+      selectedIcon: const Icon(Icons.fact_check),
+      label: t.nav.journal,
     ),
     NavigationDestination(
-      icon: Icon(Icons.chat_bubble_outline),
-      selectedIcon: Icon(Icons.chat_bubble),
-      label: 'Чат',
+      icon: const Icon(Icons.chat_bubble_outline),
+      selectedIcon: const Icon(Icons.chat_bubble),
+      label: t.nav.chat,
     ),
     NavigationDestination(
-      icon: Icon(Icons.admin_panel_settings_outlined),
-      selectedIcon: Icon(Icons.admin_panel_settings),
-      label: 'Управление',
+      icon: const Icon(Icons.admin_panel_settings_outlined),
+      selectedIcon: const Icon(Icons.admin_panel_settings),
+      label: t.nav.management,
     ),
   ];
 }

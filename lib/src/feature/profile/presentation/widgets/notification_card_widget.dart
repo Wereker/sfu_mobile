@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/profile/presentation/widgets/settings_toggle_button.dart';
 
@@ -18,6 +19,7 @@ class NotificationsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
 
@@ -31,7 +33,7 @@ class NotificationsCard extends StatelessWidget {
         children: [
           SettingsToggleRow(
             icon: Icons.chat_bubble_outline,
-            label: 'Чаты',
+            label: t.profile.notifications.chats,
             value: notifyChats,
             onChanged: onChats,
             isLast: false,
@@ -39,7 +41,7 @@ class NotificationsCard extends StatelessWidget {
           Divider(height: 1, color: ext.divider, indent: 16),
           SettingsToggleRow(
             icon: Icons.campaign_outlined,
-            label: 'Объявления',
+            label: t.profile.notifications.announcements,
             value: notifyNews,
             onChanged: onNews,
             isLast: false,
@@ -47,7 +49,7 @@ class NotificationsCard extends StatelessWidget {
           Divider(height: 1, color: ext.divider, indent: 16),
           SettingsToggleRow(
             icon: Icons.event_outlined,
-            label: 'События',
+            label: t.profile.notifications.events,
             value: notifyEvents,
             onChanged: onEvents,
             isLast: true,

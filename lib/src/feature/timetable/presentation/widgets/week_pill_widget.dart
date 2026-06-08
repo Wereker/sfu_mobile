@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class WeekPill extends StatelessWidget {
@@ -19,6 +20,8 @@ class WeekPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return Container(
       decoration: BoxDecoration(
         color: ext.surfaceTinted,
@@ -29,7 +32,7 @@ class WeekPill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _PillSegment(
-            label: 'Нечётная',
+            label: t.timetable.weekOdd,
             value: '1',
             selected: selected,
             onChanged: onChanged,
@@ -38,7 +41,7 @@ class WeekPill extends StatelessWidget {
             tt: tt,
           ),
           _PillSegment(
-            label: 'Чётная',
+            label: t.timetable.weekEven,
             value: '2',
             selected: selected,
             onChanged: onChanged,

@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class JournalQrModal extends StatefulWidget {
@@ -47,13 +48,13 @@ class _JournalQrModalState extends State<JournalQrModal> {
 
   @override
   Widget build(BuildContext context) {
+    final t       = Translations.of(context);
     final ext     = Theme.of(context).extension<AppColors>()!;
     final tt      = Theme.of(context).textTheme;
     final screenH = MediaQuery.of(context).size.height;
 
     return Stack(
       children: [
-        // Блюр
         GestureDetector(
           onTap: () => Navigator.pop(context),
           child: BackdropFilter(
@@ -61,8 +62,6 @@ class _JournalQrModalState extends State<JournalQrModal> {
             child: Container(color: Colors.black.withValues(alpha: .5)),
           ),
         ),
-
-        // Шторка
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -78,7 +77,6 @@ class _JournalQrModalState extends State<JournalQrModal> {
             ),
             child: Column(
               children: [
-                // Ручка
                 Container(
                   width: 36, height: 4,
                   margin: const EdgeInsets.only(bottom: 20),
@@ -87,17 +85,17 @@ class _JournalQrModalState extends State<JournalQrModal> {
                       borderRadius: BorderRadius.circular(2)),
                 ),
 
-                Text('QR для отметки', style: tt.titleMedium),
+                Text('QR', style: tt.titleMedium),
                 const SizedBox(height: 4),
                 Text(
                   '${widget.lessonTitle} · ${widget.group}',
-                  style: tt.labelSmall?.copyWith(color: ext.textSecondary),
+                  style:
+                  tt.labelSmall?.copyWith(color: ext.textSecondary),
                   textAlign: TextAlign.center,
                 ),
 
                 const SizedBox(height: 20),
 
-                // QR или «истёк»
                 Expanded(
                   child: _remaining > 0
                       ? Container(
@@ -109,7 +107,6 @@ class _JournalQrModalState extends State<JournalQrModal> {
                     ),
                     child: QrImageView(
                       data: widget.token,
-                      version: QrVersions.auto,
                       backgroundColor: Colors.white,
                       eyeStyle: const QrEyeStyle(
                         eyeShape: QrEyeShape.square,
@@ -127,9 +124,10 @@ class _JournalQrModalState extends State<JournalQrModal> {
                       Icon(Icons.timer_off_outlined,
                           size: 48, color: ext.errorFg),
                       const SizedBox(height: 12),
-                      Text('QR-код устарел', style: tt.titleMedium),
+                      Text(t.attendance.tokenValid,
+                          style: tt.titleMedium),
                       const SizedBox(height: 6),
-                      Text('Создайте новый',
+                      Text(t.attendance.createNew,
                           style: tt.bodyMedium
                               ?.copyWith(color: ext.textSecondary)),
                     ],
@@ -138,7 +136,6 @@ class _JournalQrModalState extends State<JournalQrModal> {
 
                 const SizedBox(height: 16),
 
-                // Таймер
                 if (_remaining > 0)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -147,16 +144,19 @@ class _JournalQrModalState extends State<JournalQrModal> {
                         Icons.timer_outlined,
                         size: 15,
                         color: _remaining < 60
-                            ? ext.warningFg : ext.textTertiary,
+                            ? ext.warningFg
+                            : ext.textTertiary,
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'Действителен $_timeLabel',
+                        '$_timeLabel',
                         style: tt.labelSmall?.copyWith(
                           color: _remaining < 60
-                              ? ext.warningFg : ext.textTertiary,
+                              ? ext.warningFg
+                              : ext.textTertiary,
                           fontWeight: _remaining < 60
-                              ? FontWeight.w600 : FontWeight.w400,
+                              ? FontWeight.w600
+                              : FontWeight.w400,
                         ),
                       ),
                     ],
@@ -173,8 +173,9 @@ class _JournalQrModalState extends State<JournalQrModal> {
                       Clipboard.setData(
                           ClipboardData(text: widget.token));
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Токен скопирован')),
+                        SnackBar(
+                            content:
+                            Text(t.attendance.tokenCopied)),
                       );
                     }
                         : () => Navigator.pop(context),
@@ -183,7 +184,9 @@ class _JournalQrModalState extends State<JournalQrModal> {
                       size: 18,
                     ),
                     label: Text(
-                      _remaining > 0 ? 'Скопировать токен' : 'Закрыть',
+                      _remaining > 0
+                          ? t.attendance.copyToken
+                          : t.common.close,
                     ),
                   ),
                 ),

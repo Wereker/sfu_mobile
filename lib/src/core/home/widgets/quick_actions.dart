@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/announcements/presentation/bloc/announcements_bloc.dart';
 import 'package:sfu/src/feature/events/presentation/bloc/events_bloc.dart';
@@ -13,6 +14,7 @@ class QuickActions extends StatelessWidget {
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
+    final t = Translations.of(context);
 
     final eventsCount = context.watch<EventsBloc>().state.maybeWhen(
       success: (events) => events.length,
@@ -30,8 +32,8 @@ class QuickActions extends StatelessWidget {
           Expanded(
             child: _StatCard(
               icon: Icons.calendar_month_outlined,
-              label: 'Расписание',
-              sub: 'На неделю',
+              label: t.home.timetableCard,
+              sub: t.home.timetableCardSub,
               cs: cs, ext: ext, tt: tt,
               onTap: () => onTabChange(1),
             ),
@@ -40,8 +42,8 @@ class QuickActions extends StatelessWidget {
           Expanded(
             child: _StatCard(
               icon: Icons.campaign_outlined,
-              label: 'Объявления',
-              sub: annCount > 0 ? '$annCount новых' : 'Нет новых',
+              label: t.home.announcementsCard,
+              sub: annCount > 0 ? t.home.announcementsNew(count: annCount) : t.home.announcementsNoNew,
               cs: cs, ext: ext, tt: tt,
             ),
           ),
@@ -49,8 +51,8 @@ class QuickActions extends StatelessWidget {
           Expanded(
             child: _StatCard(
               icon: Icons.event_outlined,
-              label: 'События',
-              sub: eventsCount > 0 ? '$eventsCount предстоит' : 'Нет событий',
+              label: t.home.eventsCard,
+              sub: eventsCount > 0 ? t.home.eventsCount(count: eventsCount) : t.home.eventsNone,
               cs: cs, ext: ext, tt: tt,
             ),
           ),

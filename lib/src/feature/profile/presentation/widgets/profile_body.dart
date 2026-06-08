@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/profile/domain/entity/user.dart';
 import 'package:sfu/src/feature/profile/presentation/bloc/profile_bloc.dart';
@@ -23,7 +24,7 @@ class ProfileBody extends StatefulWidget {
 }
 
 class _ProfileBodyState extends State<ProfileBody> {
-  Uint8List? _localImageBytes; // превью после выбора из галереи
+  Uint8List? _localImageBytes;
 
   late final TextEditingController _phoneCtrl;
   late final TextEditingController _emailCtrl;
@@ -36,23 +37,23 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   bool _editingPhone = false;
   bool _editingEmail = false;
-  bool _editingTg = false;
-  bool _editingBio = false;
+  bool _editingTg    = false;
+  bool _editingBio   = false;
 
   bool get _isTeacher =>
       widget.user.role == UserRole.teacher ||
-      widget.user.role == UserRole.admin;
+          widget.user.role == UserRole.admin;
 
   @override
   void initState() {
     super.initState();
     _phoneCtrl = TextEditingController(text: widget.user.phone ?? '');
     _emailCtrl = TextEditingController(text: widget.user.email);
-    _tgCtrl = TextEditingController(text: '');
-    _bioCtrl = TextEditingController(text: widget.user.bio ?? '');
-    _notifyChats = widget.user.notifyChats;
+    _tgCtrl    = TextEditingController(text: '');
+    _bioCtrl   = TextEditingController(text: widget.user.bio ?? '');
+    _notifyChats  = widget.user.notifyChats;
     _notifyEvents = widget.user.notifyEvents;
-    _notifyNews = widget.user.notifyNews;
+    _notifyNews   = widget.user.notifyNews;
   }
 
   @override
@@ -65,11 +66,8 @@ class _ProfileBodyState extends State<ProfileBody> {
   }
 
   Future<void> _onAvatarChanged(String path) async {
-    // Читаем байты для мгновенного локального превью
     final bytes = await File(path).readAsBytes();
     if (mounted) setState(() => _localImageBytes = bytes);
-    // Загружаем на сервер — после успеха блок перезагрузит профиль
-    // и _RemoteAvatar подхватит новое изображение из кэша
     if (mounted) {
       context.read<ProfileBloc>().add(ProfileEvent.uploadAvatar(path));
     }
@@ -77,10 +75,22 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final ext = Theme.of(context).extension<AppColors>()!;
-    final tt = Theme.of(context).textTheme;
+    final tt  = Theme.of(context).textTheme;
 
-    return CustomScrollView(
+    return BlocListener<ProfileBloc, ProfileState>(
+      listener: (context, state) {
+        state.maybeWhen(
+          success: (_) {
+            if (_localImageBytes != null) {
+              setState(() => _localImageBytes = null);
+            }
+          },
+          orElse: () {},
+        );
+      },
+      child: CustomScrollView(
         slivers: [
           const ProfileAppBar(),
           SliverPadding(
@@ -89,55 +99,58 @@ class _ProfileBodyState extends State<ProfileBody> {
               delegate: SliverChildListDelegate([
                 ProfileHeader(
                   user: widget.user,
-                  localImageBytes: _localImageBytes, // ← превью локального фото
+                  localImageBytes: _localImageBytes,
                   onAvatarChanged: _onAvatarChanged,
                 ),
 
                 const SizedBox(height: 24),
 
                 if (_isTeacher) ...[
-                  _SectionLabel(label: 'О себе'),
+                  Text(t.profile.sectionAbout,
+                      style: tt.titleMedium),
                   const SizedBox(height: 8),
                   BioCard(
                     controller: _bioCtrl,
                     isEditing: _editingBio,
-                    onToggle: () => setState(() => _editingBio = !_editingBio),
+                    onToggle: () =>
+                        setState(() => _editingBio = !_editingBio),
                   ),
                   const SizedBox(height: 24),
                 ],
 
-                _SectionLabel(label: 'Контакты'),
+                Text(t.profile.sectionContacts, style: tt.titleMedium),
                 const SizedBox(height: 8),
                 ContactCard(
-                  phoneCtrl: _phoneCtrl,
-                  emailCtrl: _emailCtrl,
-                  tgCtrl: _tgCtrl,
-                  editingPhone: _editingPhone,
-                  editingEmail: _editingEmail,
-                  editingTg: _editingTg,
+                  phoneCtrl:     _phoneCtrl,
+                  emailCtrl:     _emailCtrl,
+                  tgCtrl:        _tgCtrl,
+                  editingPhone:  _editingPhone,
+                  editingEmail:  _editingEmail,
+                  editingTg:     _editingTg,
                   onTogglePhone: () =>
                       setState(() => _editingPhone = !_editingPhone),
                   onToggleEmail: () =>
                       setState(() => _editingEmail = !_editingEmail),
-                  onToggleTg: () => setState(() => _editingTg = !_editingTg),
+                  onToggleTg:    () =>
+                      setState(() => _editingTg = !_editingTg),
                 ),
 
                 const SizedBox(height: 24),
 
-                _SectionLabel(label: 'Настройки'),
+                Text(t.profile.sectionSettings, style: tt.titleMedium),
                 const SizedBox(height: 8),
                 const AppSettingsCard(),
 
                 const SizedBox(height: 24),
 
-                _SectionLabel(label: 'Уведомления'),
+                Text(t.profile.sectionNotifications, style: tt.titleMedium),
                 const SizedBox(height: 8),
                 NotificationsCard(
-                  notifyChats: _notifyChats,
-                  notifyNews: _notifyNews,
+                  notifyChats:  _notifyChats,
+                  notifyNews:   _notifyNews,
                   notifyEvents: _notifyEvents,
-                  onChats: (v) => setState(() => _notifyChats = v),
-                  onNews: (v) => setState(() => _notifyNews = v),
+                  onChats:  (v) => setState(() => _notifyChats  = v),
+                  onNews:   (v) => setState(() => _notifyNews   = v),
                   onEvents: (v) => setState(() => _notifyEvents = v),
                 ),
 
@@ -147,7 +160,7 @@ class _ProfileBodyState extends State<ProfileBody> {
 
                 Center(
                   child: Text(
-                    'Версия 1.1.0',
+                    t.profile.version,
                     style: tt.labelSmall?.copyWith(color: ext.textTertiary),
                   ),
                 ),
@@ -157,15 +170,7 @@ class _ProfileBodyState extends State<ProfileBody> {
             ),
           ),
         ],
-      );
+      ),
+    );
   }
-}
-
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel({required this.label});
-  final String label;
-
-  @override
-  Widget build(BuildContext context) =>
-      Text(label, style: Theme.of(context).textTheme.titleMedium);
 }

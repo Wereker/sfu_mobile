@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/loading_indicator_widget.dart';
 import 'package:sfu/src/feature/timetable/presentation/bloc/timetable_bloc.dart';
@@ -53,6 +54,7 @@ class ErrorView extends StatelessWidget {
   Widget build(BuildContext context) {
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt = Theme.of(context).textTheme;
+    final t = Translations.of(context);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -82,7 +84,7 @@ class ErrorView extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Не удалось загрузить расписание',
+                      t.timetable.errorLoad,
                       textAlign: TextAlign.center,
                       style: tt.titleMedium,
                     ),
@@ -120,7 +122,7 @@ class EmptyView extends StatelessWidget {
           SliverFillRemaining(
             child: Center(
               child: Text(
-                'Расписание не найдено',
+                t.timetable.notFound,
                 style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
               ),
             ),

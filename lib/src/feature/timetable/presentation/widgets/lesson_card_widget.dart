@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/utils/timetable_utils/lesson_status/lesson_status.dart';
 import 'package:sfu/src/core/utils/timetable_utils/timetable_utils.dart';
 import 'package:sfu/src/feature/timetable/domain/entity/lesson/lesson.dart';
@@ -45,9 +46,9 @@ class LessonCard extends StatelessWidget {
 
   String get _typeLabel {
     switch (lesson.type) {
-      case LessonType.lecture:  return 'лекция';
-      case LessonType.practice: return 'пр. занятие';
-      case LessonType.lab:      return 'лаб. работа';
+      case LessonType.lecture:  return t.lesson.lecture;
+      case LessonType.practice: return t.lesson.practice;
+      case LessonType.lab:      return t.lesson.lab;
       case LessonType.unknown:  return '';
     }
   }
@@ -110,9 +111,9 @@ class LessonCard extends StatelessWidget {
 
     // Место: если онлайн — показываем "ЭИОС", иначе "ауд. room · building"
     final placeLabel = lesson.isOnline
-        ? 'ЭИОС'
+        ? t.common.eios
         : [
-      if (lesson.room.isNotEmpty) 'ауд. ${lesson.room}',
+      if (lesson.room.isNotEmpty) t.common.room(room: lesson.room),
       if (lesson.building.isNotEmpty) lesson.building,
     ].join(' · ');
 

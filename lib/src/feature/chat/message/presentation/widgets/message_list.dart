@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/chat/message/domain/entity/message.dart';
 import 'package:sfu/src/feature/chat/message/presentation/widgets/message_bubble.dart';
@@ -18,7 +19,6 @@ class _MessageListState extends State<MessageList> {
   @override
   void didUpdateWidget(covariant MessageList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Прокручиваем вниз при новом сообщении
     if (widget.messages.length != oldWidget.messages.length) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients) {
@@ -56,6 +56,7 @@ class _MessageListState extends State<MessageList> {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
     final msgs = widget.messages;
@@ -63,7 +64,7 @@ class _MessageListState extends State<MessageList> {
     if (msgs.isEmpty) {
       return Center(
         child: Text(
-          'Сообщений пока нет',
+          t.chat.noMessages,
           style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
         ),
       );
