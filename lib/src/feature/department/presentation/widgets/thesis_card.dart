@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/detail_sheet.dart';
 import 'package:sfu/src/feature/department/presentation/widgets/shared/department_initials_avatar.dart';
@@ -11,6 +12,7 @@ class ThesisCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
@@ -36,8 +38,8 @@ class ThesisCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     thesis.title,
-                    style: tt.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w600, fontSize: 14),
+                    style: tt.labelLarge
+                        ?.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -49,7 +51,9 @@ class ThesisCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppTheme.radiusSm),
                   ),
                   child: Text(
-                    thesis.isFree ? 'Свободна' : 'Занята',
+                    thesis.isFree
+                        ? t.department.theses.free
+                        : t.department.theses.taken,
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
@@ -70,10 +74,9 @@ class ThesisCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     thesis.takenBy != null
-                        ? '${thesis.professor} · взял ${thesis.takenBy}'
+                        ? '${thesis.professor} · ${t.department.theses.takenBy(name: thesis.takenBy!)}'
                         : thesis.professor,
-                    style: tt.labelSmall?.copyWith(
-                        color: ext.textSecondary),
+                    style: tt.labelSmall?.copyWith(color: ext.textSecondary),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -87,8 +90,9 @@ class ThesisCard extends StatelessWidget {
               Wrap(
                 spacing: 6,
                 runSpacing: 4,
-                children:
-                thesis.tags.map((t) => DepartmentTag(label: t)).toList(),
+                children: thesis.tags
+                    .map((tag) => DepartmentTag(label: tag))
+                    .toList(),
               ),
             ],
           ],
@@ -97,8 +101,6 @@ class ThesisCard extends StatelessWidget {
     );
   }
 }
-
-// ── Шторка с подробной информацией о теме ───────────────────
 
 class _ThesisDetailSheet extends StatefulWidget {
   const _ThesisDetailSheet({required this.thesis});
@@ -113,14 +115,14 @@ class _ThesisDetailSheetState extends State<_ThesisDetailSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final ext = Theme.of(context).extension<AppColors>()!;
-    final tt  = Theme.of(context).textTheme;
+    final t      = Translations.of(context);
+    final ext    = Theme.of(context).extension<AppColors>()!;
+    final tt     = Theme.of(context).textTheme;
     final thesis = widget.thesis;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Статус + теги
         Row(
           children: [
             Container(
@@ -130,7 +132,9 @@ class _ThesisDetailSheetState extends State<_ThesisDetailSheet> {
                 borderRadius: BorderRadius.circular(AppTheme.radiusSm),
               ),
               child: Text(
-                thesis.isFree ? 'Свободна' : 'Занята',
+                thesis.isFree
+                    ? t.department.theses.free
+                    : t.department.theses.taken,
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
@@ -141,9 +145,9 @@ class _ThesisDetailSheetState extends State<_ThesisDetailSheet> {
             ),
             const SizedBox(width: 8),
             ...thesis.tags.take(2).map(
-                  (t) => Padding(
+                  (tag) => Padding(
                 padding: const EdgeInsets.only(right: 6),
-                child: DepartmentTag(label: t),
+                child: DepartmentTag(label: tag),
               ),
             ),
           ],
@@ -151,15 +155,11 @@ class _ThesisDetailSheetState extends State<_ThesisDetailSheet> {
 
         const SizedBox(height: 12),
 
-        // Заголовок
-        Text(
-          thesis.title,
-          style: tt.titleLarge?.copyWith(fontWeight: FontWeight.w700),
-        ),
+        Text(thesis.title,
+            style: tt.titleLarge?.copyWith(fontWeight: FontWeight.w700)),
 
         const SizedBox(height: 14),
 
-        // Преподаватель
         Row(
           children: [
             DepartmentInitialsAvatar(name: thesis.professor, size: 40),
@@ -172,9 +172,8 @@ class _ThesisDetailSheetState extends State<_ThesisDetailSheet> {
                   if (thesis.takenBy != null) ...[
                     const SizedBox(height: 2),
                     Text(
-                      'Взял: ${thesis.takenBy}',
-                      style: tt.labelSmall
-                          ?.copyWith(color: ext.textSecondary),
+                      t.department.theses.takenBy(name: thesis.takenBy!),
+                      style: tt.labelSmall?.copyWith(color: ext.textSecondary),
                     ),
                   ],
                 ],
@@ -185,20 +184,18 @@ class _ThesisDetailSheetState extends State<_ThesisDetailSheet> {
 
         Divider(color: ext.divider, height: 24),
 
-        // Описание
-        Text('Описание',
+        Text(t.department.theses.descTitle,
             style: tt.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
         Text(
           thesis.description,
-          style: tt.bodyLarge?.copyWith(
-              fontSize: 15, height: 1.6, color: ext.textPrimary),
+          style: tt.bodyLarge
+              ?.copyWith(fontSize: 15, height: 1.6, color: ext.textPrimary),
         ),
 
         const SizedBox(height: 16),
 
-        // Требования
-        Text('Требования к студенту',
+        Text(t.department.theses.requiresTitle,
             style: tt.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
         Container(
@@ -210,14 +207,12 @@ class _ThesisDetailSheetState extends State<_ThesisDetailSheet> {
           ),
           child: Text(
             thesis.requirements,
-            style: tt.bodyMedium?.copyWith(
-                color: ext.textOnTinted, height: 1.5),
+            style: tt.bodyMedium?.copyWith(color: ext.textOnTinted, height: 1.5),
           ),
         ),
 
         const SizedBox(height: 24),
 
-        // Кнопка
         if (thesis.isFree)
           SizedBox(
             width: double.infinity,
@@ -240,7 +235,9 @@ class _ThesisDetailSheetState extends State<_ThesisDetailSheet> {
                     size: 18,
                   ),
                   const SizedBox(width: 8),
-                  Text(_applied ? 'Заявка отправлена' : 'Подать заявку'),
+                  Text(_applied
+                      ? t.department.theses.applied
+                      : t.department.theses.apply),
                 ],
               ),
             ),
@@ -258,7 +255,7 @@ class _ThesisDetailSheetState extends State<_ThesisDetailSheet> {
                 Icon(Icons.lock_outline, size: 16, color: ext.errorFg),
                 const SizedBox(width: 8),
                 Text(
-                  'Тема занята студентом ${thesis.takenBy ?? ""}',
+                  t.department.theses.lockedBy(name: thesis.takenBy ?? ''),
                   style: tt.labelLarge?.copyWith(color: ext.errorFg),
                 ),
               ],

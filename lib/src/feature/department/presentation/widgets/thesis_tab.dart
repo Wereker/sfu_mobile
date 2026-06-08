@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/feature/department/presentation/bloc/department_bloc.dart';
 import 'package:sfu/src/feature/department/presentation/widgets/shared/department_filter_chip.dart';
 import 'package:sfu/src/feature/department/presentation/widgets/thesis_card.dart';
@@ -46,7 +47,8 @@ class _ThesisContent extends StatelessWidget {
           'образований на МРТ-снимках с использованием архитектуры U-Net. '
           'Предполагается обучение на датасете BRATS и оценка метрик Dice, IoU. '
           'Результатом работы станет веб-сервис для загрузки и анализа снимков.',
-      requirements: 'Знание PyTorch, опыт работы с изображениями (OpenCV/PIL), базовый опыт в медицинских данных.',
+      requirements:
+      'Знание PyTorch, опыт работы с изображениями (OpenCV/PIL), базовый опыт в медицинских данных.',
       tags: ['CV', 'PyTorch', 'Medical AI'],
     ),
     ThesisData(
@@ -57,7 +59,8 @@ class _ThesisContent extends StatelessWidget {
       'Разработка системы вопросно-ответного поиска на основе Retrieval-Augmented Generation '
           'для базы документов СФУ. Включает парсинг, векторизацию, '
           'хранение в векторной БД и интеграцию с LLM.',
-      requirements: 'LangChain или LlamaIndex, работа с API LLM (OpenAI/Ollama), базы данных (Postgres/Chroma).',
+      requirements:
+      'LangChain или LlamaIndex, работа с API LLM (OpenAI/Ollama), базы данных (Postgres/Chroma).',
       tags: ['NLP', 'RAG', 'LLM'],
     ),
     ThesisData(
@@ -69,7 +72,8 @@ class _ThesisContent extends StatelessWidget {
       'Разработка системы мониторинга и обнаружения аномалий в потоке логов '
           'с применением методов машинного обучения (Isolation Forest, Autoencoder). '
           'Интеграция с ELK Stack.',
-      requirements: 'Scikit-learn, понимание DevOps-инфраструктуры, опыт с временными рядами.',
+      requirements:
+      'Scikit-learn, понимание DevOps-инфраструктуры, опыт с временными рядами.',
       tags: ['Anomaly Detection', 'ELK', 'MLOps'],
     ),
     ThesisData(
@@ -93,6 +97,8 @@ class _ThesisContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+
     return SliverMainAxisGroup(
       slivers: [
         SliverToBoxAdapter(
@@ -101,19 +107,19 @@ class _ThesisContent extends StatelessWidget {
             child: Row(
               children: [
                 DepartmentFilterChip(
-                  label: 'Все',
+                  label: t.department.theses.filterAll,
                   isActive: filter == 0,
                   onTap: () => onFilterChanged(0),
                 ),
                 const SizedBox(width: 8),
                 DepartmentFilterChip(
-                  label: 'Свободные',
+                  label: t.department.theses.filterFree,
                   isActive: filter == 1,
                   onTap: () => onFilterChanged(1),
                 ),
                 const SizedBox(width: 8),
                 DepartmentFilterChip(
-                  label: 'Занятые',
+                  label: t.department.theses.filterTaken,
                   isActive: filter == 2,
                   onTap: () => onFilterChanged(2),
                 ),

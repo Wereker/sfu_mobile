@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/department/domain/entity/staff_member.dart';
 import 'package:sfu/src/feature/department/presentation/widgets/shared/department_initials_avatar.dart';
@@ -11,13 +12,13 @@ class StaffDetailSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Шапка
         Row(
           children: [
             DepartmentInitialsAvatar(name: member.name, size: 56),
@@ -43,25 +44,20 @@ class StaffDetailSheet extends StatelessWidget {
         ),
         const SizedBox(height: 12),
 
-        // Теги
         Wrap(
           spacing: 6,
           runSpacing: 6,
-          children: member.tags
-              .map((t) => DepartmentTag(label: t))
-              .toList(),
+          children: member.tags.map((tag) => DepartmentTag(label: tag)).toList(),
         ),
 
         Divider(color: ext.divider, height: 24),
 
-        // Контакты
         _ContactsBlock(member: member),
 
         const SizedBox(height: 16),
 
-        // Биография
         if (member.bio != null && member.bio!.isNotEmpty) ...[
-          Text('О преподавателе',
+          Text(t.department.staff.bioTitle,
               style: tt.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
           Text(
@@ -72,14 +68,13 @@ class StaffDetailSheet extends StatelessWidget {
           const SizedBox(height: 24),
         ],
 
-        // Кнопка «Написать»
         SizedBox(
           width: double.infinity,
           height: 52,
           child: ElevatedButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.send_outlined, size: 18),
-            label: const Text('Написать'),
+            label: Text(t.common.send),
           ),
         ),
       ],
@@ -92,22 +87,27 @@ class _ContactsBlock extends StatelessWidget {
   final StaffMember member;
 
   void _copy(BuildContext context, String text) {
+    final t = Translations.of(context);
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Скопировано')));
+        .showSnackBar(SnackBar(content: Text(t.common.copied)));
   }
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
 
     final items = <_ContactItem>[
-      _ContactItem(icon: Icons.mail_outline, label: 'Почта', value: member.email),
+      _ContactItem(icon: Icons.mail_outline,
+          label: t.department.staff.emailLabel, value: member.email),
       if (member.phone != null)
-        _ContactItem(icon: Icons.phone_outlined, label: 'Телефон', value: member.phone!),
+        _ContactItem(icon: Icons.phone_outlined,
+            label: t.department.staff.phoneLabel, value: member.phone!),
       if (member.telegram != null)
-        _ContactItem(icon: Icons.telegram, label: 'Telegram', value: member.telegram!),
+        _ContactItem(icon: Icons.telegram,
+            label: t.department.staff.tgLabel, value: member.telegram!),
     ];
 
     return Container(
@@ -118,7 +118,7 @@ class _ContactsBlock extends StatelessWidget {
       ),
       child: Column(
         children: items.asMap().entries.map((entry) {
-          final i = entry.key;
+          final i    = entry.key;
           final item = entry.value;
           final isLast = i == items.length - 1;
 

@@ -267,7 +267,8 @@
       "instituteLabel": "Institute",
       "emailLabel": "Email",
       "phoneLabel": "Phone",
-      "tgLabel": "Telegram"
+      "tgLabel": "Telegram",
+      "bioTitle": "About the lecturer"
     }
   },
   "management": {

@@ -267,7 +267,8 @@
       "instituteLabel": "Институт",
       "emailLabel": "Почта",
       "phoneLabel": "Телефон",
-      "tgLabel": "Telegram"
+      "tgLabel": "Telegram",
+      "bioTitle": "О преподавателе"
     }
   },
   "management": {

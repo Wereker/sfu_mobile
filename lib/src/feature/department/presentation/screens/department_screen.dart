@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/dependency_injection/injection.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/feature/department/presentation/bloc/department_bloc.dart';
 import 'package:sfu/src/feature/department/presentation/widgets/department_app_bar.dart';
 import 'package:sfu/src/feature/department/presentation/widgets/department_segmented_control.dart';
@@ -17,24 +18,25 @@ class DepartmentScreen extends StatefulWidget {
 
 class _DepartmentScreenState extends State<DepartmentScreen> {
   int _tabIndex = 0;
-  static const _tabs = ['Преподаватели', 'Темы ВКР', 'Дисциплины'];
 
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+    final tabs = [t.department.tabStaff, t.department.tabTheses, t.department.tabDisciplines];
+
     return BlocProvider(
       create: (_) => sl<DepartmentBloc>()..add(const DepartmentEvent.load()),
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
             const DepartmentAppBar(),
-
             SliverToBoxAdapter(
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
                     child: DepartmentSegmentedControl(
-                      tabs: _tabs,
+                      tabs: tabs,
                       selected: _tabIndex,
                       onChanged: (i) => setState(() => _tabIndex = i),
                     ),
@@ -43,7 +45,6 @@ class _DepartmentScreenState extends State<DepartmentScreen> {
                 ],
               ),
             ),
-
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
               sliver: switch (_tabIndex) {

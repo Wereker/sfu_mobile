@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/detail_sheet.dart';
 import 'package:sfu/src/feature/management/domain/entity/managed_student.dart';
@@ -65,7 +66,7 @@ class _StudentsTabState extends State<StudentsTab> {
                       children: [
                         Expanded(
                           child: _DropdownFilter<String>(
-                            hint: 'Поток',
+                            hint: t.management.students.streamHint,
                             value: _selectedStream,
                             items: _streams,
                             labelBuilder: (s) => s,
@@ -82,7 +83,7 @@ class _StudentsTabState extends State<StudentsTab> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: _DropdownFilter<String>(
-                            hint: 'Группа',
+                            hint: t.management.students.groupHint,
                             value: _selectedGroup,
                             items: _groups,
                             labelBuilder: (g) => g,
@@ -104,7 +105,7 @@ class _StudentsTabState extends State<StudentsTab> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search,
                             color: ext.textTertiary, size: 20),
-                        hintText: 'Поиск по имени',
+                        hintText: t.management.students.searchHint,
                         hintStyle:
                         tt.bodyMedium?.copyWith(color: ext.textTertiary),
                       ),
@@ -112,7 +113,7 @@ class _StudentsTabState extends State<StudentsTab> {
                     const SizedBox(height: 10),
                     state.maybeWhen(
                       success: (students) => Text(
-                        '${students.length} студентов',
+                        t.management.students.count(count: students.length),
                         style:
                         tt.labelSmall?.copyWith(color: ext.textSecondary),
                       ),
@@ -131,7 +132,7 @@ class _StudentsTabState extends State<StudentsTab> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 48),
                   child: Center(
-                    child: Text('Ничего не найдено',
+                    child: Text(t.common.nothingFound,
                         style: tt.bodyMedium
                             ?.copyWith(color: ext.textSecondary)),
                   ),
@@ -210,7 +211,7 @@ class _StudentRow extends StatelessWidget {
                       if (student.isHeadman) ...[
                         const SizedBox(width: 6),
                         ManagementBadge(
-                            label: 'Ст.',
+                            label: t.management.students.headman,
                             bg: ext.infoBg,
                             fg: ext.infoFg),
                       ],
@@ -224,7 +225,6 @@ class _StudentRow extends StatelessWidget {
                         style: tt.labelSmall
                             ?.copyWith(color: ext.textSecondary),
                       ),
-                      // Иконки контактов рядом с группой
                       if (student.phone != null) ...[
                         const SizedBox(width: 8),
                         Icon(Icons.phone_outlined,
@@ -260,7 +260,7 @@ class _StudentDetail extends StatelessWidget {
   void _copy(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Скопировано')));
+        .showSnackBar(SnackBar(content: Text(t.common.copied)));
   }
 
   @override
@@ -270,11 +270,11 @@ class _StudentDetail extends StatelessWidget {
 
     final contacts = <_ContactItem>[
       if (student.phone != null)
-        _ContactItem(Icons.phone_outlined, 'Телефон', student.phone!),
+        _ContactItem(Icons.phone_outlined, t.management.students.phone, student.phone!),
       if (student.telegram != null)
-        _ContactItem(Icons.telegram, 'Telegram', student.telegram!),
+        _ContactItem(Icons.telegram, t.management.students.telegram, student.telegram!),
       if (student.email != null)
-        _ContactItem(Icons.mail_outline, 'Почта', student.email!),
+        _ContactItem(Icons.mail_outline, t.management.students.email, student.email!),
     ];
 
     return Column(
@@ -300,7 +300,7 @@ class _StudentDetail extends StatelessWidget {
                       if (student.isHeadman) ...[
                         const SizedBox(width: 8),
                         ManagementBadge(
-                            label: 'Староста',
+                            label: t.management.students.headmanFull,
                             bg: ext.infoBg,
                             fg: ext.infoFg),
                       ],
@@ -313,7 +313,7 @@ class _StudentDetail extends StatelessWidget {
         ),
         Divider(color: ext.divider, height: 24),
         if (contacts.isEmpty)
-          Text('Контакты не указаны',
+          Text(t.management.students.noContacts,
               style: tt.bodyMedium?.copyWith(color: ext.textSecondary))
         else
           Container(
@@ -381,7 +381,7 @@ class _StudentDetail extends StatelessWidget {
           child: ElevatedButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.send_outlined, size: 18),
-            label: const Text('Написать'),
+            label: Text(t.management.students.write),
           ),
         ),
       ],

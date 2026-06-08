@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/publish/publish_bloc.dart';
 
@@ -94,7 +95,7 @@ class _PublishTabState extends State<PublishTab> {
   void _submit(BuildContext context) {
     if (_titleCtrl.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Введите заголовок')));
+          SnackBar(content: Text(t.management.publish.titleRequired)));
       return;
     }
     FocusScope.of(context).unfocus();
@@ -102,7 +103,7 @@ class _PublishTabState extends State<PublishTab> {
     if (_type == 'announcement') {
       if (_publishAtCtrl.text.isEmpty || _expiresAtCtrl.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Укажите даты публикации')));
+            SnackBar(content: Text(t.management.publish.datesRequired)));
         return;
       }
       final List<int> groupIds =
@@ -123,7 +124,7 @@ class _PublishTabState extends State<PublishTab> {
     } else {
       if (_startDateCtrl.text.isEmpty || _endDateCtrl.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Укажите даты события')));
+            SnackBar(content: Text(t.management.publish.eventDatesRequired)));
         return;
       }
       context.read<PublishBloc>().add(
@@ -164,8 +165,8 @@ class _PublishTabState extends State<PublishTab> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(_type == 'announcement'
-                      ? 'Объявление опубликовано'
-                      : 'Событие создано'),
+                      ? t.management.publish.announcementPublished
+                      : t.management.publish.eventCreated),
                   backgroundColor: ext.successBg,
                 ),
               );
@@ -191,13 +192,13 @@ class _PublishTabState extends State<PublishTab> {
                 child: Row(
                   children: [
                     _TypeBtn(
-                      label: 'Объявление',
+                      label: t.management.publish.typeAnnouncement,
                       icon: Icons.campaign_outlined,
                       isSelected: _type == 'announcement',
                       onTap: () => setState(() => _type = 'announcement'),
                     ),
                     _TypeBtn(
-                      label: 'Событие',
+                      label: t.management.publish.typeEvent,
                       icon: Icons.event_outlined,
                       isSelected: _type == 'event',
                       onTap: () => setState(() => _type = 'event'),
@@ -212,7 +213,7 @@ class _PublishTabState extends State<PublishTab> {
               TextField(
                 controller: _titleCtrl,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(labelText: 'Заголовок'),
+                decoration: InputDecoration(labelText: t.management.publish.titleLabel),
               ),
               const SizedBox(height: 14),
 
@@ -222,7 +223,7 @@ class _PublishTabState extends State<PublishTab> {
                 textCapitalization: TextCapitalization.sentences,
                 maxLines: 5,
                 decoration: InputDecoration(
-                  labelText: _type == 'announcement' ? 'Текст объявления' : 'Описание события',
+                  labelText: _type == 'announcement' ? t.management.publish.bodyAnnouncementLabel : t.management.publish.bodyEventLabel,
                   alignLabelWithHint: true,
                 ),
               ),
@@ -235,8 +236,8 @@ class _PublishTabState extends State<PublishTab> {
                   readOnly: true,
                   onTap: () => _pickDate(_publishAtCtrl),
                   decoration: InputDecoration(
-                    labelText: 'Дата публикации',
-                    hintText: 'Выберите дату',
+                    labelText: t.management.publish.publishAtLabel,
+                    hintText: t.management.publish.publishAtHint,
                     prefixIcon: Icon(Icons.publish_outlined,
                         size: 20, color: ext.textTertiary),
                   ),
@@ -249,8 +250,8 @@ class _PublishTabState extends State<PublishTab> {
                   readOnly: true,
                   onTap: () => _pickDate(_expiresAtCtrl),
                   decoration: InputDecoration(
-                    labelText: 'Срок действия',
-                    hintText: 'Когда убрать из ленты',
+                    labelText: t.management.publish.expiresAtLabel,
+                    hintText: t.management.publish.expiresAtHint,
                     prefixIcon: Icon(Icons.event_busy_outlined,
                         size: 20, color: ext.textTertiary),
                   ),
@@ -264,8 +265,8 @@ class _PublishTabState extends State<PublishTab> {
                   readOnly: true,
                   onTap: () => _pickDate(_startDateCtrl, withTime: true),
                   decoration: InputDecoration(
-                    labelText: 'Начало события',
-                    hintText: 'Выберите дату и время',
+                    labelText: t.management.publish.eventStartLabel,
+                    hintText: t.management.publish.eventDateHint,
                     prefixIcon: Icon(Icons.calendar_today_outlined,
                         size: 20, color: ext.textTertiary),
                   ),
@@ -278,8 +279,8 @@ class _PublishTabState extends State<PublishTab> {
                   readOnly: true,
                   onTap: () => _pickDate(_endDateCtrl, withTime: true),
                   decoration: InputDecoration(
-                    labelText: 'Конец события',
-                    hintText: 'Выберите дату и время',
+                    labelText: t.management.publish.eventEndLabel,
+                    hintText: t.management.publish.eventDateHint,
                     prefixIcon: Icon(Icons.calendar_month_outlined,
                         size: 20, color: ext.textTertiary),
                   ),
@@ -291,7 +292,7 @@ class _PublishTabState extends State<PublishTab> {
                   controller: _roomIdCtrl,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'Место проведения',
+                    labelText: t.management.publish.placeLabel,
                     hintText: 'ID аудитории',
                     prefixIcon: Icon(Icons.meeting_room_outlined,
                         size: 20, color: ext.textTertiary),
@@ -304,7 +305,7 @@ class _PublishTabState extends State<PublishTab> {
                   controller: _seatsCtrl,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'Количество мест',
+                    labelText: t.management.publish.seatsLabel,
                     hintText: '50',
                     prefixIcon: Icon(Icons.people_outline,
                         size: 20, color: ext.textTertiary),
@@ -318,8 +319,8 @@ class _PublishTabState extends State<PublishTab> {
               TextField(
                 controller: _tagsCtrl,
                 decoration: InputDecoration(
-                  labelText: 'Теги',
-                  hintText: 'IT, наука, спорт — через запятую',
+                  labelText: t.management.publish.tagsLabel,
+                  hintText: t.management.publish.tagsHint,
                   prefixIcon: Icon(Icons.label_outline,
                       size: 20, color: ext.textTertiary),
                 ),
@@ -328,7 +329,7 @@ class _PublishTabState extends State<PublishTab> {
 
               // Обложка
               _FilePicker(
-                label: 'Обложка',
+                label: t.management.publish.coverLabel,
                 icon: Icons.image_outlined,
                 fileName: _coverFileName,
                 onPick: () => setState(() => _coverFileName = 'cover.jpg'),
@@ -341,7 +342,7 @@ class _PublishTabState extends State<PublishTab> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Прикреплённые документы',
+                    Text(t.management.publish.attachmentsTitle,
                         style: tt.labelSmall
                             ?.copyWith(color: ext.textSecondary)),
                     const SizedBox(height: 8),
@@ -367,7 +368,7 @@ class _PublishTabState extends State<PublishTab> {
                       onPressed: () => setState(
                               () => _attachments.add('document_${_attachments.length + 1}.pdf')),
                       icon: const Icon(Icons.add, size: 16),
-                      label: const Text('Добавить документ'),
+                      label: Text(t.management.publish.addAttachment),
                       style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,
                           minimumSize: const Size(0, 32)),
@@ -379,7 +380,7 @@ class _PublishTabState extends State<PublishTab> {
               const SizedBox(height: 20),
 
               // Аудитория
-              Text('Кто должен увидеть',
+              Text(t.management.publish.audienceTitle,
                   style:
                   tt.labelSmall?.copyWith(color: ext.textSecondary)),
               const SizedBox(height: 8),
@@ -388,7 +389,7 @@ class _PublishTabState extends State<PublishTab> {
                 runSpacing: 8,
                 children: [
                   _AudienceChip(
-                    label: 'Все',
+                    label: t.management.publish.audienceAll,
                     isSelected: _audience == 'all',
                     onTap: () => setState(() {
                       _audience = 'all';
@@ -397,17 +398,17 @@ class _PublishTabState extends State<PublishTab> {
                     }),
                   ),
                   _AudienceChip(
-                    label: 'Поток',
+                    label: t.management.publish.audienceStream,
                     isSelected: _audience == 'stream',
                     onTap: () => setState(() => _audience = 'stream'),
                   ),
                   _AudienceChip(
-                    label: 'Группа',
+                    label: t.management.publish.audienceGroup,
                     isSelected: _audience == 'group',
                     onTap: () => setState(() => _audience = 'group'),
                   ),
                   _AudienceChip(
-                    label: 'Кафедра',
+                    label: t.management.publish.audienceDepartment,
                     isSelected: _audience == 'department',
                     onTap: () => setState(() => _audience = 'department'),
                   ),
@@ -418,7 +419,7 @@ class _PublishTabState extends State<PublishTab> {
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   value: _selectedStream,
-                  decoration: const InputDecoration(labelText: 'Поток'),
+                  decoration: InputDecoration(labelText: t.management.publish.audienceStream),
                   items: _allStreams
                       .map((s) => DropdownMenuItem(value: s, child: Text(s)))
                       .toList(),
@@ -430,7 +431,7 @@ class _PublishTabState extends State<PublishTab> {
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
                   value: _selectedGroup,
-                  decoration: const InputDecoration(labelText: 'Группа'),
+                  decoration: InputDecoration(labelText: t.management.publish.audienceGroup),
                   items: _allGroups
                       .map((g) => DropdownMenuItem(value: g, child: Text(g)))
                       .toList(),
@@ -447,7 +448,7 @@ class _PublishTabState extends State<PublishTab> {
                       onChanged: (v) => setState(() => _isPinned = v),
                     ),
                     const SizedBox(width: 8),
-                    Text('Закрепить объявление', style: tt.labelLarge),
+                    Text(t.management.publish.pinLabel, style: tt.labelLarge),
                   ],
                 ),
               ],
@@ -474,10 +475,10 @@ class _PublishTabState extends State<PublishTab> {
                               : Icons.event_outlined,
                           size: 18),
                       label: Text(isLoading
-                          ? 'Публикуем...'
+                          ? t.management.publish.publishing
                           : _type == 'announcement'
-                          ? 'Опубликовать объявление'
-                          : 'Создать событие'),
+                          ? t.management.publish.submitAnnouncement
+                          : t.management.publish.submitEvent),
                     ),
                   );
                 },

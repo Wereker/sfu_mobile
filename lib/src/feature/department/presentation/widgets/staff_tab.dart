@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/department/presentation/bloc/department_bloc.dart';
 import 'package:sfu/src/feature/department/presentation/widgets/staff_card.dart';
@@ -33,6 +34,7 @@ class _StaffError extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
 
@@ -54,7 +56,7 @@ class _StaffError extends StatelessWidget {
                   .read<DepartmentBloc>()
                   .add(const DepartmentEvent.load()),
               icon: const Icon(Icons.refresh),
-              label: const Text('Повторить'),
+              label: Text(t.common.retry),
             ),
           ],
         ),

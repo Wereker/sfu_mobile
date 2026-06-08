@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sfu/src/app/dependency_injection/injection.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/publish/publish_bloc.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/students/students_bloc.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/theses/theses_bloc.dart';
@@ -20,10 +21,11 @@ class ManagementScreen extends StatefulWidget {
 class _ManagementScreenState extends State<ManagementScreen> {
   int _tabIndex = 0;
 
-  static const _tabs = ['Студенты', 'Публикация', 'Темы ВКР'];
-
   @override
   Widget build(BuildContext context) {
+    final t = Translations.of(context);
+    final tabs = [t.management.tabStudents, t.management.tabPublish, t.management.tabTheses];
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -47,7 +49,7 @@ class _ManagementScreenState extends State<ManagementScreen> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
                 child: ManagementSegmentedControl(
-                  tabs: _tabs,
+                  tabs: tabs,
                   selected: _tabIndex,
                   onChanged: (i) => setState(() => _tabIndex = i),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/feature/management/domain/entity/thesis.dart';
 import 'package:sfu/src/feature/management/presentation/bloc/theses/theses_bloc.dart';
@@ -66,7 +67,7 @@ class _ThesesContent extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () => _showAddSheet(context),
                 icon: const Icon(Icons.add, size: 18),
-                label: const Text('Добавить тему ВКР'),
+                label: Text(t.management.theses.addBtn),
               ),
             ),
           ),
@@ -76,7 +77,7 @@ class _ThesesContent extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 48),
               child: Center(
-                child: Text('Нет тем ВКР',
+                child: Text(t.management.theses.noTheses,
                     style: tt.bodyMedium
                         ?.copyWith(color: ext.textSecondary)),
               ),
@@ -119,7 +120,7 @@ class _ThesisCreateSheetState extends State<_ThesisCreateSheet> {
   void _submit() {
     if (_titleCtrl.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Введите название темы')));
+          SnackBar(content: Text(t.management.theses.titleRequired)));
       return;
     }
     context.read<ThesesBloc>().add(
@@ -154,16 +155,16 @@ class _ThesisCreateSheetState extends State<_ThesisCreateSheet> {
               ),
             ),
 
-            Text('Новая тема ВКР', style: tt.titleMedium),
+            Text(t.management.theses.newTitle, style: tt.titleMedium),
             const SizedBox(height: 20),
 
             TextField(
               controller: _titleCtrl,
               textCapitalization: TextCapitalization.sentences,
               maxLines: 2,
-              decoration: const InputDecoration(
-                labelText: 'Название темы',
-                hintText: 'Разработка системы...',
+              decoration: InputDecoration(
+                labelText: t.management.theses.titleLabel,
+                hintText: t.management.theses.titleHint,
                 alignLabelWithHint: true,
               ),
             ),
@@ -173,10 +174,10 @@ class _ThesisCreateSheetState extends State<_ThesisCreateSheet> {
               controller: _descCtrl,
               textCapitalization: TextCapitalization.sentences,
               maxLines: 4,
-              decoration: const InputDecoration(
-                labelText: 'Описание темы',
+              decoration: InputDecoration(
+                labelText: t.management.theses.descLabel,
                 hintText:
-                'Кратко опишите задачи, методы и ожидаемые результаты...',
+                t.management.theses.descHint,
                 alignLabelWithHint: true,
               ),
             ),
@@ -188,7 +189,7 @@ class _ThesisCreateSheetState extends State<_ThesisCreateSheet> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Количество студентов на тему',
+                      Text(t.management.theses.studentsCount,
                           style: tt.labelSmall
                               ?.copyWith(color: ext.textSecondary)),
                       const SizedBox(height: 8),
@@ -236,8 +237,8 @@ class _ThesisCreateSheetState extends State<_ThesisCreateSheet> {
             TextField(
               controller: _tagsCtrl,
               decoration: InputDecoration(
-                labelText: 'Теги',
-                hintText: 'ML, Python, CV — через запятую',
+                labelText: t.management.theses.tagsLabel,
+                hintText: t.management.theses.tagsHint,
                 prefixIcon: Icon(Icons.label_outline,
                     size: 20, color: ext.textTertiary),
               ),
@@ -250,7 +251,7 @@ class _ThesisCreateSheetState extends State<_ThesisCreateSheet> {
               child: ElevatedButton.icon(
                 onPressed: _submit,
                 icon: const Icon(Icons.check, size: 18),
-                label: const Text('Создать тему'),
+                label: Text(t.management.theses.createBtn),
               ),
             ),
 
@@ -288,7 +289,7 @@ class _ThesisRow extends StatelessWidget {
                 Text(
                   thesis.teacherName.isNotEmpty
                       ? thesis.teacherName
-                      : 'Преподаватель не указан',
+                      : t.management.theses.noTeacher,
                   style:
                   tt.labelSmall?.copyWith(color: ext.textSecondary),
                 ),
@@ -313,7 +314,7 @@ class _ThesisRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppTheme.radiusSm),
             ),
             child: Text(
-              thesis.isFree ? 'Свободна' : 'Занята',
+              thesis.isFree ? t.management.theses.free : t.management.theses.taken,
               style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w500,

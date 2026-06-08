@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 import 'package:sfu/src/core/widgets/detail_sheet.dart';
 import 'package:sfu/src/feature/department/presentation/bloc/department_bloc.dart';
@@ -90,13 +91,12 @@ class DisciplinesTab extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Бакалавриат', style: tt.titleMedium),
+                  Text(t.department.disciplines.bachelor, style: tt.titleMedium),
                   const SizedBox(height: 4),
                   _InfoBanner(
                     icon: Icons.info_outline,
                     text:
-                    'Расставьте приоритеты от 1 (наиболее желаемое) до ${_bachelor.length}. '
-                        'Деканат распределит вас на 3 курс с учётом приоритетов и мест.',
+                    t.department.disciplines.bachelorInfo(count: _bachelor.length),
                   ),
                   const SizedBox(height: 12),
                 ],
@@ -109,13 +109,12 @@ class DisciplinesTab extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Магистратура', style: tt.titleMedium),
+                    Text(t.department.disciplines.master, style: tt.titleMedium),
                     const SizedBox(height: 4),
                     _InfoBanner(
                       icon: Icons.school_outlined,
                       text:
-                      'Поступление через конкурс. Ознакомьтесь с программами '
-                          'и обратитесь на кафедру для участия в отборе.',
+                      t.department.disciplines.masterInfo,
                     ),
                     const SizedBox(height: 12),
                   ],
@@ -299,8 +298,8 @@ class _BachelorDisciplineListState extends State<_BachelorDisciplineList> {
                 ),
                 label: Text(
                   _submitted
-                      ? 'Приоритеты отправлены'
-                      : 'Отправить приоритеты',
+                      ? t.department.disciplines.prioritiesSent
+                      : t.department.disciplines.sendPriorities,
                 ),
               ),
             ),
@@ -403,8 +402,8 @@ class DisciplineDetailSheet extends StatelessWidget {
               ),
               child: Text(
                 discipline.type == DisciplineType.bachelor
-                    ? 'Бакалавриат'
-                    : 'Магистратура',
+                    ? t.department.disciplines.bachelor
+                    : t.department.disciplines.master,
                 style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
@@ -425,7 +424,7 @@ class DisciplineDetailSheet extends StatelessWidget {
           style: tt.bodyMedium?.copyWith(color: ext.textSecondary),
         ),
         Divider(color: ext.divider, height: 24),
-        Text('О дисциплине',
+        Text(t.department.disciplines.aboutTitle,
             style: tt.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
         Text(
@@ -447,7 +446,7 @@ class DisciplineDetailSheet extends StatelessWidget {
                   size: 16, color: ext.textOnTinted),
               const SizedBox(width: 8),
               Text(
-                'Мест: ${discipline.seats}',
+                t.department.disciplines.seats(n: discipline.seats),
                 style: tt.labelLarge?.copyWith(color: ext.textOnTinted),
               ),
             ],
@@ -469,8 +468,7 @@ class DisciplineDetailSheet extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Поступление через отдельный конкурс. '
-                        'Обратитесь на кафедру для уточнения условий.',
+                    t.department.disciplines.masterInfo,
                     style: tt.bodySmall
                         ?.copyWith(color: ext.infoFg, height: 1.4),
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sfu/src/core/l10n/strings.g.dart';
 import 'package:sfu/src/core/theme/app_theme.dart';
 
 class ManagementAppBar extends StatelessWidget {
@@ -7,6 +8,7 @@ class ManagementAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t   = Translations.of(context);
     final cs  = Theme.of(context).colorScheme;
     final ext = Theme.of(context).extension<AppColors>()!;
     final tt  = Theme.of(context).textTheme;
@@ -31,10 +33,10 @@ class ManagementAppBar extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Управление', style: tt.displaySmall),
+                    Text(t.management.title, style: tt.displaySmall),
                     const SizedBox(height: 2),
                     Text(
-                      'Студенты, публикации, темы ВКР',
+                      t.management.subtitle,
                       style: tt.labelLarge?.copyWith(color: ext.textSecondary),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -44,8 +46,7 @@ class ManagementAppBar extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Container(
-                width: 48,
-                height: 48,
+                width: 48, height: 48,
                 decoration: BoxDecoration(
                   color: cs.primary,
                   borderRadius: BorderRadius.circular(AppTheme.radiusMd),
